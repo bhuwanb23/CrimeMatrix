@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Header from './Header'
 import RightPanel from './RightPanel'
 
-export default function Layout({ children, onNavigate, currentPage }) {
+export default function Layout() {
   const [rightPanelOpen, setRightPanelOpen] = useState(true)
 
   return (
@@ -14,10 +15,10 @@ export default function Layout({ children, onNavigate, currentPage }) {
       />
 
       <div className="layout-body">
-        <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
+        <Sidebar />
 
         <main className="layout-content">
-          {children}
+          <Outlet />
         </main>
 
         <RightPanel isOpen={rightPanelOpen} />

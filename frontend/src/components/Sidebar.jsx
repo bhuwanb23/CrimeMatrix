@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { createPortal } from 'react-dom'
 import {
   LayoutDashboard,
   FileText,
@@ -13,13 +15,13 @@ import {
 import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard', page: 'dashboard' },
-  { icon: Bot, label: 'AI Copilot', id: 'copilot', page: 'copilot' },
-  { icon: FileText, label: 'FIR & Cases', id: 'cases', badge: true, page: 'dashboard' },
-  { icon: BarChart3, label: 'Analytics', id: 'analytics', page: 'dashboard' },
-  { icon: Building2, label: 'Stations', id: 'stations', page: 'dashboard' },
-  { icon: Users, label: 'Suspects', id: 'suspects', page: 'dashboard' },
-  { icon: ClipboardList, label: 'Investigations', id: 'investigations', page: 'dashboard' },
+  { icon: LayoutDashboard, label: 'Dashboard', to: '/' },
+  { icon: Bot, label: 'AI Copilot', to: '/copilot' },
+  { icon: FileText, label: 'FIR & Cases', to: '/', badge: true },
+  { icon: BarChart3, label: 'Analytics', to: '/' },
+  { icon: Building2, label: 'Stations', to: '/' },
+  { icon: Users, label: 'Suspects', to: '/' },
+  { icon: ClipboardList, label: 'Investigations', to: '/' },
 ]
 
 const bottomItems = [
@@ -27,84 +29,89 @@ const bottomItems = [
   { icon: LogOut, label: 'Logout', id: 'logout' },
 ]
 
-export default function Sidebar({ onNavigate, currentPage }) {
-  const [activeItem, setActiveItem] = useState('dashboard')
+export default function Sidebar() {
   const [hoveredItem, setHoveredItem] = useState(null)
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 })
 
-  const handleNavClick = (item) => {
-    setActiveItem(item.id)
-    if (item.page && onNavigate) {
-      onNavigate(item.page)
-    }
+  const handleMouseEnter = (e, label) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setTooltipPos({
+      top: rect.top + rect.height / 2,
+      left: rect.right + 10,
+    })
+    setHoveredItem(label)
+  }
+
+  const handleMouseLeave = () => {
+    setHoveredItem(null)
   }
 
   return (
-    <aside className="sidebar collapsed">
-      <div className="sidebar-inner">
-        {/* Brand Logo */}
-        <div className="sidebar-logo">
-          <div className="sidebar-logo-mark">
-            <LogoIcon size={22} />
+    <>
+      <aside className="sidebar">
+        <div className="sidebar-inner">
+          <div className="sidebar-logo">
+            <div className="sidebar-logo-mark">
+              <LogoIcon size={22} />
+            </div>
+          </div>
+
+          <nav className="sidebar-nav">
+            {navItems.map((item) => (
+              <div
+                key={item.label}
+                className="sidebar-nav-item-wrapper"
+                onMouseEnter={(e) => handleMouseEnter(e, item.label)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <NavLink
+                  to={item.to}
+                  end={item.to === '/'}
+                  className={({ isActive }) =>
+                    `sidebar-nav-item ${isActive ? 'active' : ''}`
+                  }
+                >
+                  <item.icon size={18} strokeWidth={1.8} />
+                  {item.badge && <span className="sidebar-nav-badge" />}
+                </NavLink>
+              </div>
+            ))}
+          </nav>
+
+          <div className="sidebar-divider" />
+          <div className="sidebar-spacer" />
+
+          <div className="sidebar-bottom">
+            {bottomItems.map((item) => (
+              <div
+                key={item.id}
+                className="sidebar-nav-item-wrapper"
+                onMouseEnter={(e) => handleMouseEnter(e, item.label)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className="sidebar-nav-item" aria-label={item.label}>
+                  <item.icon size={18} strokeWidth={1.8} />
+                </button>
+              </div>
+            ))}
+
+            <div className="sidebar-avatar">
+              <div className="sidebar-avatar-circle">SK</div>
+            </div>
           </div>
         </div>
+      </aside>
 
-        {/* Navigation Items */}
-        <nav className="sidebar-nav">
-          {navItems.map((item) => (
-            <div
-              key={item.id}
-              className="sidebar-nav-item-wrapper"
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <button
-                className={`sidebar-nav-item ${activeItem === item.id ? 'active' : ''}`}
-                onClick={() => handleNavClick(item)}
-                aria-label={item.label}
-              >
-                <item.icon size={18} strokeWidth={1.8} />
-                {item.badge && <span className="sidebar-nav-badge" />}
-              </button>
-
-              <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
-                {item.label}
-              </span>
-            </div>
-          ))}
-        </nav>
-
-        <div className="sidebar-divider" />
-
-        <div className="sidebar-spacer" />
-
-        {/* Bottom Items */}
-        <div className="sidebar-bottom">
-          {bottomItems.map((item) => (
-            <div
-              key={item.id}
-              className="sidebar-nav-item-wrapper"
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <button
-                className={`sidebar-nav-item ${activeItem === item.id ? 'active' : ''}`}
-                onClick={() => setActiveItem(item.id)}
-                aria-label={item.label}
-              >
-                <item.icon size={18} strokeWidth={1.8} />
-              </button>
-
-              <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
-                {item.label}
-              </span>
-            </div>
-          ))}
-
-          <div className="sidebar-avatar">
-            <div className="sidebar-avatar-circle">SK</div>
-          </div>
-        </div>
-      </div>
-    </aside>
+      {/* Portal-rendered tooltip — not clipped by sidebar overflow */}
+      {hoveredItem && createPortal(
+        <span
+          className="sidebar-tooltip visible"
+          style={{ top: tooltipPos.top, left: tooltipPos.left }}
+        >
+          {hoveredItem}
+        </span>,
+        document.body
+      )}
+    </>
   )
 }

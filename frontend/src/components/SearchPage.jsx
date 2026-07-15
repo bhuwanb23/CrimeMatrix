@@ -1,43 +1,52 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SearchBar from './search/SearchBar'
 import FilterChips from './search/FilterChips'
 import SearchResults from './search/SearchResults'
 import SavedSearches from './search/SavedSearches'
 import SearchHistory from './search/SearchHistory'
-
-const allCases = [
-  { id: 'FIR #4521', title: 'Theft at Malleshwaram residence', type: 'Theft', district: 'Bengaluru Urban', status: 'active', date: 'Jul 15, 2026' },
-  { id: 'FIR #4519', title: 'Vehicle accident — Mysuru Road', type: 'Accident', district: 'Mysuru', status: 'pending', date: 'Jul 15, 2026' },
-  { id: 'FIR #4515', title: 'Cyber fraud — Electronic City', type: 'Cybercrime', district: 'Bengaluru Urban', status: 'active', date: 'Jul 14, 2026' },
-  { id: 'FIR #4512', title: 'Missing person — Koramangala', type: 'Missing', district: 'Bengaluru Urban', status: 'active', date: 'Jul 14, 2026' },
-  { id: 'FIR #4508', title: 'Robbery attempt — Whitefield', type: 'Assault', district: 'Bengaluru Urban', status: 'closed', date: 'Jul 13, 2026' },
-  { id: 'FIR #4501', title: 'Theft at commercial complex', type: 'Theft', district: 'Bengaluru Rural', status: 'pending', date: 'Jul 12, 2026' },
-  { id: 'FIR #4498', title: 'Fraud — online payment scam', type: 'Fraud', district: 'Mangaluru', status: 'active', date: 'Jul 11, 2026' },
-  { id: 'FIR #4495', title: 'Assault near bus stand', type: 'Assault', district: 'Hubballi', status: 'closed', date: 'Jul 10, 2026' },
-  { id: 'FIR #4489', title: 'Robbery — Indiranagar', type: 'Theft', district: 'Bengaluru Urban', status: 'active', date: 'Jul 9, 2026' },
-  { id: 'FIR #4485', title: 'Cybercrime — phishing attack', type: 'Cybercrime', district: 'Bengaluru Urban', status: 'pending', date: 'Jul 8, 2026' },
-  { id: 'FIR #4480', title: 'Theft from parking lot', type: 'Theft', district: 'Mysuru', status: 'closed', date: 'Jul 7, 2026' },
-  { id: 'FIR #4475', title: 'Fraud — insurance claim', type: 'Fraud', district: 'Bengaluru Rural', status: 'active', date: 'Jul 6, 2026' },
-  { id: 'FIR #4470', title: 'Assault — domestic dispute', type: 'Assault', district: 'Mangaluru', status: 'pending', date: 'Jul 5, 2026' },
-  { id: 'FIR #4465', title: 'Missing juvenile — Hebbal', type: 'Missing', district: 'Bengaluru Urban', status: 'active', date: 'Jul 4, 2026' },
-  { id: 'FIR #4460', title: 'Cybercrime — data breach', type: 'Cybercrime', district: 'Hubballi', status: 'closed', date: 'Jul 3, 2026' },
-]
+import { cases } from './search/caseData'
 
 const ITEMS_PER_PAGE = 8
 
 export default function SearchPage() {
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState(['all'])
   const [page, setPage] = useState(1)
-  const [hasSearched, setHasSearched] = useState(false)
+  const [savedSearches, setSavedSearches] = useState([
+    { id: 1, query: 'Theft cases Bengaluru 2026', count: 24 },
+    { id: 2, query: 'Unsolved fraud cases', count: 12 },
+    { id: 3, query: 'Repeat offenders Koramangala', count: 8 },
+    { id: 4, query: 'Cybercrime victims under 25', count: 15 },
+  ])
+  const [searchHistory, setSearchHistory] = useState([
+    { id: 1, query: 'FIR #4521 theft', time: '2 min ago' },
+    { id: 2, query: 'Ravi Kumar suspect network', time: '15 min ago' },
+    { id: 3, query: 'Active cases Mysuru', time: '1 hr ago' },
+    { id: 4, query: 'Cyber fraud patterns', time: '2 hrs ago' },
+    { id: 5, query: 'Missing person Koramangala', time: 'Yesterday' },
+    { id: 6, query: 'Vehicle KA-01-AB-1234', time: 'Yesterday' },
+  ])
+  const [nextId, setNextId] = useState(100)
 
-  const handleSearch = (searchQuery) => {
+  const handleSearch = useCallback((searchQuery) => {
     setQuery(searchQuery)
-    setHasSearched(true)
     setPage(1)
-  }
+    if (searchQuery.trim()) {
+      setSearchHistory((prev) => {
+        const newEntry = {
+          id: nextId,
+          query: searchQuery,
+          time: 'Just now',
+        }
+        return [newEntry, ...prev.slice(0, 9)]
+      })
+      setNextId((prev) => prev + 1)
+    }
+  }, [nextId])
 
-  const handleToggleFilter = (filterId) => {
+  const handleToggleFilter = useCallback((filterId) => {
     if (filterId === 'all') {
       setActiveFilters(['all'])
     } else {
@@ -50,15 +59,36 @@ export default function SearchPage() {
       })
     }
     setPage(1)
-  }
+  }, [])
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     setActiveFilters(['all'])
     setPage(1)
-  }
+  }, [])
+
+  const handleViewCase = useCallback((caseId) => {
+    navigate(`/cases/${caseId}`)
+  }, [navigate])
+
+  const handleSaveSearch = useCallback((searchQuery) => {
+    if (!searchQuery.trim()) return
+    setSavedSearches((prev) => {
+      const exists = prev.some((s) => s.query === searchQuery)
+      if (exists) return prev
+      return [
+        { id: nextId, query: searchQuery, count: 0 },
+        ...prev,
+      ]
+    })
+    setNextId((prev) => prev + 1)
+  }, [nextId])
+
+  const handleDeleteSaved = useCallback((id) => {
+    setSavedSearches((prev) => prev.filter((s) => s.id !== id))
+  }, [])
 
   const filteredResults = useMemo(() => {
-    let results = allCases
+    let results = cases
 
     if (query) {
       const q = query.toLowerCase()
@@ -67,7 +97,8 @@ export default function SearchPage() {
           c.id.toLowerCase().includes(q) ||
           c.title.toLowerCase().includes(q) ||
           c.type.toLowerCase().includes(q) ||
-          c.district.toLowerCase().includes(q)
+          c.district.toLowerCase().includes(q) ||
+          c.description.toLowerCase().includes(q)
       )
     }
 
@@ -108,6 +139,7 @@ export default function SearchPage() {
           value={query}
           onChange={setQuery}
           onSearch={handleSearch}
+          onSave={handleSaveSearch}
         />
 
         <FilterChips
@@ -121,12 +153,22 @@ export default function SearchPage() {
           page={page}
           totalPages={totalPages}
           onPageChange={setPage}
+          onViewCase={handleViewCase}
         />
       </div>
 
       <aside className="search-sidebar">
-        <SavedSearches onRunSearch={handleSearch} />
-        <SearchHistory onRunSearch={handleSearch} />
+        <SavedSearches
+          searches={savedSearches}
+          onRunSearch={handleSearch}
+          onDelete={handleDeleteSaved}
+          onSave={handleSaveSearch}
+          currentQuery={query}
+        />
+        <SearchHistory
+          history={searchHistory}
+          onRunSearch={handleSearch}
+        />
       </aside>
     </div>
   )

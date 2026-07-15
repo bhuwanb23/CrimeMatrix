@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FileText, Camera, Clock, GitBranch, Link, Bot } from 'lucide-react'
 import NotesTab from './NotesTab'
 import EvidenceTab from './EvidenceTab'
@@ -65,7 +65,7 @@ export default function WorkspacePanel({ investigation }) {
       </div>
 
       {/* Tab Content */}
-      <div className="workspace-content">
+      <div className="workspace-content" key={`${investigation.id}-${activeTab}`}>
         {activeTab === 'notes' && (
           <NotesTab
             notes={investigation.notes}

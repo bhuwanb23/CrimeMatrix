@@ -1,19 +1,18 @@
-import { useState, useCallback } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import DashboardContent from './components/DashboardContent'
 import CopilotPage from './components/CopilotPage'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('dashboard')
-
-  const handleNavigate = useCallback((page) => {
-    setCurrentPage(page)
-  }, [])
-
   return (
-    <Layout onNavigate={handleNavigate} currentPage={currentPage}>
-      {currentPage === 'copilot' ? <CopilotPage /> : <DashboardContent />}
-    </Layout>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<DashboardContent />} />
+          <Route path="/copilot" element={<CopilotPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

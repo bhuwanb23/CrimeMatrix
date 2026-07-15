@@ -1,4 +1,4 @@
-import { Search, Plus, Star, MessageSquare, ChevronDown, ChevronRight } from 'lucide-react'
+import { Search, Plus, ChevronDown, ChevronRight, X } from 'lucide-react'
 import { useState } from 'react'
 
 const savedChats = [
@@ -41,15 +41,13 @@ function ChatItem({ item, active, onClick }) {
   )
 }
 
-export default function ChatHistory({ activeChatId, onSelectChat, onNewChat }) {
-  const [searchQuery, setSearchQuery] = useState('')
-
+export default function ChatHistory({ activeChatId, onSelectChat, onNewChat, onClose }) {
   return (
-    <aside className="chat-history">
-      <div className="chat-history-header">
-        <h2 className="chat-history-title">Chat</h2>
-        <button className="chat-history-search" aria-label="Search chats">
-          <Search size={16} strokeWidth={1.8} />
+    <div className="slide-panel-inner">
+      <div className="slide-panel-header">
+        <h2 className="slide-panel-title">Chat History</h2>
+        <button className="slide-panel-close" onClick={onClose} aria-label="Close">
+          <X size={18} strokeWidth={1.8} />
         </button>
       </div>
 
@@ -58,7 +56,7 @@ export default function ChatHistory({ activeChatId, onSelectChat, onNewChat }) {
         New Chat
       </button>
 
-      <div className="chat-history-list">
+      <div className="slide-panel-body">
         <CollapsibleSection title="Saved" defaultOpen={true}>
           {savedChats.map((chat) => (
             <ChatItem
@@ -92,6 +90,6 @@ export default function ChatHistory({ activeChatId, onSelectChat, onNewChat }) {
           ))}
         </CollapsibleSection>
       </div>
-    </aside>
+    </div>
   )
 }

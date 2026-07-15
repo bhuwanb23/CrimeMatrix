@@ -1,8 +1,7 @@
 import { useState, useCallback } from 'react'
-import ChatHistory from './copilot/ChatHistory'
 import ChatArea from './copilot/ChatArea'
+import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-import { PanelLeftOpen, PanelLeftClose, PanelRightOpen, PanelRightClose } from 'lucide-react'
 
 const aiResponses = [
   'Based on my analysis of FIR #4521 and related cases, I found 3 similar MO patterns in the Bengaluru North district over the past 6 months. The suspect appears to target residential areas between 2-4 AM, using forced entry through rear doors. Would you like me to generate a detailed connection report?',
@@ -15,8 +14,8 @@ export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
-  const [chatHistoryOpen, setChatHistoryOpen] = useState(true)
-  const [contextPanelOpen, setContextPanelOpen] = useState(true)
+  const [historyOpen, setHistoryOpen] = useState(false)
+  const [contextOpen, setContextOpen] = useState(false)
 
   const handleSend = useCallback((content, source) => {
     const userMsg = {
@@ -44,43 +43,41 @@ export default function CopilotPage() {
   }
 
   return (
-    <div className="copilot-layout">
-      {/* Chat History Toggle + Panel */}
-      <div className={`copilot-history-wrapper ${chatHistoryOpen ? 'open' : 'closed'}`}>
-        <button
-          className="copilot-panel-toggle"
-          onClick={() => setChatHistoryOpen(!chatHistoryOpen)}
-          aria-label="Toggle chat history"
-        >
-          {chatHistoryOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
-        </button>
-        {chatHistoryOpen && (
-          <ChatHistory
-            activeChatId={activeChatId}
-            onSelectChat={setActiveChatId}
-            onNewChat={handleNewChat}
-          />
-        )}
-      </div>
-
-      {/* Main Chat */}
+    <div className="copilot-page">
       <ChatArea
         messages={messages}
         onSend={handleSend}
         isTyping={isTyping}
+        onToggleHistory={() => setHistoryOpen(!historyOpen)}
+        onToggleContext={() => setContextOpen(!contextOpen)}
+        historyOpen={historyOpen}
+        contextOpen={contextOpen}
       />
 
-      {/* Context Panel Toggle + Panel */}
-      <div className={`copilot-context-wrapper ${contextPanelOpen ? 'open' : 'closed'}`}>
-        {contextPanelOpen && <ContextPanel />}
-        <button
-          className="copilot-panel-toggle right"
-          onClick={() => setContextPanelOpen(!contextPanelOpen)}
-          aria-label="Toggle context panel"
-        >
-          {contextPanelOpen ? <PanelRightClose size={16} /> : <PanelRightOpen size={16} />}
-        </button>
-      </div>
+      {/* History Overlay */}
+      {historyOpen && (
+        <>
+          <div className="copilot-overlay" onClick={() => setHistoryOpen(false)} />
+          <div className="copilot-slide-panel left">
+            <ChatHistory
+              activeChatId={activeChatId}
+              onSelectChat={(id) => { setActiveChatId(id); setHistoryOpen(false) }}
+              onNewChat={() => { handleNewChat(); setHistoryOpen(false) }}
+              onClose={() => setHistoryOpen(false)}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Context Overlay */}
+      {contextOpen && (
+        <>
+          <div className="copilot-overlay" onClick={() => setContextOpen(false)} />
+          <div className="copilot-slide-panel right">
+            <ContextPanel onClose={() => setContextOpen(false)} />
+          </div>
+        </>
+      )}
     </div>
   )
 }

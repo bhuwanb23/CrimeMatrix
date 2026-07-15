@@ -1,20 +1,9 @@
-import { Search, Bell, PanelLeftClose, PanelLeftOpen, ChevronDown } from 'lucide-react'
+import { Search, Bell, PanelRightOpen, PanelRightClose, ChevronDown } from 'lucide-react'
 
-export default function Header({ sidebarOpen, onToggleSidebar }) {
+export default function Header({ rightPanelOpen, onToggleRightPanel }) {
   return (
     <header className="header">
       <div className="header-left">
-        <button
-          className="header-toggle-btn"
-          onClick={onToggleSidebar}
-          aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
-        >
-          {sidebarOpen ? (
-            <PanelLeftClose size={18} strokeWidth={1.8} />
-          ) : (
-            <PanelLeftOpen size={18} strokeWidth={1.8} />
-          )}
-        </button>
         <div className="header-breadcrumb">
           <span className="header-breadcrumb-brand">CrimeMatrix</span>
           <span className="header-breadcrumb-sep">/</span>
@@ -35,6 +24,18 @@ export default function Header({ sidebarOpen, onToggleSidebar }) {
       </div>
 
       <div className="header-right">
+        <button
+          className={`header-icon-btn ${rightPanelOpen ? 'active' : ''}`}
+          onClick={onToggleRightPanel}
+          aria-label="Toggle panel"
+        >
+          {rightPanelOpen ? (
+            <PanelRightClose size={18} strokeWidth={1.8} />
+          ) : (
+            <PanelRightOpen size={18} strokeWidth={1.8} />
+          )}
+        </button>
+
         <button className="header-icon-btn" aria-label="Notifications">
           <Bell size={18} strokeWidth={1.8} />
           <span className="header-badge">3</span>

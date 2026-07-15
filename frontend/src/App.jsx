@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import DashboardContent from './components/DashboardContent'
 import CopilotPage from './components/CopilotPage'
 import SearchPage from './components/SearchPage'
+import CaseDetailPage from './components/CaseDetailPage'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="/" element={<DashboardContent />} />
           <Route path="/copilot" element={<CopilotPage />} />
           <Route path="/cases" element={<SearchPage />} />
+          <Route path="/cases/:id" element={<CaseDetailPage />} />
           <Route path="/analytics" element={<DashboardContent />} />
           <Route path="/stations" element={<DashboardContent />} />
           <Route path="/suspects" element={<DashboardContent />} />

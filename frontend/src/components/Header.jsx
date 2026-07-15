@@ -1,4 +1,4 @@
-import { Search, Bell, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react'
+import { Search, Bell, PanelLeftClose, PanelLeftOpen, ChevronDown } from 'lucide-react'
 
 export default function Header({
   sidebarOpen,
@@ -20,10 +20,10 @@ export default function Header({
             <PanelLeftOpen size={18} strokeWidth={1.8} />
           )}
         </button>
-        <div className="header-title">
-          <span className="header-title-main">CrimeMatrix</span>
-          <span className="header-title-sep">/</span>
-          <span className="header-title-sub">Dashboard</span>
+        <div className="header-breadcrumb">
+          <span className="header-breadcrumb-brand">CrimeMatrix</span>
+          <span className="header-breadcrumb-sep">/</span>
+          <span className="header-breadcrumb-page">Dashboard</span>
         </div>
       </div>
 
@@ -32,7 +32,7 @@ export default function Header({
           <Search size={16} strokeWidth={1.8} className="header-search-icon" />
           <input
             type="text"
-            placeholder="Search cases, suspects..."
+            placeholder="Search cases, suspects, stations..."
             className="header-search-input"
           />
           <kbd className="header-search-kbd">⌘K</kbd>
@@ -48,14 +48,14 @@ export default function Header({
           <Bell size={18} strokeWidth={1.8} />
           <span className="header-badge">3</span>
         </button>
+
         <div className="header-user">
-          <div className="header-user-avatar">
-            <span>SK</span>
-          </div>
+          <div className="header-user-avatar">SK</div>
           <div className="header-user-info">
             <span className="header-user-name">SI Karthik</span>
             <span className="header-user-role">Investigation Officer</span>
           </div>
+          <ChevronDown size={14} className="header-user-chevron" />
         </div>
       </div>
     </header>

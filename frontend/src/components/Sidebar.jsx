@@ -13,7 +13,7 @@ import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
-  { icon: FileText, label: 'FIR & Cases', id: 'cases' },
+  { icon: FileText, label: 'FIR & Cases', id: 'cases', badge: true },
   { icon: BarChart3, label: 'Analytics', id: 'analytics' },
   { icon: Building2, label: 'Stations', id: 'stations' },
   { icon: Users, label: 'Suspects', id: 'suspects' },
@@ -45,8 +45,8 @@ export default function Sidebar({ isOpen, onToggle }) {
       <div className="sidebar-inner">
         {/* Brand Logo */}
         <div className="sidebar-logo">
-          <div className="sidebar-logo-circle">
-            <LogoIcon size={28} />
+          <div className="sidebar-logo-mark">
+            <LogoIcon size={24} />
           </div>
         </div>
 
@@ -62,10 +62,13 @@ export default function Sidebar({ isOpen, onToggle }) {
                 aria-label={item.label}
               >
                 <item.icon size={20} strokeWidth={1.8} />
+                {item.badge && <span className="sidebar-nav-badge" />}
               </button>
             </Tooltip>
           ))}
         </nav>
+
+        <div className="sidebar-divider" />
 
         {/* Spacer */}
         <div className="sidebar-spacer" />
@@ -88,8 +91,8 @@ export default function Sidebar({ isOpen, onToggle }) {
 
           {/* User Avatar */}
           <div className="sidebar-avatar">
-            <div className="sidebar-avatar-img">
-              <span>Officer</span>
+            <div className="sidebar-avatar-circle">
+              SK
             </div>
           </div>
         </div>

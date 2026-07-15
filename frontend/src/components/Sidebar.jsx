@@ -13,6 +13,7 @@ import {
   Bot,
   Network,
   Bell,
+  BookOpen,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
@@ -26,6 +27,7 @@ const navItems = [
   { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },
   { icon: Bell, label: 'Alerts', to: '/alerts', id: 'alerts', badge: true },
+  { icon: BookOpen, label: 'Reports', to: '/reports', id: 'reports' },
 ]
 
 const bottomItems = [

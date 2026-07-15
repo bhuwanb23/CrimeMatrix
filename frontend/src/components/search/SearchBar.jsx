@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Search, Mic, X, Clock } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Search, Mic, X, Clock, BookmarkPlus } from 'lucide-react'
 
 const recentSearches = [
   'Theft cases in Bengaluru',
@@ -8,9 +8,22 @@ const recentSearches = [
   'Cyber fraud Electronic City',
 ]
 
-export default function SearchBar({ value, onChange, onSearch }) {
+export default function SearchBar({ value, onChange, onSearch, onSave }) {
   const [focused, setFocused] = useState(false)
   const [showRecent, setShowRecent] = useState(false)
+  const debounceRef = useRef(null)
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (value) {
+      debounceRef.current = setTimeout(() => {
+        onSearch(value)
+      }, 300)
+    }
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [value, onSearch])
 
   const handleFocus = () => {
     setFocused(true)
@@ -30,6 +43,7 @@ export default function SearchBar({ value, onChange, onSearch }) {
 
   const handleClear = () => {
     onChange('')
+    onSearch('')
     setShowRecent(false)
   }
 
@@ -53,6 +67,15 @@ export default function SearchBar({ value, onChange, onSearch }) {
         {value && (
           <button className="search-bar-clear" onClick={handleClear}>
             <X size={16} strokeWidth={1.8} />
+          </button>
+        )}
+        {value && (
+          <button
+            className="search-bar-save"
+            onClick={() => onSave(value)}
+            aria-label="Save search"
+          >
+            <BookmarkPlus size={16} strokeWidth={1.8} />
           </button>
         )}
         <button className="search-bar-voice" aria-label="Voice search">

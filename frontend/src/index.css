@@ -2587,15 +2587,15 @@ input {
 
 .chat-input-divider {
   width: 1px;
-  height: 20px;
+  height: 18px;
   background: var(--border);
-  margin: 0 4px;
+  margin: 0 6px;
 }
 
 .chat-input-icon-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2609,19 +2609,24 @@ input {
 }
 
 .chat-send-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: var(--color-primary);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
-  margin-left: auto;
+  transition: all 0.2s ease;
+  margin-left: 4px;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.15);
 }
 
 .chat-send-btn:hover {
+  background: #1e293b;
+  transform: scale(1.08);
+  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.2);
+}
   background: #1e293b;
   transform: scale(1.05);
 }

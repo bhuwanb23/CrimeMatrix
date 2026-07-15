@@ -4,6 +4,7 @@ import DashboardContent from './components/DashboardContent'
 import CopilotPage from './components/CopilotPage'
 import SearchPage from './components/SearchPage'
 import CaseDetailPage from './components/CaseDetailPage'
+import InvestigationPage from './components/InvestigationPage'
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           <Route path="/analytics" element={<DashboardContent />} />
           <Route path="/stations" element={<DashboardContent />} />
           <Route path="/suspects" element={<DashboardContent />} />
-          <Route path="/investigations" element={<DashboardContent />} />
+          <Route path="/investigations" element={<InvestigationPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

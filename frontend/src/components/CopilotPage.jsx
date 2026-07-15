@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import ChatHistory from './copilot/ChatHistory'
 import ChatArea from './copilot/ChatArea'
 import ContextPanel from './copilot/ContextPanel'
-import { ArrowLeft } from 'lucide-react'
+import { PanelLeftOpen, PanelLeftClose, PanelRightOpen, PanelRightClose } from 'lucide-react'
 
 const aiResponses = [
   'Based on my analysis of FIR #4521 and related cases, I found 3 similar MO patterns in the Bengaluru North district over the past 6 months. The suspect appears to target residential areas between 2-4 AM, using forced entry through rear doors. Would you like me to generate a detailed connection report?',
@@ -11,10 +11,12 @@ const aiResponses = [
   'I\'ve identified a potential link between the theft pattern in Malleshwaram and a similar series in Indiranagar. Both show the same entry method and timing signature. This could indicate a serial offender operating across districts.',
 ]
 
-export default function CopilotPage({ onBack }) {
+export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
+  const [chatHistoryOpen, setChatHistoryOpen] = useState(true)
+  const [contextPanelOpen, setContextPanelOpen] = useState(true)
 
   const handleSend = useCallback((content, source) => {
     const userMsg = {
@@ -27,12 +29,11 @@ export default function CopilotPage({ onBack }) {
 
     setTimeout(() => {
       const response = aiResponses[Math.floor(Math.random() * aiResponses.length)]
-      const aiMsg = {
+      setMessages((prev) => [...prev, {
         role: 'assistant',
         content: response,
         time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-      }
-      setMessages((prev) => [...prev, aiMsg])
+      }])
       setIsTyping(false)
     }, 1500)
   }, [])
@@ -42,34 +43,43 @@ export default function CopilotPage({ onBack }) {
     setActiveChatId(null)
   }
 
-  const handleSelectChat = (id) => {
-    setActiveChatId(id)
-    // In a real app, load messages for this chat
-    setMessages([])
-  }
-
   return (
-    <div className="copilot-page">
-      {/* Back to Dashboard */}
-      <button className="copilot-back" onClick={onBack}>
-        <ArrowLeft size={16} strokeWidth={1.8} />
-        Dashboard
-      </button>
+    <div className="copilot-layout">
+      {/* Chat History Toggle + Panel */}
+      <div className={`copilot-history-wrapper ${chatHistoryOpen ? 'open' : 'closed'}`}>
+        <button
+          className="copilot-panel-toggle"
+          onClick={() => setChatHistoryOpen(!chatHistoryOpen)}
+          aria-label="Toggle chat history"
+        >
+          {chatHistoryOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
+        </button>
+        {chatHistoryOpen && (
+          <ChatHistory
+            activeChatId={activeChatId}
+            onSelectChat={setActiveChatId}
+            onNewChat={handleNewChat}
+          />
+        )}
+      </div>
 
-      <div className="copilot-layout">
-        <ChatHistory
-          activeChatId={activeChatId}
-          onSelectChat={handleSelectChat}
-          onNewChat={handleNewChat}
-        />
+      {/* Main Chat */}
+      <ChatArea
+        messages={messages}
+        onSend={handleSend}
+        isTyping={isTyping}
+      />
 
-        <ChatArea
-          messages={messages}
-          onSend={handleSend}
-          isTyping={isTyping}
-        />
-
-        <ContextPanel />
+      {/* Context Panel Toggle + Panel */}
+      <div className={`copilot-context-wrapper ${contextPanelOpen ? 'open' : 'closed'}`}>
+        {contextPanelOpen && <ContextPanel />}
+        <button
+          className="copilot-panel-toggle right"
+          onClick={() => setContextPanelOpen(!contextPanelOpen)}
+          aria-label="Toggle context panel"
+        >
+          {contextPanelOpen ? <PanelRightClose size={16} /> : <PanelRightOpen size={16} />}
+        </button>
       </div>
     </div>
   )

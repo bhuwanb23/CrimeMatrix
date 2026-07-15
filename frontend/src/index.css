@@ -2490,7 +2490,7 @@ input {
 }
 
 .chat-input-wrapper {
-  max-width: 100%;
+  width: 100%;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
   border-radius: 16px;

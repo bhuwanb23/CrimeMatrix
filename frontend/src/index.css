@@ -1938,14 +1938,9 @@ input {
   overflow: hidden;
 }
 
-/* Overlay backdrop */
+/* Overlay backdrop — removed, panels slide in without blocking */
 .copilot-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(2px);
-  z-index: 50;
-  animation: fadeIn 0.2s ease;
+  display: none;
 }
 
 /* Slide panels */
@@ -2196,9 +2191,8 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 40px;
+  width: 100%;
+  padding-top: 32px;
 }
 
 .chat-empty-avatar {
@@ -2240,8 +2234,8 @@ input {
 }
 
 .suggestion-card {
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 12px;
+  padding: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -2496,7 +2490,7 @@ input {
 }
 
 .chat-input-wrapper {
-  max-width: 720px;
+  max-width: 900px;
   margin: 0 auto;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
@@ -2513,8 +2507,8 @@ input {
 
 .chat-input-field {
   width: 100%;
-  padding: 14px 16px 6px;
-  font-size: 14px;
+  padding: 14px 18px 6px;
+  font-size: 15px;
   color: var(--text-primary);
 }
 

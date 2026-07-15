@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Bot, User, Loader2 } from 'lucide-react'
+import { Bot, User, Loader2, MessageSquareText, PanelRightInfo, X } from 'lucide-react'
 import { AssistantCard, TasksCard, PromptCard } from './SuggestionCard'
 import ChatInput from './ChatInput'
 
@@ -19,7 +19,7 @@ function TypingIndicator() {
   )
 }
 
-export default function ChatArea({ messages, onSend, isTyping }) {
+export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, onToggleContext, historyOpen, contextOpen }) {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -30,9 +30,33 @@ export default function ChatArea({ messages, onSend, isTyping }) {
 
   return (
     <div className="chat-area">
+      {/* Toolbar */}
+      <div className="chat-toolbar">
+        <button
+          className={`chat-toolbar-btn ${historyOpen ? 'active' : ''}`}
+          onClick={onToggleHistory}
+          aria-label="Toggle chat history"
+        >
+          <MessageSquareText size={18} strokeWidth={1.8} />
+        </button>
+
+        <div className="chat-toolbar-center">
+          <Bot size={18} strokeWidth={1.8} className="chat-toolbar-icon" />
+          <span className="chat-toolbar-title">AI Copilot</span>
+        </div>
+
+        <button
+          className={`chat-toolbar-btn ${contextOpen ? 'active' : ''}`}
+          onClick={onToggleContext}
+          aria-label="Toggle context panel"
+        >
+          <PanelRightInfo size={18} strokeWidth={1.8} />
+        </button>
+      </div>
+
+      {/* Messages / Empty State */}
       <div className="chat-area-scroll">
         {!hasMessages ? (
-          /* Empty State — Greeting */
           <div className="chat-empty">
             <div className="chat-empty-avatar">
               <Bot size={32} strokeWidth={1.5} />
@@ -68,7 +92,6 @@ export default function ChatArea({ messages, onSend, isTyping }) {
             </div>
           </div>
         ) : (
-          /* Message Thread */
           <div className="chat-messages">
             {messages.map((msg, i) => (
               <div key={i} className={`chat-message ${msg.role}`}>

@@ -1,4 +1,12 @@
-import { Search, Bell, PanelRightOpen, PanelRightClose, ChevronDown } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
+import { Bot, BarChart3, Network, Bell, PanelRightOpen, PanelRightClose } from 'lucide-react'
+
+const headerNav = [
+  { icon: Bot, label: 'AI Copilot', to: '/copilot', id: 'copilot' },
+  { icon: BarChart3, label: 'Analytics', to: '/analytics', id: 'analytics' },
+  { icon: Network, label: 'Knowledge Graph', to: '/knowledge-graph', id: 'knowledge-graph' },
+  { icon: Bell, label: 'Alerts', to: '/alerts', id: 'alerts' },
+]
 
 export default function Header({ rightPanelOpen, onToggleRightPanel }) {
   return (
@@ -11,17 +19,20 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
         </div>
       </div>
 
-      <div className="header-center">
-        <div className="header-search">
-          <Search size={16} strokeWidth={1.8} className="header-search-icon" />
-          <input
-            type="text"
-            placeholder="Search cases, suspects, stations..."
-            className="header-search-input"
-          />
-          <kbd className="header-search-kbd">⌘K</kbd>
-        </div>
-      </div>
+      <nav className="header-nav">
+        {headerNav.map((item) => (
+          <NavLink
+            key={item.id}
+            to={item.to}
+            className={({ isActive }) =>
+              `header-nav-item ${isActive ? 'active' : ''}`
+            }
+          >
+            <item.icon size={16} strokeWidth={1.8} />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
 
       <div className="header-right">
         <button
@@ -36,18 +47,8 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
           )}
         </button>
 
-        <button className="header-icon-btn" aria-label="Notifications">
-          <Bell size={18} strokeWidth={1.8} />
-          <span className="header-badge">3</span>
-        </button>
-
         <div className="header-user">
           <div className="header-user-avatar">SK</div>
-          <div className="header-user-info">
-            <span className="header-user-name">SI Karthik</span>
-            <span className="header-user-role">Investigation Officer</span>
-          </div>
-          <ChevronDown size={14} className="header-user-chevron" />
         </div>
       </div>
     </header>

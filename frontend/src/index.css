@@ -7662,8 +7662,9 @@ input {
 /* Alerts Body */
 .alerts-body {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 380px;
   gap: 16px;
+  min-height: 500px;
 }
 
 .alerts-feed {
@@ -7896,6 +7897,8 @@ input {
   border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .alert-map-header {

@@ -9,6 +9,7 @@ import SuspectsPage from './components/SuspectsPage'
 import SuspectDetailPage from './components/SuspectDetailPage'
 import GraphPage from './components/GraphPage'
 import AnalyticsPage from './components/AnalyticsPage'
+import MapPage from './components/MapPage'
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path="/cases/:id" element={<CaseDetailPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
-          <Route path="/stations" element={<DashboardContent />} />
+          <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />
           <Route path="/suspects/:id" element={<SuspectDetailPage />} />
           <Route path="/investigations" element={<InvestigationPage />} />

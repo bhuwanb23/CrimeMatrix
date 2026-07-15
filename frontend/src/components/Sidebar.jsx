@@ -12,6 +12,7 @@ import {
   LogOut,
   Bot,
   Network,
+  Bell,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
@@ -24,6 +25,7 @@ const navItems = [
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
   { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },
+  { icon: Bell, label: 'Alerts', to: '/alerts', id: 'alerts', badge: true },
 ]
 
 const bottomItems = [

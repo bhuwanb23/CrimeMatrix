@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Bot, User, Loader2, MessageSquareText, Info, X } from 'lucide-react'
-import { AssistantCard, TasksCard, PromptCard } from './SuggestionCard'
+import { Bot, User, Loader2, MessageSquareText, Info } from 'lucide-react'
 import ChatInput from './ChatInput'
 
 function TypingIndicator() {
@@ -65,31 +64,6 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
             <p className="chat-empty-subtitle">
               Ask me anything about cases, suspects, or investigations.
             </p>
-
-            <div className="chat-suggestions">
-              <AssistantCard />
-              <TasksCard onSend={(task) => onSend(task, 'All Sources')} />
-              <PromptCard onSend={(prompt) => onSend(prompt, 'All Sources')} />
-            </div>
-
-            <div className="chat-quick-actions">
-              <button className="chat-quick-action" onClick={() => onSend('Show me FIR database', 'FIR Database')}>
-                <span className="chat-quick-action-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>📋</span>
-                FIR Database
-              </button>
-              <button className="chat-quick-action" onClick={() => onSend('Analyze this case', 'All Sources')}>
-                <span className="chat-quick-action-icon" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>🔍</span>
-                Case Analysis
-              </button>
-              <button className="chat-quick-action" onClick={() => onSend('Browse evidence', 'Evidence')}>
-                <span className="chat-quick-action-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>📁</span>
-                Evidence Browse
-              </button>
-              <button className="chat-quick-action" onClick={() => onSend('Show shared investigations', 'All Sources')}>
-                <span className="chat-quick-action-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>🔗</span>
-                Shared Cases
-              </button>
-            </div>
           </div>
         ) : (
           <div className="chat-messages">

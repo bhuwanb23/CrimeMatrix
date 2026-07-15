@@ -97,6 +97,17 @@ export const alerts = [
   },
 ]
 
+export const activityLog = [
+  { id: 1, action: 'FIR #4521 matched', type: 'whisper', time: '12 min ago', user: 'System' },
+  { id: 2, action: 'Cross-district pattern found', type: 'cross-district', time: '28 min ago', user: 'AI Engine' },
+  { id: 3, action: 'Evidence linked to FIR #4515', type: 'evidence', time: '1 hr ago', user: 'System' },
+  { id: 4, action: 'High-risk prediction generated', type: 'ai', time: '2 hrs ago', user: 'AI Engine' },
+  { id: 5, action: 'Vehicle match confirmed', type: 'fir-match', time: '3 hrs ago', user: 'System' },
+  { id: 6, action: 'Repeat offender flagged', type: 'whisper', time: '4 hrs ago', user: 'Surveillance' },
+  { id: 7, action: 'Network expansion alert', type: 'ai', time: '5 hrs ago', user: 'AI Engine' },
+  { id: 8, action: 'Vehicle tracking initiated', type: 'cross-district', time: '6 hrs ago', user: 'System' },
+]
+
 export const alertTypes = {
   whisper: { color: '#ef4444', label: 'Whisper Alert', icon: '🔴' },
   'fir-match': { color: '#f59e0b', label: 'FIR Match', icon: '🟡' },

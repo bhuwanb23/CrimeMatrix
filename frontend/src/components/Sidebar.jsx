@@ -25,46 +25,47 @@ const bottomItems = [
   { icon: LogOut, label: 'Logout', id: 'logout' },
 ]
 
-function Tooltip({ children, label, visible }) {
-  return (
-    <div className="sidebar-tooltip-wrapper">
-      {children}
-      <span className={`sidebar-tooltip ${visible ? 'visible' : ''}`}>
-        {label}
-      </span>
-    </div>
-  )
-}
-
-export default function Sidebar({ isOpen, onToggle }) {
+export default function Sidebar({ isOpen }) {
   const [activeItem, setActiveItem] = useState('dashboard')
   const [hoveredItem, setHoveredItem] = useState(null)
 
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+    <aside className={`sidebar ${isOpen ? 'expanded' : 'collapsed'}`}>
       <div className="sidebar-inner">
         {/* Brand Logo */}
         <div className="sidebar-logo">
           <div className="sidebar-logo-mark">
-            <LogoIcon size={24} />
+            <LogoIcon size={22} />
           </div>
+          {isOpen && <span className="sidebar-logo-text">CrimeMatrix</span>}
         </div>
 
         {/* Navigation Items */}
         <nav className="sidebar-nav">
           {navItems.map((item) => (
-            <Tooltip key={item.id} label={item.label} visible={!isOpen && hoveredItem === item.id}>
+            <div
+              key={item.id}
+              className="sidebar-nav-item-wrapper"
+              onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
               <button
                 className={`sidebar-nav-item ${activeItem === item.id ? 'active' : ''}`}
                 onClick={() => setActiveItem(item.id)}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
                 aria-label={item.label}
               >
-                <item.icon size={20} strokeWidth={1.8} />
+                <item.icon size={18} strokeWidth={1.8} />
+                {isOpen && <span className="sidebar-nav-label">{item.label}</span>}
                 {item.badge && <span className="sidebar-nav-badge" />}
               </button>
-            </Tooltip>
+
+              {/* Tooltip when collapsed */}
+              {!isOpen && (
+                <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
+                  {item.label}
+                </span>
+              )}
+            </div>
           ))}
         </nav>
 
@@ -76,24 +77,38 @@ export default function Sidebar({ isOpen, onToggle }) {
         {/* Bottom Items */}
         <div className="sidebar-bottom">
           {bottomItems.map((item) => (
-            <Tooltip key={item.id} label={item.label} visible={!isOpen && hoveredItem === item.id}>
+            <div
+              key={item.id}
+              className="sidebar-nav-item-wrapper"
+              onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
               <button
                 className={`sidebar-nav-item ${activeItem === item.id ? 'active' : ''}`}
                 onClick={() => setActiveItem(item.id)}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
                 aria-label={item.label}
               >
-                <item.icon size={20} strokeWidth={1.8} />
+                <item.icon size={18} strokeWidth={1.8} />
+                {isOpen && <span className="sidebar-nav-label">{item.label}</span>}
               </button>
-            </Tooltip>
+
+              {!isOpen && (
+                <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
+                  {item.label}
+                </span>
+              )}
+            </div>
           ))}
 
           {/* User Avatar */}
           <div className="sidebar-avatar">
-            <div className="sidebar-avatar-circle">
-              SK
-            </div>
+            <div className="sidebar-avatar-circle">SK</div>
+            {isOpen && (
+              <div className="sidebar-avatar-info">
+                <span className="sidebar-avatar-name">SI Karthik</span>
+                <span className="sidebar-avatar-role">Investigation Officer</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

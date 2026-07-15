@@ -145,8 +145,7 @@ input {
 .layout-body {
   display: flex;
   flex: 1;
-  overflow: visible;
-  position: relative;
+  overflow: hidden;
 }
 
 .layout-content {
@@ -575,9 +574,13 @@ input {
 }
 
 /* Tooltip */
+.sidebar-nav-item-wrapper {
+  position: relative;
+}
+
 .sidebar-tooltip {
-  position: fixed;
-  left: calc(var(--sidebar-collapsed) + 8px);
+  position: absolute;
+  left: calc(100% + 10px);
   top: 50%;
   transform: translateY(-50%) translateX(-4px);
   background: var(--color-primary);

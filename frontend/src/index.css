@@ -145,7 +145,8 @@ input {
 .layout-body {
   display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
 }
 
 .layout-content {
@@ -154,6 +155,7 @@ input {
   overflow-x: hidden;
   padding: 24px;
   background: var(--bg-app);
+  min-width: 0;
 }
 
 /* ============================================
@@ -377,8 +379,9 @@ input {
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   flex-shrink: 0;
-  overflow: hidden;
-  z-index: 20;
+  overflow: visible;
+  z-index: 30;
+  position: relative;
 }
 
 .sidebar-inner {
@@ -612,18 +615,20 @@ input {
    ============================================ */
 .right-panel {
   width: var(--right-panel-width);
+  min-width: var(--right-panel-width);
   height: 100%;
   background: var(--bg-panel);
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  transition: width 0.3s var(--ease), opacity 0.3s ease;
+  transition: width 0.3s var(--ease), min-width 0.3s var(--ease), opacity 0.3s ease;
   overflow: hidden;
 }
 
 .right-panel.closed {
   width: 0;
+  min-width: 0;
   border-left: none;
   opacity: 0;
 }

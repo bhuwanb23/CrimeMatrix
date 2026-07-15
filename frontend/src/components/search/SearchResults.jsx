@@ -1,6 +1,6 @@
-import { Eye, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Eye, ExternalLink, ChevronLeft, ChevronRight, Search } from 'lucide-react'
 
-export default function SearchResults({ results, page, totalPages, onPageChange }) {
+export default function SearchResults({ results, page, totalPages, onPageChange, onViewCase }) {
   if (results.length === 0) {
     return (
       <div className="search-empty">
@@ -32,7 +32,11 @@ export default function SearchResults({ results, page, totalPages, onPageChange 
           </thead>
           <tbody>
             {results.map((row) => (
-              <tr key={row.id} className="results-row">
+              <tr
+                key={row.id}
+                className="results-row"
+                onClick={() => onViewCase(row.id)}
+              >
                 <td>
                   <span className="case-id-badge">{row.id}</span>
                 </td>
@@ -48,11 +52,19 @@ export default function SearchResults({ results, page, totalPages, onPageChange 
                 </td>
                 <td className="date-cell">{row.date}</td>
                 <td>
-                  <div className="action-btns">
-                    <button className="action-btn" aria-label="View">
+                  <div className="action-btns" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      className="action-btn"
+                      aria-label="View"
+                      onClick={() => onViewCase(row.id)}
+                    >
                       <Eye size={14} strokeWidth={1.8} />
                     </button>
-                    <button className="action-btn" aria-label="Open">
+                    <button
+                      className="action-btn"
+                      aria-label="Open"
+                      onClick={() => onViewCase(row.id)}
+                    >
                       <ExternalLink size={14} strokeWidth={1.8} />
                     </button>
                   </div>

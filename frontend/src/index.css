@@ -281,10 +281,10 @@ input {
 .header-nav-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 10px;
-  font-size: 13px;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 10px;
   font-weight: 500;
   color: var(--text-muted);
   transition: all 0.15s ease;

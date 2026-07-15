@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Bot, User, Loader2, MessageSquareText, PanelRightInfo, X } from 'lucide-react'
+import { Bot, User, Loader2, MessageSquareText, Info, X } from 'lucide-react'
 import { AssistantCard, TasksCard, PromptCard } from './SuggestionCard'
 import ChatInput from './ChatInput'
 
@@ -50,7 +50,7 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
           onClick={onToggleContext}
           aria-label="Toggle context panel"
         >
-          <PanelRightInfo size={18} strokeWidth={1.8} />
+          <Info size={18} strokeWidth={1.8} />
         </button>
       </div>
 

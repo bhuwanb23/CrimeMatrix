@@ -8,16 +8,18 @@ import {
   ClipboardList,
   Settings,
   LogOut,
+  Bot,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard' },
-  { icon: FileText, label: 'FIR & Cases', id: 'cases', badge: true },
-  { icon: BarChart3, label: 'Analytics', id: 'analytics' },
-  { icon: Building2, label: 'Stations', id: 'stations' },
-  { icon: Users, label: 'Suspects', id: 'suspects' },
-  { icon: ClipboardList, label: 'Investigations', id: 'investigations' },
+  { icon: LayoutDashboard, label: 'Dashboard', id: 'dashboard', page: 'dashboard' },
+  { icon: Bot, label: 'AI Copilot', id: 'copilot', page: 'copilot' },
+  { icon: FileText, label: 'FIR & Cases', id: 'cases', badge: true, page: 'dashboard' },
+  { icon: BarChart3, label: 'Analytics', id: 'analytics', page: 'dashboard' },
+  { icon: Building2, label: 'Stations', id: 'stations', page: 'dashboard' },
+  { icon: Users, label: 'Suspects', id: 'suspects', page: 'dashboard' },
+  { icon: ClipboardList, label: 'Investigations', id: 'investigations', page: 'dashboard' },
 ]
 
 const bottomItems = [
@@ -25,9 +27,16 @@ const bottomItems = [
   { icon: LogOut, label: 'Logout', id: 'logout' },
 ]
 
-export default function Sidebar({ isOpen }) {
+export default function Sidebar({ isOpen, onNavigate, currentPage }) {
   const [activeItem, setActiveItem] = useState('dashboard')
   const [hoveredItem, setHoveredItem] = useState(null)
+
+  const handleNavClick = (item) => {
+    setActiveItem(item.id)
+    if (item.page && onNavigate) {
+      onNavigate(item.page)
+    }
+  }
 
   return (
     <aside className={`sidebar ${isOpen ? 'expanded' : 'collapsed'}`}>
@@ -51,7 +60,7 @@ export default function Sidebar({ isOpen }) {
             >
               <button
                 className={`sidebar-nav-item ${activeItem === item.id ? 'active' : ''}`}
-                onClick={() => setActiveItem(item.id)}
+                onClick={() => handleNavClick(item)}
                 aria-label={item.label}
               >
                 <item.icon size={18} strokeWidth={1.8} />
@@ -59,7 +68,6 @@ export default function Sidebar({ isOpen }) {
                 {item.badge && <span className="sidebar-nav-badge" />}
               </button>
 
-              {/* Tooltip when collapsed */}
               {!isOpen && (
                 <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
                   {item.label}
@@ -71,7 +79,6 @@ export default function Sidebar({ isOpen }) {
 
         <div className="sidebar-divider" />
 
-        {/* Spacer */}
         <div className="sidebar-spacer" />
 
         {/* Bottom Items */}
@@ -100,7 +107,6 @@ export default function Sidebar({ isOpen }) {
             </div>
           ))}
 
-          {/* User Avatar */}
           <div className="sidebar-avatar">
             <div className="sidebar-avatar-circle">SK</div>
             {isOpen && (

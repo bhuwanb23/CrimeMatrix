@@ -1,6 +1,5 @@
 import {
-  FileText, User, MapPin, Camera,
-  Download, BookmarkPlus, Share2, AlertTriangle,
+  FileText, Download, BookmarkPlus, Share2, X,
 } from 'lucide-react'
 import SourceCard from './SourceCard'
 
@@ -24,15 +23,17 @@ const relatedCases = [
   { id: 'FIR #4515', title: 'Cyber fraud — Electronic City', status: 'active' },
 ]
 
-export default function ContextPanel() {
+export default function ContextPanel({ onClose }) {
   return (
-    <aside className="context-panel">
-      <div className="context-panel-header">
-        <h2 className="context-panel-title">Context</h2>
+    <div className="slide-panel-inner">
+      <div className="slide-panel-header">
+        <h2 className="slide-panel-title">Context</h2>
+        <button className="slide-panel-close" onClick={onClose} aria-label="Close">
+          <X size={18} strokeWidth={1.8} />
+        </button>
       </div>
 
-      <div className="context-panel-content">
-        {/* Referenced Sources */}
+      <div className="slide-panel-body">
         <section className="context-section">
           <h3 className="context-section-title">Referenced Sources</h3>
           <div className="context-sources">
@@ -42,7 +43,6 @@ export default function ContextPanel() {
           </div>
         </section>
 
-        {/* Investigation Actions */}
         <section className="context-section">
           <h3 className="context-section-title">Actions</h3>
           <div className="context-actions">
@@ -57,7 +57,6 @@ export default function ContextPanel() {
           </div>
         </section>
 
-        {/* Related Cases */}
         <section className="context-section">
           <h3 className="context-section-title">Related Cases</h3>
           <div className="context-cases">
@@ -73,6 +72,6 @@ export default function ContextPanel() {
           </div>
         </section>
       </div>
-    </aside>
+    </div>
   )
 }

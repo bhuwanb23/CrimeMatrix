@@ -10,6 +10,7 @@ import SuspectDetailPage from './components/SuspectDetailPage'
 import GraphPage from './components/GraphPage'
 import AnalyticsPage from './components/AnalyticsPage'
 import MapPage from './components/MapPage'
+import AlertsPage from './components/AlertsPage'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/suspects" element={<SuspectsPage />} />
           <Route path="/suspects/:id" element={<SuspectDetailPage />} />
           <Route path="/investigations" element={<InvestigationPage />} />
+          <Route path="/alerts" element={<AlertsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

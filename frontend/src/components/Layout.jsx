@@ -3,7 +3,7 @@ import Sidebar from './Sidebar'
 import Header from './Header'
 import RightPanel from './RightPanel'
 
-export default function Layout({ children }) {
+export default function Layout({ children, onNavigate, currentPage }) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
   return (
@@ -14,7 +14,12 @@ export default function Layout({ children }) {
       />
 
       <div className="layout-body">
-        <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <Sidebar
+          isOpen={sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+          onNavigate={onNavigate}
+          currentPage={currentPage}
+        />
 
         <main className="layout-content">
           {children}

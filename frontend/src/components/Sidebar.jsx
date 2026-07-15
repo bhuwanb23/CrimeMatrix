@@ -11,6 +11,7 @@ import {
   Settings,
   LogOut,
   Bot,
+  Network,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
@@ -19,6 +20,7 @@ const navItems = [
   { icon: Bot, label: 'AI Copilot', to: '/copilot', id: 'copilot' },
   { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
   { icon: BarChart3, label: 'Analytics', to: '/analytics', id: 'analytics' },
+  { icon: Network, label: 'Knowledge Graph', to: '/knowledge-graph', id: 'knowledge-graph' },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
   { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },

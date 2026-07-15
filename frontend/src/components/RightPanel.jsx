@@ -42,18 +42,12 @@ const activities = [
 const initialMessages = [
   {
     role: 'assistant',
-    content: 'Hello SI Karthik. I\'m your AI Investigation Copilot. I can help you search cases, analyze patterns, and find connections across districts. What would you like to know?',
+    content: 'Hello SI Karthik. I\'m your AI Investigation Copilot. How can I help you today?',
     time: '9:00 AM',
   },
 ]
 
-const quickPrompts = [
-  'Show similar cases',
-  'Analyze suspect network',
-  'Generate report',
-]
-
-export default function RightPanel() {
+export default function RightPanel({ isOpen }) {
   const [activeTab, setActiveTab] = useState('activity')
   const [messages, setMessages] = useState(initialMessages)
   const [inputValue, setInputValue] = useState('')
@@ -65,36 +59,20 @@ export default function RightPanel() {
 
   const handleSend = () => {
     if (!inputValue.trim()) return
-
     const userMsg = { role: 'user', content: inputValue.trim(), time: 'Now' }
     setMessages((prev) => [...prev, userMsg])
     setInputValue('')
-
-    // Simulate AI response
     setTimeout(() => {
-      const aiMsg = {
+      setMessages((prev) => [...prev, {
         role: 'assistant',
-        content: 'Let me analyze that for you. Based on the current database, I found 3 related cases across Bengaluru North and South divisions. The pattern shows a similar MO fingerprint. Would you like me to generate a detailed connection report?',
+        content: 'Let me analyze that for you. Based on the current database, I found relevant information. Would you like me to generate a detailed report?',
         time: 'Now',
-      }
-      setMessages((prev) => [...prev, aiMsg])
+      }])
     }, 1200)
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
-    }
-  }
-
-  const handleQuickPrompt = (prompt) => {
-    setInputValue(prompt)
-  }
-
   return (
-    <aside className="right-panel">
-      {/* Tab Bar */}
+    <aside className={`right-panel ${isOpen ? 'open' : 'closed'}`}>
       <div className="right-panel-tabs">
         <button
           className={`right-panel-tab ${activeTab === 'activity' ? 'active' : ''}`}
@@ -112,7 +90,6 @@ export default function RightPanel() {
         </button>
       </div>
 
-      {/* Activity Tab */}
       {activeTab === 'activity' && (
         <div className="right-panel-content">
           <section className="right-panel-section">
@@ -150,7 +127,6 @@ export default function RightPanel() {
         </div>
       )}
 
-      {/* Chat Tab */}
       {activeTab === 'chat' && (
         <div className="chat-panel">
           <div className="chat-messages">
@@ -159,37 +135,16 @@ export default function RightPanel() {
             ))}
             <div ref={chatEndRef} />
           </div>
-
-          {/* Quick prompts */}
-          {messages.length <= 1 && (
-            <div className="chat-quick-prompts">
-              {quickPrompts.map((prompt, i) => (
-                <button
-                  key={i}
-                  className="chat-quick-prompt"
-                  onClick={() => handleQuickPrompt(prompt)}
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          )}
-
           <div className="chat-input-area">
             <input
               type="text"
               className="chat-input"
-              placeholder="Ask about cases, suspects, patterns..."
+              placeholder="Ask about cases..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             />
-            <button
-              className="chat-send-btn"
-              onClick={handleSend}
-              disabled={!inputValue.trim()}
-              aria-label="Send message"
-            >
+            <button className="chat-send-btn" onClick={handleSend} disabled={!inputValue.trim()}>
               <Send size={16} strokeWidth={1.8} />
             </button>
           </div>

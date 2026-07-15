@@ -10,17 +10,9 @@ function App() {
     setCurrentPage(page)
   }, [])
 
-  const handleBackToDashboard = useCallback(() => {
-    setCurrentPage('dashboard')
-  }, [])
-
-  if (currentPage === 'copilot') {
-    return <CopilotPage onBack={handleBackToDashboard} />
-  }
-
   return (
     <Layout onNavigate={handleNavigate} currentPage={currentPage}>
-      <DashboardContent />
+      {currentPage === 'copilot' ? <CopilotPage /> : <DashboardContent />}
     </Layout>
   )
 }

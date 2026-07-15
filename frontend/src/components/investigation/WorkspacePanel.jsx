@@ -19,6 +19,10 @@ const tabs = [
 export default function WorkspacePanel({ investigation }) {
   const [activeTab, setActiveTab] = useState('notes')
 
+  useEffect(() => {
+    setActiveTab('notes')
+  }, [investigation?.id])
+
   if (!investigation) {
     return (
       <div className="workspace-empty">

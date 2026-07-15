@@ -23,60 +23,65 @@ A law enforcement intelligence platform — authoritative, trustworthy, precise.
 
 ## Typography
 
-| Level | Size | Weight | Line Height | Use |
-|---|---|---|---|---|
-| Display | 28px | 700 | 1.2 | Page titles |
-| Heading | 20px | 600 | 1.3 | Section headings |
-| Subheading | 14px | 600 | 1.4 | Card titles |
-| Body | 14px | 400 | 1.5 | Default text |
-| Caption | 12px | 500 | 1.4 | Timestamps |
-| Overline | 11px | 600 | 1.2 | Uppercase labels |
-
-Font: Inter (Google Fonts), fallback: system-ui
+Font: Plus Jakarta Sans (Google Fonts), fallback: system-ui
 Mono: JetBrains Mono
+
+| Level | Size | Weight | Use |
+|---|---|---|---|
+| Display | 24px | 700 | Page titles |
+| Heading | 15px | 700 | Brand, section titles |
+| Subheading | 13px | 600 | Card titles |
+| Body | 13px | 400 | Default text |
+| Caption | 12px | 500 | Timestamps |
+| Micro | 11px | 500 | Uppercase labels |
 
 ## Layout
 
-- Sidebar: 68px fixed left
-- Header: 60px fixed top
-- Right Panel: 340px fixed right (visible on >= 1280px)
-- Main Content: flex fill, padded 24px
+```
+┌─────────────────────────────────────────────────┐
+│              HEADER (56px, full width)           │
+├────────────┬───────────────────┬────────────────┤
+│ LEFT       │                   │ RIGHT PANEL    │
+│ SIDEBAR    │   MAIN CONTENT    │ (360px)        │
+│ 240px/68px │                   │ [Activity|Chat]│
+└────────────┴───────────────────┴────────────────┘
+```
+
+- Header: 56px, full width, flex row
+- Left Sidebar: 240px expanded / 68px collapsed
+- Main Content: flex-1, scrollable
+- Right Panel: 360px, always visible, tabbed (Activity + Chat)
 
 ## Components
 
-### Sidebar
-- White bg, right border
-- Logo: 40px dark rounded square
-- Nav: 48px wide items, 44px tall
-- Active: 3px amber left bar + amber icon + amber bg tint
-- Avatar: 36px circle with initials
-
 ### Header
-- 60px height, white bg, bottom border
-- Search: rounded-lg, gray bg, focus amber ring
-- Bell: badge with count, pulse animation
-- User: avatar + name + role + chevron
+- Full width, white bg, bottom border
+- Left: sidebar toggle + breadcrumb
+- Center: search bar (gray bg, amber focus ring)
+- Right: bell icon with badge + user avatar/name/role
+
+### Left Sidebar
+- Expanded (240px): icon + label text, logo + brand name
+- Collapsed (68px): icon only, tooltip on hover
+- Active: amber left bar + amber icon + light amber bg
+- Bottom: settings, logout, user avatar with name/role
 
 ### Right Panel
-- 340px, always visible on wide screens
-- Sections: Quick Stats, Activity, Notifications
-- Cards: icon + title + time, hover bg
+- 360px wide, two tabs: Activity and AI Copilot
+- Activity: quick stats grid + activity feed
+- Chat: message list + input + quick prompts
 
-### Cards
-- White bg, rounded-xl, shadow-sm
-- Hover: shadow-md, slight translateY(-1px)
-- Padding: 20px
-
-### Stat Cards
-- Icon (colored bg) + value (28px bold) + label (12px muted)
-- Grid: 4 columns on desktop, 2 on tablet
+### Chat Messages
+- Assistant: left-aligned, gray bubble, bot avatar
+- User: right-aligned, navy bubble, user avatar
+- Quick prompts appear below first message
 
 ## Animations
 
 | Element | Duration | Easing |
 |---|---|---|
-| Sidebar hover | 150ms | ease |
-| Panel slide | 300ms | cubic-bezier(0.4, 0, 0.2, 1) |
-| Card hover | 200ms | ease |
-| Search focus | 200ms | ease |
-| Badge pulse | 2s | ease infinite |
+| Sidebar width | 300ms | ease |
+| Nav active bar | 250ms | spring |
+| Stat cards entrance | 350ms | ease, staggered |
+| Chat slide-in | 350ms | ease |
+| Badge pulse | 2s | infinite |

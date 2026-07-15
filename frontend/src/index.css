@@ -2627,9 +2627,6 @@ input {
   transform: scale(1.08);
   box-shadow: 0 4px 8px rgba(15, 23, 42, 0.2);
 }
-  background: #1e293b;
-  transform: scale(1.05);
-}
 
 .chat-send-btn:disabled {
   opacity: 0.3;

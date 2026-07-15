@@ -1,141 +1,103 @@
-import { FileText, AlertTriangle, Clock, TrendingUp, ArrowUpRight, Zap, Eye, Shield } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, ClipboardList, TrendingUp, AlertTriangle, Users, BarChart3 } from 'lucide-react'
+import CaseTrendChart from './charts/CaseTrendChart'
+import CrimeTypeChart from './charts/CrimeTypeChart'
+import DistrictDonut from './charts/DistrictDonut'
+import StatusBars from './charts/StatusBars'
+import InvestmentCalendar from './charts/InvestmentCalendar'
 
 const stats = [
   {
-    icon: FileText,
-    color: '#3b82f6',
-    bg: 'rgba(59, 130, 246, 0.1)',
-    value: '1,284',
+    icon: ClipboardList,
     label: 'Total Cases',
-    trend: '+12%',
-    trendDir: 'up',
-  },
-  {
-    icon: AlertTriangle,
-    color: '#f59e0b',
-    bg: 'rgba(245, 158, 11, 0.1)',
-    value: '47',
-    label: 'Active Investigations',
-    trend: '+8%',
-    trendDir: 'up',
-  },
-  {
-    icon: Zap,
-    color: '#ef4444',
-    bg: 'rgba(239, 68, 68, 0.1)',
-    value: '23',
-    label: 'Whisper Alerts',
-    trend: '+15%',
+    value: '1,284',
+    trend: '+3.5%',
+    trendLabel: 'vs last Year',
     trendDir: 'up',
   },
   {
     icon: TrendingUp,
-    color: '#10b981',
-    bg: 'rgba(16, 185, 129, 0.1)',
-    value: '73%',
+    label: 'Investigation Rate',
+    value: '8.3%',
+    trend: '+1.2%',
+    trendLabel: 'vs last Month',
+    trendDir: 'up',
+  },
+  {
+    icon: AlertTriangle,
+    label: 'Active FIRs',
+    value: '47',
+    trend: '-1.7%',
+    trendLabel: 'vs last Week',
+    trendDir: 'down',
+  },
+  {
+    icon: Users,
+    label: 'Officers on Duty',
+    value: '156',
+    trend: '+2.5%',
+    trendLabel: 'vs last Month',
+    trendDir: 'up',
+  },
+  {
+    icon: BarChart3,
     label: 'Resolution Rate',
-    trend: '+3%',
+    value: '73%',
+    trend: '+4.1%',
+    trendLabel: 'vs last Quarter',
     trendDir: 'up',
   },
 ]
 
-const recentCases = [
-  { id: 'FIR #4521', title: 'Theft at Malleshwaram, Bengaluru', status: 'active', date: 'Today' },
-  { id: 'FIR #4519', title: 'Vehicle accident — Mysuru Road', status: 'pending', date: 'Today' },
-  { id: 'FIR #4515', title: 'Cyber fraud — Electronic City', status: 'active', date: 'Yesterday' },
-  { id: 'FIR #4512', title: 'Missing person — Koramangala', status: 'active', date: 'Yesterday' },
-  { id: 'FIR #4508', title: 'Robbery attempt — Whitefield', status: 'closed', date: 'Jul 13' },
-]
-
-const aiInsights = [
-  {
-    icon: Eye,
-    color: '#8b5cf6',
-    bg: 'rgba(139, 92, 246, 0.1)',
-    title: 'Serial Pattern Detected',
-    text: 'MO fingerprint matches 3 unsolved cases in Bengaluru North across the last 6 months.',
-    time: '2 hrs ago',
-  },
-  {
-    icon: Shield,
-    color: '#f59e0b',
-    bg: 'rgba(245, 158, 11, 0.1)',
-    title: 'High-Risk Suspect Alert',
-    text: 'Ravi Kumar linked to new FIR — recommended priority investigation.',
-    time: '4 hrs ago',
-  },
-]
-
 export default function DashboardContent() {
+  const now = new Date()
+  const lastUpdated = now.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
   return (
-    <div>
-      <div className="dashboard-welcome">
-        <h1>Good evening, SI Karthik</h1>
-        <p>Here's what's happening across your jurisdiction today.</p>
+    <div className="analytics-dashboard">
+      {/* Page Header */}
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">Crime Analytics</h1>
+        <span className="dashboard-updated">
+          Last updated: {lastUpdated}
+        </span>
       </div>
 
-      {/* Stat Cards */}
-      <div className="stats-grid">
+      {/* Row 1: 5 Stat Cards */}
+      <div className="stats-row">
         {stats.map((stat, i) => (
-          <div key={i} className="stat-card">
-            <div className="stat-card-icon" style={{ background: stat.bg, color: stat.color }}>
-              <stat.icon size={22} strokeWidth={1.8} />
+          <div key={i} className="stat-card-v2">
+            <div className="stat-v2-icon">
+              <stat.icon size={18} strokeWidth={1.8} />
             </div>
-            <div className="stat-card-info">
-              <div className="stat-card-value">{stat.value}</div>
-              <div className="stat-card-label">{stat.label}</div>
-              <div className={`stat-card-trend ${stat.trendDir}`}>
-                <ArrowUpRight size={12} />
-                {stat.trend} this month
-              </div>
+            <div className="stat-v2-label">{stat.label}</div>
+            <div className="stat-v2-value">{stat.value}</div>
+            <div className={`stat-v2-trend ${stat.trendDir}`}>
+              {stat.trendDir === 'up' ? (
+                <ArrowUpRight size={12} strokeWidth={2} />
+              ) : (
+                <ArrowDownRight size={12} strokeWidth={2} />
+              )}
+              {stat.trend} {stat.trendLabel}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Content Grid */}
-      <div className="content-grid">
-        {/* Recent Cases */}
-        <div className="content-card">
-          <div className="content-card-header">
-            <h3 className="content-card-title">Recent Cases</h3>
-            <span className="content-card-action">View all →</span>
-          </div>
-          <div className="content-card-body">
-            <div className="cases-table">
-              {recentCases.map((c, i) => (
-                <div key={i} className="cases-table-row">
-                  <span className="case-id">{c.id}</span>
-                  <span className="case-title">{c.title}</span>
-                  <span className={`case-status ${c.status}`}>{c.status}</span>
-                  <span className="case-date">{c.date}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Row 2: Chart + Category */}
+      <div className="dashboard-row-2">
+        <CaseTrendChart />
+        <CrimeTypeChart />
+      </div>
 
-        {/* AI Insights */}
-        <div className="content-card">
-          <div className="content-card-header">
-            <h3 className="content-card-title">AI Insights</h3>
-            <span className="content-card-action">View all →</span>
-          </div>
-          <div className="content-card-body">
-            {aiInsights.map((insight, i) => (
-              <div key={i} className="insight-card">
-                <div className="insight-icon" style={{ background: insight.bg, color: insight.color }}>
-                  <insight.icon size={18} strokeWidth={1.8} />
-                </div>
-                <div className="insight-content">
-                  <div className="insight-title">{insight.title}</div>
-                  <div className="insight-text">{insight.text}</div>
-                  <div className="insight-time">{insight.time}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Row 3: 3 Cards */}
+      <div className="dashboard-row-3">
+        <DistrictDonut />
+        <InvestmentCalendar />
+        <StatusBars />
       </div>
     </div>
   )

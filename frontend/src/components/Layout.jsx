@@ -5,29 +5,23 @@ import RightPanel from './RightPanel'
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [rightPanelOpen, setRightPanelOpen] = useState(false)
 
   return (
     <div className="layout">
-      <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+      <Header
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+      />
 
-      <div className={`layout-main ${sidebarOpen ? '' : 'sidebar-closed'}`}>
-        <Header
-          sidebarOpen={sidebarOpen}
-          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          rightPanelOpen={rightPanelOpen}
-          onToggleRightPanel={() => setRightPanelOpen(!rightPanelOpen)}
-        />
+      <div className="layout-body">
+        <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
         <main className="layout-content">
           {children}
         </main>
-      </div>
 
-      <RightPanel
-        isOpen={rightPanelOpen}
-        onClose={() => setRightPanelOpen(false)}
-      />
+        <RightPanel />
+      </div>
     </div>
   )
 }

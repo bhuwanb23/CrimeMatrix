@@ -4,28 +4,23 @@ import Header from './Header'
 import RightPanel from './RightPanel'
 
 export default function Layout({ children, onNavigate, currentPage }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [rightPanelOpen, setRightPanelOpen] = useState(true)
 
   return (
     <div className="layout">
       <Header
-        sidebarOpen={sidebarOpen}
-        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        rightPanelOpen={rightPanelOpen}
+        onToggleRightPanel={() => setRightPanelOpen(!rightPanelOpen)}
       />
 
       <div className="layout-body">
-        <Sidebar
-          isOpen={sidebarOpen}
-          onToggle={() => setSidebarOpen(!sidebarOpen)}
-          onNavigate={onNavigate}
-          currentPage={currentPage}
-        />
+        <Sidebar onNavigate={onNavigate} currentPage={currentPage} />
 
         <main className="layout-content">
           {children}
         </main>
 
-        <RightPanel />
+        <RightPanel isOpen={rightPanelOpen} />
       </div>
     </div>
   )

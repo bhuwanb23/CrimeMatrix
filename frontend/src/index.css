@@ -574,10 +574,6 @@ input {
 }
 
 /* Tooltip */
-.sidebar-nav-item-wrapper {
-  position: relative;
-}
-
 .sidebar-tooltip {
   position: absolute;
   left: calc(100% + 10px);

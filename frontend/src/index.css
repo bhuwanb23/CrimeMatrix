@@ -52,7 +52,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
 
   font-family: var(--font-sans);
@@ -175,7 +175,7 @@ input {
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   z-index: 40;
-  transition: width 0.3s var(--ease), transform 0.3s var(--ease);
+  transition: width 0.35s var(--ease), transform 0.35s var(--ease);
   overflow: hidden;
 }
 
@@ -191,6 +191,12 @@ input {
   width: var(--sidebar-width);
   padding: 16px 0;
   align-items: center;
+  transition: opacity 0.2s ease 0.05s;
+}
+
+.sidebar.closed .sidebar-inner {
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
 
 /* Logo */
@@ -214,7 +220,7 @@ input {
 }
 
 .sidebar-logo-mark:hover {
-  transform: scale(1.05);
+  transform: scale(1.08) rotate(5deg);
   box-shadow: var(--shadow-md);
 }
 
@@ -261,6 +267,12 @@ input {
 .sidebar-nav-item:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.sidebar-nav-item:active {
+  transform: scale(0.92);
+  transition: transform 0.08s ease;
 }
 
 .sidebar-nav-item.active {
@@ -275,9 +287,14 @@ input {
   top: 50%;
   transform: translateY(-50%);
   width: 3px;
-  height: 20px;
+  height: 0;
   background: var(--color-accent);
   border-radius: 0 3px 3px 0;
+  transition: height 0.25s var(--ease-spring);
+}
+
+.sidebar-nav-item.active::before {
+  height: 20px;
 }
 
 .sidebar-nav-badge {
@@ -315,7 +332,7 @@ input {
 
 .sidebar-avatar-circle:hover {
   transform: scale(1.08);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2), var(--shadow-md);
 }
 
 /* Tooltip */
@@ -621,26 +638,17 @@ input {
   border-left: 1px solid var(--border);
   z-index: 50;
   transform: translateX(100%);
-  transition: transform 0.3s var(--ease);
+  transition: transform 0.35s var(--ease);
   display: flex;
   flex-direction: column;
+  will-change: transform;
 }
 
 .right-panel.open {
   transform: translateX(0);
 }
 
-/* Always visible on large screens */
-@media (min-width: 1280px) {
-  .right-panel {
-    transform: translateX(0);
-    position: fixed;
-  }
-
-  .layout-main {
-    margin-right: var(--right-panel-width);
-  }
-}
+/* Right panel collapsible on all screen sizes */
 
 .right-panel-header {
   display: flex;
@@ -1158,4 +1166,156 @@ input {
   .layout-content {
     padding: calc(var(--header-height) + 16px) 16px 16px 16px;
   }
+}
+
+/* ============================================
+   MICRO-ANIMATIONS
+   ============================================ */
+
+/* Entrance animation for content */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-welcome {
+  animation: fadeSlideUp 0.4s var(--ease) both;
+}
+
+.stats-grid .stat-card {
+  animation: fadeSlideUp 0.4s var(--ease) both;
+}
+
+.stats-grid .stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stats-grid .stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stats-grid .stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stats-grid .stat-card:nth-child(4) { animation-delay: 0.2s; }
+
+.content-grid .content-card {
+  animation: fadeSlideUp 0.4s var(--ease) both;
+}
+
+.content-grid .content-card:nth-child(1) { animation-delay: 0.25s; }
+.content-grid .content-card:nth-child(2) { animation-delay: 0.3s; }
+
+/* Right panel card entrance */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.right-panel.open .quick-stat-card,
+.right-panel.open .activity-card,
+.right-panel.open .notification-card {
+  animation: slideInRight 0.3s var(--ease) both;
+}
+
+.right-panel.open .quick-stat-card:nth-child(1),
+.right-panel.open .activity-card:nth-child(1),
+.right-panel.open .notification-card:nth-child(1) { animation-delay: 0.05s; }
+
+.right-panel.open .quick-stat-card:nth-child(2),
+.right-panel.open .activity-card:nth-child(2),
+.right-panel.open .notification-card:nth-child(2) { animation-delay: 0.1s; }
+
+.right-panel.open .quick-stat-card:nth-child(3),
+.right-panel.open .activity-card:nth-child(3),
+.right-panel.open .notification-card:nth-child(3) { animation-delay: 0.15s; }
+
+.right-panel.open .quick-stat-card:nth-child(4),
+.right-panel.open .activity-card:nth-child(4),
+.right-panel.open .notification-card:nth-child(4) { animation-delay: 0.2s; }
+
+/* Stat card hover lift */
+.stat-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.stat-card:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+/* Content card hover */
+.content-card {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.content-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Quick stat card hover */
+.quick-stat-card {
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.quick-stat-card:hover {
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+}
+
+/* Activity card hover lift */
+.activity-card:hover {
+  transform: translateX(2px);
+}
+
+/* Notification card hover */
+.notification-card:hover {
+  transform: translateX(2px);
+}
+
+/* Search expand on focus */
+.header-search:focus-within {
+  transform: scale(1.01);
+}
+
+/* Sidebar nav item stagger on mount */
+@keyframes navItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar-nav .sidebar-nav-item {
+  animation: navItemIn 0.3s var(--ease) both;
+}
+
+.sidebar-nav .sidebar-nav-item:nth-child(1) { animation-delay: 0.05s; }
+.sidebar-nav .sidebar-nav-item:nth-child(2) { animation-delay: 0.08s; }
+.sidebar-nav .sidebar-nav-item:nth-child(3) { animation-delay: 0.11s; }
+.sidebar-nav .sidebar-nav-item:nth-child(4) { animation-delay: 0.14s; }
+.sidebar-nav .sidebar-nav-item:nth-child(5) { animation-delay: 0.17s; }
+.sidebar-nav .sidebar-nav-item:nth-child(6) { animation-delay: 0.2s; }
+
+/* Smooth scroll */
+.layout-content {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible for accessibility */
+.sidebar-nav-item:focus-visible,
+.header-toggle-btn:focus-visible,
+.header-icon-btn:focus-visible,
+.header-user:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

@@ -379,7 +379,7 @@ input {
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   flex-shrink: 0;
-  overflow: visible;
+  overflow: hidden;
   z-index: 30;
   position: relative;
 }
@@ -576,8 +576,8 @@ input {
 
 /* Tooltip */
 .sidebar-tooltip {
-  position: absolute;
-  left: calc(100% + 8px);
+  position: fixed;
+  left: calc(var(--sidebar-collapsed) + 8px);
   top: 50%;
   transform: translateY(-50%) translateX(-4px);
   background: var(--color-primary);
@@ -590,7 +590,7 @@ input {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s ease, transform 0.15s ease;
-  z-index: 50;
+  z-index: 100;
   box-shadow: var(--shadow-md);
 }
 

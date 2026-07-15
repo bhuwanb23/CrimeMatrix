@@ -19,14 +19,10 @@ import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', to: '/', id: 'dashboard' },
-  { icon: Bot, label: 'AI Copilot', to: '/copilot', id: 'copilot' },
   { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
-  { icon: BarChart3, label: 'Analytics', to: '/analytics', id: 'analytics' },
-  { icon: Network, label: 'Knowledge Graph', to: '/knowledge-graph', id: 'knowledge-graph' },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
   { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },
-  { icon: Bell, label: 'Alerts', to: '/alerts', id: 'alerts', badge: true },
   { icon: BookOpen, label: 'Reports', to: '/reports', id: 'reports' },
 ]
 

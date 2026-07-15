@@ -1934,71 +1934,98 @@ input {
 /* ============================================
    COPILOT PAGE — Inside layout
    ============================================ */
-.copilot-layout {
+.copilot-page {
   display: flex;
-  flex: 1;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
 }
 
-.copilot-history-wrapper {
-  display: flex;
-  flex-shrink: 0;
-  transition: width 0.3s var(--ease);
+/* Overlay backdrop */
+.copilot-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+  animation: fadeIn 0.2s ease;
 }
 
-.copilot-history-wrapper.open {
-  width: 240px;
-}
-
-.copilot-history-wrapper.closed {
-  width: 0;
-}
-
-.copilot-history-wrapper.closed .chat-history {
-  display: none;
-}
-
-.copilot-context-wrapper {
-  display: flex;
-  flex-shrink: 0;
-  transition: width 0.3s var(--ease);
-}
-
-.copilot-context-wrapper.open {
+/* Slide panels */
+.copilot-slide-panel {
+  position: fixed;
+  top: var(--header-height);
+  bottom: 0;
   width: 320px;
+  z-index: 60;
+  background: var(--bg-sidebar);
+  box-shadow: var(--shadow-xl);
+  animation: slideIn 0.25s var(--ease);
 }
 
-.copilot-context-wrapper.closed {
-  width: 0;
+.copilot-slide-panel.left {
+  left: var(--sidebar-collapsed);
 }
 
-.copilot-context-wrapper.closed .context-panel {
-  display: none;
+.copilot-slide-panel.right {
+  right: 0;
 }
 
-.copilot-panel-toggle {
-  width: 32px;
-  min-width: 32px;
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.copilot-slide-panel.right {
+  animation-name: slideInRight;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.slide-panel-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.slide-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.slide-panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.slide-panel-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
-  cursor: pointer;
   transition: all 0.15s ease;
-  flex-shrink: 0;
 }
 
-.copilot-panel-toggle:hover {
+.slide-panel-close:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
 }
 
-.copilot-panel-toggle.right {
-  border-right: none;
-  border-left: 1px solid var(--border);
+.slide-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
 }
 
 /* ============================================

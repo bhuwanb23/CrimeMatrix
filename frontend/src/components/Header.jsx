@@ -1,11 +1,6 @@
 import { Search, Bell, PanelLeftClose, PanelLeftOpen, ChevronDown } from 'lucide-react'
 
-export default function Header({
-  sidebarOpen,
-  onToggleSidebar,
-  rightPanelOpen,
-  onToggleRightPanel,
-}) {
+export default function Header({ sidebarOpen, onToggleSidebar }) {
   return (
     <header className="header">
       <div className="header-left">
@@ -40,11 +35,7 @@ export default function Header({
       </div>
 
       <div className="header-right">
-        <button
-          className={`header-icon-btn ${rightPanelOpen ? 'active' : ''}`}
-          onClick={onToggleRightPanel}
-          aria-label="Toggle notifications panel"
-        >
+        <button className="header-icon-btn" aria-label="Notifications">
           <Bell size={18} strokeWidth={1.8} />
           <span className="header-badge">3</span>
         </button>

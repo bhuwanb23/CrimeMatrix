@@ -27,7 +27,7 @@ const bottomItems = [
   { icon: LogOut, label: 'Logout', id: 'logout' },
 ]
 
-export default function Sidebar({ isOpen, onNavigate, currentPage }) {
+export default function Sidebar({ onNavigate, currentPage }) {
   const [activeItem, setActiveItem] = useState('dashboard')
   const [hoveredItem, setHoveredItem] = useState(null)
 
@@ -39,14 +39,13 @@ export default function Sidebar({ isOpen, onNavigate, currentPage }) {
   }
 
   return (
-    <aside className={`sidebar ${isOpen ? 'expanded' : 'collapsed'}`}>
+    <aside className="sidebar collapsed">
       <div className="sidebar-inner">
         {/* Brand Logo */}
         <div className="sidebar-logo">
           <div className="sidebar-logo-mark">
             <LogoIcon size={22} />
           </div>
-          {isOpen && <span className="sidebar-logo-text">CrimeMatrix</span>}
         </div>
 
         {/* Navigation Items */}
@@ -64,15 +63,12 @@ export default function Sidebar({ isOpen, onNavigate, currentPage }) {
                 aria-label={item.label}
               >
                 <item.icon size={18} strokeWidth={1.8} />
-                {isOpen && <span className="sidebar-nav-label">{item.label}</span>}
                 {item.badge && <span className="sidebar-nav-badge" />}
               </button>
 
-              {!isOpen && (
-                <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
-                  {item.label}
-                </span>
-              )}
+              <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
+                {item.label}
+              </span>
             </div>
           ))}
         </nav>
@@ -96,25 +92,16 @@ export default function Sidebar({ isOpen, onNavigate, currentPage }) {
                 aria-label={item.label}
               >
                 <item.icon size={18} strokeWidth={1.8} />
-                {isOpen && <span className="sidebar-nav-label">{item.label}</span>}
               </button>
 
-              {!isOpen && (
-                <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
-                  {item.label}
-                </span>
-              )}
+              <span className={`sidebar-tooltip ${hoveredItem === item.id ? 'visible' : ''}`}>
+                {item.label}
+              </span>
             </div>
           ))}
 
           <div className="sidebar-avatar">
             <div className="sidebar-avatar-circle">SK</div>
-            {isOpen && (
-              <div className="sidebar-avatar-info">
-                <span className="sidebar-avatar-name">SI Karthik</span>
-                <span className="sidebar-avatar-role">Investigation Officer</span>
-              </div>
-            )}
           </div>
         </div>
       </div>

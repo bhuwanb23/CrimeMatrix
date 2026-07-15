@@ -1,4 +1,4 @@
-import { AlertTriangle, Clock, CheckCircle2, Bell } from 'lucide-react'
+import { AlertTriangle, Clock, CheckCircle2, Activity } from 'lucide-react'
 
 export default function AlertStats({ alerts }) {
   const newCount = alerts.filter((a) => a.status === 'new').length
@@ -9,14 +9,11 @@ export default function AlertStats({ alerts }) {
     <div className="alert-stats">
       <div className="alert-stat-card">
         <div className="alert-stat-icon-wrap" style={{ background: 'linear-gradient(135deg, #fef3c7, #fde68a)' }}>
-          <Bell size={20} style={{ color: '#d97706' }} />
+          <AlertTriangle size={20} style={{ color: '#d97706' }} />
         </div>
         <div className="alert-stat-content">
           <span className="alert-stat-value">{newCount}</span>
           <span className="alert-stat-label">New Alerts</span>
-        </div>
-        <div className="alert-stat-trend up">
-          <span>●</span> Live
         </div>
       </div>
 
@@ -26,10 +23,7 @@ export default function AlertStats({ alerts }) {
         </div>
         <div className="alert-stat-content">
           <span className="alert-stat-value">{pendingCount}</span>
-          <span className="alert-stat-label">Pending Review</span>
-        </div>
-        <div className="alert-stat-trend">
-          <span>●</span> Awaiting action
+          <span className="alert-stat-label">Pending</span>
         </div>
       </div>
 
@@ -41,8 +35,15 @@ export default function AlertStats({ alerts }) {
           <span className="alert-stat-value">{resolvedCount}</span>
           <span className="alert-stat-label">Resolved</span>
         </div>
-        <div className="alert-stat-trend">
-          <span>●</span> Completed
+      </div>
+
+      <div className="alert-stat-card">
+        <div className="alert-stat-icon-wrap" style={{ background: 'linear-gradient(135deg, #dbeafe, #bfdbfe)' }}>
+          <Activity size={20} style={{ color: '#2563eb' }} />
+        </div>
+        <div className="alert-stat-content">
+          <span className="alert-stat-value">{alerts.length}</span>
+          <span className="alert-stat-label">Total Alerts</span>
         </div>
       </div>
     </div>

@@ -4903,3 +4903,359 @@ input {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================
+   ANIMATIONS — Investigation Workspace
+   ============================================ */
+
+/* Tab content entrance */
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.workspace-content > * {
+  animation: tabFadeIn 0.25s var(--ease) both;
+}
+
+/* Case list item selection */
+@keyframes caseSelect {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+.case-list-item.selected {
+  animation: caseSelect 0.2s ease;
+}
+
+/* Progress bar fill animation */
+@keyframes progressFill {
+  from { width: 0; }
+}
+
+.progress-fill {
+  animation: progressFill 0.6s var(--ease) both;
+}
+
+/* Evidence card stagger */
+@keyframes evidenceIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.evidence-card {
+  animation: evidenceIn 0.3s var(--ease) both;
+}
+
+.evidence-card:nth-child(1) { animation-delay: 0.05s; }
+.evidence-card:nth-child(2) { animation-delay: 0.1s; }
+.evidence-card:nth-child(3) { animation-delay: 0.15s; }
+.evidence-card:nth-child(4) { animation-delay: 0.2s; }
+
+/* Evidence card hover */
+.evidence-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.evidence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Timeline dot pulse */
+@keyframes timelinePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.timeline-visual-dot {
+  animation: timelinePulse 2s ease-in-out infinite;
+}
+
+.timeline-visual-item:first-child .timeline-visual-dot {
+  animation-delay: 0s;
+}
+
+.timeline-visual-item:nth-child(2) .timeline-visual-dot {
+  animation-delay: 0.3s;
+}
+
+.timeline-visual-item:nth-child(3) .timeline-visual-dot {
+  animation-delay: 0.6s;
+}
+
+/* Timeline line draw */
+@keyframes lineDraw {
+  from { height: 0; }
+  to { height: 100%; }
+}
+
+.timeline-visual-line {
+  animation: lineDraw 0.4s var(--ease) both;
+}
+
+/* Timeline item entrance */
+@keyframes timelineItemIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.timeline-visual-item {
+  animation: timelineItemIn 0.3s var(--ease) both;
+}
+
+.timeline-visual-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-visual-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-visual-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-visual-item:nth-child(4) { animation-delay: 0.4s; }
+.timeline-visual-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Reasoning step entrance */
+@keyframes reasoningIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.reasoning-step {
+  animation: reasoningIn 0.3s var(--ease) both;
+}
+
+.reasoning-step:nth-child(1) { animation-delay: 0.1s; }
+.reasoning-step:nth-child(2) { animation-delay: 0.2s; }
+.reasoning-step:nth-child(3) { animation-delay: 0.3s; }
+.reasoning-step:nth-child(4) { animation-delay: 0.4s; }
+.reasoning-step:nth-child(5) { animation-delay: 0.5s; }
+
+/* Confidence bar fill */
+@keyframes confidenceFill {
+  from { width: 0; }
+}
+
+.confidence-fill {
+  animation: confidenceFill 0.8s var(--ease) both;
+}
+
+.confidence-fill { background: var(--color-success); }
+
+/* Related card entrance */
+@keyframes relatedIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.related-card {
+  animation: relatedIn 0.25s var(--ease) both;
+}
+
+.related-card:nth-child(1) { animation-delay: 0.05s; }
+.related-card:nth-child(2) { animation-delay: 0.1s; }
+.related-card:nth-child(3) { animation-delay: 0.15s; }
+
+/* Similarity bar fill */
+@keyframes similarityFill {
+  from { width: 0; }
+}
+
+.similarity-fill {
+  animation: similarityFill 0.6s var(--ease) both;
+}
+
+/* AI card entrance */
+@keyframes aiCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-insights-card {
+  animation: aiCardIn 0.3s var(--ease) 0.1s both;
+}
+
+.ai-suggestions-card {
+  animation: aiCardIn 0.3s var(--ease) 0.2s both;
+}
+
+.ai-pattern-card {
+  animation: aiCardIn 0.3s var(--ease) 0.3s both;
+}
+
+/* AI suggestion item entrance */
+@keyframes suggestionIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ai-suggestion-item {
+  animation: suggestionIn 0.25s var(--ease) both;
+}
+
+.ai-suggestion-item:nth-child(1) { animation-delay: 0.3s; }
+.ai-suggestion-item:nth-child(2) { animation-delay: 0.4s; }
+.ai-suggestion-item:nth-child(3) { animation-delay: 0.5s; }
+
+/* Note card entrance */
+@keyframes noteSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-card {
+  animation: noteSlideIn 0.25s var(--ease) both;
+}
+
+/* Notes input focus */
+.notes-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notes-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+/* Button hover effects */
+.evidence-add-btn,
+.timeline-add-btn,
+.related-view-btn {
+  transition: all 0.2s ease;
+}
+
+.evidence-add-btn:hover,
+.timeline-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Workspace tab switch */
+.workspace-tab {
+  transition: all 0.2s ease;
+}
+
+.workspace-tab:active {
+  transform: scale(0.95);
+}
+
+/* AI suggestions bar entrance */
+@keyframes aiBarIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.workspace-ai-bar {
+  animation: aiBarIn 0.3s var(--ease) both;
+}
+
+/* Case list search focus */
+.case-list-search input:focus {
+  outline: none;
+}
+
+/* Tools section hover */
+.tools-report-btn,
+.tools-action-btn {
+  transition: all 0.15s ease;
+}
+
+.tools-report-btn:hover,
+.tools-action-btn:hover {
+  transform: translateX(4px);
+}
+
+/* Stats number count-up effect */
+@keyframes statCount {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tools-stat {
+  animation: statCount 0.3s var(--ease) both;
+}
+
+.tools-stat:nth-child(1) { animation-delay: 0.1s; }
+.tools-stat:nth-child(2) { animation-delay: 0.15s; }
+.tools-stat:nth-child(3) { animation-delay: 0.2s; }
+.tools-stat:nth-child(4) { animation-delay: 0.25s; }
+
+/* Smooth scrollbar */
+.workspace-content::-webkit-scrollbar,
+.case-list-items::-webkit-scrollbar,
+.tools-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.workspace-content::-webkit-scrollbar-track,
+.case-list-items::-webkit-scrollbar-track,
+.tools-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.workspace-content::-webkit-scrollbar-thumb,
+.case-list-items::-webkit-scrollbar-thumb,
+.tools-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* Bookmark animation */
+@keyframes bookmarkPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.bookmark-active svg {
+  animation: bookmarkPulse 0.3s ease;
+}

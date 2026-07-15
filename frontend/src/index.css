@@ -2026,53 +2026,14 @@ input {
 }
 
 /* ============================================
-   CHAT HISTORY — Left sidebar
+   CHAT HISTORY — Inside slide panel
    ============================================ */
-.chat-history {
-  width: 240px;
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-.chat-history-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 16px 12px;
-}
-
-.chat-history-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.chat-history-search {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  transition: all 0.15s ease;
-}
-
-.chat-history-search:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-
 .chat-history-new {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 0 12px 16px;
+  margin: 0 16px 16px;
   padding: 10px 16px;
   background: var(--color-primary);
   color: white;

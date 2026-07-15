@@ -15,13 +15,13 @@ import {
 import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', to: '/' },
-  { icon: Bot, label: 'AI Copilot', to: '/copilot' },
-  { icon: FileText, label: 'FIR & Cases', to: '/', badge: true },
-  { icon: BarChart3, label: 'Analytics', to: '/' },
-  { icon: Building2, label: 'Stations', to: '/' },
-  { icon: Users, label: 'Suspects', to: '/' },
-  { icon: ClipboardList, label: 'Investigations', to: '/' },
+  { icon: LayoutDashboard, label: 'Dashboard', to: '/', id: 'dashboard' },
+  { icon: Bot, label: 'AI Copilot', to: '/copilot', id: 'copilot' },
+  { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
+  { icon: BarChart3, label: 'Analytics', to: '/analytics', id: 'analytics' },
+  { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
+  { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
+  { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },
 ]
 
 const bottomItems = [

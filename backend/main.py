@@ -17,7 +17,14 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
     logger = get_logger()
     logger.info("app_startup", env=settings.app_env)
+
+    # Initialize database
+    from app.db.session import init_db
+    await init_db()
+    logger.info("database_initialized")
+
     yield
+
     logger.info("app_shutdown")
 
 

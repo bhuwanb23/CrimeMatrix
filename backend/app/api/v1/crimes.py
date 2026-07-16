@@ -14,11 +14,22 @@ def get_service(db: AsyncSession):
     return CrimeService(CrimeRepository(db))
 
 
-@router.get("/", response_model=PaginatedResponse)
+@router.get("/")
 async def list_crimes(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
-    return success_response(data=(await svc.get_paginated(params)).model_dump())
+    result = await svc.get_paginated(params)
+    return {
+        "success": True,
+        "data": {
+            "items": [{"id": c.id, "title": c.title, "crime_type": c.crime_type, "district": c.district, "status": c.status, "priority": c.priority} for c in result.items],
+            "total": result.total,
+            "page": result.page,
+            "page_size": result.page_size,
+            "total_pages": result.total_pages,
+        },
+        "message": "Success",
+    }
 
 
 @router.get("/{crime_id}")

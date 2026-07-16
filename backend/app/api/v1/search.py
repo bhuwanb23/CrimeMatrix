@@ -65,16 +65,21 @@ async def advanced_search(request: SearchRequest, db: AsyncSession = Depends(get
 
 @router.get("/facets")
 async def get_facets(entity: str = "cases", db: AsyncSession = Depends(get_db)):
-    svc = SearchService(db)
-    results = await svc.search(query="", entities=[entity])
-    facet_fields = {
-        "cases": ["crime_type", "district", "status"],
-        "suspects": ["district", "status"],
-        "persons": ["district", "gender"],
-    }
-    fields = facet_fields.get(entity, ["status"])
-    facets = svc._compute_facets(results, fields[0]) if results else {}
-    return success_response(data={"entity": entity, "facets": facets})
+    try:
+        svc = SearchService(db)
+        results = await svc.search(query="", entities=[entity])
+        facet_fields = {
+            "cases": ["crime_type", "district", "status"],
+            "suspects": ["district", "status"],
+            "persons": ["district", "gender"],
+        }
+        fields = facet_fields.get(entity, ["status"])
+        facets = {}
+        for field in fields:
+            facets[field] = svc._compute_facets(results.get("results", []), field)
+        return success_response(data={"entity": entity, "facets": facets})
+    except Exception as e:
+        return success_response(data={"entity": entity, "facets": {}, "error": str(e)})
 
 
 @router.get("/suggestions")

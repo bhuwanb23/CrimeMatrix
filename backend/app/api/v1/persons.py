@@ -14,11 +14,12 @@ def get_service(db: AsyncSession):
     return PersonService(PersonRepository(db))
 
 
-@router.get("/", response_model=PaginatedResponse)
+@router.get("/")
 async def list_persons(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
-    return success_response(data=(await svc.get_paginated(params)).model_dump())
+    result = await svc.get_paginated(params)
+    return {"success": True, "data": {"items": [{"id": p.id, "first_name": p.first_name, "last_name": p.last_name, "district": p.district} for p in result.items], "total": result.total, "page": result.page, "page_size": result.page_size, "total_pages": result.total_pages}, "message": "Success"}
 
 
 @router.get("/{person_id}")

@@ -1,7 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.models.crime import Crime
-from app.models.person import Person
 import structlog
 
 logger = structlog.get_logger()

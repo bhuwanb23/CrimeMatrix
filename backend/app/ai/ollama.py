@@ -16,7 +16,7 @@ class OllamaProvider(AIProvider):
                 response = await client.post(
                     f"{self.base_url}/api/chat",
                     json={
-                        "model": "llama3.2",
+                        "model": "llama3.2:1b",
                         "messages": [{"role": "user", "content": message}],
                         "stream": False,
                     },
@@ -35,7 +35,7 @@ class OllamaProvider(AIProvider):
                     "POST",
                     f"{self.base_url}/api/chat",
                     json={
-                        "model": "llama3.2",
+                        "model": "llama3.2:1b",
                         "messages": [{"role": "user", "content": message}],
                         "stream": True,
                     },

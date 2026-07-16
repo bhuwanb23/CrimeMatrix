@@ -2,7 +2,8 @@ from fastapi import APIRouter
 from app.api.v1 import (
     health, ai, status, config, metadata, version, statistics, uploads,
     crimes, persons, criminals, victims, witnesses, officers, stations,
-    districts, vehicles, phones, locations, crimetypes
+    districts, vehicles, phones, locations, crimetypes,
+    notes, bookmarks, timeline_events, attachments, case_links, case_status
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -30,3 +31,11 @@ router.include_router(vehicles.router, prefix="/vehicles", tags=["Vehicles"])
 router.include_router(phones.router, prefix="/phones", tags=["Phones"])
 router.include_router(locations.router, prefix="/locations", tags=["Locations"])
 router.include_router(crimetypes.router, prefix="/crime-types", tags=["Crime Types"])
+
+# Investigation Layer APIs
+router.include_router(notes.router, prefix="/notes", tags=["Notes"])
+router.include_router(bookmarks.router, prefix="/bookmarks", tags=["Bookmarks"])
+router.include_router(timeline_events.router, prefix="/timeline", tags=["Timeline"])
+router.include_router(attachments.router, prefix="/attachments", tags=["Attachments"])
+router.include_router(case_links.router, prefix="/case-links", tags=["Case Links"])
+router.include_router(case_status.router, prefix="/case-status", tags=["Case Status"])

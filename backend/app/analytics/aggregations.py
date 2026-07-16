@@ -45,14 +45,7 @@ class AggregationEngine:
             return {"error": f"Field '{group_by}' not found on {entity}"}
 
         column = getattr(model, group_by)
-
-        if metric == "count":
-            query = select(column, func.count(model.id)).group_by(column)
-        elif metric == "sum" and hasattr(model, group_by):
-            query = select(column, func.count(model.id)).group_by(column)
-        else:
-            query = select(column, func.count(model.id)).group_by(column)
-
+        query = select(column, func.count(model.id)).group_by(column)
         result = await self.db.execute(query)
         rows = result.all()
 

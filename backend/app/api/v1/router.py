@@ -49,3 +49,6 @@ router.include_router(graph_api.router, prefix="/graph", tags=["Graph"])
 
 # Analytics APIs
 router.include_router(analytics_api.router, prefix="/analytics", tags=["Analytics"])
+
+# Reports APIs
+router.include_router(reports_api.router, prefix="/reports", tags=["Reports"])

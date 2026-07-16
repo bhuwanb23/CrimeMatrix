@@ -4,7 +4,7 @@ from app.api.v1 import (
     crimes, persons, criminals, victims, witnesses, officers, stations,
     districts, vehicles, phones, locations, crimetypes,
     notes, bookmarks, timeline_events, attachments, case_links, case_status,
-    search
+    search, graph_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -43,3 +43,6 @@ router.include_router(timeline_events.router, prefix="/timeline", tags=["Timelin
 router.include_router(attachments.router, prefix="/attachments", tags=["Attachments"])
 router.include_router(case_links.router, prefix="/case-links", tags=["Case Links"])
 router.include_router(case_status.router, prefix="/case-status", tags=["Case Status"])
+
+# Graph APIs
+router.include_router(graph_api.router, prefix="/graph", tags=["Graph"])

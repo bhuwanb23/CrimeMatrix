@@ -3,7 +3,8 @@ from app.api.v1 import (
     health, ai, status, config, metadata, version, statistics, uploads,
     crimes, persons, criminals, victims, witnesses, officers, stations,
     districts, vehicles, phones, locations, crimetypes,
-    notes, bookmarks, timeline_events, attachments, case_links, case_status
+    notes, bookmarks, timeline_events, attachments, case_links, case_status,
+    search
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -17,6 +18,9 @@ router.include_router(version.router, tags=["Version"])
 router.include_router(statistics.router, tags=["Statistics"])
 router.include_router(uploads.router, tags=["Uploads"])
 router.include_router(ai.router, prefix="/ai", tags=["AI"])
+
+# Search APIs
+router.include_router(search.router, prefix="/search", tags=["Search"])
 
 # Crime Data APIs
 router.include_router(crimes.router, prefix="/crimes", tags=["Crimes"])

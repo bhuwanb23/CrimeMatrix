@@ -12,6 +12,7 @@ import AnalyticsPage from './components/AnalyticsPage'
 import MapPage from './components/MapPage'
 import AlertsPage from './components/AlertsPage'
 import ReportsPage from './components/ReportsPage'
+import SettingsPage from './components/SettingsPage'
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/investigations" element={<InvestigationPage />} />
           <Route path="/alerts" element={<AlertsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

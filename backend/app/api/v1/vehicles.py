@@ -14,11 +14,11 @@ def get_service(db: AsyncSession):
     return VehicleService(VehicleRepository(db))
 
 
-@router.get("/", response_model=PaginatedResponse)
+@router.get("/", )
 async def list_vehicles(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
-    return success_response(data=(await svc.get_paginated(params)).model_dump())
+    result = await svc.get_paginated(params); return {"success": True, "data": {"items": [{"id": i.id, "title": getattr(i, "title", getattr(i, "name", "")), "status": getattr(i, "status", "")} for i in result.items], "total": result.total, "page": result.page, "page_size": result.page_size, "total_pages": result.total_pages}, "message": "Success"}
 
 
 @router.get("/{vehicle_id}")
@@ -51,3 +51,4 @@ async def get_by_registration(reg: str, db: AsyncSession = Depends(get_db)):
     if not vehicle:
         return success_response(message="Vehicle not found")
     return success_response(data=VehicleResponse.model_validate(vehicle).model_dump())
+

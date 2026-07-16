@@ -14,11 +14,11 @@ def get_service(db: AsyncSession):
     return OfficerService(OfficerRepository(db))
 
 
-@router.get("/", response_model=PaginatedResponse)
+@router.get("/", )
 async def list_officers(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
-    return success_response(data=(await svc.get_paginated(params)).model_dump())
+    result = await svc.get_paginated(params); return {"success": True, "data": {"items": [{"id": i.id, "title": getattr(i, "title", getattr(i, "name", "")), "status": getattr(i, "status", "")} for i in result.items], "total": result.total, "page": result.page, "page_size": result.page_size, "total_pages": result.total_pages}, "message": "Success"}
 
 
 @router.get("/{officer_id}")
@@ -49,3 +49,4 @@ async def officers_by_station(station_id: int, db: AsyncSession = Depends(get_db
     svc = get_service(db)
     results = await svc.get_by_station(station_id)
     return success_response(data=[OfficerResponse.model_validate(r).model_dump() for r in results])
+

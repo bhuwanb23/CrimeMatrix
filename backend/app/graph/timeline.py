@@ -12,15 +12,13 @@ class TimelineAnalyzer:
     def get_activity_timeline(self) -> List[Dict]:
         timeline = []
         for node_id, data in self.graph.graph.nodes(data=True):
-            created = data.get("created_at") or data.get("date", "")
-            if created:
-                timeline.append({
-                    "node_id": node_id,
-                    "type": data.get("type", "unknown"),
-                    "name": data.get("name", node_id),
-                    "date": str(created),
-                })
-        timeline.sort(key=lambda x: x["date"], reverse=True)
+            timeline.append({
+                "node_id": node_id,
+                "type": data.get("type", "unknown"),
+                "name": data.get("name", node_id),
+                "connections": self.graph.graph.degree(node_id),
+            })
+        timeline.sort(key=lambda x: x["connections"], reverse=True)
         return timeline
 
     def get_node_timeline(self, node_id: str) -> List[Dict]:

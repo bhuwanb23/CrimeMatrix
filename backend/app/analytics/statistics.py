@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, text
+from sqlalchemy import select, func
 from app.models.crime import Crime
 from app.models.person import Person
 from app.models.officer import Officer
@@ -27,6 +27,13 @@ class StatisticsEngine:
         victim_count = (await self.db.execute(select(func.count(Victim.id)))).scalar() or 0
         witness_count = (await self.db.execute(select(func.count(Witness.id)))).scalar() or 0
 
+        open_count = (await self.db.execute(
+            select(func.count(Crime.id)).where(Crime.status == "open")
+        )).scalar() or 0
+        closed_count = (await self.db.execute(
+            select(func.count(Crime.id)).where(Crime.status == "closed")
+        )).scalar() or 0
+
         return {
             "total_crimes": crime_count,
             "total_persons": person_count,
@@ -36,9 +43,10 @@ class StatisticsEngine:
             "total_criminals": criminal_count,
             "total_victims": victim_count,
             "total_witnesses": witness_count,
+            "open_crimes": open_count,
+            "closed_crimes": closed_count,
+            "resolution_rate": round((closed_count / crime_count * 100), 1) if crime_count else 0,
         }
 
     async def get_summary(self) -> dict:
-        overview = await self.get_overview()
-        overview["active_investigations"] = overview["total_crimes"]
-        return overview
+        return await self.get_overview()

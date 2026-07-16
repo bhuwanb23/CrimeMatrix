@@ -27,7 +27,7 @@ const navItems = [
 ]
 
 const bottomItems = [
-  { icon: Settings, label: 'Settings', id: 'settings' },
+  { icon: Settings, label: 'Settings', id: 'settings', to: '/settings' },
   { icon: LogOut, label: 'Logout', id: 'logout' },
 ]
 
@@ -91,9 +91,20 @@ export default function Sidebar() {
                 onMouseEnter={(e) => handleMouseEnter(e, item.label)}
                 onMouseLeave={handleMouseLeave}
               >
-                <button className="sidebar-nav-item" aria-label={item.label}>
-                  <item.icon size={18} strokeWidth={1.8} />
-                </button>
+                {item.to ? (
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `sidebar-nav-item ${isActive ? 'active' : ''}`
+                    }
+                  >
+                    <item.icon size={18} strokeWidth={1.8} />
+                  </NavLink>
+                ) : (
+                  <button className="sidebar-nav-item" aria-label={item.label}>
+                    <item.icon size={18} strokeWidth={1.8} />
+                  </button>
+                )}
               </div>
             ))}
 

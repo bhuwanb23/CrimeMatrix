@@ -10,6 +10,7 @@ from app.graph.timeline import TimelineAnalyzer
 from app.core.response import success_response
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
+import networkx as nx
 
 router = APIRouter()
 

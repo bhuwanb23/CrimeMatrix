@@ -4,7 +4,7 @@ from app.api.v1 import (
     crimes, persons, criminals, victims, witnesses, officers, stations,
     districts, vehicles, phones, locations, crimetypes,
     notes, bookmarks, timeline_events, attachments, case_links, case_status,
-    search, graph_api
+    search, graph_api, analytics_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -46,3 +46,6 @@ router.include_router(case_status.router, prefix="/case-status", tags=["Case Sta
 
 # Graph APIs
 router.include_router(graph_api.router, prefix="/graph", tags=["Graph"])
+
+# Analytics APIs
+router.include_router(analytics_api.router, prefix="/analytics", tags=["Analytics"])

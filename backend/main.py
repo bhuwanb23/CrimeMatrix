@@ -9,6 +9,8 @@ from app.core.exceptions import (
     general_error_handler,
 )
 from app.core.logging import setup_logging, get_logger
+from app.audit.middleware import AuditMiddleware
+from app.audit.stores import request_logs, api_logs, metrics
 from config import get_settings
 
 
@@ -47,6 +49,15 @@ def create_app() -> FastAPI:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+    )
+
+    app.add_middleware(
+        AuditMiddleware,
+        audit_stores={
+            "request_logs": request_logs,
+            "api_logs": api_logs,
+            "metrics": metrics,
+        },
     )
 
     app.add_exception_handler(AppError, app_error_handler)

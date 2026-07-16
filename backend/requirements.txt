@@ -21,7 +21,7 @@ alembic==1.13.0
 networkx==3.3
 
 # Vector
-faiss-cpu==1.8.0
+faiss-cpu
 numpy
 
 # Cache

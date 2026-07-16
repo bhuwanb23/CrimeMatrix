@@ -19,16 +19,21 @@ class DistrictAnalytics:
 
         for district in districts.scalars().all():
             crime_count = (await self.db.execute(
-                select(func.count(Crime.id)).where(Crime.district == district.id)
+                select(func.count(Crime.id)).where(Crime.district_id == district.id)
             )).scalar() or 0
 
-            officer_count = (await self.db.execute(
-                select(func.count(Officer.id)).where(Officer.district == district.id)
-            )).scalar() or 0
+            station_ids_q = await self.db.execute(
+                select(Station.id).where(Station.district_id == district.id)
+            )
+            station_ids = [r[0] for r in station_ids_q.all()]
 
-            station_count = (await self.db.execute(
-                select(func.count(Station.id)).where(Station.district == district.id)
-            )).scalar() or 0
+            officer_count = 0
+            if station_ids:
+                officer_count = (await self.db.execute(
+                    select(func.count(Officer.id)).where(Officer.station_id.in_(station_ids))
+                )).scalar() or 0
+
+            station_count = len(station_ids)
 
             result.append({
                 "id": district.id,
@@ -49,26 +54,40 @@ class DistrictAnalytics:
             return {"error": "District not found"}
 
         crime_count = (await self.db.execute(
-            select(func.count(Crime.id)).where(Crime.district == district_id)
+            select(func.count(Crime.id)).where(Crime.district_id == district_id)
         )).scalar() or 0
 
-        officer_count = (await self.db.execute(
-            select(func.count(Officer.id)).where(Officer.district == district_id)
-        )).scalar() or 0
-
-        crimes_by_type = await self.db.execute(
-            select(Crime.crime_type, func.count(Crime.id))
-            .where(Crime.district == district_id)
-            .group_by(Crime.crime_type)
+        station_ids_q = await self.db.execute(
+            select(Station.id).where(Station.district_id == district_id)
         )
+        station_ids = [r[0] for r in station_ids_q.all()]
+        station_count = len(station_ids)
+
+        officer_count = 0
+        if station_ids:
+            officer_count = (await self.db.execute(
+                select(func.count(Officer.id)).where(Officer.station_id.in_(station_ids))
+            )).scalar() or 0
+
+        open_count = (await self.db.execute(
+            select(func.count(Crime.id)).where(
+                Crime.district_id == district_id, Crime.status == "open"
+            )
+        )).scalar() or 0
+
+        closed_count = (await self.db.execute(
+            select(func.count(Crime.id)).where(
+                Crime.district_id == district_id, Crime.status == "closed"
+            )
+        )).scalar() or 0
 
         return {
             "id": district.id,
             "name": district.name,
             "crime_count": crime_count,
             "officer_count": officer_count,
-            "crimes_by_type": [
-                {"type": row[0] or "unknown", "count": row[1]}
-                for row in crimes_by_type.all()
-            ],
+            "station_count": station_count,
+            "open_crimes": open_count,
+            "closed_crimes": closed_count,
+            "resolution_rate": round((closed_count / crime_count * 100), 1) if crime_count else 0,
         }

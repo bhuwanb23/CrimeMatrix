@@ -4,6 +4,12 @@ from workflows.state import WorkflowState
 from workflows.registry import WorkflowRegistry, workflow_registry
 from workflows.engine import WorkflowEngine
 
+# Import builtins to trigger registration
+import workflows.builtin.investigation
+import workflows.builtin.case_analysis
+import workflows.builtin.suspect_profile
+import workflows.builtin.crime_briefing
+
 
 class TestWorkflowStep:
     def test_create_step(self):

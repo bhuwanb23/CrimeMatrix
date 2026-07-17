@@ -72,6 +72,7 @@ def create_app() -> FastAPI:
     from tools.investigation.status import CaseStatusTool
     from tools.report.generate import ReportGenerateTool
     from tools.rag.search import RAGSearchTool
+    from tools.search.intelligent import SearchIntelligentTool
 
     for tool_cls in [
         CalculatorTool, WebFetchTool,
@@ -79,7 +80,7 @@ def create_app() -> FastAPI:
         GraphTraverseTool, GraphShortestPathTool, GraphNeighborsTool,
         AnalyticsCountsTool, AnalyticsTrendsTool,
         InvestigationNotesTool, InvestigationTimelineTool, CaseStatusTool,
-        ReportGenerateTool, RAGSearchTool,
+        ReportGenerateTool, RAGSearchTool, SearchIntelligentTool,
     ]:
         tool_registry.register(tool_cls())
 

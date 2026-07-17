@@ -89,7 +89,7 @@ def create_app() -> FastAPI:
 
     @app.on_event("startup")
     async def startup():
-        logger.info("ai_services_startup", port=config.port, version="2.0.0")
+        logger.info("ai_services_startup", port=config.port, version="3.0.0")
         healthy = await ollama.health_check()
         logger.info("ollama_health", healthy=healthy)
 

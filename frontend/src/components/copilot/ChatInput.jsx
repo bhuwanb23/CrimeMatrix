@@ -3,15 +3,28 @@ import { Send, Paperclip, Mic, ChevronDown } from 'lucide-react'
 
 const sources = ['All Sources', 'FIR Database', 'Suspects', 'Evidence', 'Stations']
 
+const suggestedQueries = [
+  "Show all theft cases in Bengaluru",
+  "Find suspects with high risk score",
+  "Recent crimes in the last 7 days",
+  "List open cases with high priority",
+  "Show robbery cases in Mysore district",
+  "What are the most common crime types?",
+  "Find all evidence for case #1",
+  "Show suspects linked to recent cases",
+]
+
 export default function ChatInput({ onSend }) {
   const [value, setValue] = useState('')
   const [source, setSource] = useState('All Sources')
   const [sourceOpen, setSourceOpen] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(true)
 
   const handleSend = () => {
     if (!value.trim()) return
     onSend(value.trim(), source)
     setValue('')
+    setShowSuggestions(false)
   }
 
   const handleKeyDown = (e) => {
@@ -21,13 +34,28 @@ export default function ChatInput({ onSend }) {
     }
   }
 
+  const handleSuggestionClick = (query) => {
+    setValue(query)
+    setShowSuggestions(false)
+    onSend(query, source)
+  }
+
   return (
     <div className="chat-input-area">
+      {showSuggestions && (
+        <div className="chat-suggestions-row">
+          {suggestedQueries.slice(0, 4).map((q, i) => (
+            <button key={i} className="chat-suggestion-chip" onClick={() => handleSuggestionClick(q)}>
+              {q}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="chat-input-wrapper">
         <input
           type="text"
           className="chat-input-field"
-          placeholder="Ask me anything..."
+          placeholder="Ask me anything... (e.g., 'Show theft cases in Bengaluru')"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}

@@ -47,12 +47,7 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
         db.add(session)
         await db.commit()
 
-    # Save user message to DB
-    user_msg = ChatMessage(session_id=session_id, role="user", content=data.message)
-    db.add(user_msg)
-    await db.commit()
-
-    # Call AI Services agent
+    # Call AI Services agent (handles message persistence via MemoryPersistence)
     try:
         async with httpx.AsyncClient() as client:
             ai_response = await client.post(
@@ -79,14 +74,9 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
         reasoning_trace = []
         steps = 0
 
-    # Save assistant message to DB
-    assistant_msg = ChatMessage(session_id=session_id, role="assistant", content=response_text)
-    db.add(assistant_msg)
-
     # Auto-generate title from first message
     if existing and not existing.title:
         existing.title = data.message[:100]
-
     await db.commit()
 
     return success_response(data={

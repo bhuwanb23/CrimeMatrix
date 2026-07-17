@@ -4,7 +4,7 @@ import os
 from storage.sqlite_provider import SQLiteProvider
 from storage.networkx_provider import NetworkXProvider
 from storage.vector_provider import VectorProvider
-from storage.cache_provider import MemoryMemoryCacheProvider
+from storage.cache_provider import MemoryCacheProvider
 from storage.file_provider import FileProvider
 
 

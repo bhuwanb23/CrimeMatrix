@@ -1,4 +1,6 @@
 import { X } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 const filters = [
   { id: 'all', label: 'All' },
@@ -15,6 +17,7 @@ const filters = [
 ]
 
 export default function FilterChips({ activeFilters, onToggleFilter, onClearAll }) {
+  const { lang } = useLanguage()
   return (
     <div className="filter-chips-row">
       <div className="filter-chips">
@@ -24,14 +27,14 @@ export default function FilterChips({ activeFilters, onToggleFilter, onClearAll 
             className={`filter-chip ${activeFilters.includes(filter.id) ? 'active' : ''}`}
             onClick={() => onToggleFilter(filter.id)}
           >
-            {filter.label}
+            {t(filter.id, lang) || filter.label}
           </button>
         ))}
       </div>
       {activeFilters.length > 0 && (
         <button className="filter-clear" onClick={onClearAll}>
           <X size={14} />
-          Clear all
+          {t('clear_all', lang)}
         </button>
       )}
     </div>

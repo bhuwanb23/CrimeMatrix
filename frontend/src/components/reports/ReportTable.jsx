@@ -1,22 +1,25 @@
 import { reportTypes, reportStatuses } from './reportsData'
 import { Eye, Download, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 export default function ReportTable({ reports, page, totalPages, onPageChange }) {
+  const { lang } = useLanguage()
   return (
     <div className="report-table-card">
       <div className="report-table-wrapper">
         <table className="report-table">
           <thead>
             <tr>
-              <th>Report ID</th>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Case</th>
-              <th>Officer</th>
-              <th>Date</th>
-              <th>Pages</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>{t('report_id', lang)}</th>
+              <th>{t('title', lang)}</th>
+              <th>{t('type', lang)}</th>
+              <th>{t('case', lang)}</th>
+              <th>{t('officer', lang)}</th>
+              <th>{t('date', lang)}</th>
+              <th>{t('pages', lang)}</th>
+              <th>{t('status', lang)}</th>
+              <th>{t('actions', lang)}</th>
             </tr>
           </thead>
           <tbody>

@@ -8,7 +8,11 @@ const recentSearches = [
   'Cyber fraud Electronic City',
 ]
 
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function SearchBar({ value, onChange, onSearch, onSave }) {
+  const { lang } = useLanguage()
   const [focused, setFocused] = useState(false)
   const [showRecent, setShowRecent] = useState(false)
   const debounceRef = useRef(null)
@@ -54,7 +58,7 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
         <input
           type="text"
           className="search-bar-input"
-          placeholder="Search cases, suspects, FIRs, evidence..."
+          placeholder={t('search_cases_placeholder', lang)}
           value={value}
           onChange={(e) => {
             onChange(e.target.value)
@@ -73,16 +77,16 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
           <button
             className="search-bar-save"
             onClick={() => onSave(value)}
-            aria-label="Save search"
+            aria-label={t('save_search', lang)}
           >
             <BookmarkPlus size={16} strokeWidth={1.8} />
           </button>
         )}
-        <button className="search-bar-voice" aria-label="Voice search">
+        <button className="search-bar-voice" aria-label={t('voice_search', lang)}>
           <Mic size={16} strokeWidth={1.8} />
         </button>
         <button className="search-bar-btn" onClick={() => onSearch(value)}>
-          Search
+          {t('search', lang)}
         </button>
       </div>
 
@@ -90,7 +94,7 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
         <div className="search-recent">
           <div className="search-recent-header">
             <Clock size={14} />
-            <span>Recent searches</span>
+            <span>{t('recent_searches', lang)}</span>
           </div>
           {recentSearches.map((term, i) => (
             <button

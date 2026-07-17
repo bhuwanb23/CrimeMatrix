@@ -232,6 +232,45 @@ const translations = {
     timeline: "Timeline",
     reasoning: "Reasoning",
     related: "Related Cases",
+    search_reports_placeholder: "Search by report ID, title, case...",
+    date: "Date",
+    all_period: "All period",
+    type: "Type",
+    all_types: "All types",
+    all_statuses: "All statuses",
+    export_csv: "Export CSV",
+    report_id: "Report ID",
+    title: "Title",
+    case: "Case",
+    officer: "Officer",
+    pages: "Pages",
+    actions: "Actions",
+    report_statistics: "Report Statistics",
+    current_week: "Current Week",
+    clear_all: "Clear all",
+    saved_searches: "Saved Searches",
+    save_current_search: "Save current search",
+    no_saved_searches: "No saved searches",
+    results: "results",
+    run_search: "Run search",
+    delete: "Delete",
+    search_cases_placeholder: "Search cases, suspects, FIRs, evidence...",
+    save_search: "Save search",
+    voice_search: "Voice search",
+    search: "Search",
+    recent_searches: "Recent searches",
+    search_history: "Search History",
+    no_search_history: "No search history",
+    no_results_found: "No results found",
+    try_adjusting_search: "Try adjusting your search or filters",
+    results_found: "results found",
+    case_id: "Case ID",
+    crime_type: "Crime Type",
+    district: "District",
+    open: "Open",
+    all: "All",
+    fir: "FIR",
+    bengaluru: "Bengaluru",
   },
   ta: {
     accept: "ஒப்புக்கொள்",
@@ -1605,7 +1644,7 @@ const rawTranslations = {
  */
 export function t(key, lang = "en") {
   const langDict = translations[lang] || translations.en;
-  return langDict[key] || key;
+  return langDict[key] || translations.en[key] || key;
 }
 
 // Helper to translate alert type labels dynamically

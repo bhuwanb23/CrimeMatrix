@@ -1,12 +1,15 @@
 import { Eye, ExternalLink, ChevronLeft, ChevronRight, Search } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 export default function SearchResults({ results, page, totalPages, onPageChange, onViewCase }) {
+  const { lang } = useLanguage()
   if (results.length === 0) {
     return (
       <div className="search-empty">
         <Search size={48} strokeWidth={1} className="search-empty-icon" />
-        <h3>No results found</h3>
-        <p>Try adjusting your search or filters</p>
+        <h3>{t('no_results_found', lang)}</h3>
+        <p>{t('try_adjusting_search', lang)}</p>
       </div>
     )
   }
@@ -14,20 +17,20 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
   return (
     <div className="search-results">
       <div className="results-header">
-        <span className="results-count">{results.length} results found</span>
+        <span className="results-count">{results.length} {t('results_found', lang)}</span>
       </div>
 
       <div className="results-table-wrapper">
         <table className="results-table">
           <thead>
             <tr>
-              <th>Case ID</th>
-              <th>Title</th>
-              <th>Crime Type</th>
-              <th>District</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>{t('case_id', lang)}</th>
+              <th>{t('title', lang)}</th>
+              <th>{t('crime_type', lang)}</th>
+              <th>{t('district', lang)}</th>
+              <th>{t('status', lang)}</th>
+              <th>{t('date', lang)}</th>
+              <th>{t('actions', lang)}</th>
             </tr>
           </thead>
           <tbody>
@@ -55,14 +58,14 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                   <div className="action-btns" onClick={(e) => e.stopPropagation()}>
                     <button
                       className="action-btn"
-                      aria-label="View"
+                      aria-label={t('view', lang)}
                       onClick={() => onViewCase(row.id)}
                     >
                       <Eye size={14} strokeWidth={1.8} />
                     </button>
                     <button
                       className="action-btn"
-                      aria-label="Open"
+                      aria-label={t('open', lang)}
                       onClick={() => onViewCase(row.id)}
                     >
                       <ExternalLink size={14} strokeWidth={1.8} />

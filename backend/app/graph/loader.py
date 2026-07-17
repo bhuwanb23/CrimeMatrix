@@ -20,11 +20,19 @@ class GraphLoader:
         self.graph.clear()
 
         for node in nodes:
-            self.graph.add_node(node["node_id"], type=node["node_type"], **node["properties"])
+            attrs = dict(node["properties"])
+            attrs["type"] = node["node_type"]
+            attrs["confidence"] = node.get("confidence", 1.0)
+            attrs["version"] = node.get("version", 1)
+            self.graph.add_node(node["node_id"], **attrs)
 
         for edge in edges:
             if self.graph.has_node(edge["source_id"]) and self.graph.has_node(edge["target_id"]):
-                self.graph.add_edge(edge["source_id"], edge["target_id"], relation=edge["relation"], **edge["properties"])
+                attrs = dict(edge["properties"])
+                attrs["relation"] = edge["relation"]
+                attrs["weight"] = edge.get("weight", 1.0)
+                attrs["version"] = edge.get("version", 1)
+                self.graph.add_edge(edge["source_id"], edge["target_id"], **attrs)
 
         stats = {
             "nodes_loaded": self.graph.number_of_nodes(),
@@ -39,13 +47,15 @@ class GraphLoader:
 
         for node_id, data in self.graph.nodes(data=True):
             node_type = data.get("type", "unknown")
-            properties = {k: v for k, v in data.items() if k != "type"}
-            await persistence.save_node(node_id, node_type, properties)
+            confidence = data.get("confidence", 1.0)
+            properties = {k: v for k, v in data.items() if k not in ("type", "confidence", "version")}
+            await persistence.save_node(node_id, node_type, properties, confidence)
 
         for source, target, data in self.graph.edges(data=True):
             relation = data.get("relation", "")
-            properties = {k: v for k, v in data.items() if k != "relation"}
-            await persistence.save_edge(source, target, relation, properties)
+            weight = data.get("weight", 1.0)
+            properties = {k: v for k, v in data.items() if k not in ("relation", "weight", "version")}
+            await persistence.save_edge(source, target, relation, properties, weight)
 
         await persistence.save_version(self.graph.number_of_nodes(), self.graph.number_of_edges())
         stats = {"nodes_saved": self.graph.number_of_nodes(), "edges_saved": self.graph.number_of_edges()}

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { Bot, User, Loader2, MessageSquareText, Info } from 'lucide-react'
+import Markdown from 'react-markdown'
 import ChatInput from './ChatInput'
 
 function TypingIndicator() {
@@ -28,28 +29,15 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
   const hasMessages = messages.length > 0
 
   return (
-    <div className="chat-area">
+    <div className="copilot-chat-area">
       {/* Toolbar */}
       <div className="chat-toolbar">
-        <button
-          className={`chat-toolbar-btn ${historyOpen ? 'active' : ''}`}
-          onClick={onToggleHistory}
-          aria-label="Toggle chat history"
-        >
-          <MessageSquareText size={18} strokeWidth={1.8} />
+        <button className={`chat-toolbar-btn ${historyOpen ? 'active' : ''}`} onClick={onToggleHistory} title="Chat History">
+          <MessageSquareText size={16} />
         </button>
-
-        <div className="chat-toolbar-center">
-          <Bot size={18} strokeWidth={1.8} className="chat-toolbar-icon" />
-          <span className="chat-toolbar-title">AI Copilot</span>
-        </div>
-
-        <button
-          className={`chat-toolbar-btn ${contextOpen ? 'active' : ''}`}
-          onClick={onToggleContext}
-          aria-label="Toggle context panel"
-        >
-          <Info size={18} strokeWidth={1.8} />
+        <div className="chat-toolbar-title">AI Copilot</div>
+        <button className={`chat-toolbar-btn ${contextOpen ? 'active' : ''}`} onClick={onToggleContext} title="Context">
+          <Info size={16} />
         </button>
       </div>
 
@@ -78,7 +66,13 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
                 </div>
                 <div className="chat-message-body">
                   <div className="chat-message-bubble">
-                    <p>{msg.content}</p>
+                    {msg.role === 'assistant' ? (
+                      <div className="chat-markdown">
+                        <Markdown>{msg.content}</Markdown>
+                      </div>
+                    ) : (
+                      <p>{msg.content}</p>
+                    )}
                   </div>
                   <span className="chat-message-time">{msg.time}</span>
                 </div>

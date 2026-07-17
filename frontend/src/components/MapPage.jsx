@@ -10,7 +10,11 @@ const views = [
   { id: 'routes', label: 'Routes' },
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function MapPage() {
+  const { lang } = useLanguage()
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [activeView, setActiveView] = useState('all')
 
@@ -19,8 +23,8 @@ export default function MapPage() {
       <div className="map-main">
         <div className="map-header">
           <div>
-            <h1 className="map-title">Geo Intelligence</h1>
-            <p className="map-subtitle">Crime hotspots & density analysis</p>
+            <h1 className="map-title">{t('geo_intelligence', lang)}</h1>
+            <p className="map-subtitle">{t('crime_hotspots_density', lang)}</p>
           </div>
           <div className="map-view-btns">
             {views.map((v) => (
@@ -29,7 +33,7 @@ export default function MapPage() {
                 className={`map-view-btn ${activeView === v.id ? 'active' : ''}`}
                 onClick={() => setActiveView(v.id)}
               >
-                {v.label}
+                {t(v.id.toLowerCase(), lang) || v.label}
               </button>
             ))}
           </div>

@@ -9,12 +9,16 @@ const statusColors = {
   'Unknown': '#94a3b8',
 }
 
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function AssociatesTab({ suspect }) {
+  const { lang } = useLanguage()
   return (
     <div className="associates-tab">
       <div className="associates-header">
         <Users size={18} />
-        <h3>Known Associates ({suspect.associates.length})</h3>
+        <h3>{t('known_associates', lang) || "Known Associates"} ({suspect.associates.length})</h3>
       </div>
 
       <div className="associates-grid">
@@ -28,7 +32,7 @@ export default function AssociatesTab({ suspect }) {
               <span className="associate-relation">{assoc.relation}</span>
             </div>
             <div className="associate-meta">
-              <span className="associate-cases">{assoc.cases} cases</span>
+              <span className="associate-cases">{assoc.cases} {t('cases', lang) || "cases"}</span>
               <span className="associate-status" style={{ color: statusColors[assoc.status] }}>
                 {assoc.status}
               </span>
@@ -38,7 +42,7 @@ export default function AssociatesTab({ suspect }) {
       </div>
 
       <div className="associates-network">
-        <h4>Network Summary</h4>
+        <h4>{t('network_summary', lang) || "Network Summary"}</h4>
         <p className="network-text">
           {suspect.name} is connected to {suspect.associates.length} known associates across{' '}
           {new Set(suspect.associates.map(a => a.relation)).size} different roles.

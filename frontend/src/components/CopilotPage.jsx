@@ -10,7 +10,11 @@ const aiResponses = [
   'I\'ve identified a potential link between the theft pattern in Malleshwaram and a similar series in Indiranagar. Both show the same entry method and timing signature. This could indicate a serial offender operating across districts.',
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function CopilotPage() {
+  const { lang } = useLanguage()
   const [activeChatId, setActiveChatId] = useState(null)
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)

@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
+import { useNavigate } from 'react-router-dom'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function SuspectCard({ suspect }) {
+  const { lang } = useLanguage()
   const navigate = useNavigate()
 
   return (
@@ -13,11 +18,11 @@ export default function SuspectCard({ suspect }) {
       </div>
       <div className="suspect-card-info">
         <span className="suspect-card-name">{suspect.name}</span>
-        <span className="suspect-card-meta">{suspect.age} yrs • {suspect.district}</span>
+        <span className="suspect-card-meta">{suspect.age} {t('yrs', lang) || "yrs"} • {suspect.district}</span>
       </div>
       <div className="suspect-card-stats">
         <div className="suspect-card-risk">
-          <span className="risk-label">Risk</span>
+          <span className="risk-label">{t('risk', lang) || "Risk"}</span>
           <div className="risk-bar">
             <div
               className="risk-fill"
@@ -33,7 +38,7 @@ export default function SuspectCard({ suspect }) {
           <span className={`suspect-status-badge ${suspect.status.toLowerCase().replace(' ', '-')}`}>
             {suspect.status}
           </span>
-          <span className="suspect-cases-count">{suspect.cases} cases</span>
+          <span className="suspect-cases-count">{suspect.cases} {t('cases', lang) || "cases"}</span>
         </div>
       </div>
     </button>

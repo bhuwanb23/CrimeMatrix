@@ -1,6 +1,10 @@
 import { Brain, AlertTriangle, Activity } from 'lucide-react'
 
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function BehavioralTab({ suspect }) {
+  const { lang } = useLanguage()
   const { behavioralProfile } = suspect
 
   return (
@@ -9,7 +13,7 @@ export default function BehavioralTab({ suspect }) {
         <div className="behavioral-card">
           <div className="behavioral-card-header">
             <Brain size={16} />
-            <h4>Personality Profile</h4>
+            <h4>{t('personality_profile', lang) || "Personality Profile"}</h4>
           </div>
           <p className="behavioral-card-text">{behavioralProfile.personality}</p>
         </div>
@@ -17,7 +21,7 @@ export default function BehavioralTab({ suspect }) {
         <div className="behavioral-card">
           <div className="behavioral-card-header">
             <AlertTriangle size={16} />
-            <h4>Risk Factors</h4>
+            <h4>{t('risk_factors', lang) || "Risk Factors"}</h4>
           </div>
           <div className="behavioral-tags">
             {behavioralProfile.riskFactors.map((factor, i) => (
@@ -29,7 +33,7 @@ export default function BehavioralTab({ suspect }) {
         <div className="behavioral-card full-width">
           <div className="behavioral-card-header">
             <Activity size={16} />
-            <h4>Behavioral Patterns</h4>
+            <h4>{t('behavioral_patterns', lang) || "Behavioral Patterns"}</h4>
           </div>
           <div className="behavioral-patterns">
             {behavioralProfile.patterns.map((pattern, i) => (

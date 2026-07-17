@@ -47,7 +47,11 @@ const initialMessages = [
   },
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function RightPanel({ isOpen }) {
+  const { lang } = useLanguage()
   const [activeTab, setActiveTab] = useState('activity')
   const [messages, setMessages] = useState(initialMessages)
   const [inputValue, setInputValue] = useState('')
@@ -79,21 +83,21 @@ export default function RightPanel({ isOpen }) {
           onClick={() => setActiveTab('activity')}
         >
           <Activity size={14} strokeWidth={1.8} />
-          Activity
+          {t('activity', lang)}
         </button>
         <button
           className={`right-panel-tab ${activeTab === 'chat' ? 'active' : ''}`}
           onClick={() => setActiveTab('chat')}
         >
           <Bot size={14} strokeWidth={1.8} />
-          AI Copilot
+          {t('ai_copilot', lang)}
         </button>
       </div>
 
       {activeTab === 'activity' && (
         <div className="right-panel-content">
           <section className="right-panel-section">
-            <h3 className="right-panel-section-title">Today's Overview</h3>
+            <h3 className="right-panel-section-title">{t('todays_overview', lang)}</h3>
             <div className="quick-stats-grid">
               {quickStats.map((stat, i) => (
                 <div key={i} className="quick-stat-card">
@@ -108,7 +112,7 @@ export default function RightPanel({ isOpen }) {
           </section>
 
           <section className="right-panel-section">
-            <h3 className="right-panel-section-title">Recent Activity</h3>
+            <h3 className="right-panel-section-title">{t('recent_activity', lang)}</h3>
             <div className="right-panel-items">
               {activities.map((item, i) => (
                 <div key={i} className="activity-card">
@@ -139,7 +143,7 @@ export default function RightPanel({ isOpen }) {
             <input
               type="text"
               className="chat-input"
-              placeholder="Ask about cases..."
+              placeholder={t('ask_about_cases', lang)}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}

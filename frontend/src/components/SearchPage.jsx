@@ -9,7 +9,11 @@ import { cases } from './search/caseData'
 
 const ITEMS_PER_PAGE = 8
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function SearchPage() {
+  const { lang } = useLanguage()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState(['all'])
@@ -131,8 +135,8 @@ export default function SearchPage() {
     <div className="search-page">
       <div className="search-main">
         <div className="search-header">
-          <h1 className="search-title">Crime Search</h1>
-          <p className="search-subtitle">Search everything from one place</p>
+          <h1 className="search-title">{t('crime_search', lang)}</h1>
+          <p className="search-subtitle">{t('search_everything', lang)}</p>
         </div>
 
         <SearchBar

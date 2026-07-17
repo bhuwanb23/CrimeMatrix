@@ -10,8 +10,11 @@ const filters = [
   { id: 'at-large', label: 'At Large' },
   { id: 'under-trial', label: 'Under Trial' },
 ]
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
 
 export default function SuspectsPage() {
+  const { lang } = useLanguage()
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('all')
 
@@ -48,14 +51,14 @@ export default function SuspectsPage() {
     <div className="suspects-page">
       <div className="suspects-header">
         <div className="suspects-header-top">
-          <h1 className="suspects-title">Criminal Intelligence</h1>
-          <p className="suspects-subtitle">Everything about suspects</p>
+          <h1 className="suspects-title">{t('criminal_intelligence', lang)}</h1>
+          <p className="suspects-subtitle">{t('everything_about_suspects', lang)}</p>
         </div>
         <div className="suspects-search">
           <Search size={16} />
           <input
             type="text"
-            placeholder="Search suspects by name, ID, alias..."
+            placeholder={t('search_suspects_placeholder', lang) || "Search suspects by name, ID, alias..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -69,10 +72,10 @@ export default function SuspectsPage() {
             className={`suspects-filter-btn ${activeFilter === filter.id ? 'active' : ''}`}
             onClick={() => setActiveFilter(filter.id)}
           >
-            {filter.label}
+            {t(filter.id.toLowerCase().replace(/-/g, '_'), lang) || filter.label}
           </button>
         ))}
-        <span className="suspects-count">{filtered.length} suspects</span>
+        <span className="suspects-count">{filtered.length} {t('suspects', lang)}</span>
       </div>
 
       <div className="suspects-grid">
@@ -83,7 +86,7 @@ export default function SuspectsPage() {
 
       {filtered.length === 0 && (
         <div className="suspects-empty">
-          <p>No suspects found matching your criteria</p>
+          <p>{t('no_suspects_found', lang) || "No suspects found matching your criteria"}</p>
         </div>
       )}
     </div>

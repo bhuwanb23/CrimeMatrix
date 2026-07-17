@@ -6,7 +6,11 @@ import { reports as allReports } from './reports/reportsData'
 
 const ITEMS_PER_PAGE = 8
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function ReportsPage() {
+  const { lang } = useLanguage()
   const [filters, setFilters] = useState({ search: '', date: '', type: '', status: '' })
   const [page, setPage] = useState(1)
 
@@ -49,8 +53,8 @@ export default function ReportsPage() {
     <div className="reports-page">
       <div className="reports-header">
         <div>
-          <h1 className="reports-title">Reports & Documentation</h1>
-          <p className="reports-subtitle">Investigation reports, court documents, and exports</p>
+          <h1 className="reports-title">{t('reports_and_documentation', lang)}</h1>
+          <p className="reports-subtitle">{t('investigation_reports_desc', lang)}</p>
         </div>
       </div>
 

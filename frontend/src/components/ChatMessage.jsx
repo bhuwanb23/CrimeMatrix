@@ -1,6 +1,9 @@
 import { Bot, User } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
 
 export default function ChatMessage({ role, content, time }) {
+  const { lang } = useLanguage()
   const isUser = role === 'user'
 
   return (

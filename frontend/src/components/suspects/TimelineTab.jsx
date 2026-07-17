@@ -7,7 +7,11 @@ const typeConfig = {
   investigation: { icon: Search, color: '#3b82f6', label: 'Investigation' },
 }
 
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function TimelineTab({ suspect }) {
+  const { lang } = useLanguage()
   return (
     <div className="timeline-tab">
       <div className="timeline-visual">
@@ -23,7 +27,7 @@ export default function TimelineTab({ suspect }) {
               <div className="timeline-visual-content">
                 <div className="timeline-visual-header">
                   <span className="timeline-visual-date">{item.date}</span>
-                  <span className="timeline-visual-type" style={{ color: config.color }}>{config.label}</span>
+                  <span className="timeline-visual-type" style={{ color: config.color }}>{t(config.label.toLowerCase().replace(/ /g, '_'), lang) || config.label}</span>
                 </div>
                 <p className="timeline-visual-event">{item.event}</p>
               </div>

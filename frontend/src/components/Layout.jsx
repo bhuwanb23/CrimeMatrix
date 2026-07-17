@@ -4,7 +4,11 @@ import Sidebar from './Sidebar'
 import Header from './Header'
 import RightPanel from './RightPanel'
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function Layout() {
+  const { lang } = useLanguage()
   const [rightPanelOpen, setRightPanelOpen] = useState(true)
 
   return (

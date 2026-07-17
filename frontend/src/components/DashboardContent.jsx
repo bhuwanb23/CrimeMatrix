@@ -48,7 +48,11 @@ const stats = [
   },
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function DashboardContent() {
+  const { lang } = useLanguage()
   const now = new Date()
   const lastUpdated = now.toLocaleDateString('en-US', {
     month: 'short',
@@ -60,9 +64,9 @@ export default function DashboardContent() {
     <div className="analytics-dashboard">
       {/* Page Header */}
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Crime Analytics</h1>
+        <h1 className="dashboard-title">{t('crime_analytics', lang)}</h1>
         <span className="dashboard-updated">
-          Last updated: {lastUpdated}
+          {t('last_updated', lang)}: {lastUpdated}
         </span>
       </div>
 
@@ -73,7 +77,7 @@ export default function DashboardContent() {
             <div className="stat-v2-icon">
               <stat.icon size={18} strokeWidth={1.8} />
             </div>
-            <div className="stat-v2-label">{stat.label}</div>
+            <div className="stat-v2-label">{t(stat.label.toLowerCase().replace(/ /g, '_'), lang) || stat.label}</div>
             <div className="stat-v2-value">{stat.value}</div>
             <div className={`stat-v2-trend ${stat.trendDir}`}>
               {stat.trendDir === 'up' ? (
@@ -81,7 +85,7 @@ export default function DashboardContent() {
               ) : (
                 <ArrowDownRight size={12} strokeWidth={2} />
               )}
-              {stat.trend} {stat.trendLabel}
+              {stat.trend} {t(stat.trendLabel.toLowerCase().replace(/ /g, '_'), lang) || stat.trendLabel}
             </div>
           </div>
         ))}

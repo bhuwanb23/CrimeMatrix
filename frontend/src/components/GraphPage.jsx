@@ -4,7 +4,11 @@ import NodeDetailsPanel from './graph/NodeDetailsPanel'
 import GraphControls from './graph/GraphControls'
 import { nodes, edges } from './graph/graphData'
 
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
+
 export default function GraphPage() {
+  const { lang } = useLanguage()
   const [selectedNode, setSelectedNode] = useState(null)
   const [activeView, setActiveView] = useState('all')
   const canvasRef = useRef(null)
@@ -34,8 +38,8 @@ export default function GraphPage() {
       <div className="graph-main">
         <div className="graph-header">
           <div>
-            <h1 className="graph-title">Knowledge Graph</h1>
-            <p className="graph-subtitle">Interactive relationship explorer</p>
+            <h1 className="graph-title">{t('knowledge_graph', lang)}</h1>
+            <p className="graph-subtitle">{t('interactive_relationship_explorer', lang)}</p>
           </div>
         </div>
 
@@ -57,27 +61,27 @@ export default function GraphPage() {
 
           {/* Legend */}
           <div className="graph-legend">
-            <span className="legend-title">Legend</span>
+            <span className="legend-title">{t('legend', lang)}</span>
             <div className="legend-items">
               <div className="legend-item">
                 <span className="legend-line" style={{ background: '#ef4444' }} />
-                <span>Accomplice</span>
+                <span>{t('accomplice', lang)}</span>
               </div>
               <div className="legend-item">
                 <span className="legend-line" style={{ background: '#3b82f6' }} />
-                <span>Evidence</span>
+                <span>{t('evidence', lang)}</span>
               </div>
               <div className="legend-item">
                 <span className="legend-line dashed" style={{ background: '#10b981' }} />
-                <span>Phone</span>
+                <span>{t('phone', lang)}</span>
               </div>
               <div className="legend-item">
                 <span className="legend-line" style={{ background: '#8b5cf6' }} />
-                <span>Vehicle</span>
+                <span>{t('vehicle', lang)}</span>
               </div>
               <div className="legend-item">
                 <span className="legend-line" style={{ background: '#f59e0b' }} />
-                <span>Fence</span>
+                <span>{t('fence', lang)}</span>
               </div>
             </div>
           </div>

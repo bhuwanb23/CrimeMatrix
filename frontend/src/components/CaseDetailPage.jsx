@@ -11,8 +11,11 @@ const timelineIcons = {
   evidence: Camera,
   suspect: AlertTriangle,
 }
+import { useLanguage } from '../context/LanguageContext'
+import { t } from '../utils/translate'
 
 export default function CaseDetailPage() {
+  const { lang } = useLanguage()
   const { id } = useParams()
   const navigate = useNavigate()
   const caseData = getCaseById(id)
@@ -20,10 +23,10 @@ export default function CaseDetailPage() {
   if (!caseData) {
     return (
       <div className="case-detail-empty">
-        <h2>Case not found</h2>
-        <p>No case found with ID: {id}</p>
+        <h2>{t('case_not_found', lang)}</h2>
+        <p>{t('no_case_found_with_id', lang)}: {id}</p>
         <button className="case-back-btn" onClick={() => navigate('/cases')}>
-          <ArrowLeft size={16} /> Back to Search
+          <ArrowLeft size={16} /> {t('back_to_search', lang)}
         </button>
       </div>
     )
@@ -34,7 +37,7 @@ export default function CaseDetailPage() {
       {/* Header */}
       <div className="case-header">
         <button className="case-back-btn" onClick={() => navigate('/cases')}>
-          <ArrowLeft size={16} /> Back to Search
+          <ArrowLeft size={16} /> {t('back_to_search', lang)}
         </button>
         <div className="case-header-info">
           <h1 className="case-header-id">{caseData.id}</h1>
@@ -47,30 +50,30 @@ export default function CaseDetailPage() {
       <div className="case-grid">
         {/* Case Info */}
         <div className="case-card">
-          <h3 className="case-card-title">Case Information</h3>
+          <h3 className="case-card-title">{t('case_information', lang)}</h3>
           <div className="case-info-grid">
             <div className="case-info-item">
-              <span className="case-info-label">Type</span>
+              <span className="case-info-label">{t('type', lang)}</span>
               <span className="case-info-value">{caseData.type}</span>
             </div>
             <div className="case-info-item">
-              <span className="case-info-label">District</span>
+              <span className="case-info-label">{t('district', lang)}</span>
               <span className="case-info-value">{caseData.district}</span>
             </div>
             <div className="case-info-item">
-              <span className="case-info-label">Priority</span>
+              <span className="case-info-label">{t('priority', lang)}</span>
               <span className={`case-info-value priority-${caseData.priority.toLowerCase()}`}>{caseData.priority}</span>
             </div>
             <div className="case-info-item">
-              <span className="case-info-label">Officer</span>
+              <span className="case-info-label">{t('officer', lang)}</span>
               <span className="case-info-value">{caseData.officer}</span>
             </div>
             <div className="case-info-item">
-              <span className="case-info-label">Date Filed</span>
+              <span className="case-info-label">{t('date_filed', lang)}</span>
               <span className="case-info-value">{caseData.date}</span>
             </div>
             <div className="case-info-item">
-              <span className="case-info-label">Status</span>
+              <span className="case-info-label">{t('status', lang)}</span>
               <span className={`status-badge ${caseData.status}`}>{caseData.status}</span>
             </div>
           </div>
@@ -79,7 +82,7 @@ export default function CaseDetailPage() {
         {/* Timeline */}
         <div className="case-card">
           <h3 className="case-card-title">
-            <Clock size={16} /> Timeline
+            <Clock size={16} /> {t('timeline', lang)}
           </h3>
           <div className="case-timeline">
             {caseData.timeline.map((item, i) => {
@@ -101,17 +104,17 @@ export default function CaseDetailPage() {
 
         {/* Description */}
         <div className="case-card full-width">
-          <h3 className="case-card-title">Description</h3>
+          <h3 className="case-card-title">{t('description', lang)}</h3>
           <p className="case-description">{caseData.description}</p>
         </div>
 
         {/* Suspects */}
         <div className="case-card">
           <h3 className="case-card-title">
-            <User size={16} /> Suspects
+            <User size={16} /> {t('suspects', lang)}
           </h3>
           {caseData.suspects.length === 0 ? (
-            <p className="case-empty-text">No suspects identified</p>
+            <p className="case-empty-text">{t('no_suspects_identified', lang)}</p>
           ) : (
             <div className="case-suspects">
               {caseData.suspects.map((suspect, i) => (
@@ -123,8 +126,8 @@ export default function CaseDetailPage() {
                     </span>
                   </div>
                   <div className="suspect-details">
-                    {suspect.age > 0 && <span>Age: {suspect.age}</span>}
-                    <span>Relation: {suspect.relation}</span>
+                    {suspect.age > 0 && <span>{t('age', lang)}: {suspect.age}</span>}
+                    <span>{t('relation', lang)}: {suspect.relation}</span>
                   </div>
                   <p className="suspect-notes">{suspect.notes}</p>
                 </div>
@@ -136,10 +139,10 @@ export default function CaseDetailPage() {
         {/* Evidence */}
         <div className="case-card">
           <h3 className="case-card-title">
-            <Camera size={16} /> Evidence
+            <Camera size={16} /> {t('evidence', lang)}
           </h3>
           {caseData.evidence.length === 0 ? (
-            <p className="case-empty-text">No evidence collected</p>
+            <p className="case-empty-text">{t('no_evidence_collected', lang)}</p>
           ) : (
             <div className="case-evidence">
               {caseData.evidence.map((item, i) => (
@@ -158,7 +161,7 @@ export default function CaseDetailPage() {
         {/* AI Insights */}
         <div className="case-card full-width">
           <h3 className="case-card-title">
-            <Bot size={16} /> AI Insights
+            <Bot size={16} /> {t('ai_insights', lang)}
           </h3>
           <div className="case-ai-insights">
             <p>{caseData.aiInsights}</p>

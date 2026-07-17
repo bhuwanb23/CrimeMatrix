@@ -1,6 +1,10 @@
 import { Fingerprint, Clock, Target, Crosshair, Route, ListOrdered } from 'lucide-react'
 
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function MOTab({ suspect }) {
+  const { lang } = useLanguage()
   const { moFingerprint } = suspect
 
   const moItems = [
@@ -16,7 +20,7 @@ export default function MOTab({ suspect }) {
     <div className="mo-tab">
       <div className="mo-header">
         <Fingerprint size={20} />
-        <h3>Modus Operandi Fingerprint</h3>
+        <h3>{t('mo_fingerprint', lang) || "Modus Operandi Fingerprint"}</h3>
       </div>
 
       <div className="mo-grid">
@@ -26,7 +30,7 @@ export default function MOTab({ suspect }) {
               <item.icon size={16} />
             </div>
             <div className="mo-card-content">
-              <span className="mo-card-label">{item.label}</span>
+              <span className="mo-card-label">{t(item.label.toLowerCase().replace(/ /g, '_'), lang) || item.label}</span>
               <p className="mo-card-value">{item.value}</p>
             </div>
           </div>
@@ -34,7 +38,7 @@ export default function MOTab({ suspect }) {
       </div>
 
       <div className="mo-comparison">
-        <h4>MO Match Score</h4>
+        <h4>{t('mo_match_score', lang) || "MO Match Score"}</h4>
         <div className="mo-score-bar">
           <div className="mo-score-fill" style={{ width: `${suspect.moMatches * 20}%` }} />
         </div>

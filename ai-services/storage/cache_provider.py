@@ -32,7 +32,7 @@ class CacheProvider(CacheProvider):
         self._store[key] = {
             "value": value,
             "created_at": time.time(),
-            "expires_at": time.time() + ttl_seconds if ttl_seconds > 0 else None,
+            "expires_at": time.time() - 1 if ttl_seconds == 0 else (time.time() + ttl_seconds if ttl_seconds > 0 else None),
         }
 
     async def delete(self, key: str) -> bool:

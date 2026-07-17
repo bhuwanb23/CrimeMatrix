@@ -25,6 +25,7 @@ class ChatRequest(BaseModel):
     message: str
     agent_id: str = "default"
     session_id: str = "default"
+    user_id: str = "default"
     use_tools: bool = True
 
 
@@ -33,7 +34,16 @@ class ToolInvokeRequest(BaseModel):
     params: dict = {}
 
 
-# Chat — Phase 2 with reasoning trace
+class PreferencesRequest(BaseModel):
+    key: str
+    value: str
+
+
+class InvestigationRequest(BaseModel):
+    investigation_id: int
+
+
+# Chat
 @router.post("/chat")
 async def chat(data: ChatRequest):
     try:
@@ -45,7 +55,8 @@ async def chat(data: ChatRequest):
             _sessions[data.session_id] = ConversationContext(session_id=data.session_id)
         context = _sessions[data.session_id]
 
-        result = await agent.chat(data.message, context, data.use_tools)
+        result = await agent.chat(data.message, context, data.use_tools,
+                                  session_id=data.session_id, user_id=data.user_id)
         return {
             "success": True,
             "data": {
@@ -74,7 +85,8 @@ async def chat_stream(data: ChatRequest):
         _sessions[data.session_id] = ConversationContext(session_id=data.session_id)
     context = _sessions[data.session_id]
 
-    return sse_response(agent.stream(data.message, context))
+    return sse_response(agent.stream(data.message, context,
+                                     session_id=data.session_id, user_id=data.user_id))
 
 
 # Agent management
@@ -113,10 +125,70 @@ async def get_session_trace(session_id: str):
 
 @router.delete("/sessions/{session_id}")
 async def clear_session(session_id: str):
+    agent = _agents.get("default")
+    if agent:
+        agent.memory.clear_session(session_id)
     if session_id in _sessions:
         del _sessions[session_id]
         return {"success": True, "data": {"cleared": True}}
     return {"success": True, "data": {"cleared": False}}
+
+
+# Memory
+@router.get("/memory/sessions/{session_id}/history")
+async def get_memory_history(session_id: str, limit: int = 50):
+    agent = _agents.get("default")
+    if not agent:
+        raise HTTPException(status_code=404, detail="No agent")
+    session_mem = agent.memory.get_session(session_id)
+    messages = session_mem.get_messages()[-limit:]
+    return {"success": True, "data": {"messages": messages, "total": len(session_mem.messages), "summary": session_mem.summary}}
+
+
+@router.get("/memory/sessions/{session_id}/summary")
+async def get_memory_summary(session_id: str):
+    agent = _agents.get("default")
+    if not agent:
+        raise HTTPException(status_code=404, detail="No agent")
+    session_mem = agent.memory.get_session(session_id)
+    return {"success": True, "data": {"summary": session_mem.summary, "message_count": len(session_mem.messages)}}
+
+
+@router.post("/memory/investigation")
+async def load_investigation(data: InvestigationRequest):
+    agent = _agents.get("default")
+    if not agent:
+        raise HTTPException(status_code=404, detail="No agent")
+    inv = await agent.memory.investigation.load_investigation(data.investigation_id)
+    if not inv:
+        return {"success": False, "message": "Could not load investigation"}
+    formatted = agent.memory.investigation.format_for_context(inv, "crime")
+    return {"success": True, "data": {"raw": inv, "formatted": formatted}}
+
+
+@router.get("/memory/preferences/{user_id}")
+async def get_preferences(user_id: str):
+    agent = _agents.get("default")
+    if not agent:
+        raise HTTPException(status_code=404, detail="No agent")
+    return {"success": True, "data": agent.memory.preferences.get(user_id)}
+
+
+@router.put("/memory/preferences/{user_id}")
+async def set_preference(user_id: str, data: PreferencesRequest):
+    agent = _agents.get("default")
+    if not agent:
+        raise HTTPException(status_code=404, detail="No agent")
+    agent.memory.preferences.set(user_id, data.key, data.value)
+    return {"success": True, "data": agent.memory.preferences.get(user_id)}
+
+
+@router.get("/memory/working")
+async def get_working_memory():
+    agent = _agents.get("default")
+    if not agent:
+        raise HTTPException(status_code=404, detail="No agent")
+    return {"success": True, "data": agent.memory.working.get_all()}
 
 
 # Tools

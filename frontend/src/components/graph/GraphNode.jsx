@@ -1,6 +1,11 @@
+import { useLanguage } from '../../context/LanguageContext'
+import { translateNodeLabel } from '../../utils/translate'
+
 export default function GraphNode({ node, isSelected, isHighlighted, onClick, onMouseEnter, onMouseLeave }) {
+  const { lang } = useLanguage()
   const size = node.type === 'suspect' ? 36 + (node.cases || 0) * 2 : 28
   const fontSize = node.type === 'suspect' ? 12 : 14
+  const translatedLabel = translateNodeLabel(node.label, lang)
 
   return (
     <g
@@ -64,7 +69,7 @@ export default function GraphNode({ node, isSelected, isHighlighted, onClick, on
         fontFamily="var(--font-sans)"
         className="node-label"
       >
-        {node.label.length > 16 ? node.label.slice(0, 14) + '...' : node.label}
+        {translatedLabel.length > 16 ? translatedLabel.slice(0, 14) + '...' : translatedLabel}
       </text>
 
       {/* Risk badge for suspects */}

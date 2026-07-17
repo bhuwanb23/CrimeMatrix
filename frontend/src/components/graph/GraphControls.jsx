@@ -1,13 +1,17 @@
-import { ZoomIn, ZoomOut, Maximize2, Filter } from 'lucide-react'
+import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 const views = [
-  { id: 'all', label: 'All Connections' },
-  { id: 'criminal', label: 'Criminal Network' },
-  { id: 'gang', label: 'Gang Network' },
-  { id: 'evidence', label: 'Evidence Links' },
+  { id: 'all', labelKey: 'all_connections' },
+  { id: 'criminal', labelKey: 'criminal_network' },
+  { id: 'gang', labelKey: 'gang_network' },
+  { id: 'evidence', labelKey: 'evidence_links' },
 ]
 
 export default function GraphControls({ activeView, onViewChange, onZoomIn, onZoomOut, onReset }) {
+  const { lang } = useLanguage()
+
   return (
     <div className="graph-controls">
       <div className="graph-view-btns">
@@ -17,7 +21,7 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
             className={`graph-view-btn ${activeView === view.id ? 'active' : ''}`}
             onClick={() => onViewChange(view.id)}
           >
-            {view.label}
+            {t(view.labelKey, lang)}
           </button>
         ))}
       </div>

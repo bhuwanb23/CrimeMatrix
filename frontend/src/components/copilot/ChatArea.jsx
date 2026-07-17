@@ -1,8 +1,11 @@
 import { useRef, useEffect } from 'react'
 import { Bot, User, Loader2, MessageSquareText, Info } from 'lucide-react'
 import ChatInput from './ChatInput'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 function TypingIndicator() {
+  const { lang } = useLanguage()
   return (
     <div className="chat-message assistant">
       <div className="chat-message-avatar">
@@ -11,7 +14,7 @@ function TypingIndicator() {
       <div className="chat-message-body">
         <div className="chat-message-bubble typing-bubble">
           <Loader2 size={16} className="typing-spinner" />
-          <span>Analyzing...</span>
+          <span>{t('analyzing', lang)}</span>
         </div>
       </div>
     </div>
@@ -19,6 +22,7 @@ function TypingIndicator() {
 }
 
 export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, onToggleContext, historyOpen, contextOpen }) {
+  const { lang } = useLanguage()
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -41,7 +45,7 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
 
         <div className="chat-toolbar-center">
           <Bot size={18} strokeWidth={1.8} className="chat-toolbar-icon" />
-          <span className="chat-toolbar-title">AI Copilot</span>
+          <span className="chat-toolbar-title">{t('ai_copilot', lang)}</span>
         </div>
 
         <button
@@ -60,9 +64,9 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
             <div className="chat-empty-avatar">
               <Bot size={32} strokeWidth={1.5} />
             </div>
-            <h1 className="chat-empty-title">Hi, there 👋</h1>
+            <h1 className="chat-empty-title">{t('hi_there', lang)}</h1>
             <p className="chat-empty-subtitle">
-              Ask me anything about cases, suspects, or investigations.
+              {t('ask_copilot', lang)}
             </p>
           </div>
         ) : (

@@ -1,9 +1,21 @@
 import { useState } from 'react'
 import { Send, Paperclip, Mic, ChevronDown } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 const sources = ['All Sources', 'FIR Database', 'Suspects', 'Evidence', 'Stations']
 
+// Mapping of static source values to localization keys
+const sourceKeys = {
+  'All Sources': 'all_sources',
+  'FIR Database': 'fir_database',
+  'Suspects': 'suspects',
+  'Evidence': 'evidence',
+  'Stations': 'stations',
+}
+
 export default function ChatInput({ onSend }) {
+  const { lang } = useLanguage()
   const [value, setValue] = useState('')
   const [source, setSource] = useState('All Sources')
   const [sourceOpen, setSourceOpen] = useState(false)
@@ -27,7 +39,7 @@ export default function ChatInput({ onSend }) {
         <input
           type="text"
           className="chat-input-field"
-          placeholder="Ask me anything..."
+          placeholder={t('ask_anything_placeholder', lang)}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -38,7 +50,7 @@ export default function ChatInput({ onSend }) {
               className="chat-source-btn"
               onClick={() => setSourceOpen(!sourceOpen)}
             >
-              {source}
+              {t(sourceKeys[source], lang)}
               <ChevronDown size={12} />
             </button>
             {sourceOpen && (
@@ -49,7 +61,7 @@ export default function ChatInput({ onSend }) {
                     className={`chat-source-option ${s === source ? 'active' : ''}`}
                     onClick={() => { setSource(s); setSourceOpen(false) }}
                   >
-                    {s}
+                    {t(sourceKeys[s], lang)}
                   </button>
                 ))}
               </div>

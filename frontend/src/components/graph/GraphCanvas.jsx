@@ -2,8 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import GraphNode from './GraphNode'
 import GraphEdge from './GraphEdge'
 import { nodes as allNodes, edges as allEdges } from './graphData'
+import { useLanguage } from '../../context/LanguageContext'
+import { translateNodeLabel } from '../../utils/translate'
 
 export default function GraphCanvas({ selectedNode, onNodeSelect, activeView }) {
+  const { lang } = useLanguage()
   const svgRef = useRef(null)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })
@@ -112,7 +115,7 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView }) 
       {/* Tooltip */}
       {hoveredNode && !selectedNode && (
         <div className="graph-tooltip" style={{ left: hoveredNode.x * zoom + pan.x + 20, top: hoveredNode.y * zoom + pan.y - 10 }}>
-          {hoveredNode.label}
+          {translateNodeLabel(hoveredNode.label, lang)}
         </div>
       )}
     </svg>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { t, supportedLanguages } from '../utils/translate'
 
@@ -13,7 +13,29 @@ export default function SettingsPage() {
   })
   const [primaryLang, setPrimaryLang] = useState('Kannada')
   const [secondaryLang, setSecondaryLang] = useState('English')
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  const [activeAction, setActiveAction] = useState(null)
+
+  const handleAction = (action) => {
+    setActiveAction(action)
+    setTimeout(() => setActiveAction(null), 1500)
+  }
+
+  useEffect(() => {
+    document.documentElement.className = theme
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const handleSave = () => {
+    setIsSaving(true)
+    setTimeout(() => {
+      setIsSaving(false)
+      setSaveSuccess(true)
+      setTimeout(() => setSaveSuccess(false), 2000)
+    }, 600)
+  }
   const [notifications, setNotifications] = useState({
     push: true, email: true, sound: false, whisper: true,
   })
@@ -47,7 +69,7 @@ export default function SettingsPage() {
       className="h-10 w-full cursor-pointer rounded-[10px] border border-[var(--border)] bg-[var(--bg-app)] px-3 text-[13px] text-[var(--text-primary)] outline-none transition-[border-color] duration-150 focus:border-[var(--color-accent)]"
     >
       {options.map((opt) => (
-        <option key={opt} value={opt}>{opt}</option>
+        <option key={opt} value={opt}>{t(opt.toLowerCase(), lang) || opt}</option>
       ))}
     </select>
   )
@@ -65,7 +87,7 @@ export default function SettingsPage() {
         </div>
         <button
           type="button"
-          className="rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-[13px] font-semibold text-white transition-all duration-150 hover:-translate-y-px hover:bg-[#1e293b]"
+          onClick={handleSave} disabled={isSaving} className={`rounded-xl px-5 py-2.5 text-[13px] font-semibold text-white transition-all duration-150 hover:-translate-y-px ${saveSuccess ? 'bg-[var(--color-success)]' : 'bg-[var(--color-primary)] hover:bg-[#1e293b]'}`}
         >
           Save Changes
         </button>
@@ -73,7 +95,7 @@ export default function SettingsPage() {
 
       {/* Profile */}
       <div className="mb-3 rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-        <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Profile</h2>
+        <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('profile', lang) || 'Profile'}</h2>
         <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[#334155] text-xl font-bold text-white">
             SK
@@ -86,16 +108,14 @@ export default function SettingsPage() {
           <button
             type="button"
             className="rounded-[10px] border border-[var(--border)] px-4 py-2 text-[13px] font-medium text-[var(--text-secondary)] transition-all duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-          >
-            Edit Profile
-          </button>
+          >{activeAction === 'edit_profile' ? (t('opening', lang) || 'Opening...') : (t('edit_profile', lang) || 'Edit Profile')}</button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {/* Language */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Language</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('language', lang) || 'Language'}</h2>
           <div className="flex flex-col gap-3.5">
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
@@ -130,24 +150,24 @@ export default function SettingsPage() {
 
         {/* Theme */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Theme</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('theme', lang) || 'Theme'}</h2>
           <div className="flex flex-col gap-2.5">
-            {['light', 'dark', 'system'].map((t) => (
+            {['light', 'dark', 'system'].map((themeOption) => (
               <label
                 key={t}
                 className="flex cursor-pointer items-center gap-2.5 py-1"
-                onClick={() => setTheme(t)}
+                onClick={() => setTheme(themeOption)}
               >
                 <div
                   className={`flex h-5 w-5 items-center justify-center rounded-full border-2 transition-colors duration-150 ${
-                    theme === t ? 'border-[var(--color-accent)]' : 'border-[var(--border-strong)]'
+                    theme === themeOption ? 'border-[var(--color-accent)]' : 'border-[var(--border-strong)]'
                   }`}
                 >
-                  {theme === t && (
+                  {theme === themeOption && (
                     <div className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
                   )}
                 </div>
-                <span className="text-[13px] capitalize text-[var(--text-secondary)]">{t}</span>
+                <span className="text-[13px] capitalize text-[var(--text-secondary)]">{t(themeOption, lang) || themeOption}</span>
               </label>
             ))}
           </div>
@@ -155,7 +175,7 @@ export default function SettingsPage() {
 
         {/* Notifications */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Notifications</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('notifications', lang) || 'Notifications'}</h2>
           <div className="flex flex-col gap-3.5">
             {[
               { key: 'push', label: 'Push Alerts' },
@@ -164,7 +184,7 @@ export default function SettingsPage() {
               { key: 'whisper', label: 'Whisper Alerts' },
             ].map(({ key, label }) => (
               <div key={key} className="flex items-center justify-between">
-                <span className="text-[13px] text-[var(--text-secondary)]">{label}</span>
+                <span className="text-[13px] text-[var(--text-secondary)]">{t(key, lang) || label}</span>
                 <Toggle
                   checked={notifications[key]}
                   onChange={(v) => setNotifications({ ...notifications, [key]: v })}
@@ -176,10 +196,10 @@ export default function SettingsPage() {
 
         {/* Voice Settings */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Voice Settings</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('voice_settings', lang) || 'Voice Settings'}</h2>
           <div className="flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[var(--text-secondary)]">Voice Assistant</span>
+              <span className="text-[13px] text-[var(--text-secondary)]">{t('voice_assistant', lang) || 'Voice Assistant'}</span>
               <Toggle
                 checked={voice.enabled}
                 onChange={(v) => setVoice({ ...voice, enabled: v })}
@@ -187,7 +207,7 @@ export default function SettingsPage() {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
-                Language
+                {t('language', lang) || 'Language'}
               </label>
               <Select
                 value={voice.language}
@@ -210,7 +230,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[var(--text-secondary)]">Auto-transcribe</span>
+              <span className="text-[13px] text-[var(--text-secondary)]">{t('auto_transcribe', lang) || 'Auto-transcribe'}</span>
               <Toggle
                 checked={voice.autoTranscribe}
                 onChange={(v) => setVoice({ ...voice, autoTranscribe: v })}
@@ -221,10 +241,10 @@ export default function SettingsPage() {
 
         {/* Offline Sync */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Offline Sync</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('offline_sync', lang) || 'Offline Sync'}</h2>
           <div className="flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[var(--text-secondary)]">Enable Offline</span>
+              <span className="text-[13px] text-[var(--text-secondary)]">{t('enable_offline', lang) || 'Enable Offline'}</span>
               <Toggle
                 checked={offline.enabled}
                 onChange={(v) => setOffline({ ...offline, enabled: v })}
@@ -241,50 +261,45 @@ export default function SettingsPage() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[var(--text-secondary)]">Storage Used</span>
+              <span className="text-[13px] text-[var(--text-secondary)]">{t('storage_used', lang) || 'Storage Used'}</span>
               <span className="text-[13px] font-semibold text-[var(--text-primary)]">
                 {offline.storage}
               </span>
             </div>
             <button
               type="button"
-              className="w-full rounded-lg border border-[var(--border)] px-2 py-2 text-center text-xs font-medium text-[var(--text-muted)] transition-all duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-            >
-              Clear Cache
-            </button>
+              onClick={() => handleAction('clear_cache')} className="w-full rounded-lg border border-[var(--border)] px-2 py-2 text-center text-xs font-medium text-[var(--text-muted)] transition-all duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+            >{activeAction === 'clear_cache' ? (t('cleared', lang) || 'Cleared!') : (t('clear_cache', lang) || 'Clear Cache')}</button>
           </div>
         </div>
 
         {/* Device Management */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Device Management</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('device_management', lang) || 'Device Management'}</h2>
           <div className="flex flex-col gap-3.5">
             <div className="rounded-[10px] bg-[var(--bg-app)] p-3">
               <div className="mb-1 flex items-center justify-between">
-                <span className="text-[13px] font-semibold text-[var(--text-primary)]">This Device</span>
-                <span className="text-[10px] font-semibold text-[var(--color-success)]">Active</span>
+                <span className="text-[13px] font-semibold text-[var(--text-primary)]">{t('this_device', lang) || 'This Device'}</span>
+                <span className="text-[10px] font-semibold text-[var(--color-success)]">{t('active', lang) || 'Active'}</span>
               </div>
-              <div className="text-[11px] text-[var(--text-muted)]">Last sync: 2 minutes ago</div>
+              <div className="text-[11px] text-[var(--text-muted)]">{t('last_sync', lang) || 'Last sync'}: 2 {t('minutes_ago', lang) || 'minutes ago'}</div>
               <button
                 type="button"
-                className="mt-2 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-[11px] font-semibold text-white transition-all duration-150 hover:bg-[#1e293b]"
-              >
-                Sync Now
-              </button>
+                onClick={() => handleAction('sync_now')} className="mt-2 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-[11px] font-semibold text-white transition-all duration-150 hover:bg-[#1e293b]"
+              >{activeAction === 'sync_now' ? (t('synced', lang) || 'Synced!') : (t('sync_now', lang) || 'Sync Now')}</button>
             </div>
             <div className="h-px bg-[var(--border)]" />
-            <div className="text-[11px] font-semibold text-[var(--text-muted)]">Other Devices (2)</div>
-            <div className="text-xs text-[var(--text-secondary)]">• Tablet — Last sync: 1 hr ago</div>
-            <div className="text-xs text-[var(--text-secondary)]">• Desktop — Last sync: 3 hrs ago</div>
+            <div className="text-[11px] font-semibold text-[var(--text-muted)]">{t('other_devices', lang) || 'Other Devices'} (2)</div>
+            <div className="text-xs text-[var(--text-secondary)]">• {t('tablet', lang) || 'Tablet'} — {t('last_sync', lang) || 'Last sync'}: 1 hr ago</div>
+            <div className="text-xs text-[var(--text-secondary)]">• {t('desktop', lang) || 'Desktop'} — {t('last_sync', lang) || 'Last sync'}: 3 hrs ago</div>
             <button
               type="button"
-              className="w-full rounded-lg border border-[var(--border)] px-2 py-2 text-center text-xs font-medium text-[var(--text-muted)] transition-all duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-            >
-              Manage Devices
-            </button>
+              onClick={() => handleAction('manage_devices')} className="w-full rounded-lg border border-[var(--border)] px-2 py-2 text-center text-xs font-medium text-[var(--text-muted)] transition-all duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+            >{activeAction === 'manage_devices' ? (t('opening', lang) || 'Opening...') : (t('manage_devices', lang) || 'Manage Devices')}</button>
           </div>
         </div>
       </div>
     </div>
   )
 }
+ 

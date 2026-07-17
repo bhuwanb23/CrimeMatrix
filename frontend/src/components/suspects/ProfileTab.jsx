@@ -1,6 +1,4 @@
 import { MapPin, Phone, User, Hash, AlertTriangle } from 'lucide-react'
-
-import { MapPin, Phone, User, Hash, AlertTriangle } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 import { t } from '../../utils/translate'
 

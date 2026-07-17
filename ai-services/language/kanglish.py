@@ -1,4 +1,5 @@
 from typing import Dict, List
+from language.translator import EN_KN_DICT
 import structlog
 
 logger = structlog.get_logger()
@@ -42,7 +43,7 @@ class KanglishNormalizer:
         detected_kanglish = [w for w in words if w in KANGlish_KN]
 
         if target == "kannada":
-            normalized = [KANGlish_KN.get(w, w) for w in words]
+            normalized = [EN_KN_DICT.get(w, KANGlish_KN.get(w, w)) for w in words]
         else:
             normalized = [KANGlish_EN.get(w, w) for w in words]
 

@@ -16,13 +16,17 @@ class TestInvestigationContext:
         result = ic.format_for_context(None)
         assert "No data" in result
 
-    def test_cache(self):
+    @pytest.mark.asyncio
+    async def test_cache(self):
         ic = InvestigationContext()
-        ic._cache["test_key"] = {"data": "cached"}
-        assert ic._cache["test_key"]["data"] == "cached"
+        await ic._cache.set("test_key", {"data": "cached"}, 60)
+        val = await ic._cache.get("test_key")
+        assert val["data"] == "cached"
 
-    def test_clear_cache(self):
+    @pytest.mark.asyncio
+    async def test_clear_cache(self):
         ic = InvestigationContext()
-        ic._cache["key"] = {"data": "val"}
-        ic.clear_cache()
-        assert len(ic._cache) == 0
+        await ic._cache.set("key", {"data": "val"}, 60)
+        await ic.clear_cache()
+        val = await ic._cache.get("key")
+        assert val is None

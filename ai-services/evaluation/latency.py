@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from typing import Dict, List
 from collections import defaultdict
 import structlog
@@ -54,6 +55,3 @@ class LatencyTracker:
 
     def get_records(self, limit: int = 100) -> List[dict]:
         return list(reversed(self._records))[:limit]
-
-
-from datetime import datetime

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List
 import re
 import structlog
@@ -61,6 +62,3 @@ class HallucinationDetector:
             "avg_hallucination_rate": round(avg_rate, 1),
             "clean_rate": round(100 - avg_rate, 1),
         }
-
-
-from datetime import datetime

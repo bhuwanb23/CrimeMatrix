@@ -3,6 +3,7 @@ from memory.compressor import ContextCompressor
 from memory.working import WorkingMemory
 from memory.preferences import UserPreferences
 from memory.investigation import InvestigationContext
+from memory.persistence import MemoryPersistence
 from typing import Dict, List, Optional
 import structlog
 
@@ -16,15 +17,29 @@ class MemoryManager:
         self.preferences = UserPreferences()
         self.investigation = InvestigationContext()
         self.working = WorkingMemory()
+        self.persistence = MemoryPersistence()
 
-    def get_session(self, session_id: str) -> SessionMemory:
+    async def get_session(self, session_id: str) -> SessionMemory:
         if session_id not in self.sessions:
-            self.sessions[session_id] = SessionMemory(session_id)
+            loaded = await self.persistence.load_session(session_id)
+            if loaded:
+                session = SessionMemory(session_id)
+                messages = await self.persistence.load_messages(session_id)
+                for msg in messages:
+                    session.add_message(msg["role"], msg["content"])
+                summary = await self.persistence.load_summary(session_id)
+                if summary:
+                    session.set_summary(summary, 0)
+                self.sessions[session_id] = session
+                logger.info("session_loaded_from_db", session_id=session_id, messages=len(messages))
+            else:
+                self.sessions[session_id] = SessionMemory(session_id)
+                await self.persistence.save_session(session_id)
         return self.sessions[session_id]
 
     async def before_turn(self, query: str, session_id: str = "default",
                           user_id: str = "default") -> dict:
-        session = self.get_session(session_id)
+        session = await self.get_session(session_id)
         prefs = self.preferences.get(user_id)
         context_parts = []
 
@@ -51,9 +66,12 @@ class MemoryManager:
         }
 
     async def after_turn(self, query: str, response: str, session_id: str = "default"):
-        session = self.get_session(session_id)
+        session = await self.get_session(session_id)
         session.add_message("user", query)
         session.add_message("assistant", response)
+
+        await self.persistence.save_message(session_id, "user", query)
+        await self.persistence.save_message(session_id, "assistant", response)
 
         if session.needs_compression():
             logger.info("auto_compressing", session=session_id, messages=len(session.messages))
@@ -63,12 +81,14 @@ class MemoryManager:
             session.set_summary(summary, 0)
             for m in kept:
                 session.add_message(m["role"], m["content"])
+            await self.persistence.save_summary(session_id, summary)
 
-    def clear_session(self, session_id: str) -> bool:
+    async def clear_session(self, session_id: str) -> bool:
         if session_id in self.sessions:
             del self.sessions[session_id]
-            return True
-        return False
+        await self.persistence.delete_session(session_id)
+        return True
 
-    def list_sessions(self) -> List[dict]:
-        return [s.to_dict() for s in self.sessions.values()]
+    async def list_sessions(self) -> List[dict]:
+        db_sessions = await self.persistence.list_sessions()
+        return db_sessions if db_sessions else [s.to_dict() for s in self.sessions.values()]

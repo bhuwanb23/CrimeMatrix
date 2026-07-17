@@ -118,7 +118,7 @@ class GraphPersistence:
 
     async def save_version(self, node_count: int, edge_count: int):
         version = GraphVersion(
-            version=self._get_next_version(),
+            version=await self._get_next_version(),
             node_count=node_count,
             edge_count=edge_count,
         )

@@ -185,6 +185,8 @@ class CoreAgent:
 
         provider = provider_registry.get(self.provider_name)
         system_prompt = self.system_prompt
+        if investigation_context:
+            system_prompt += f"\n\n{investigation_context}"
         if memory_ctx.get("conversation_context"):
             system_prompt += f"\n\n{memory_ctx['conversation_context']}"
         system_prompt += "\n\n" + compiled_context

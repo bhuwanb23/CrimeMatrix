@@ -24,7 +24,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title=config.app_name,
         version=config.version,
-        description="CrimeMatrix AI Platform — Agent-based AI service",
+        description="CrimeMatrix AI Platform — Agent-based AI service with reasoning loop",
         docs_url="/docs",
     )
 
@@ -65,7 +65,7 @@ def create_app() -> FastAPI:
 
     @app.on_event("startup")
     async def startup():
-        logger.info("ai_services_startup", port=config.port)
+        logger.info("ai_services_startup", port=config.port, version="2.0.0")
         healthy = await ollama.health_check()
         logger.info("ollama_health", healthy=healthy)
 

@@ -5,7 +5,7 @@ from app.api.v1 import (
     districts, vehicles, phones, locations, crimetypes,
     notes, bookmarks, timeline_events, attachments, case_links, case_status,
     search, graph_api, analytics_api, reports_api, notifications_api, audit_api,
-    memory_api, embedding_api, monitoring_api, storage_api
+    memory_api, embedding_api, monitoring_api, storage_api, copilot
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -71,3 +71,6 @@ router.include_router(monitoring_api.router, prefix="/monitoring", tags=["Monito
 
 # Storage APIs
 router.include_router(storage_api.router, prefix="/storage", tags=["Storage"])
+
+# Copilot APIs
+router.include_router(copilot.router, prefix="/copilot", tags=["Copilot"])

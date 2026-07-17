@@ -774,3 +774,60 @@ async def language_stats():
         "kanglish_entries": len(KANGlish_KN),
         "en_kn_dict_size": len(EN_KN_DICT) if "EN_KN_DICT" in dir() else 0,
     }}
+
+
+# Embedding Services
+from embeddings.service import EmbeddingService
+
+_embedding_service = EmbeddingService()
+
+
+class EmbedRequest(BaseModel):
+    text: str
+    domain: str = "fir"
+    item_id: Optional[str] = None
+
+
+class BatchEmbedRequest(BaseModel):
+    texts: list
+    domain: str = "fir"
+
+
+class SimilarityRequest(BaseModel):
+    embedding1: list
+    embedding2: list
+
+
+class EmbedSearchRequest(BaseModel):
+    query: str
+    domain: str = "fir"
+    top_k: int = 5
+
+
+@router.post("/embeddings/embed")
+async def embed_text(data: EmbedRequest):
+    vec = await _embedding_service.embed(data.text, data.domain, data.item_id)
+    return {"success": True, "data": {"embedding": vec, "dimension": len(vec), "domain": data.domain}}
+
+
+@router.post("/embeddings/batch")
+async def embed_batch(data: BatchEmbedRequest):
+    vecs = await _embedding_service.embed_batch(data.texts, data.domain)
+    return {"success": True, "data": {"embeddings": vecs, "count": len(vecs), "domain": data.domain}}
+
+
+@router.post("/embeddings/similarity")
+async def embedding_similarity(data: SimilarityRequest):
+    score = _embedding_service.similarity(data.embedding1, data.embedding2)
+    return {"success": True, "data": {"similarity": score}}
+
+
+@router.post("/embeddings/search")
+async def embedding_search(data: EmbedSearchRequest):
+    results = await _embedding_service.search(data.query, data.domain, data.top_k)
+    return {"success": True, "data": results}
+
+
+@router.get("/embeddings/stats")
+async def embedding_stats():
+    return {"success": True, "data": _embedding_service.get_stats()}

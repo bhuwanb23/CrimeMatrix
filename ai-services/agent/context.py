@@ -1,4 +1,4 @@
-from agent.message import Plan, ToolResult
+from agent.message import Plan, PlanStep, ToolResult
 from typing import List
 
 

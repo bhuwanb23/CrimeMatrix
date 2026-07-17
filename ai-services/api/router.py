@@ -279,3 +279,86 @@ async def rag_stats():
 async def rag_citations(session_id: str):
     citations = _rag.citations.get_citations(session_id)
     return {"success": True, "data": citations}
+
+
+# Search Intelligence
+from search.engine import SearchEngine
+
+_search_engine = SearchEngine(provider="ollama", model="llama3.2:1b")
+
+
+class IntelligentSearchRequest(BaseModel):
+    query: str
+    top_k: int = 5
+    doc_type: Optional[str] = None
+    use_rewrite: bool = True
+    use_expand: bool = True
+    use_rerank: bool = True
+
+
+class SimilarCaseRequest(BaseModel):
+    case_id: int
+    top_k: int = 5
+
+
+class CrossDistrictRequest(BaseModel):
+    query: str
+    districts: Optional[list] = None
+    top_k: int = 10
+
+
+class QueryExpandRequest(BaseModel):
+    query: str
+
+
+class QueryRewriteRequest(BaseModel):
+    query: str
+
+
+class RerankRequest(BaseModel):
+    query: str
+    results: list
+
+
+@router.post("/search/intelligent")
+async def intelligent_search(data: IntelligentSearchRequest):
+    result = await _search_engine.intelligent_search(
+        data.query, data.top_k, data.doc_type,
+        data.use_rewrite, data.use_expand, data.use_rerank,
+    )
+    return {"success": True, "data": result}
+
+
+@router.post("/search/similar")
+async def similar_cases(data: SimilarCaseRequest):
+    result = await _search_engine.find_similar(data.case_id, data.top_k)
+    return {"success": True, "data": result}
+
+
+@router.post("/search/cross-district")
+async def cross_district(data: CrossDistrictRequest):
+    result = await _search_engine.cross_district_search(data.query, data.districts, data.top_k)
+    return {"success": True, "data": result}
+
+
+@router.post("/search/expand")
+async def expand_query(data: QueryExpandRequest):
+    result = await _search_engine.expand_query(data.query)
+    return {"success": True, "data": result}
+
+
+@router.post("/search/rewrite")
+async def rewrite_query(data: QueryRewriteRequest):
+    result = await _search_engine.rewrite_query(data.query)
+    return {"success": True, "data": result}
+
+
+@router.post("/search/rerank")
+async def rerank_results(data: RerankRequest):
+    result = await _search_engine.rerank_results(data.query, data.results)
+    return {"success": True, "data": result}
+
+
+@router.get("/search/stats")
+async def search_stats():
+    return {"success": True, "data": _search_engine.get_stats()}

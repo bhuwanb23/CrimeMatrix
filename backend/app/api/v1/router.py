@@ -62,3 +62,6 @@ router.include_router(audit_api.router, prefix="/audit", tags=["Audit"])
 
 # Memory Persistence APIs
 router.include_router(memory_api.router, prefix="/memory", tags=["Memory"])
+
+# Embedding Persistence APIs
+router.include_router(embedding_api.router, prefix="/embeddings", tags=["Embeddings"])

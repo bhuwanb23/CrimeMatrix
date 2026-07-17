@@ -871,3 +871,55 @@ async def get_workflow_steps(name: str):
         raise HTTPException(status_code=404, detail="Workflow not found")
     steps = [{"name": s["name"], "description": s.get("description", "")} for s in wf.get("steps", [])]
     return {"success": True, "data": steps}
+
+
+# Model Management
+from models.registry import model_registry, MODEL_TYPES
+from models.conversation import ConversationModel
+from models.embedding import EmbeddingModel
+from models.speech import SpeechModel
+from models.translation import TranslationModel
+from models.prediction import PredictionModel
+
+_conversation_model = ConversationModel()
+_embedding_model = EmbeddingModel()
+_speech_model = SpeechModel()
+_translation_model = TranslationModel()
+_prediction_model = PredictionModel()
+
+
+class ModelRegisterRequest(BaseModel):
+    name: str
+    model_type: str
+    provider: str
+    model_name: Optional[str] = None
+    default: bool = False
+
+
+@router.get("/models/registry")
+async def list_model_registry():
+    return {"success": True, "data": model_registry.list_all()}
+
+
+@router.get("/models/registry/{model_type}")
+async def list_models_by_type(model_type: str):
+    models = model_registry.list_type(model_type)
+    return {"success": True, "data": models}
+
+
+@router.post("/models/registry")
+async def register_model(data: ModelRegisterRequest):
+    model_registry.register(data.name, data.model_type, data.provider, data.model_name, default=data.default)
+    return {"success": True, "data": {"registered": data.name, "type": data.model_type}}
+
+
+@router.get("/models/config")
+async def model_config():
+    return {"success": True, "data": {
+        "conversation": _conversation_model.get_config(),
+        "embedding": _embedding_model.get_config(),
+        "speech": _speech_model.get_config(),
+        "translation": _translation_model.get_config(),
+        "prediction": _prediction_model.get_config(),
+        "defaults": model_registry.get_defaults(),
+    }}

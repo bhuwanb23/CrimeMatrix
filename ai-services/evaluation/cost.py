@@ -1,4 +1,5 @@
 from typing import Dict, List
+from collections import defaultdict
 from datetime import datetime
 import structlog
 

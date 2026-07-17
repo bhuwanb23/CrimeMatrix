@@ -33,6 +33,63 @@ const translations = {
     total: "Total",
     recent_alerts: "Recent Alerts",
     more_details: "More details",
+    // Analytics & Charts Translation
+    crime_breakdown: "Crime Type Breakdown",
+    cases_label: "cases",
+    cases_by_crime_type: "Cases by Crime Type",
+    todays_cases: "Today's Cases",
+    live: "Live",
+    total_cases: "Total Cases",
+    theft: "Theft",
+    fraud: "Fraud",
+    cybercrime: "Cybercrime",
+    assault: "Assault",
+    other: "Other",
+    top_districts: "Top Districts",
+    by_case_count: "by case count",
+    case_resolution: "Case Resolution",
+    by_time_period: "by time period",
+    total_resolved: "Total Resolved",
+    avg_resolution: "Avg. Resolution",
+    case_trend: "Case Trend",
+    time_interval: "Time Interval:",
+    weekly: "Weekly",
+    monthly: "Monthly",
+    yearly: "Yearly",
+    vs_30_days: "vs 30 Days",
+    cases_by_district: "Cases by District",
+    investigation_calendar: "Investigation Calendar",
+    hearings: "Hearings",
+    shifts: "Shifts",
+    cases_by_status: "Cases by Status",
+    active: "Active",
+    under_investigation: "Under Investigation",
+    closed: "Closed",
+    // Calendar Events
+    court_hearing: "Court Hearing — FIR #4489",
+    bail_review: "Bail Review — Case #4512",
+    shift_handover: "Shift Handover — Morning",
+    night_patrol: "Night Patrol Briefing",
+    // Districts
+    bengaluru_urban: "Bengaluru Urban",
+    bengaluru_rural: "Bengaluru Rural",
+    mysuru: "Mysuru",
+    mangalaru: "Mangaluru",
+    hubballi: "Hubballi",
+    // Days/Periods
+    days_label: "days",
+    "0-30 days": "0-30 days",
+    "31-60 days": "31-60 days",
+    "61-90 days": "61-90 days",
+    "91-180 days": "91-180 days",
+    "180+ days": "180+ days",
+    Sun: "Sun",
+    Mon: "Mon",
+    Tue: "Tue",
+    Wed: "Wed",
+    Thu: "Thu",
+    Fri: "Fri",
+    Sat: "Sat",
   },
   ta: {
     accept: "ஒப்புக்கொள்",
@@ -65,6 +122,64 @@ const translations = {
     total: "மொத்தம்",
     recent_alerts: "சமீபத்திய எச்சரிக்கைகள்",
     more_details: "கூடுதல் விவரங்கள்",
+    // Analytics & Charts Translation
+    crime_breakdown: "குற்ற வகை முறிவு",
+    cases_label: "வழக்குகள்",
+    cases_by_crime_type: "குற்ற வகை வாரியாக வழக்குகள்",
+    todays_cases: "இன்றைய வழக்குகள்",
+    live: "நேரலை",
+    total_cases: "மொத்த வழக்குகள்",
+    theft: "களவு",
+    fraud: "மோசடி",
+    cybercrime: "சைபர் குற்றம்",
+    assault: "தாக்குதல்",
+    other: "இதர",
+    top_districts: "முன்னணி மாவட்டங்கள்",
+    by_case_count: "வழக்குகளின் எண்ணிக்கை அடிப்படையில்",
+    case_resolution: "வழக்கு தீர்வு",
+    by_time_period: "கால அளவின் அடிப்படையில்",
+    total_resolved: "மொத்தம் தீர்க்கப்பட்டவை",
+    avg_resolution: "சராசரி தீர்வு",
+    case_trend: "வழக்கு போக்கு",
+    time_interval: "கால இடைவெளி:",
+    weekly: "வாராந்திர",
+    monthly: "மாதாந்திர",
+    yearly: "வருடாந்திர",
+    vs_30_days: "கடந்த 30 நாட்களில்",
+    cases_by_district: "மாவட்ட வாரியாக வழக்குகள்",
+    investigation_calendar: "விசாரணை நாட்காட்டி",
+    hearings: "விசாரணைகள்",
+    shifts: "பணிகள்",
+    cases_by_status: "நிலை வாரியாக வழக்குகள்",
+    active: "செயலில் உள்ளது",
+    under_investigation: "விசாரணையில் உள்ளது",
+    closed: "முடிக்கப்பட்டது",
+    // Calendar Events
+    court_hearing: "நீதிமன்ற விசாரணை — FIR #4489",
+    bail_review: "ஜாமீன் ஆய்வு — வழக்கு #4512",
+    shift_handover: "பணி ஒப்படைப்பு — காலை",
+    night_patrol: "இரவு ரோந்து விளக்கக்காட்சி",
+    // Districts
+    bengaluru_urban: "பெங்களூரு நகர்ப்புறம்",
+    bengaluru_rural: "பெங்களூரு ஊரக",
+    mysuru: "மைசூரு",
+    mangalaru: "மங்களூரு",
+    hubballi: "ஹூப்ளி",
+    // Days/Periods
+    days_label: "நாட்கள்",
+    "0-30 days": "0-30 நாட்கள்",
+    "31-60 days": "31-60 நாட்கள்",
+    "61-90 days": "61-90 நாட்கள்",
+    "91-180 days": "91-180 நாட்கள்",
+    "180+ days": "180+ நாட்கள்",
+    // Days
+    Sun: "ஞாயிறு",
+    Mon: "திங்கள்",
+    Tue: "செவ்வாய்",
+    Wed: "புதன்",
+    Thu: "வியாழன்",
+    Fri: "வெள்ளி",
+    Sat: "சனி",
   },
   kn: {
     accept: "ಸ್ವೀಕರಿಸಿ",
@@ -97,6 +212,64 @@ const translations = {
     total: "ಒಟ್ಟು",
     recent_alerts: "ಇತ್ತೀಚಿನ ಎಚ್ಚರಿಕೆಗಳು",
     more_details: "ಹೆಚ್ಚಿನ ವಿವರಗಳು",
+    // Analytics & Charts Translation
+    crime_breakdown: "ಅಪರಾಧ ಪ್ರಕಾರದ ವಿಭಜನೆ",
+    cases_label: "ಪ್ರಕರಣಗಳು",
+    cases_by_crime_type: "ಅಪರಾಧ ಪ್ರಕಾರದ ಪ್ರಕರಣಗಳು",
+    todays_cases: "ಇಂದಿನ ಪ್ರಕರಣಗಳು",
+    live: "ಲೈವ್",
+    total_cases: "ಒಟ್ಟು ಪ್ರಕರಣಗಳು",
+    theft: "ಕಳ್ಳತನ",
+    fraud: "ವಂಚನೆ",
+    cybercrime: "ಸೈಬರ್ ಅಪರಾಧ",
+    assault: "ದಾಳಿ",
+    other: "ಇತರೆ",
+    top_districts: "ಉನ್ನತ ಜಿಲ್ಲೆಗಳು",
+    by_case_count: "ಪ್ರಕರಣಗಳ ಸಂಖ್ಯೆಯ ಆಧಾರದ ಮೇಲೆ",
+    case_resolution: "ಪ್ರಕರಣದ ಪರಿಹಾರ",
+    by_time_period: "ಸಮಯದ ಅವಧಿಯ ಆಧಾರದ ಮೇಲೆ",
+    total_resolved: "ಒಟ್ಟು ಪರಿಹರಿಸಲಾಗಿದೆ",
+    avg_resolution: "ಸರಾಸರಿ ಪರಿಹಾರ ಸಮಯ",
+    case_trend: "ಪ್ರಕರಣದ ಪ್ರವೃತ್ತಿ",
+    time_interval: "ಸಮಯದ ಮಧ್ಯಂತರ:",
+    weekly: "ವಾರದ",
+    monthly: "ತಿಂಗಳ",
+    yearly: "ವರ್ಷದ",
+    vs_30_days: "ಕಳೆದ 30 ದಿನಗಳ ವಿರುದ್ಧ",
+    cases_by_district: "ಜಿಲ್ಲಾವಾರು ಪ್ರಕರಣಗಳು",
+    investigation_calendar: "ತನಿಖಾ ಕ್ಯಾಲೆಂಡರ್",
+    hearings: "ವಿಚಾರಣೆಗಳು",
+    shifts: "ಶಿಫ್ಟ್‌ಗಳು",
+    cases_by_status: "ಸ್ಥಿತಿವಾರು ಪ್ರಕರಣಗಳು",
+    active: "ಸಕ್ರಿಯ",
+    under_investigation: "ತನಿಖೆಯಲ್ಲಿದೆ",
+    closed: "ಮುಚ್ಚಲಾಗಿದೆ",
+    // Calendar Events
+    court_hearing: "ನ್ಯಾಯಾಲಯದ ವಿಚಾರಣೆ — FIR #4489",
+    bail_review: "ಜಾಮೀನು ಪರಿಶೀಲನೆ — ಪ್ರಕರಣ #4512",
+    shift_handover: "ಶಿಫ್ಟ್ ಹಸ್ತಾಂತರ — ಬೆಳಿಗ್ಗೆ",
+    night_patrol: "ರಾತ್ರಿ ಗಸ್ತು ಮಾಹಿತಿ",
+    // Districts
+    bengaluru_urban: "ಬೆಂಗಳೂರು ನಗರ",
+    bengaluru_rural: "ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ",
+    mysuru: "ಮೈಸೂರು",
+    mangalaru: "ಮಂಗಳೂರು",
+    hubballi: "ಹುಬ್ಬಳ್ಳಿ",
+    // Days/Periods
+    days_label: "ದಿನಗಳು",
+    "0-30 days": "0-30 ದಿನಗಳು",
+    "31-60 days": "31-60 ದಿನಗಳು",
+    "61-90 days": "61-90 ದಿನಗಳು",
+    "91-180 days": "91-180 ದಿನಗಳು",
+    "180+ days": "180+ ದಿನಗಳು",
+    // Days
+    Sun: "ಭಾನು",
+    Mon: "ಸೋಮ",
+    Tue: "ಮಂಗಳ",
+    Wed: "ಬುಧ",
+    Thu: "ಗುರು",
+    Fri: "ಶುಕ್ರ",
+    Sat: "ಶನಿ",
   },
   te: {
     accept: "అంగీకరించండి",
@@ -129,6 +302,64 @@ const translations = {
     total: "మొత్తం",
     recent_alerts: "ఇటీవలి అలర్ట్స్",
     more_details: "మరిన్ని వివరాలు",
+    // Analytics & Charts Translation
+    crime_breakdown: "నేర రకం విభజన",
+    cases_label: "కేసులు",
+    cases_by_crime_type: "నేర రకం ఆధారంగా కేసులు",
+    todays_cases: "నేటి కేసులు",
+    live: "లైవ్",
+    total_cases: "మొత్తం కేసులు",
+    theft: "దొంగతనం",
+    fraud: "మోసం",
+    cybercrime: "సైబర్ నేరం",
+    assault: "దాడి",
+    other: "ఇతర",
+    top_districts: "అగ్ర జిల్లాలు",
+    by_case_count: "కేసుల సంఖ్య ఆధారంగా",
+    case_resolution: "కేసు పరిష్కారం",
+    by_time_period: "సమయ వ్యవధి ఆధారంగా",
+    total_resolved: "మొత్తం పరిష్కరించబడింది",
+    avg_resolution: "సగటు పరిష్కారం",
+    case_trend: "కేసు ట్రెండ్",
+    time_interval: "సమయ వ్యవధి:",
+    weekly: "వారానికి ఒకసారి",
+    monthly: "నెలవారీ",
+    yearly: "వార్షిక",
+    vs_30_days: "గత 30 రోజులతో పోలిస్తే",
+    cases_by_district: "జిల్లా వారీగా కేసులు",
+    investigation_calendar: "విచారణ క్యాలెండర్",
+    hearings: "విచారణలు",
+    shifts: "షిఫ్ట్‌లు",
+    cases_by_status: "స్థితి ఆధారంగా కేసులు",
+    active: "క్రియాశీల",
+    under_investigation: "విచారణలో ఉంది",
+    closed: "మూసివేయబడింది",
+    // Calendar Events
+    court_hearing: "కోర్టు విచారణ — FIR #4489",
+    bail_review: "బెయిల్ సమీక్ష — కేసు #4512",
+    shift_handover: "షిఫ్ట్ అప్పగింత — ఉదయం",
+    night_patrol: "నైట్ పెట్రోల్ బ్రీఫింగ్",
+    // Districts
+    bengaluru_urban: "బెంగళూరు అర్బన్",
+    bengaluru_rural: "బెంగళూరు రూరల్",
+    mysuru: "మైసూర్",
+    mangalaru: "మంగళూరు",
+    hubballi: "హుబ్లీ",
+    // Days/Periods
+    days_label: "రోజులు",
+    "0-30 days": "0-30 రోజులు",
+    "31-60 days": "31-60 రోజులు",
+    "61-90 days": "61-90 రోజులు",
+    "91-180 days": "91-180 రోజులు",
+    "180+ days": "180+ రోజులు",
+    // Days
+    Sun: "ఆది",
+    Mon: "సోమ",
+    Tue: "మంగళ",
+    Wed: "బుధ",
+    Thu: "గురు",
+    Fri: "శుక్ర",
+    Sat: "శని",
   },
   hi: {
     accept: "स्वीकार करें",
@@ -161,6 +392,64 @@ const translations = {
     total: "कुल",
     recent_alerts: "हाल के अलर्ट",
     more_details: "अधिक विवरण",
+    // Analytics & Charts Translation
+    crime_breakdown: "अपराध प्रकार का विवरण",
+    cases_label: "मामले",
+    cases_by_crime_type: "अपराध प्रकार के अनुसार मामले",
+    todays_cases: "आज के मामले",
+    live: "लाइव",
+    total_cases: "कुल मामले",
+    theft: "चोरी",
+    fraud: "धोखाधड़ी",
+    cybercrime: "साइबर अपराध",
+    assault: "हमला",
+    other: "अन्य",
+    top_districts: "शीर्ष जिले",
+    by_case_count: "मामलों की संख्या के अनुसार",
+    case_resolution: "मामले का समाधान",
+    by_time_period: "समय अवधि के अनुसार",
+    total_resolved: "कुल हल किए गए",
+    avg_resolution: "औसत समाधान",
+    case_trend: "मामले का ट्रेंड",
+    time_interval: "समय अंतराल:",
+    weekly: "साप्ताहिक",
+    monthly: "मासिक",
+    yearly: "वार्षिक",
+    vs_30_days: "पिछले 30 दिनों की तुलना में",
+    cases_by_district: "जिले के अनुसार मामले",
+    investigation_calendar: "जांच कैलेंडर",
+    hearings: "सुनवाई",
+    shifts: "पालियों",
+    cases_by_status: "स्थिति के अनुसार मामले",
+    active: "सक्रिय",
+    under_investigation: "जांच के अधीन",
+    closed: "बंद",
+    // Calendar Events
+    court_hearing: "कोर्ट सुनवाई — FIR #4489",
+    bail_review: "जमानत समीक्षा — केस #4512",
+    shift_handover: "शिफ्ट हैंडओवर — सुबह",
+    night_patrol: "रात्रि गश्त ब्रीफिंग",
+    // Districts
+    bengaluru_urban: "बेंगलुरु शहरी",
+    bengaluru_rural: "बेंगलुरु ग्रामीण",
+    mysuru: "मैसूरु",
+    mangalaru: "मंगलुरु",
+    hubballi: "हुबली",
+    // Days/Periods
+    days_label: "दिन",
+    "0-30 days": "0-30 दिन",
+    "31-60 days": "31-60 दिन",
+    "61-90 days": "61-90 दिन",
+    "91-180 days": "91-180 दिन",
+    "180+ days": "180+ दिन",
+    // Days
+    Sun: "रवि",
+    Mon: "सोम",
+    Tue: "मंगल",
+    Wed: "बुध",
+    Thu: "गुरु",
+    Fri: "शुक्र",
+    Sat: "शनि",
   },
 };
 
@@ -186,6 +475,77 @@ export function translateAlertType(type, lang = "en") {
   };
   const key = mapping[type];
   return key ? t(key, lang) : type;
+}
+
+// Helper to translate crime type labels dynamically
+export function translateCrimeType(type, lang = "en") {
+  const mapping = {
+    theft: "theft",
+    Theft: "theft",
+    fraud: "fraud",
+    Fraud: "fraud",
+    cybercrime: "cybercrime",
+    Cybercrime: "cybercrime",
+    assault: "assault",
+    Assault: "assault",
+    other: "other",
+    Other: "other",
+  };
+  const key = mapping[type];
+  return key ? t(key, lang) : type;
+}
+
+// Helper to translate district names dynamically
+export function translateDistrictName(name, lang = "en") {
+  const mapping = {
+    "Bengaluru Urban": "bengaluru_urban",
+    "Bengaluru Rural": "bengaluru_rural",
+    "Mysuru": "mysuru",
+    "Mangaluru": "mangalaru",
+    "Hubballi": "hubballi",
+    "Other": "other",
+  };
+  const key = mapping[name];
+  return key ? t(key, lang) : name;
+}
+
+// Helper to translate calendar days
+export function translateCalendarDay(day, lang = "en") {
+  const mapping = {
+    Sun: "Sun",
+    Mon: "Mon",
+    Tue: "Tue",
+    Wed: "Wed",
+    Thu: "Thu",
+    Fri: "Fri",
+    Sat: "Sat",
+  };
+  const key = mapping[day];
+  return key ? t(key, lang) : day;
+}
+
+// Helper to translate calendar event titles dynamically
+export function translateCalendarEvent(title, lang = "en") {
+  const mapping = {
+    "Court Hearing — FIR #4489": "court_hearing",
+    "Bail Review — Case #4512": "bail_review",
+    "Shift Handover — Morning": "shift_handover",
+    "Night Patrol Briefing": "night_patrol",
+  };
+  const key = mapping[title];
+  return key ? t(key, lang) : title;
+}
+
+// Helper to translate cases status dynamically
+export function translateStatus(status, lang = "en") {
+  const mapping = {
+    "Active": "active",
+    "Pending Review": "pending_review",
+    "Under Investigation": "under_investigation",
+    "Closed": "closed",
+  };
+  const key = mapping[status];
+  return key ? t(key, lang) : status;
 }
 
 // Export list of supported languages for UI selectors

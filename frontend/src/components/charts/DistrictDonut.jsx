@@ -1,4 +1,6 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateDistrictName } from '../../utils/translate'
 
 const districts = [
   { name: 'Bengaluru Urban', value: 420, color: '#e57373' },
@@ -12,10 +14,16 @@ const districts = [
 const total = districts.reduce((s, d) => s + d.value, 0)
 
 export default function DistrictDonut() {
+  const { lang } = useLanguage()
+  const data = districts.map((d) => ({
+    ...d,
+    translatedName: translateDistrictName(d.name, lang),
+  }))
+
   return (
     <div className="chart-card">
       <div className="chart-card-header">
-        <h3 className="chart-card-title">Cases by District</h3>
+        <h3 className="chart-card-title">{t('cases_by_district', lang)}</h3>
         <button className="chart-card-menu" aria-label="More options">⋯</button>
       </div>
       <div className="chart-card-body donut-body">
@@ -23,7 +31,7 @@ export default function DistrictDonut() {
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
-                data={districts}
+                data={data}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
@@ -32,7 +40,7 @@ export default function DistrictDonut() {
                 dataKey="value"
                 strokeWidth={0}
               >
-                {districts.map((entry, i) => (
+                {data.map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}
               </Pie>
@@ -40,15 +48,15 @@ export default function DistrictDonut() {
           </ResponsiveContainer>
           <div className="donut-center">
             <span className="donut-center-value">{total.toLocaleString()}</span>
-            <span className="donut-center-label">Total</span>
+            <span className="donut-center-label">{t('total', lang)}</span>
           </div>
         </div>
 
         <div className="donut-legend">
-          {districts.map((d, i) => (
+          {data.map((d, i) => (
             <div key={i} className="donut-legend-item">
               <span className="donut-legend-dot" style={{ background: d.color }} />
-              <span className="donut-legend-name">{d.name}</span>
+              <span className="donut-legend-name">{d.translatedName}</span>
               <span className="donut-legend-value">{d.value}</span>
             </div>
           ))}

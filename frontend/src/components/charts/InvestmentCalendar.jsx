@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Briefcase, Clock } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateCalendarDay, translateCalendarEvent } from '../../utils/translate'
 
 const weekDays = [
   { day: 'Sun', date: 5 },
@@ -23,13 +25,14 @@ const events = {
 }
 
 export default function InvestmentCalendar() {
+  const { lang } = useLanguage()
   const [selectedDay, setSelectedDay] = useState(1) // Mon
   const [activeTab, setActiveTab] = useState('hearings')
 
   return (
     <div className="chart-card">
       <div className="chart-card-header">
-        <h3 className="chart-card-title">Investigation Calendar</h3>
+        <h3 className="chart-card-title">{t('investigation_calendar', lang)}</h3>
         <button className="chart-card-menu" aria-label="More options">⋯</button>
       </div>
       <div className="chart-card-body">
@@ -45,7 +48,7 @@ export default function InvestmentCalendar() {
                 className={`calendar-day ${i === selectedDay ? 'selected' : ''}`}
                 onClick={() => setSelectedDay(i)}
               >
-                <span className="calendar-day-name">{d.day}</span>
+                <span className="calendar-day-name">{translateCalendarDay(d.day, lang)}</span>
                 <span className="calendar-day-date">{d.date}</span>
               </button>
             ))}
@@ -62,14 +65,14 @@ export default function InvestmentCalendar() {
             onClick={() => setActiveTab('hearings')}
           >
             <Briefcase size={14} />
-            Hearings
+            {t('hearings', lang)}
           </button>
           <button
             className={`calendar-tab ${activeTab === 'shifts' ? 'active' : ''}`}
             onClick={() => setActiveTab('shifts')}
           >
             <Clock size={14} />
-            Shifts
+            {t('shifts', lang)}
           </button>
         </div>
 
@@ -79,7 +82,7 @@ export default function InvestmentCalendar() {
             <div key={i} className="calendar-event">
               <div className="calendar-event-indicator" />
               <div className="calendar-event-content">
-                <p className="calendar-event-title">{event.title}</p>
+                <p className="calendar-event-title">{translateCalendarEvent(event.title, lang)}</p>
                 <p className="calendar-event-time">{event.time}</p>
               </div>
             </div>

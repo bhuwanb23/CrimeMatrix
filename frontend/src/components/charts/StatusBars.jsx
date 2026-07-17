@@ -1,3 +1,6 @@
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateStatus } from '../../utils/translate'
+
 const statuses = [
   { label: 'Active', value: 47, pct: 35, color: '#e57373' },
   { label: 'Pending Review', value: 28, pct: 21, color: '#ef9a9a' },
@@ -5,13 +8,13 @@ const statuses = [
   { label: 'Closed', value: 25, pct: 19, color: '#e0e0e0' },
 ]
 
-const maxPct = Math.max(...statuses.map((s) => s.pct))
-
 export default function StatusBars() {
+  const { lang } = useLanguage()
+
   return (
     <div className="chart-card">
       <div className="chart-card-header">
-        <h3 className="chart-card-title">Cases by Status</h3>
+        <h3 className="chart-card-title">{t('cases_by_status', lang)}</h3>
         <button className="chart-card-menu" aria-label="More options">⋯</button>
       </div>
       <div className="chart-card-body">
@@ -19,7 +22,7 @@ export default function StatusBars() {
           {statuses.map((s, i) => (
             <div key={i} className="status-bar-item">
               <div className="status-bar-header">
-                <span className="status-bar-label">{s.label}</span>
+                <span className="status-bar-label">{translateStatus(s.label, lang)}</span>
                 <span className="status-bar-pct">{s.pct}%</span>
               </div>
               <div className="status-bar-track">

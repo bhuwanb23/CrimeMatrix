@@ -146,6 +146,7 @@ class IndianNameMatcher:
 
         match_type = "exact" if final_score == 100 else \
                      "nickname" if nickname_bonus > 0 else \
+                     "prefix" if prefix_bonus > 0 else \
                      "phonetic" if phonetic_match else \
                      "partial" if final_score > 50 else \
                      "weak" if final_score > 20 else "no_match"

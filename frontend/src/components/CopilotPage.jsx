@@ -3,7 +3,7 @@ import { MessageSquare, Brain } from 'lucide-react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-import { chat, listSessions, getSession, deleteSession } from '../services/copilot'
+import { chat, listSessions, getSession, deleteSession, deleteAllSessions } from '../services/copilot'
 
 export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
@@ -78,9 +78,7 @@ export default function CopilotPage() {
 
   const handleDeleteAll = async () => {
     if (!confirm('Delete all conversations? This cannot be undone.')) return
-    for (const s of sessions) {
-      try { await deleteSession(s.session_id) } catch (e) {}
-    }
+    try { await deleteAllSessions() } catch (e) {}
     setMessages([])
     setActiveChatId(null)
     setSessionId(null)

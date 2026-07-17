@@ -6,7 +6,7 @@ import structlog
 logger = structlog.get_logger()
 
 
-class CacheProvider(CacheProvider):
+class MemoryCacheProvider(CacheProvider):
     def __init__(self, max_size: int = 10000):
         self._store: Dict[str, Dict] = {}
         self._max_size = max_size

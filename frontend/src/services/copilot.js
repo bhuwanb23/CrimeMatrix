@@ -37,3 +37,7 @@ export async function deleteSession(sessionId) {
 export async function updateSessionTitle(sessionId, title) {
     return put(`/copilot/sessions/${sessionId}/title`, { title });
 }
+
+export async function deleteAllSessions() {
+    return del('/copilot/sessions');
+}

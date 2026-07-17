@@ -76,6 +76,7 @@ def create_app() -> FastAPI:
     from tools.identity.match import IdentityMatchTool
     from tools.knowledge.graph import KnowledgeGraphTool
     from tools.reasoning.analyze import ReasoningAnalyzeTool
+    from tools.prediction.engine import PredictionEngineTool
 
     for tool_cls in [
         CalculatorTool, WebFetchTool,
@@ -84,7 +85,7 @@ def create_app() -> FastAPI:
         AnalyticsCountsTool, AnalyticsTrendsTool,
         InvestigationNotesTool, InvestigationTimelineTool, CaseStatusTool,
         ReportGenerateTool, RAGSearchTool, SearchIntelligentTool, IdentityMatchTool,
-        KnowledgeGraphTool, ReasoningAnalyzeTool,
+        KnowledgeGraphTool, ReasoningAnalyzeTool, PredictionEngineTool,
     ]:
         tool_registry.register(tool_cls())
 

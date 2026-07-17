@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional
+from typing import Dict, List, Optional
 from app.storage.local_provider import LocalFileProvider
 import structlog
 

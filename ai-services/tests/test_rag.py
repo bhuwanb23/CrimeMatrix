@@ -141,8 +141,8 @@ class TestRetriever:
         ])
         retriever = Retriever(vs)
         result = retriever.retrieve_with_context("crime")
-        assert "context" in result
         assert "results" in result
+        assert "sources" in result
 
 
 class TestContextBuilder:

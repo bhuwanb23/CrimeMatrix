@@ -113,6 +113,14 @@ class IndianNameMatcher:
         exact_parts = set(parts1) & set(parts2)
         part_score = (len(exact_parts) / max(len(parts1), len(parts2))) * 100 if parts1 and parts2 else 0
 
+        prefix_bonus = 0
+        for p1 in parts1:
+            for p2 in parts2:
+                if len(p1) >= 3 and p2.startswith(p1):
+                    prefix_bonus = max(prefix_bonus, 40)
+                elif len(p2) >= 3 and p1.startswith(p2):
+                    prefix_bonus = max(prefix_bonus, 40)
+
         nickname_bonus = 0
         for p1 in parts1:
             for p2 in parts2:

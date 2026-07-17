@@ -21,11 +21,13 @@ class TestLatencyTracker:
         assert duration > 0
 
     def test_stats(self):
-        for i in range(5):
-            self.tracker.start(f"req{i}")
-            self.tracker.end(f"req{i}", "/chat")
+        self.tracker._records = [
+            {"duration_ms": 100, "endpoint": "/chat", "provider": "ollama", "request_id": "r1", "timestamp": "2024-01-01"},
+            {"duration_ms": 200, "endpoint": "/chat", "provider": "ollama", "request_id": "r2", "timestamp": "2024-01-01"},
+            {"duration_ms": 150, "endpoint": "/chat", "provider": "ollama", "request_id": "r3", "timestamp": "2024-01-01"},
+        ]
         stats = self.tracker.get_stats()
-        assert stats["count"] == 5
+        assert stats["count"] == 3
         assert stats["avg_ms"] > 0
 
     def test_slow_requests(self):

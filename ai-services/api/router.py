@@ -8,11 +8,15 @@ from core.tokens import token_tracker
 from core.prompts import prompt_manager
 from core.provider import registry as provider_registry
 from streaming.sse import sse_response
+from rag.pipeline import RAGPipeline
 import structlog
 
 logger = structlog.get_logger()
 
 router = APIRouter()
+
+# RAG pipeline
+_rag = RAGPipeline()
 
 # Shared instances
 _default_agent = CoreAgent(agent_id="default", name="CrimeMatrix Copilot",
@@ -244,3 +248,34 @@ async def token_usage():
 @router.get("/prompts")
 async def list_prompts():
     return {"success": True, "data": prompt_manager.list_all()}
+
+
+# RAG
+class RAGSearchRequest(BaseModel):
+    query: str
+    top_k: int = 5
+    doc_type: Optional[str] = None
+    session_id: str = "default"
+
+
+@router.post("/rag/index")
+async def rag_index(limit: int = 50):
+    count = await _rag.index(limit)
+    return {"success": True, "data": {"chunks_indexed": count, "indexed": _rag.is_indexed()}}
+
+
+@router.post("/rag/search")
+async def rag_search(data: RAGSearchRequest):
+    result = _rag.search_and_cite(data.query, data.session_id, data.top_k)
+    return {"success": True, "data": result}
+
+
+@router.get("/rag/stats")
+async def rag_stats():
+    return {"success": True, "data": _rag.get_stats()}
+
+
+@router.get("/rag/citations/{session_id}")
+async def rag_citations(session_id: str):
+    citations = _rag.citations.get_citations(session_id)
+    return {"success": True, "data": citations}

@@ -1,4 +1,6 @@
-from workflows.builtin.investigation import InvestigationWorkflow
-from workflows.builtin.case_analysis import CaseAnalysisWorkflow
-from workflows.builtin.suspect_profile import SuspectProfileWorkflow
-from workflows.builtin.crime_briefing import CrimeBriefingWorkflow
+# Built-in workflows register themselves via workflow_registry at import time
+# Import the modules to trigger registration
+from workflows.builtin import investigation
+from workflows.builtin import case_analysis
+from workflows.builtin import suspect_profile
+from workflows.builtin import crime_briefing

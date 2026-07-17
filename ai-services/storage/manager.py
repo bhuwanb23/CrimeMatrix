@@ -16,7 +16,7 @@ class StorageManager:
         self.db: Optional[SQLiteProvider] = None
         self.graph: Optional[NetworkXProvider] = None
         self.vector: Optional[VectorProvider] = None
-        self.cache: Optional[CacheProvider] = None
+        self.cache: Optional[MemoryCacheProvider] = None
         self.storage: Optional[FileProvider] = None
 
     async def initialize(self):
@@ -31,7 +31,7 @@ class StorageManager:
         await self.vector.connect()
 
         cache_cfg = self.config.get("cache", {})
-        self.cache = CacheProvider(cache_cfg.get("max_size", 10000))
+        self.cache = MemoryCacheProvider(cache_cfg.get("max_size", 10000))
         await self.cache.connect()
 
         storage_cfg = self.config.get("storage", {})

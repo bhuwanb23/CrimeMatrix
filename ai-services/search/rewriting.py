@@ -1,5 +1,6 @@
 import json
 from core.provider import registry as provider_registry
+from storage.cache_provider import MemoryCacheProvider
 import structlog
 
 logger = structlog.get_logger()
@@ -16,12 +17,13 @@ class QueryRewriting:
     def __init__(self, provider: str = None, model: str = None):
         self.provider_name = provider
         self.model_name = model
-        self._cache: dict = {}
+        self._cache = MemoryCacheProvider(max_size=5000)
 
     async def rewrite(self, query: str) -> str:
         query_lower = query.lower().strip()
-        if query_lower in self._cache:
-            return self._cache[query_lower]
+        cached = await self._cache.get(f"rewrite:{query_lower}")
+        if cached is not None:
+            return cached
 
         try:
             provider = provider_registry.get(self.provider_name)
@@ -31,7 +33,7 @@ class QueryRewriting:
                 model=self.model_name,
             )
             rewritten = response.strip().strip('"').strip("'")
-            self._cache[query_lower] = rewritten
+            await self._cache.set(f"rewrite:{query_lower}", rewritten, ttl_seconds=3600)
             return rewritten
         except Exception as e:
             logger.warning("rewrite_error", query=query, error=str(e))

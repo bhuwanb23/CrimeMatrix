@@ -58,8 +58,34 @@ def create_app() -> FastAPI:
         provider_registry.register(gemini)
 
     # Register tools
-    tool_registry.register(CalculatorTool())
-    tool_registry.register(WebFetchTool())
+    from tools.builtins.calculator import CalculatorTool
+    from tools.builtins.web_fetch import WebFetchTool
+    from tools.crime.search import CrimeSearchTool
+    from tools.crime.detail import CrimeDetailTool
+    from tools.crime.list import CrimeListTool
+    from tools.crime.stats import CrimeStatsTool
+    from tools.graph.traverse import GraphTraverseTool
+    from tools.graph.shortest import GraphShortestPathTool
+    from tools.graph.neighbors import GraphNeighborsTool
+    from tools.analytics.counts import AnalyticsCountsTool
+    from tools.analytics.trends import AnalyticsTrendsTool
+    from tools.investigation.notes import InvestigationNotesTool
+    from tools.investigation.timeline import InvestigationTimelineTool
+    from tools.investigation.status import CaseStatusTool
+    from tools.report.generate import ReportGenerateTool
+    from tools.rag.search import RAGSearchTool
+
+    for tool_cls in [
+        CalculatorTool, WebFetchTool,
+        CrimeSearchTool, CrimeDetailTool, CrimeListTool, CrimeStatsTool,
+        GraphTraverseTool, GraphShortestPathTool, GraphNeighborsTool,
+        AnalyticsCountsTool, AnalyticsTrendsTool,
+        InvestigationNotesTool, InvestigationTimelineTool, CaseStatusTool,
+        ReportGenerateTool, RAGSearchTool,
+    ]:
+        tool_registry.register(tool_cls())
+
+    logger.info("tools_registered", count=len(tool_registry.list_all()))
 
     app.include_router(router, prefix="/api/ai")
 

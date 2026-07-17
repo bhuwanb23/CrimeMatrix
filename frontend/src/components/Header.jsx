@@ -14,8 +14,6 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
       <div className="header-left">
         <div className="header-breadcrumb">
           <span className="header-breadcrumb-brand">CrimeMatrix</span>
-          <span className="header-breadcrumb-sep">/</span>
-          <span className="header-breadcrumb-page">Dashboard</span>
         </div>
       </div>
 

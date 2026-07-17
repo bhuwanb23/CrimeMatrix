@@ -1,5 +1,6 @@
 import json
 from core.provider import registry as provider_registry
+from storage.cache_provider import MemoryCacheProvider
 import structlog
 
 logger = structlog.get_logger()
@@ -17,12 +18,13 @@ class QueryExpansion:
     def __init__(self, provider: str = None, model: str = None):
         self.provider_name = provider
         self.model_name = model
-        self._cache: dict = {}
+        self._cache = MemoryCacheProvider(max_size=5000)
 
     async def expand(self, query: str) -> list:
         query_lower = query.lower().strip()
-        if query_lower in self._cache:
-            return self._cache[query_lower]
+        cached = await self._cache.get(f"expand:{query_lower}")
+        if cached is not None:
+            return cached
 
         try:
             provider = provider_registry.get(self.provider_name)
@@ -38,7 +40,7 @@ class QueryExpansion:
                     response = response[4:]
             terms = json.loads(response)
             if isinstance(terms, list):
-                self._cache[query_lower] = terms
+                await self._cache.set(f"expand:{query_lower}", terms, ttl_seconds=3600)
                 return terms
         except Exception as e:
             logger.warning("expansion_error", query=query, error=str(e))

@@ -1,7 +1,10 @@
 import { alertTypes } from './alertsData'
 import { ChevronRight } from 'lucide-react'
+import { t } from '../../utils/translate'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function AlertCard({ alert, onAccept, onReject, onView }) {
+  const { lang } = useLanguage()
   const typeInfo = alertTypes[alert.type]
 
   return (
@@ -32,13 +35,13 @@ export default function AlertCard({ alert, onAccept, onReject, onView }) {
 
           <div className="alert-card-actions">
             <button className="alert-btn accept" onClick={() => onAccept(alert.id)}>
-              Accept
+              {t('accept', lang)}
             </button>
             <button className="alert-btn reject" onClick={() => onReject(alert.id)}>
-              Dismiss
+              {t('dismiss', lang)}
             </button>
             <button className="alert-btn view" onClick={() => onView(alert)}>
-              View <ChevronRight size={14} />
+              {t('view', lang)} <ChevronRight size={14} />
             </button>
           </div>
         </div>

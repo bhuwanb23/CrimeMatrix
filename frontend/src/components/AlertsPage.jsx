@@ -8,15 +8,8 @@ import {
   AlertTriangle, Clock, CheckCircle2, Activity,
   TrendingUp, TrendingDown, ChevronRight, ExternalLink,
 } from 'lucide-react'
-
-const filters = [
-  { id: 'all', label: 'All' },
-  { id: 'whisper', label: 'Whisper' },
-  { id: 'fir-match', label: 'FIR Match' },
-  { id: 'cross-district', label: 'Cross-District' },
-  { id: 'evidence', label: 'Evidence' },
-  { id: 'ai', label: 'AI' },
-]
+import { useLanguage } from '../context/LanguageContext'
+import { t, translateAlertType } from '../utils/translate'
 
 const trendData = [
   { day: 'Mon', alerts: 12 },
@@ -31,9 +24,19 @@ const trendData = [
 const donutColors = ['#ef4444', '#f59e0b', '#8b5cf6', '#3b82f6', '#10b981']
 
 export default function AlertsPage() {
+  const { lang } = useLanguage()
   const [alerts, setAlerts] = useState(initialAlerts)
   const [activeFilter, setActiveFilter] = useState('all')
   const [selectedAlert, setSelectedAlert] = useState(null)
+
+  const filters = useMemo(() => [
+    { id: 'all', label: t('all_alerts', lang) },
+    { id: 'whisper', label: translateAlertType('whisper', lang) },
+    { id: 'fir-match', label: translateAlertType('fir-match', lang) },
+    { id: 'cross-district', label: translateAlertType('cross-district', lang) },
+    { id: 'evidence', label: translateAlertType('evidence', lang) },
+    { id: 'ai', label: translateAlertType('ai', lang) },
+  ], [lang])
 
   const filteredAlerts = useMemo(() => {
     if (activeFilter === 'all') return alerts
@@ -45,11 +48,13 @@ export default function AlertsPage() {
   const resolvedCount = alerts.filter((a) => a.status === 'resolved').length
 
   // Compute type breakdown for donut
-  const typeBreakdown = Object.entries(alertTypes).map(([id, info]) => ({
-    name: info.label,
-    value: alerts.filter((a) => a.type === id).length,
-    color: info.color,
-  })).filter((d) => d.value > 0)
+  const typeBreakdown = useMemo(() => {
+    return Object.entries(alertTypes).map(([id, info]) => ({
+      name: translateAlertType(id, lang),
+      value: alerts.filter((a) => a.type === id).length,
+      color: info.color,
+    })).filter((d) => d.value > 0)
+  }, [alerts, lang])
 
   // Compute type breakdown for bars
   const typeCounts = {}
@@ -61,8 +66,8 @@ export default function AlertsPage() {
       {/* Header */}
       <div className="alerts-dash-header">
         <div>
-          <h1 className="alerts-dash-title">Intelligence Alerts</h1>
-          <p className="alerts-dash-subtitle">Monitor and respond to proactive intelligence</p>
+          <h1 className="alerts-dash-title">{t('intelligence_alerts', lang)}</h1>
+          <p className="alerts-dash-subtitle">{t('monitor_intel', lang)}</p>
         </div>
         <div className="alerts-dash-filters">
           {filters.map((f) => (
@@ -82,7 +87,7 @@ export default function AlertsPage() {
         {/* Stats Summary */}
         <div className="alerts-card stats-summary">
           <div className="card-header">
-            <h3>Alert Performance Summary</h3>
+            <h3>{t('performance_summary', lang)}</h3>
             <button className="card-menu">⋯</button>
           </div>
           <div className="stats-summary-grid">
@@ -91,7 +96,7 @@ export default function AlertsPage() {
                 <AlertTriangle size={18} style={{ color: '#ef4444' }} />
               </div>
               <div className="stats-info">
-                <span className="stats-label">New Alerts</span>
+                <span className="stats-label">{t('new_alerts', lang)}</span>
                 <span className="stats-value">{newCount}</span>
                 <span className="stats-trend up">
                   <TrendingUp size={12} /> +{newCount > 0 ? '15' : '0'}% Last 7 days
@@ -103,7 +108,7 @@ export default function AlertsPage() {
                 <Clock size={18} style={{ color: '#f59e0b' }} />
               </div>
               <div className="stats-info">
-                <span className="stats-label">Pending Review</span>
+                <span className="stats-label">{t('pending_review', lang)}</span>
                 <span className="stats-value">{pendingCount}</span>
                 <span className="stats-trend down">
                   <TrendingDown size={12} /> -{pendingCount > 0 ? '8' : '0'}% Last 7 days
@@ -115,7 +120,7 @@ export default function AlertsPage() {
                 <CheckCircle2 size={18} style={{ color: '#10b981' }} />
               </div>
               <div className="stats-info">
-                <span className="stats-label">Resolved</span>
+                <span className="stats-label">{t('resolved', lang)}</span>
                 <span className="stats-value">{resolvedCount}</span>
                 <span className="stats-trend up">
                   <TrendingUp size={12} /> +{resolvedCount > 0 ? '22' : '0'}% Last 7 days
@@ -129,7 +134,7 @@ export default function AlertsPage() {
         <div className="alerts-card trend-chart">
           <div className="card-header">
             <div>
-              <h3>Alert Trend</h3>
+              <h3>{t('alert_trend', lang)}</h3>
               <div className="trend-summary">
                 <span className="trend-big">{alerts.length}</span>
                 <span className="trend-change up">↑ {alerts.length > 0 ? '+12%' : '0%'} Last 7 days</span>
@@ -164,7 +169,7 @@ export default function AlertsPage() {
         {/* Donut Chart */}
         <div className="alerts-card donut-card">
           <div className="card-header">
-            <h3>Alert Distribution</h3>
+            <h3>{t('alert_distribution', lang)}</h3>
             <button className="card-menu">⋯</button>
           </div>
           <div className="card-body donut-body">
@@ -188,7 +193,7 @@ export default function AlertsPage() {
             </ResponsiveContainer>
             <div className="donut-center">
               <span className="donut-value">{alerts.length}</span>
-              <span className="donut-label">Total</span>
+              <span className="donut-label">{t('total', lang)}</span>
             </div>
             <div className="donut-legend">
               {typeBreakdown.map((d, i) => (
@@ -205,7 +210,7 @@ export default function AlertsPage() {
         {/* Bar Chart */}
         <div className="alerts-card bar-chart">
           <div className="card-header">
-            <h3>Alerts By Type</h3>
+            <h3>{t('alerts_by_type', lang)}</h3>
             <button className="card-menu">⋯</button>
           </div>
           <div className="card-body">
@@ -216,7 +221,7 @@ export default function AlertsPage() {
                 return (
                   <div key={id} className="bar-item">
                     <div className="bar-item-header">
-                      <span className="bar-item-name">{info.label}</span>
+                      <span className="bar-item-name">{translateAlertType(id, lang)}</span>
                       <span className="bar-item-count">{count}</span>
                     </div>
                     <div className="bar-track">
@@ -232,8 +237,8 @@ export default function AlertsPage() {
         {/* Alert Feed */}
         <div className="alerts-card feed-card">
           <div className="card-header">
-            <h3>Recent Alerts</h3>
-            <button className="card-more">More details <ChevronRight size={14} /></button>
+            <h3>{t('recent_alerts', lang)}</h3>
+            <button className="card-more">{t('more_details', lang)} <ChevronRight size={14} /></button>
           </div>
           <div className="card-body feed-body">
             {filteredAlerts.slice(0, 5).map((alert) => {

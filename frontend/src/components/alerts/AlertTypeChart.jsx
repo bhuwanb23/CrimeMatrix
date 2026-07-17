@@ -1,6 +1,9 @@
 import { alertTypes } from './alertsData'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateAlertType } from '../../utils/translate'
 
 export default function AlertTypeChart({ alerts }) {
+  const { lang } = useLanguage()
   const typeCounts = {}
   alerts.forEach((a) => {
     typeCounts[a.type] = (typeCounts[a.type] || 0) + 1
@@ -12,7 +15,7 @@ export default function AlertTypeChart({ alerts }) {
   return (
     <div className="alert-type-chart-card">
       <div className="alert-type-chart-header">
-        <h3>Alerts by Type</h3>
+        <h3>{t('alerts_by_type', lang)}</h3>
       </div>
 
       <div className="alert-type-chart-list">
@@ -25,7 +28,7 @@ export default function AlertTypeChart({ alerts }) {
               <div className="alert-type-item-header">
                 <div className="alert-type-item-left">
                   <span className="alert-type-dot" style={{ background: info.color }} />
-                  <span className="alert-type-name">{info.label}</span>
+                  <span className="alert-type-name">{translateAlertType(type, lang)}</span>
                 </div>
                 <span className="alert-type-count">{count}</span>
               </div>

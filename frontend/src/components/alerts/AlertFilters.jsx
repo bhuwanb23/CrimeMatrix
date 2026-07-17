@@ -1,11 +1,15 @@
 import { alertTypes } from './alertsData'
-
-const filters = [
-  { id: 'all', label: 'All Alerts' },
-  ...Object.entries(alertTypes).map(([id, info]) => ({ id, label: info.label })),
-]
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateAlertType } from '../../utils/translate'
 
 export default function AlertFilters({ activeFilter, onFilterChange }) {
+  const { lang } = useLanguage()
+
+  const filters = [
+    { id: 'all', label: t('all_alerts', lang) },
+    ...Object.entries(alertTypes).map(([id]) => ({ id, label: translateAlertType(id, lang) })),
+  ]
+
   return (
     <div className="alert-filters">
       <div className="alert-filters-scroll">

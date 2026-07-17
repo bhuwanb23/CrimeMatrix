@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import { useLanguage } from '../context/LanguageContext'
+import { t, supportedLanguages } from '../utils/translate'
 
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']
 
 export default function SettingsPage() {
+  const { lang, setLang } = useLanguage()
   const [profile] = useState({
     name: 'SI Karthik',
     role: 'Investigation Officer',
@@ -105,6 +108,22 @@ export default function SettingsPage() {
                 Secondary Language
               </label>
               <Select value={secondaryLang} onChange={setSecondaryLang} options={languages} />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
+                UI Language (App)
+              </label>
+              <select
+                value={lang}
+                onChange={(e) => setLang(e.target.value)}
+                className="h-10 w-full cursor-pointer rounded-[10px] border border-[var(--border)] bg-[var(--bg-app)] px-3 text-[13px] text-[var(--text-primary)] outline-none transition-[border-color] duration-150 focus:border-[var(--color-accent)]"
+              >
+                <option value="en">English</option>
+                <option value="ta">Tamil (தமிழ்)</option>
+                <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                <option value="te">Telugu (తెలుగు)</option>
+                <option value="hi">Hindi (हिन्दी)</option>
+              </select>
             </div>
           </div>
         </div>

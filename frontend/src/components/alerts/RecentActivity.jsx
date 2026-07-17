@@ -1,10 +1,14 @@
 import { activityLog, alertTypes } from './alertsData'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
 export default function RecentActivity() {
+  const { lang } = useLanguage()
+
   return (
     <div className="recent-activity-card">
       <div className="recent-activity-header">
-        <h3>Recent Activity</h3>
+        <h3>{t('recent_activity', lang)}</h3>
       </div>
 
       <div className="recent-activity-list">

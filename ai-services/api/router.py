@@ -643,3 +643,55 @@ async def reasoning_evidence(data: ReasoningEvidenceRequest):
 async def reasoning_explain(data: ReasoningExplainRequest):
     result = await _reasoning_engine.analyze(data.hypothesis, data.evidence, data.chain_type)
     return {"success": True, "data": {"explanation": result["explanation"], "confidence": result["confidence"]}}
+
+
+# Prediction Engine
+from prediction.engine import PredictionEngine
+
+_prediction_engine = PredictionEngine()
+
+
+class PredictionRequest(BaseModel):
+    prediction_type: str
+    data: dict
+
+
+@router.post("/predict/forecast")
+async def predict_forecast(data: dict):
+    result = _prediction_engine.forecast.forecast(data.get("historical", []), data.get("periods_ahead", 1))
+    return {"success": True, "data": result}
+
+
+@router.post("/predict/hotspots")
+async def predict_hotspots(data: dict):
+    result = _prediction_engine.hotspot.identify_hotspots(data.get("crimes", []), data.get("top_n", 5))
+    return {"success": True, "data": result}
+
+
+@router.post("/predict/recidivism")
+async def predict_recidivism(data: dict):
+    result = _prediction_engine.repeat_offender.predict(data.get("profile", {}))
+    return {"success": True, "data": result}
+
+
+@router.post("/predict/risk")
+async def predict_risk(data: dict):
+    result = _prediction_engine.risk.score(data.get("profile", {}))
+    return {"success": True, "data": result}
+
+
+@router.post("/predict/mo-similarity")
+async def predict_mo_similarity(data: dict):
+    result = _prediction_engine.mo.compare(data.get("mo1", ""), data.get("mo2", ""))
+    return {"success": True, "data": result}
+
+
+@router.post("/predict/cases")
+async def predict_cases(data: dict):
+    result = _prediction_engine.recommender.recommend(data.get("case", {}), data.get("all_cases", []))
+    return {"success": True, "data": result}
+
+
+@router.get("/predict/stats")
+async def predict_stats():
+    return {"success": True, "data": _prediction_engine.get_stats()}

@@ -100,10 +100,14 @@ async def copilot_chat_stream(data: ChatRequest, db: AsyncSession = Depends(get_
         db.add(session)
         await db.commit()
 
-    # Save user message
-    user_msg = ChatMessage(session_id=session_id, role="user", content=data.message)
-    db.add(user_msg)
-    await db.commit()
+    # Ensure session exists
+    existing = (await db.execute(
+        select(ChatSession).where(ChatSession.session_id == session_id)
+    )).scalar_one_or_none()
+    if not existing:
+        session = ChatSession(session_id=session_id, user_id=int(data.user_id) if data.user_id.isdigit() else None)
+        db.add(session)
+        await db.commit()
 
     async def generate():
         full_response = []
@@ -136,12 +140,7 @@ async def copilot_chat_stream(data: ChatRequest, db: AsyncSession = Depends(get_
             yield f"data: {json.dumps({'content': f'Error: {str(e)[:100]}', 'done': True})}\n\n"
             return
 
-        # Save assistant response to DB
-        final_response = "".join(full_response)
-        assistant_msg = ChatMessage(session_id=session_id, role="assistant", content=final_response)
-        db.add(assistant_msg)
-        await db.commit()
-
+        # AI Services handles persistence via MemoryPersistence
         yield f"data: {json.dumps({'content': '', 'done': True})}\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")

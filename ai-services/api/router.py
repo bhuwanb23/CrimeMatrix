@@ -362,3 +362,102 @@ async def rerank_results(data: RerankRequest):
 @router.get("/search/stats")
 async def search_stats():
     return {"success": True, "data": _search_engine.get_stats()}
+
+
+# Identity Intelligence
+from identity.name_matcher import IndianNameMatcher
+from identity.transliteration import TransliterationEngine
+from identity.duplicate_detector import DuplicateDetector
+from identity.entity_resolver import EntityResolver
+from identity.record_merger import RecordMerger
+from identity.alias_detector import AliasDetector
+
+_name_matcher = IndianNameMatcher()
+_transliterator = TransliterationEngine()
+_duplicate_detector = DuplicateDetector()
+_entity_resolver = EntityResolver()
+_record_merger = RecordMerger()
+_alias_detector = AliasDetector()
+
+
+class NameMatchRequest(BaseModel):
+    name1: str
+    name2: str
+
+
+class TransliterateRequest(BaseModel):
+    text: str
+    target: str = "english"
+
+
+class DuplicateRequest(BaseModel):
+    records: list
+    id_key: str = "id"
+
+
+class ResolveRequest(BaseModel):
+    mention: str
+    candidates: list
+
+
+class MergeRequest(BaseModel):
+    primary: dict
+    secondary: dict
+    entity_type: str = "person"
+
+
+class AliasRequest(BaseModel):
+    name: str
+    known_aliases: Optional[list] = None
+    all_names: Optional[list] = None
+
+
+@router.post("/identity/match")
+async def match_names(data: NameMatchRequest):
+    result = _name_matcher.match(data.name1, data.name2)
+    return {"success": True, "data": result}
+
+
+@router.post("/identity/match/batch")
+async def batch_match_names(data: NameMatchRequest):
+    results = _name_matcher.batch_match(data.name1, data.name2 if isinstance(data.name2, list) else [data.name2])
+    return {"success": True, "data": results}
+
+
+@router.post("/identity/transliterate")
+async def transliterate(data: TransliterateRequest):
+    result = _transliterator.transliterate(data.text, data.target)
+    return {"success": True, "data": result}
+
+
+@router.post("/identity/duplicates")
+async def find_duplicates(data: DuplicateRequest):
+    results = _duplicate_detector.find_duplicates(data.records, data.id_key)
+    return {"success": True, "data": {"duplicates": results, "count": len(results)}}
+
+
+@router.post("/identity/resolve")
+async def resolve_entity(data: ResolveRequest):
+    results = _entity_resolver.resolve_from_text(data.mention, data.candidates)
+    return {"success": True, "data": results}
+
+
+@router.post("/identity/merge")
+async def merge_records(data: MergeRequest):
+    merged = _record_merger.merge(data.primary, data.secondary, data.entity_type)
+    return {"success": True, "data": merged}
+
+
+@router.post("/identity/aliases")
+async def detect_aliases(data: AliasRequest):
+    aliases = _alias_detector.detect_aliases(data.name, data.known_aliases, data.all_names)
+    return {"success": True, "data": aliases}
+
+
+@router.get("/identity/stats")
+async def identity_stats():
+    return {"success": True, "data": {
+        "merge_log_count": len(_record_merger.get_merge_log()),
+        "supported_scripts": ["kannada", "devanagari", "latin"],
+        "nickname_groups": len(NICKNAMES) if "NICKNAMES" in dir() else 0,
+    }}

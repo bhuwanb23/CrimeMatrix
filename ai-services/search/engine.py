@@ -84,8 +84,4 @@ class SearchEngine:
     def get_stats(self) -> dict:
         return {
             "semantic": self.semantic.get_stats(),
-            "cache_sizes": {
-                "expansion": len(self.expansion._cache),
-                "rewriting": len(self.rewriting._cache),
-            },
         }

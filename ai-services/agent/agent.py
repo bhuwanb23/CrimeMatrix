@@ -6,6 +6,7 @@ from agent.planner import Planner
 from agent.executor import Executor
 from agent.context import ContextBuilder
 from agent.responder import ResponseGenerator
+from memory.manager import MemoryManager
 from tools.registry import tool_registry
 from core.provider import registry as provider_registry
 from core.tokens import token_tracker
@@ -27,19 +28,26 @@ class CoreAgent:
         self.executor = Executor()
         self.context_builder = ContextBuilder()
         self.responder = ResponseGenerator(provider, model)
+        self.memory = MemoryManager(provider, model)
 
     async def chat(self, message: str, context: ConversationContext = None,
-                   use_tools: bool = True) -> dict:
+                   use_tools: bool = True, session_id: str = "default",
+                   user_id: str = "default") -> dict:
         if context is None:
             context = ConversationContext()
 
+        memory_ctx = await self.memory.before_turn(message, session_id, user_id)
         context.add(Message.user(message))
         start_time = time.time()
         reasoning_trace = []
 
         if not use_tools:
             provider = provider_registry.get(self.provider_name)
-            llm_messages = [{"role": "system", "content": self.system_prompt}]
+            system = self.system_prompt
+            if memory_ctx.get("conversation_context"):
+                system += f"\n\n{memory_ctx['conversation_context']}"
+
+            llm_messages = [{"role": "system", "content": system}]
             llm_messages.extend(context.get_messages_for_llm())
             start = time.time()
             response = await provider.chat(llm_messages, model=self.model_name)
@@ -48,6 +56,7 @@ class CoreAgent:
                                  provider.get_token_count(json.dumps(llm_messages)),
                                  provider.get_token_count(response), duration_ms)
             context.add(Message.assistant(response))
+            await self.memory.after_turn(message, response, session_id)
             return {"response": response, "reasoning_trace": [], "steps": 0}
 
         tools = tool_registry.list_all()
@@ -94,6 +103,8 @@ class CoreAgent:
         context.add(Message.assistant(final_response))
         context.add_trace(reasoning_trace)
 
+        await self.memory.after_turn(message, final_response, session_id)
+
         total_time = (time.time() - start_time) * 1000
         return {
             "response": final_response,
@@ -102,10 +113,12 @@ class CoreAgent:
             "total_time_ms": round(total_time, 2),
         }
 
-    async def stream(self, message: str, context: ConversationContext = None) -> AsyncGenerator[dict, None]:
+    async def stream(self, message: str, context: ConversationContext = None,
+                     session_id: str = "default", user_id: str = "default") -> AsyncGenerator[dict, None]:
         if context is None:
             context = ConversationContext()
 
+        memory_ctx = await self.memory.before_turn(message, session_id, user_id)
         context.add(Message.user(message))
 
         tools = tool_registry.list_all()
@@ -126,7 +139,10 @@ class CoreAgent:
         yield {"type": "thinking", "content": "Generating response..."}
 
         provider = provider_registry.get(self.provider_name)
-        system_prompt = self.system_prompt + "\n\n" + compiled_context
+        system_prompt = self.system_prompt
+        if memory_ctx.get("conversation_context"):
+            system_prompt += f"\n\n{memory_ctx['conversation_context']}"
+        system_prompt += "\n\n" + compiled_context
         llm_messages = [{"role": "system", "content": system_prompt}]
 
         full_response = []
@@ -135,4 +151,5 @@ class CoreAgent:
             yield {"type": "message", "content": chunk}
 
         context.add(Message.assistant("".join(full_response)))
+        await self.memory.after_turn(message, "".join(full_response), session_id)
         yield {"type": "done", "content": ""}

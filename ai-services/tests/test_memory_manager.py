@@ -41,8 +41,8 @@ class TestMemoryManager:
     @pytest.mark.asyncio
     async def test_after_turn(self):
         mm = MemoryManager()
-        await mm.after_turn("Hello", "Hi there", "s1")
-        session = await mm.get_session("s1")
+        await mm.after_turn("Hello", "Hi there", "test_after_turn_s1")
+        session = await mm.get_session("test_after_turn_s1")
         assert len(session.messages) == 2
         assert session.messages[0]["content"] == "Hello"
         assert session.messages[1]["content"] == "Hi there"
@@ -50,9 +50,9 @@ class TestMemoryManager:
     @pytest.mark.asyncio
     async def test_multi_turn(self):
         mm = MemoryManager()
-        await mm.after_turn("What crimes are there?", "There are theft cases", "s1")
-        await mm.after_turn("Tell me about the first one", "The first one is...", "s1")
-        session = await mm.get_session("s1")
+        await mm.after_turn("What crimes are there?", "There are theft cases", "test_multi_turn_s1")
+        await mm.after_turn("Tell me about the first one", "The first one is...", "test_multi_turn_s1")
+        session = await mm.get_session("test_multi_turn_s1")
         assert len(session.messages) == 4
 
     @pytest.mark.asyncio

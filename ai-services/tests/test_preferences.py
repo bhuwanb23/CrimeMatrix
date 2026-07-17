@@ -36,10 +36,11 @@ class TestUserPreferences:
         d = prefs.get("user1")
         assert d["language"] == "en"
 
-    def test_format_for_system_prompt_empty(self):
+    def test_format_for_system_prompt_new_user_returns_defaults(self):
         prefs = UserPreferences()
         result = prefs.format_for_system_prompt("new_user")
-        assert result == ""
+        assert "language" in result
+        assert "en" in result
 
     def test_format_for_system_prompt(self):
         prefs = UserPreferences()

@@ -94,6 +94,14 @@ def create_app() -> FastAPI:
 
     logger.info("tools_registered", count=len(tool_registry.list_all()))
 
+    # Register built-in workflows
+    from workflows.builtin.investigation import InvestigationWorkflow
+    from workflows.builtin.case_analysis import CaseAnalysisWorkflow
+    from workflows.builtin.suspect_profile import SuspectProfileWorkflow
+    from workflows.builtin.crime_briefing import CrimeBriefingWorkflow
+    from workflows.registry import workflow_registry
+    logger.info("workflows_registered", count=len(workflow_registry.list_all()))
+
     app.include_router(router, prefix="/api/ai")
 
     @app.on_event("startup")

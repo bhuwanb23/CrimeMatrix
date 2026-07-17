@@ -112,7 +112,11 @@ class TestRelationshipDiscovery:
 
 class TestTimelineGenerator:
     def setup_method(self):
-        self.tg = TimelineGenerator(_make_graph())
+        g = _make_graph()
+        g.nodes["crime_1"]["created_at"] = "2024-01-15"
+        g.nodes["crime_2"]["created_at"] = "2024-02-20"
+        g.edges["person_1", "crime_1"]["date"] = "2024-01-16"
+        self.tg = TimelineGenerator(g)
 
     def test_generate(self):
         events = self.tg.generate()

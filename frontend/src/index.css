@@ -1977,6 +1977,15 @@
   overflow: hidden;
 }
 
+/* Copilot chat area container */
+.copilot-chat-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-app);
+}
+
 /* Overlay backdrop — removed, panels slide in without blocking */
 .copilot-overlay {
   display: none;
@@ -2611,18 +2620,13 @@
 .chat-suggestions-row {
   display: flex;
   gap: 8px;
-  padding: 0 0 10px 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.chat-suggestions-row::-webkit-scrollbar {
-  display: none;
+  padding: 0 24px 12px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .chat-suggestion-chip {
-  flex-shrink: 0;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 20px;
   border: 1px solid var(--border);
   background: var(--bg-card);
@@ -2637,6 +2641,8 @@
   background: var(--color-primary);
   color: white;
   border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
 .chat-input-area {

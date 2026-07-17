@@ -9,8 +9,6 @@ from core.providers.gemini import GeminiProvider
 from core.logging import setup_ai_logging
 from config import get_config
 from tools.registry import tool_registry
-from tools.builtins.calculator import CalculatorTool
-from tools.builtins.web_fetch import WebFetchTool
 import structlog
 
 logger = structlog.get_logger()

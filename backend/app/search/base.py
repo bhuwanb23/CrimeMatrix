@@ -82,6 +82,7 @@ class SearchService:
 
     async def _search_model(self, model, query: str, filters: List[Dict], sort: Dict, metadata: Dict) -> List[Dict]:
         from sqlalchemy import inspect as sqla_inspect
+        from sqlalchemy import or_
 
         mapper = sqla_inspect(model)
         string_columns = [c.key for c in mapper.columns if c.type.__class__.__name__ in ('String', 'Text')]
@@ -90,6 +91,33 @@ class SearchService:
         if query:
             for col in string_columns:
                 conditions.append(getattr(model, col).ilike(f"%{query}%"))
+
+        # Apply structured filters
+        for f in (filters or []):
+            field = f.get("field", "")
+            operator = f.get("operator", "eq")
+            value = f.get("value", "")
+
+            if not hasattr(model, field):
+                continue
+
+            col = getattr(model, field)
+            if operator == "eq":
+                conditions.append(col == value)
+            elif operator == "ne":
+                conditions.append(col != value)
+            elif operator == "like":
+                conditions.append(col.ilike(f"%{value}%"))
+            elif operator == "in" and isinstance(value, list):
+                conditions.append(col.in_(value))
+            elif operator == "gt":
+                conditions.append(col > value)
+            elif operator == "lt":
+                conditions.append(col < value)
+            elif operator == "gte":
+                conditions.append(col >= value)
+            elif operator == "lte":
+                conditions.append(col <= value)
 
         stmt = select(model)
         if conditions:

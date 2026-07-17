@@ -23,6 +23,8 @@ class ChatRequest(BaseModel):
     user_id: str = "default"
     use_tools: bool = True
     source: str = "all"
+    case_id: Optional[int] = None
+    investigation_id: Optional[int] = None
 
 
 class SessionCreate(BaseModel):
@@ -47,17 +49,33 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
         db.add(session)
         await db.commit()
 
+    # Build investigation context if case_id provided
+    investigation_context = None
+    if data.case_id:
+        try:
+            async with httpx.AsyncClient() as client:
+                case_resp = await client.get(f"{AI_SERVICES_URL.replace('8002', '8001')}/api/v1/crimes/{data.case_id}", timeout=10.0)
+                if case_resp.status_code == 200:
+                    case_data = case_resp.json().get("data", {})
+                    if case_data:
+                        investigation_context = f"## Active Case Context\n- Case #{data.case_id}: {case_data.get('title', 'Unknown')}\n- Status: {case_data.get('status', 'unknown')}\n- Priority: {case_data.get('priority', 'medium')}\n- Description: {case_data.get('description', 'N/A')[:500]}"
+        except Exception:
+            pass
+
     # Call AI Services agent (handles message persistence via MemoryPersistence)
     try:
         async with httpx.AsyncClient() as client:
+            ai_payload = {
+                "message": data.message,
+                "session_id": session_id,
+                "user_id": data.user_id,
+                "use_tools": data.use_tools,
+            }
+            if investigation_context:
+                ai_payload["investigation_context"] = investigation_context
             ai_response = await client.post(
                 f"{AI_SERVICES_URL}/api/ai/chat",
-                json={
-                    "message": data.message,
-                    "session_id": session_id,
-                    "user_id": data.user_id,
-                    "use_tools": data.use_tools,
-                },
+                json=ai_payload,
                 timeout=120.0,
             )
             if ai_response.status_code == 200:

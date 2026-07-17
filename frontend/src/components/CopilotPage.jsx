@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect } from 'react'
+import { MessageSquare, Brain } from 'lucide-react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-import { chat, listSessions, getSession, createSession, deleteSession } from '../services/copilot'
+import { chat, listSessions, getSession, deleteSession } from '../services/copilot'
 
 export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
@@ -75,6 +76,17 @@ export default function CopilotPage() {
     loadSessions()
   }
 
+  const handleDeleteAll = async () => {
+    if (!confirm('Delete all conversations? This cannot be undone.')) return
+    for (const s of sessions) {
+      try { await deleteSession(s.session_id) } catch (e) {}
+    }
+    setMessages([])
+    setActiveChatId(null)
+    setSessionId(null)
+    loadSessions()
+  }
+
   return (
     <div className="flex flex-col h-full">
       <ChatArea
@@ -97,6 +109,7 @@ export default function CopilotPage() {
               activeChatId={activeChatId}
               onSelectChat={(id) => { loadConversation(id); setHistoryOpen(false) }}
               onNewChat={() => { handleNewChat(); setHistoryOpen(false) }}
+              onDeleteAll={handleDeleteAll}
               onClose={() => setHistoryOpen(false)}
             />
           </div>
@@ -108,7 +121,7 @@ export default function CopilotPage() {
         <>
           <div className="fixed inset-0 z-50" onClick={() => setContextOpen(false)} />
           <div className="fixed top-[var(--header-height)] bottom-0 right-0 w-80 z-50 bg-white border-l border-gray-200 shadow-xl animate-slide-in-right">
-            <ContextPanel onClose={() => setContextOpen(false)} />
+            <ContextPanel onClose={() => setContextOpen(false)} messages={messages} sessionId={sessionId} />
           </div>
         </>
       )}

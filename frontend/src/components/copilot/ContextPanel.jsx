@@ -1,7 +1,4 @@
-import {
-  FileText, Download, BookmarkPlus, Share2, X,
-} from 'lucide-react'
-import SourceCard from './SourceCard'
+import { FileText, Download, BookmarkPlus, Share2, X } from 'lucide-react'
 
 const referencedSources = [
   { type: 'fir', title: 'FIR #4521/2026', subtitle: 'Theft — Malleshwaram, Bengaluru' },
@@ -11,10 +8,10 @@ const referencedSources = [
 ]
 
 const actions = [
-  { icon: FileText, label: 'Generate Report', color: '#3b82f6' },
-  { icon: Download, label: 'Export Conversation', color: '#10b981' },
-  { icon: BookmarkPlus, label: 'Save to Case', color: '#f59e0b' },
-  { icon: Share2, label: 'Share with Team', color: '#8b5cf6' },
+  { icon: FileText, label: 'Generate Report', color: 'text-blue-500 bg-blue-50' },
+  { icon: Download, label: 'Export Conversation', color: 'text-emerald-500 bg-emerald-50' },
+  { icon: BookmarkPlus, label: 'Save to Case', color: 'text-amber-500 bg-amber-50' },
+  { icon: Share2, label: 'Share with Team', color: 'text-purple-500 bg-purple-50' },
 ]
 
 const relatedCases = [
@@ -23,50 +20,68 @@ const relatedCases = [
   { id: 'FIR #4515', title: 'Cyber fraud — Electronic City', status: 'active' },
 ]
 
+const TYPE_COLORS = {
+  fir: 'bg-blue-100 text-blue-600',
+  suspect: 'bg-amber-100 text-amber-600',
+  evidence: 'bg-emerald-100 text-emerald-600',
+  location: 'bg-purple-100 text-purple-600',
+}
+
 export default function ContextPanel({ onClose }) {
   return (
-    <div className="slide-panel-inner">
-      <div className="slide-panel-header">
-        <h2 className="slide-panel-title">Context</h2>
-        <button className="slide-panel-close" onClick={onClose} aria-label="Close">
-          <X size={18} strokeWidth={1.8} />
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+        <h2 className="text-sm font-semibold text-gray-800">Context</h2>
+        <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
+          <X size={16} />
         </button>
       </div>
 
-      <div className="slide-panel-body">
-        <section className="context-section">
-          <h3 className="context-section-title">Referenced Sources</h3>
-          <div className="context-sources">
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5">
+        {/* Referenced Sources */}
+        <section>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Referenced Sources</h3>
+          <div className="space-y-2">
             {referencedSources.map((src, i) => (
-              <SourceCard key={i} {...src} />
+              <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-gray-50 border border-gray-100">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 ${TYPE_COLORS[src.type] || 'bg-gray-100 text-gray-500'}`}>
+                  {src.title[0]}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-gray-800 truncate">{src.title}</p>
+                  <p className="text-xs text-gray-500 truncate">{src.subtitle}</p>
+                </div>
+              </div>
             ))}
           </div>
         </section>
 
-        <section className="context-section">
-          <h3 className="context-section-title">Actions</h3>
-          <div className="context-actions">
+        {/* Actions */}
+        <section>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Actions</h3>
+          <div className="grid grid-cols-2 gap-2">
             {actions.map((action, i) => (
-              <button key={i} className="context-action-btn">
-                <div className="context-action-icon" style={{ background: action.color + '12', color: action.color }}>
-                  <action.icon size={14} strokeWidth={1.8} />
-                </div>
-                <span className="context-action-label">{action.label}</span>
+              <button key={i} className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium ${action.color} hover:opacity-80 transition-opacity`}>
+                <action.icon size={14} />
+                <span>{action.label}</span>
               </button>
             ))}
           </div>
         </section>
 
-        <section className="context-section">
-          <h3 className="context-section-title">Related Cases</h3>
-          <div className="context-cases">
+        {/* Related Cases */}
+        <section>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Related Cases</h3>
+          <div className="space-y-2">
             {relatedCases.map((c, i) => (
-              <div key={i} className="context-case-card">
-                <div className="context-case-header">
-                  <span className="context-case-id">{c.id}</span>
-                  <span className={`context-case-status ${c.status}`}>{c.status}</span>
+              <div key={i} className="p-2.5 rounded-lg bg-gray-50 border border-gray-100">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-mono text-gray-500">{c.id}</span>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                    c.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                  }`}>{c.status}</span>
                 </div>
-                <p className="context-case-title">{c.title}</p>
+                <p className="text-sm text-gray-700">{c.title}</p>
               </div>
             ))}
           </div>

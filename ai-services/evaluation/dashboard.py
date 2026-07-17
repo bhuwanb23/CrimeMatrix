@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict
 from evaluation.latency import LatencyTracker
 from evaluation.tokens import TokenTracker
@@ -59,6 +60,3 @@ class MonitoringDashboard:
             self.tokens.record(provider, provider, prompt_tokens, completion_tokens)
         if tool_name:
             self.tool_success.record(tool_name, success, duration_ms)
-
-
-from datetime import datetime

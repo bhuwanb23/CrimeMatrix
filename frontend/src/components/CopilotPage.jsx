@@ -1,45 +1,100 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-
-const aiResponses = [
-  'Based on my analysis of FIR #4521 and related cases, I found 3 similar MO patterns in the Bengaluru North district over the past 6 months. The suspect appears to target residential areas between 2-4 AM, using forced entry through rear doors. Would you like me to generate a detailed connection report?',
-  'I\'ve cross-referenced the suspect\'s phone records with cell tower data. Ravi Kumar was active near the crime scene at 2:15 AM on the night of the incident. This aligns with the CCTV footage timestamp. I recommend adding this to the evidence chain.',
-  'The investigation report for Case #1089 has been compiled. It includes: evidence summary, witness statements, timeline of events, and AI reasoning chain. The report is court-ready and follows KSP formatting guidelines. Shall I export it as PDF?',
-  'I\'ve identified a potential link between the theft pattern in Malleshwaram and a similar series in Indiranagar. Both show the same entry method and timing signature. This could indicate a serial offender operating across districts.',
-]
+import { chat, listSessions, getSession, createSession, deleteSession } from '../services/copilot'
 
 export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
+  const [sessionId, setSessionId] = useState(null)
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
   const [historyOpen, setHistoryOpen] = useState(false)
   const [contextOpen, setContextOpen] = useState(false)
+  const [sessions, setSessions] = useState([])
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false)
 
-  const handleSend = useCallback((content, source) => {
+  // Load conversation history
+  const loadSessions = useCallback(async () => {
+    try {
+      const result = await listSessions()
+      setSessions(result.data || [])
+    } catch (e) {
+      console.error('Failed to load sessions:', e)
+    }
+  }, [])
+
+  useEffect(() => {
+    loadSessions()
+  }, [loadSessions])
+
+  // Load a specific conversation
+  const loadConversation = useCallback(async (sid) => {
+    setIsLoadingHistory(true)
+    try {
+      const result = await getSession(sid)
+      if (result.data) {
+        setSessionId(sid)
+        setActiveChatId(sid)
+        setMessages(result.data.messages || [])
+      }
+    } catch (e) {
+      console.error('Failed to load conversation:', e)
+    }
+    setIsLoadingHistory(false)
+  }, [])
+
+  const handleSend = useCallback(async (content, source) => {
     const userMsg = {
       role: 'user',
       content,
       time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
     }
-    setMessages((prev) => [...prev, userMsg])
+    setMessages(prev => [...prev, userMsg])
     setIsTyping(true)
 
-    setTimeout(() => {
-      const response = aiResponses[Math.floor(Math.random() * aiResponses.length)]
-      setMessages((prev) => [...prev, {
+    try {
+      const result = await chat(content, sessionId, 'default', true)
+      const data = result.data
+      if (data) {
+        setSessionId(data.session_id)
+        setActiveChatId(data.session_id)
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: data.response,
+          time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+          reasoning_trace: data.reasoning_trace,
+          steps: data.steps,
+        }])
+      }
+    } catch (e) {
+      console.error('Chat error:', e)
+      setMessages(prev => [...prev, {
         role: 'assistant',
-        content: response,
+        content: 'Sorry, I encountered an error. Please try again.',
         time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
       }])
-      setIsTyping(false)
-    }, 1500)
-  }, [])
+    }
+    setIsTyping(false)
+  }, [sessionId])
 
   const handleNewChat = () => {
     setMessages([])
     setActiveChatId(null)
+    setSessionId(null)
+    loadSessions()
+  }
+
+  const handleDeleteChat = async (sid) => {
+    try {
+      await deleteSession(sid)
+      if (activeChatId === sid) {
+        handleNewChat()
+      }
+      loadSessions()
+    } catch (e) {
+      console.error('Delete failed:', e)
+    }
   }
 
   return (
@@ -48,7 +103,7 @@ export default function CopilotPage() {
         messages={messages}
         onSend={handleSend}
         isTyping={isTyping}
-        onToggleHistory={() => setHistoryOpen(!historyOpen)}
+        onToggleHistory={() => { setHistoryOpen(!historyOpen); loadSessions() }}
         onToggleContext={() => setContextOpen(!contextOpen)}
         historyOpen={historyOpen}
         contextOpen={contextOpen}
@@ -60,9 +115,11 @@ export default function CopilotPage() {
           <div className="copilot-overlay" onClick={() => setHistoryOpen(false)} />
           <div className="copilot-slide-panel left">
             <ChatHistory
+              sessions={sessions}
               activeChatId={activeChatId}
-              onSelectChat={(id) => { setActiveChatId(id); setHistoryOpen(false) }}
+              onSelectChat={(id) => { loadConversation(id); setHistoryOpen(false) }}
               onNewChat={() => { handleNewChat(); setHistoryOpen(false) }}
+              onDeleteChat={handleDeleteChat}
               onClose={() => setHistoryOpen(false)}
             />
           </div>

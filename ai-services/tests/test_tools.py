@@ -140,12 +140,12 @@ class TestToolRegistry:
         reg = ToolRegistry()
         assert reg.get("nonexistent") is None
 
-    def test_invoke_missing(self):
+    @pytest.mark.asyncio
+    async def test_invoke_missing(self):
         from tools.registry import ToolRegistry
         reg = ToolRegistry()
         with pytest.raises(ValueError):
-            import asyncio
-            asyncio.get_event_loop().run_until_complete(reg.invoke("nonexistent"))
+            await reg.invoke("nonexistent")
 
 
 from tools.builtins.calculator import CalculatorTool

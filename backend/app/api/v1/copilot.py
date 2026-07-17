@@ -243,3 +243,13 @@ async def update_title(session_id: str, data: TitleUpdate, db: AsyncSession = De
         session.title = data.title
         await db.commit()
     return success_response(message="Updated")
+
+
+@router.delete("/sessions")
+async def delete_all_sessions(user_id: str = "default", db: AsyncSession = Depends(get_db)):
+    from sqlalchemy import delete
+    await db.execute(delete(ChatMessage))
+    await db.execute(delete(ConversationMemory))
+    await db.execute(delete(ChatSession))
+    await db.commit()
+    return success_response(message="All sessions deleted")

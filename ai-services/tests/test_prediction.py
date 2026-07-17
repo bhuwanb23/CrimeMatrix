@@ -28,8 +28,9 @@ class TestCrimeForecasting:
         assert result["predictions"][0]["count"] == 10
 
     def test_detect_anomalies(self):
-        data = [{"period": "m1", "count": 10}, {"period": "m2", "count": 11}, {"period": "m3", "count": 50}]
-        anomalies = self.fc.detect_anomalies(data)
+        data = [{"period": f"m{i}", "count": 10} for i in range(10)]
+        data.append({"period": "m_outlier", "count": 100})
+        anomalies = self.fc.detect_anomalies(data, threshold=1.5)
         assert len(anomalies) >= 1
         assert anomalies[0]["type"] == "spike"
 

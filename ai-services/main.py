@@ -95,11 +95,11 @@ def create_app() -> FastAPI:
 
     logger.info("tools_registered", count=len(tool_registry.list_all()))
 
-    # Register built-in workflows
-    from workflows.builtin.investigation import InvestigationWorkflow
-    from workflows.builtin.case_analysis import CaseAnalysisWorkflow
-    from workflows.builtin.suspect_profile import SuspectProfileWorkflow
-    from workflows.builtin.crime_briefing import CrimeBriefingWorkflow
+    # Register built-in workflows (registration happens at import time)
+    import workflows.builtin.investigation
+    import workflows.builtin.case_analysis
+    import workflows.builtin.suspect_profile
+    import workflows.builtin.crime_briefing
     from workflows.registry import workflow_registry
     logger.info("workflows_registered", count=len(workflow_registry.list_all()))
 

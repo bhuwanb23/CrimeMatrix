@@ -831,3 +831,43 @@ async def embedding_search(data: EmbedSearchRequest):
 @router.get("/embeddings/stats")
 async def embedding_stats():
     return {"success": True, "data": _embedding_service.get_stats()}
+
+
+# AI Workflow Engine
+from workflows.engine import WorkflowEngine
+from workflows.registry import workflow_registry
+
+_workflow_engine = WorkflowEngine()
+
+
+class WorkflowRunRequest(BaseModel):
+    workflow: str
+    inputs: Optional[dict] = None
+
+
+@router.post("/workflows/run")
+async def run_workflow(data: WorkflowRunRequest):
+    result = await _workflow_engine.run(data.workflow, data.inputs)
+    return {"success": True, "data": result}
+
+
+@router.get("/workflows")
+async def list_workflows():
+    return {"success": True, "data": _workflow_engine.list_workflows()}
+
+
+@router.get("/workflows/{name}")
+async def get_workflow(name: str):
+    wf = _workflow_engine.get_workflow(name)
+    if not wf:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+    return {"success": True, "data": wf}
+
+
+@router.get("/workflows/{name}/steps")
+async def get_workflow_steps(name: str):
+    wf = workflow_registry.get(name)
+    if not wf:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+    steps = [{"name": s["name"], "description": s.get("description", "")} for s in wf.get("steps", [])]
+    return {"success": True, "data": steps}

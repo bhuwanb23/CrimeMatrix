@@ -923,3 +923,78 @@ async def model_config():
         "prediction": _prediction_model.get_config(),
         "defaults": model_registry.get_defaults(),
     }}
+
+
+# AI Evaluation & Monitoring
+from evaluation.dashboard import MonitoringDashboard
+
+_dashboard = MonitoringDashboard()
+
+
+class FeedbackRequest(BaseModel):
+    rating: int
+    query: str
+    response: str = ""
+    session_id: str = "default"
+    comment: Optional[str] = None
+    tags: Optional[list] = None
+
+
+@router.get("/monitor/latency")
+async def monitor_latency(endpoint: str = None):
+    return {"success": True, "data": _dashboard.latency.get_stats(endpoint)}
+
+
+@router.get("/monitor/tokens")
+async def monitor_tokens(provider: str = None):
+    if provider:
+        return {"success": True, "data": _dashboard.tokens.get_stats(provider)}
+    return {"success": True, "data": {"overall": _dashboard.tokens.get_stats(), "by_provider": _dashboard.tokens.get_by_provider()}}
+
+
+@router.get("/monitor/hallucination")
+async def monitor_hallucination():
+    return {"success": True, "data": _dashboard.hallucination.get_stats()}
+
+
+@router.get("/monitor/tools")
+async def monitor_tools(tool: str = None):
+    if tool:
+        return {"success": True, "data": _dashboard.tool_success.get_stats(tool)}
+    return {"success": True, "data": {"overall": _dashboard.tool_success.get_stats(), "by_tool": _dashboard.tool_success.get_by_tool()}}
+
+
+@router.get("/monitor/accuracy")
+async def monitor_accuracy(domain: str = None):
+    return {"success": True, "data": _dashboard.accuracy.get_stats(domain)}
+
+
+@router.get("/monitor/confidence")
+async def monitor_confidence():
+    return {"success": True, "data": {"stats": _dashboard.confidence.get_stats(), "distribution": _dashboard.confidence.get_distribution()}}
+
+
+@router.get("/monitor/cost")
+async def monitor_cost():
+    return {"success": True, "data": {"overall": _dashboard.cost.get_stats(), "by_provider": _dashboard.cost.get_by_provider()}}
+
+
+@router.post("/monitor/feedback")
+async def submit_feedback(data: FeedbackRequest):
+    _dashboard.feedback.submit(data.rating, data.query, data.response, data.session_id, data.comment, data.tags)
+    return {"success": True, "data": _dashboard.feedback.get_stats()}
+
+
+@router.get("/monitor/feedback")
+async def get_feedback():
+    return {"success": True, "data": {"stats": _dashboard.feedback.get_stats(), "recent": _dashboard.feedback.get_recent(10)}}
+
+
+@router.get("/monitor/dashboard")
+async def monitor_dashboard():
+    return {"success": True, "data": _dashboard.get_full_dashboard()}
+
+
+@router.get("/monitor/summary")
+async def monitor_summary():
+    return {"success": True, "data": _dashboard.get_summary()}

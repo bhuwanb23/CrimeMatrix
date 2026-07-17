@@ -215,3 +215,46 @@ async def save_graph():
     loader.graph = graph.graph
     stats = await loader.save()
     return success_response(data=stats, message="Graph saved to SQLite")
+
+
+class NodeCreateFull(BaseModel):
+    node_id: str
+    node_type: str = "unknown"
+    properties: Optional[dict] = None
+    confidence: float = 1.0
+
+
+class EdgeCreateFull(BaseModel):
+    source: str
+    target: str
+    relation: str = ""
+    properties: Optional[dict] = None
+    weight: float = 1.0
+
+
+@router.post("/nodes")
+async def create_node_full(data: NodeCreateFull):
+    props = data.properties or {}
+    graph.graph.add_node(data.node_id, type=data.node_type, confidence=data.confidence, **props)
+    return success_response(data={"node_id": data.node_id, "confidence": data.confidence})
+
+
+@router.post("/edges")
+async def create_edge_full(data: EdgeCreateFull):
+    props = data.properties or {}
+    graph.graph.add_edge(data.source, data.target, relation=data.relation, weight=data.weight, **props)
+    return success_response(data={"source": data.source, "target": data.target, "weight": data.weight})
+
+
+@router.post("/save-all")
+async def save_all_nodes_edges(data: dict):
+    db = None
+    async for session in get_db():
+        db = session
+        break
+    if not db:
+        return success_response(message="No DB session")
+    loader = GraphLoader(db)
+    loader.graph = graph.graph
+    stats = await loader.save()
+    return success_response(data=stats)

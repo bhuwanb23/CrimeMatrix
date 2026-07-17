@@ -12,9 +12,7 @@ export default function CopilotPage() {
   const [historyOpen, setHistoryOpen] = useState(false)
   const [contextOpen, setContextOpen] = useState(false)
   const [sessions, setSessions] = useState([])
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false)
 
-  // Load conversation history
   const loadSessions = useCallback(async () => {
     try {
       const result = await listSessions()
@@ -24,13 +22,9 @@ export default function CopilotPage() {
     }
   }, [])
 
-  useEffect(() => {
-    loadSessions()
-  }, [loadSessions])
+  useEffect(() => { loadSessions() }, [loadSessions])
 
-  // Load a specific conversation
   const loadConversation = useCallback(async (sid) => {
-    setIsLoadingHistory(true)
     try {
       const result = await getSession(sid)
       if (result.data) {
@@ -41,7 +35,6 @@ export default function CopilotPage() {
     } catch (e) {
       console.error('Failed to load conversation:', e)
     }
-    setIsLoadingHistory(false)
   }, [])
 
   const handleSend = useCallback(async (content, source) => {
@@ -63,12 +56,9 @@ export default function CopilotPage() {
           role: 'assistant',
           content: data.response,
           time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-          reasoning_trace: data.reasoning_trace,
-          steps: data.steps,
         }])
       }
     } catch (e) {
-      console.error('Chat error:', e)
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: 'Sorry, I encountered an error. Please try again.',
@@ -85,20 +75,8 @@ export default function CopilotPage() {
     loadSessions()
   }
 
-  const handleDeleteChat = async (sid) => {
-    try {
-      await deleteSession(sid)
-      if (activeChatId === sid) {
-        handleNewChat()
-      }
-      loadSessions()
-    } catch (e) {
-      console.error('Delete failed:', e)
-    }
-  }
-
   return (
-    <div className="copilot-page">
+    <div className="flex flex-col h-full">
       <ChatArea
         messages={messages}
         onSend={handleSend}
@@ -112,14 +90,13 @@ export default function CopilotPage() {
       {/* History Overlay */}
       {historyOpen && (
         <>
-          <div className="copilot-overlay" onClick={() => setHistoryOpen(false)} />
-          <div className="copilot-slide-panel left">
+          <div className="fixed inset-0 z-50" onClick={() => setHistoryOpen(false)} />
+          <div className="fixed top-[var(--header-height)] bottom-0 left-[68px] w-80 z-50 bg-white border-r border-gray-200 shadow-xl animate-slide-in-left">
             <ChatHistory
               sessions={sessions}
               activeChatId={activeChatId}
               onSelectChat={(id) => { loadConversation(id); setHistoryOpen(false) }}
               onNewChat={() => { handleNewChat(); setHistoryOpen(false) }}
-              onDeleteChat={handleDeleteChat}
               onClose={() => setHistoryOpen(false)}
             />
           </div>
@@ -129,8 +106,8 @@ export default function CopilotPage() {
       {/* Context Overlay */}
       {contextOpen && (
         <>
-          <div className="copilot-overlay" onClick={() => setContextOpen(false)} />
-          <div className="copilot-slide-panel right">
+          <div className="fixed inset-0 z-50" onClick={() => setContextOpen(false)} />
+          <div className="fixed top-[var(--header-height)] bottom-0 right-0 w-80 z-50 bg-white border-l border-gray-200 shadow-xl animate-slide-in-right">
             <ContextPanel onClose={() => setContextOpen(false)} />
           </div>
         </>

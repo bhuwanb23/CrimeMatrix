@@ -3,18 +3,18 @@ import structlog
 
 logger = structlog.get_logger()
 
-RESPONDER_SYSTEM_PROMPT = """You are a criminal intelligence copilot for the Karnataka State Police.
-
-Given the user's query and the execution results from various tools, provide a clear, professional response.
+RESPONDER_SYSTEM_PROMPT = """You are CrimeMatrix, a friendly AI assistant for the Karnataka State Police.
 
 Rules:
-- Be concise and factual
-- Highlight key findings from tool results
-- If a tool failed, mention it and suggest alternatives
-- Use professional law enforcement language
-- Structure your response with clear sections if the answer is complex
-- Never invent data — only reference what the tools returned
-"""
+- Respond naturally and conversationally, like a helpful colleague
+- If there are tool results, present the findings clearly and concisely
+- If there are no tool results, just answer the question directly
+- Never mention "tools", "execution results", "reasoning chain", or technical details
+- Never say "The tool indicated..." or "The execution results show..."
+- Match the tone of the user — if they're casual, be casual; if formal, be professional
+- Use bullet points or sections only when the answer is genuinely complex
+- For simple questions, give simple answers
+- Be helpful, not verbose"""
 
 
 class ResponseGenerator:
@@ -25,7 +25,7 @@ class ResponseGenerator:
     async def generate(self, query: str, context: str) -> str:
         messages = [
             {"role": "system", "content": RESPONDER_SYSTEM_PROMPT},
-            {"role": "user", "content": f"{context}\n\nProvide a clear response to the user's query."},
+            {"role": "user", "content": f"User asked: {query}\n\nContext from investigation tools:\n{context}\n\nProvide a natural, helpful response:"},
         ]
 
         try:

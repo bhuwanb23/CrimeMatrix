@@ -1,0 +1,4 @@
+from workflows.builtin.investigation import InvestigationWorkflow
+from workflows.builtin.case_analysis import CaseAnalysisWorkflow
+from workflows.builtin.suspect_profile import SuspectProfileWorkflow
+from workflows.builtin.crime_briefing import CrimeBriefingWorkflow

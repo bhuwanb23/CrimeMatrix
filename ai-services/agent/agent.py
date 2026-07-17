@@ -148,7 +148,8 @@ class CoreAgent:
         }
 
     async def stream(self, message: str, context: ConversationContext = None,
-                     session_id: str = "default", user_id: str = "default"):
+                     session_id: str = "default", user_id: str = "default",
+                     investigation_context: str = None):
         if context is None:
             context = ConversationContext()
 

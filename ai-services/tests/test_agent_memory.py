@@ -1,4 +1,5 @@
 import pytest
+import uuid
 from unittest.mock import AsyncMock, MagicMock, patch
 from agent.agent import CoreAgent
 from agent.message import ConversationContext

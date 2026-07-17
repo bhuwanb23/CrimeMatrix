@@ -10,8 +10,10 @@ class EmbeddingDocument(Base):
     domain = Column(String(50), nullable=False, index=True)
     title = Column(String(200))
     content = Column(Text, nullable=False)
+    source = Column(String(100), default="unknown")
     metadata_json = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
 
 class EmbeddingChunk(Base):
@@ -24,3 +26,4 @@ class EmbeddingChunk(Base):
     vector_json = Column(Text, nullable=False)
     metadata_json = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())

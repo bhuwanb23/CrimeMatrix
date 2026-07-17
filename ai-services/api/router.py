@@ -695,3 +695,82 @@ async def predict_cases(data: dict):
 @router.get("/predict/stats")
 async def predict_stats():
     return {"success": True, "data": _prediction_engine.get_stats()}
+
+
+# Speech & Translation
+from language.stt import SpeechToText
+from language.tts import TextToSpeech
+from language.translator import Translator
+from language.kanglish import KanglishNormalizer
+from language.normalizer import QueryNormalizer
+
+_stt = SpeechToText()
+_tts = TextToSpeech()
+_translator = Translator()
+_kanglish = KanglishNormalizer()
+_normalizer = QueryNormalizer()
+
+
+class STTRequest(BaseModel):
+    audio_text: Optional[str] = None
+    language: str = "auto"
+
+
+class TTSRequest(BaseModel):
+    text: str
+    language: str = "en"
+    gender: str = "female"
+
+
+class TranslateRequest(BaseModel):
+    text: str
+    source_lang: str = "auto"
+    target_lang: str = "en"
+
+
+class KanglishRequest(BaseModel):
+    text: str
+    target: str = "english"
+
+
+class NormalizeRequest(BaseModel):
+    query: str
+
+
+@router.post("/language/stt")
+async def speech_to_text(data: STTRequest):
+    result = await _stt.transcribe(audio_text=data.audio_text, language=data.language)
+    return {"success": True, "data": result}
+
+
+@router.post("/language/tts")
+async def text_to_speech(data: TTSRequest):
+    result = await _tts.synthesize(data.text, language=data.language, gender=data.gender)
+    return {"success": True, "data": result}
+
+
+@router.post("/language/translate")
+async def translate(data: TranslateRequest):
+    result = _translator.translate(data.text, data.source_lang, data.target_lang)
+    return {"success": True, "data": result}
+
+
+@router.post("/language/kanglish")
+async def kanglish_normalize(data: KanglishRequest):
+    result = _kanglish.normalize(data.text, data.target)
+    return {"success": True, "data": result}
+
+
+@router.post("/language/normalize")
+async def normalize_query(data: NormalizeRequest):
+    result = _normalizer.normalize(data.query)
+    return {"success": True, "data": result}
+
+
+@router.get("/language/stats")
+async def language_stats():
+    return {"success": True, "data": {
+        "supported_languages": ["en", "kn", "hi"],
+        "kanglish_entries": len(KANGlish_KN),
+        "en_kn_dict_size": len(EN_KN_DICT) if "EN_KN_DICT" in dir() else 0,
+    }}

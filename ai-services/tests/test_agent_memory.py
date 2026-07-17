@@ -61,6 +61,6 @@ async def test_agent_memory_persists():
     with patch("agent.agent.provider_registry") as mock_registry:
         mock_registry.get.return_value = MockProvider("Response")
         agent = CoreAgent(provider="mock", model="test")
-        await agent.chat("Hello", use_tools=False, session_id="mem_test")
-        session_mem = await agent.memory.get_session("mem_test")
+        await agent.chat("Hello", use_tools=False, session_id="mem_persist_test_unique")
+        session_mem = await agent.memory.get_session("mem_persist_test_unique")
         assert len(session_mem.messages) == 2

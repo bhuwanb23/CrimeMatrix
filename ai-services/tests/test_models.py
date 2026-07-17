@@ -108,7 +108,7 @@ class TestEmbeddingModel:
 
     def test_config(self):
         config = self.model.get_config()
-        assert "default_model" in config
+        assert "model" in config
 
 
 class TestSpeechModel:

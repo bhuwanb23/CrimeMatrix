@@ -142,7 +142,7 @@ class IndianNameMatcher:
                 surname_bonus = 10
                 break
 
-        final_score = min(100, int(part_score + nickname_bonus + phonetic_bonus + vowel_bonus + surname_bonus))
+        final_score = min(100, int(part_score + prefix_bonus + nickname_bonus + phonetic_bonus + vowel_bonus + surname_bonus))
 
         match_type = "exact" if final_score == 100 else \
                      "nickname" if nickname_bonus > 0 else \

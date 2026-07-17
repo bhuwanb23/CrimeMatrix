@@ -20,7 +20,7 @@ function CollapsibleSection({ title, defaultOpen = true, children }) {
   )
 }
 
-function ChatItem({ item, active, onClick, onDelete }) {
+function ChatItem({ item, active, onClick }) {
   const colorIdx = Math.abs((item.session_id || '').charCodeAt(0) || 0) % COLORS.length
   const initial = (item.title || 'N')[0].toUpperCase()
 
@@ -39,7 +39,7 @@ function ChatItem({ item, active, onClick, onDelete }) {
   )
 }
 
-export default function ChatHistory({ sessions = [], activeChatId, onSelectChat, onNewChat, onDeleteChat, onClose }) {
+export default function ChatHistory({ sessions = [], activeChatId, onSelectChat, onNewChat, onDeleteChat, onDeleteAll, onClose }) {
   const today = new Date().toDateString()
   const todaySessions = (sessions || []).filter(s => {
     const d = s.created_at ? new Date(s.created_at).toDateString() : null
@@ -103,6 +103,19 @@ export default function ChatHistory({ sessions = [], activeChatId, onSelectChat,
           </div>
         )}
       </div>
+
+      {/* Delete All */}
+      {sessions.length > 0 && (
+        <div className="px-3 py-3 border-t border-gray-200">
+          <button
+            onClick={onDeleteAll}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
+          >
+            <Trash2 size={14} />
+            Delete All Conversations
+          </button>
+        </div>
+      )}
     </div>
   )
 }

@@ -31,6 +31,7 @@ class ChatRequest(BaseModel):
     session_id: str = "default"
     user_id: str = "default"
     use_tools: bool = True
+    investigation_context: Optional[str] = None
 
 
 class ToolInvokeRequest(BaseModel):
@@ -60,7 +61,8 @@ async def chat(data: ChatRequest):
         context = _sessions[data.session_id]
 
         result = await agent.chat(data.message, context, data.use_tools,
-                                  session_id=data.session_id, user_id=data.user_id)
+                                  session_id=data.session_id, user_id=data.user_id,
+                                  investigation_context=data.investigation_context)
         return {
             "success": True,
             "data": {

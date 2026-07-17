@@ -1,0 +1,6 @@
+from identity.name_matcher import IndianNameMatcher
+from identity.transliteration import TransliterationEngine
+from identity.duplicate_detector import DuplicateDetector
+from identity.entity_resolver import EntityResolver
+from identity.record_merger import RecordMerger
+from identity.alias_detector import AliasDetector

@@ -574,3 +574,72 @@ async def knowledge_stats():
         "edges": _knowledge_graph.number_of_edges(),
         "components": nx.number_connected_components(_knowledge_graph) if _knowledge_graph.number_of_nodes() > 0 else 0,
     }}
+
+
+# AI Reasoning Engine
+from reasoning.engine import ReasoningEngine
+from reasoning.evidence import EvidenceRanking
+from reasoning.confidence import ConfidenceCalculator
+
+_reasoning_engine = ReasoningEngine(provider="ollama", model="llama3.2:1b")
+_evidence_ranker = EvidenceRanking()
+_confidence_calc = ConfidenceCalculator()
+
+
+class ReasoningAnalyzeRequest(BaseModel):
+    hypothesis: str
+    evidence: list
+    chain_type: str = "abductive"
+
+
+class ReasoningChainRequest(BaseModel):
+    hypothesis: str
+    evidence: list
+    chain_type: str = "abductive"
+
+
+class ReasoningConfidenceRequest(BaseModel):
+    chain: dict
+
+
+class ReasoningEvidenceRequest(BaseModel):
+    evidence: list
+    hypothesis: Optional[str] = None
+
+
+class ReasoningExplainRequest(BaseModel):
+    hypothesis: str
+    evidence: list
+    chain_type: str = "abductive"
+
+
+@router.post("/reasoning/analyze")
+async def reasoning_analyze(data: ReasoningAnalyzeRequest):
+    result = await _reasoning_engine.analyze(data.hypothesis, data.evidence, data.chain_type)
+    return {"success": True, "data": result}
+
+
+@router.post("/reasoning/chain")
+async def reasoning_chain(data: ReasoningChainRequest):
+    from reasoning.chain import ReasoningChainGenerator
+    gen = ReasoningChainGenerator()
+    chain = gen.build(data.hypothesis, data.evidence, data.chain_type)
+    return {"success": True, "data": chain}
+
+
+@router.post("/reasoning/confidence")
+async def reasoning_confidence(data: ReasoningConfidenceRequest):
+    result = _confidence_calc.compute(data.chain)
+    return {"success": True, "data": result}
+
+
+@router.post("/reasoning/evidence")
+async def reasoning_evidence(data: ReasoningEvidenceRequest):
+    ranked = _evidence_ranker.rank(data.evidence, data.hypothesis)
+    return {"success": True, "data": ranked}
+
+
+@router.post("/reasoning/explain")
+async def reasoning_explain(data: ReasoningExplainRequest):
+    result = await _reasoning_engine.analyze(data.hypothesis, data.evidence, data.chain_type)
+    return {"success": True, "data": {"explanation": result["explanation"], "confidence": result["confidence"]}}

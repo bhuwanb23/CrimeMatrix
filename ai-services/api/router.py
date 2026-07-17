@@ -461,3 +461,116 @@ async def identity_stats():
         "supported_scripts": ["kannada", "devanagari", "latin"],
         "nickname_groups": len(NICKNAMES) if "NICKNAMES" in dir() else 0,
     }}
+
+
+# Knowledge Graph Intelligence
+import networkx as nx
+from knowledge.graph_builder import GraphBuilder
+from knowledge.query_engine import GraphQueryEngine
+from knowledge.criminal_network import CriminalNetwork
+from knowledge.relationship import RelationshipDiscovery
+from knowledge.timeline_gen import TimelineGenerator
+from knowledge.link_analysis import LinkAnalysis
+
+_knowledge_graph = nx.Graph()
+_graph_builder = GraphBuilder()
+_query_engine = GraphQueryEngine(_knowledge_graph)
+_criminal_network = CriminalNetwork(_knowledge_graph)
+_relationship = RelationshipDiscovery(_knowledge_graph)
+_timeline = TimelineGenerator(_knowledge_graph)
+_link_analysis = LinkAnalysis(_knowledge_graph)
+
+
+class KnowledgeQueryRequest(BaseModel):
+    query_type: str
+    node_id: Optional[str] = None
+    node_id_2: Optional[str] = None
+    depth: int = 2
+
+
+@router.post("/knowledge/build")
+async def knowledge_build():
+    stats = await _graph_builder.build()
+    _knowledge_graph.clear()
+    _knowledge_graph.update(_graph_builder.graph)
+    return {"success": True, "data": stats}
+
+
+@router.post("/knowledge/query")
+async def knowledge_query(data: KnowledgeQueryRequest):
+    if data.query_type == "crimes_linked" and data.node_id:
+        result = _query_engine.crimes_linked_to(data.node_id)
+    elif data.query_type == "suspects_in_crime" and data.node_id:
+        result = _query_engine.suspects_in_crime(data.node_id)
+    elif data.query_type == "common_crimes" and data.node_id and data.node_id_2:
+        result = _query_engine.common_crimes(data.node_id, data.node_id_2)
+    elif data.query_type == "paths" and data.node_id and data.node_id_2:
+        result = _query_engine.find_paths(data.node_id, data.node_id_2)
+    elif data.query_type == "search" and data.node_id:
+        result = _query_engine.search_nodes(data.node_id)
+    else:
+        result = {"error": "Invalid query type or missing parameters"}
+    return {"success": True, "data": result}
+
+
+@router.post("/knowledge/network")
+async def knowledge_network(data: KnowledgeQueryRequest):
+    if data.query_type == "clusters":
+        result = _criminal_network.find_clusters()
+    elif data.query_type == "risk" and data.node_id:
+        result = _criminal_network.network_risk_score(data.node_id)
+    elif data.query_type == "accomplices" and data.node_id:
+        result = _criminal_network.accomplice_network(data.node_id, data.depth)
+    else:
+        result = {"error": "Invalid network query"}
+    return {"success": True, "data": result}
+
+
+@router.post("/knowledge/discover")
+async def knowledge_discover(data: KnowledgeQueryRequest):
+    if data.query_type == "hidden" and data.node_id and data.node_id_2:
+        result = _relationship.find_hidden_connections(data.node_id, data.node_id_2)
+    elif data.query_type == "shared" and data.node_id and data.node_id_2:
+        result = _relationship.shared_connections(data.node_id, data.node_id_2)
+    elif data.query_type == "strength" and data.node_id and data.node_id_2:
+        result = _relationship.relationship_strength(data.node_id, data.node_id_2)
+    elif data.query_type == "importance" and data.node_id:
+        result = _relationship.node_importance(data.node_id)
+    else:
+        result = {"error": "Invalid discover query"}
+    return {"success": True, "data": result}
+
+
+@router.post("/knowledge/timeline")
+async def knowledge_timeline(data: KnowledgeQueryRequest):
+    if data.node_id:
+        result = _timeline.entity_timeline(data.node_id)
+    elif data.query_type == "bursts":
+        result = _timeline.activity_bursts()
+    else:
+        result = _timeline.generate()
+    return {"success": True, "data": result}
+
+
+@router.post("/knowledge/analyze")
+async def knowledge_analyze(data: KnowledgeQueryRequest):
+    if data.query_type == "shortest" and data.node_id and data.node_id_2:
+        result = _link_analysis.shortest_path(data.node_id, data.node_id_2)
+    elif data.query_type == "centrality":
+        result = _link_analysis.centrality()
+    elif data.query_type == "communities":
+        result = _link_analysis.communities()
+    elif data.query_type == "bridges":
+        result = _link_analysis.bridges()
+    else:
+        result = {"error": "Invalid analyze query"}
+    return {"success": True, "data": result}
+
+
+@router.get("/knowledge/stats")
+async def knowledge_stats():
+    return {"success": True, "data": {
+        "nodes": _knowledge_graph.number_of_nodes(),
+        "edges": _knowledge_graph.number_of_edges(),
+        "components": nx.number_connected_components(_knowledge_graph) if _knowledge_graph.number_of_nodes() > 0 else 0,
+    }}

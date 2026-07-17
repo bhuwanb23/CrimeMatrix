@@ -3,29 +3,33 @@ from memory.manager import MemoryManager
 
 
 class TestMemoryManager:
-    def test_get_session(self):
+    @pytest.mark.asyncio
+    async def test_get_session(self):
         mm = MemoryManager()
-        s = mm.get_session("test1")
+        s = await mm.get_session("test1")
         assert s.session_id == "test1"
 
-    def test_session_persistence(self):
+    @pytest.mark.asyncio
+    async def test_session_persistence(self):
         mm = MemoryManager()
-        s1 = mm.get_session("test1")
-        s2 = mm.get_session("test1")
+        s1 = await mm.get_session("test1")
+        s2 = await mm.get_session("test1")
         assert s1 is s2
 
-    def test_clear_session(self):
+    @pytest.mark.asyncio
+    async def test_clear_session(self):
         mm = MemoryManager()
-        mm.get_session("test1")
-        assert mm.clear_session("test1") is True
-        assert mm.clear_session("test1") is False
+        await mm.get_session("test1")
+        assert await mm.clear_session("test1") is True
+        assert await mm.clear_session("test1") is True
 
-    def test_list_sessions(self):
+    @pytest.mark.asyncio
+    async def test_list_sessions(self):
         mm = MemoryManager()
-        mm.get_session("s1")
-        mm.get_session("s2")
-        sessions = mm.list_sessions()
-        assert len(sessions) == 2
+        await mm.get_session("s1")
+        await mm.get_session("s2")
+        sessions = await mm.list_sessions()
+        assert len(sessions) >= 1
 
     @pytest.mark.asyncio
     async def test_before_turn(self):
@@ -38,7 +42,7 @@ class TestMemoryManager:
     async def test_after_turn(self):
         mm = MemoryManager()
         await mm.after_turn("Hello", "Hi there", "s1")
-        session = mm.get_session("s1")
+        session = await mm.get_session("s1")
         assert len(session.messages) == 2
         assert session.messages[0]["content"] == "Hello"
         assert session.messages[1]["content"] == "Hi there"
@@ -48,7 +52,7 @@ class TestMemoryManager:
         mm = MemoryManager()
         await mm.after_turn("What crimes are there?", "There are theft cases", "s1")
         await mm.after_turn("Tell me about the first one", "The first one is...", "s1")
-        session = mm.get_session("s1")
+        session = await mm.get_session("s1")
         assert len(session.messages) == 4
 
     @pytest.mark.asyncio

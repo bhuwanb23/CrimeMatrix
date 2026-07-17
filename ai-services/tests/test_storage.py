@@ -4,7 +4,7 @@ import os
 from storage.sqlite_provider import SQLiteProvider
 from storage.networkx_provider import NetworkXProvider
 from storage.vector_provider import VectorProvider
-from storage.cache_provider import CacheProvider
+from storage.cache_provider import MemoryMemoryCacheProvider
 from storage.file_provider import FileProvider
 
 
@@ -169,38 +169,38 @@ class TestVectorProvider:
         assert await vp.get("test", "v1") is None
 
 
-class TestCacheProvider:
+class TestMemoryCacheProvider:
     @pytest.mark.asyncio
     async def test_set_get(self):
-        cache = CacheProvider()
+        cache = MemoryCacheProvider()
         await cache.set("key1", "value1", 60)
         val = await cache.get("key1")
         assert val == "value1"
 
     @pytest.mark.asyncio
     async def test_expiry(self):
-        cache = CacheProvider()
+        cache = MemoryCacheProvider()
         await cache.set("key1", "value1", 0)
         val = await cache.get("key1")
         assert val is None
 
     @pytest.mark.asyncio
     async def test_delete(self):
-        cache = CacheProvider()
+        cache = MemoryCacheProvider()
         await cache.set("key1", "value1", 60)
         assert await cache.delete("key1") is True
         assert await cache.get("key1") is None
 
     @pytest.mark.asyncio
     async def test_exists(self):
-        cache = CacheProvider()
+        cache = MemoryCacheProvider()
         await cache.set("key1", "value1", 60)
         assert await cache.exists("key1") is True
         assert await cache.exists("missing") is False
 
     @pytest.mark.asyncio
     async def test_clear(self):
-        cache = CacheProvider()
+        cache = MemoryCacheProvider()
         await cache.set("a", 1, 60)
         await cache.set("b", 2, 60)
         await cache.clear()

@@ -8,7 +8,8 @@ logger = structlog.get_logger()
 STOP_WORDS_EN = {"the", "a", "an", "is", "are", "was", "were", "in", "on", "at", "to", "for",
                  "of", "with", "by", "from", "and", "or", "but", "not", "this", "that", "it",
                  "be", "has", "have", "had", "do", "does", "did", "will", "would", "could",
-                 "should", "may", "might", "can", "shall", "i", "you", "he", "she", "we", "they"}
+                 "should", "may", "might", "can", "shall", "i", "you", "he", "she", "we", "they",
+                 "near", "about", "around", "into", "over", "under", "after", "before"}
 
 SYNONYMS = {
     "rob": ["robbery", "steal", "theft"],

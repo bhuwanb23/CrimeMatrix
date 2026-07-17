@@ -174,3 +174,44 @@ async def get_graph_stats():
     stats["total_edges"] = graph.graph.number_of_edges()
     stats["density"] = round(nx.density(graph.graph), 4) if graph.graph.number_of_nodes() > 1 else 0
     return success_response(data=stats)
+
+
+# Graph Persistence (SQLite ↔ NetworkX)
+from app.db.session import get_db
+from app.graph.loader import GraphLoader
+from app.graph.sync import GraphSync
+
+
+@router.post("/load")
+async def load_graph():
+    db = None
+    async for session in get_db():
+        db = session
+        break
+    if not db:
+        return success_response(message="No DB session")
+    loader = GraphLoader(db)
+    stats = await loader.load()
+    graph.graph = loader.graph
+    node_mgr.graph = graph.graph
+    rel_mgr.graph = graph.graph
+    traversal.graph = graph.graph
+    path_finder.graph = graph.graph
+    neighbor_finder.graph = graph.graph
+    component_analyzer.graph = graph.graph
+    timeline_analyzer.graph = graph.graph
+    return success_response(data=stats, message="Graph loaded from SQLite")
+
+
+@router.post("/save")
+async def save_graph():
+    db = None
+    async for session in get_db():
+        db = session
+        break
+    if not db:
+        return success_response(message="No DB session")
+    loader = GraphLoader(db)
+    loader.graph = graph.graph
+    stats = await loader.save()
+    return success_response(data=stats, message="Graph saved to SQLite")

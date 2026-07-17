@@ -55,7 +55,7 @@ class CoreAgent:
 
     async def chat(self, message: str, context: ConversationContext = None,
                    use_tools: bool = True, session_id: str = "default",
-                   user_id: str = "default") -> dict:
+                   user_id: str = "default", investigation_context: str = None) -> dict:
         if context is None:
             context = ConversationContext()
 
@@ -75,6 +75,8 @@ class CoreAgent:
         if not use_tools:
             provider = provider_registry.get(self.provider_name)
             system = self.system_prompt
+            if investigation_context:
+                system += f"\n\n{investigation_context}"
             if memory_ctx.get("conversation_context"):
                 system += f"\n\n{memory_ctx['conversation_context']}"
 

@@ -1,4 +1,5 @@
 import json
+import re
 from typing import List
 from agent.message import Plan, PlanStep
 from core.provider import registry as provider_registry
@@ -31,13 +32,31 @@ Example for "Calculate 15*23 and then add 50":
 ]
 """
 
+GREETING_PATTERNS = [
+    r'^(hi|hello|hey|howdy|hola|namaste|good\s+(morning|afternoon|evening|night))',
+    r'^(what\'?s?\s+up|sup|yo|how\'?s?\s+it\s+going|how\s+are\s+you)',
+    r'^(thanks|thank\s+you|bye|goodbye|see\s+you)',
+]
+
 
 class Planner:
     def __init__(self, provider: str = None, model: str = None):
         self.provider_name = provider
         self.model_name = model
 
+    def is_greeting(self, query: str) -> bool:
+        query_lower = query.lower().strip()
+        for pattern in GREETING_PATTERNS:
+            if re.match(pattern, query_lower):
+                return True
+        return False
+
     async def plan(self, query: str, available_tools: list) -> Plan:
+        # Skip planning for greetings — return empty plan immediately
+        if self.is_greeting(query):
+            logger.info("greeting_detected", query=query[:50])
+            return Plan(query=query, steps=[])
+
         tools_desc = "\n".join([
             f"- {t['name']}: {t['description']}" for t in available_tools
         ])

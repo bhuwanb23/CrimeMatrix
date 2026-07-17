@@ -79,6 +79,7 @@ def create_app() -> FastAPI:
     from tools.prediction.engine import PredictionEngineTool
     from tools.language.translate import TranslatorTool
     from tools.embeddings.search import EmbeddingSearchTool
+    from tools.workflows.run import WorkflowRunTool
 
     for tool_cls in [
         CalculatorTool, WebFetchTool,
@@ -88,7 +89,7 @@ def create_app() -> FastAPI:
         InvestigationNotesTool, InvestigationTimelineTool, CaseStatusTool,
         ReportGenerateTool, RAGSearchTool, SearchIntelligentTool, IdentityMatchTool,
         KnowledgeGraphTool, ReasoningAnalyzeTool, PredictionEngineTool, TranslatorTool,
-        EmbeddingSearchTool,
+        EmbeddingSearchTool, WorkflowRunTool,
     ]:
         tool_registry.register(tool_cls())
 

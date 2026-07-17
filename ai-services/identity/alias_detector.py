@@ -56,7 +56,7 @@ class AliasDetector:
                 if other_name.lower() == name_lower:
                     continue
                 score = self.name_matcher.match(name_lower, other_name)
-                if score["score"] >= 70:
+                if score["score"] >= 50:
                     aliases.append({
                         "alias": other_name,
                         "score": score["score"],

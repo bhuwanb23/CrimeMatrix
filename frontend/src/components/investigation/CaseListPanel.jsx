@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Search, Bookmark, ChevronDown, ChevronRight } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateText, translateStatus } from '../../utils/translate'
 
 export default function CaseListPanel({ investigations, selectedId, onSelectCase }) {
+  const { lang } = useLanguage()
   const [searchQuery, setSearchQuery] = useState('')
   const [activeSection, setActiveSection] = useState('active')
 
@@ -20,7 +23,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         <Search size={14} />
         <input
           type="text"
-          placeholder="Search investigations..."
+          placeholder={t('search_investigations_placeholder', lang)}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -32,7 +35,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
           onClick={() => setActiveSection('active')}
         >
           {activeSection === 'active' ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          Active ({investigations.filter((i) => i.status === 'active').length})
+          {t('active', lang)} ({investigations.filter((i) => i.status === 'active').length})
         </button>
         <button
           className={`case-list-section-btn ${activeSection === 'saved' ? 'active' : ''}`}
@@ -40,7 +43,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         >
           {activeSection === 'saved' ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           <Bookmark size={12} />
-          Saved ({investigations.filter((i) => i.bookmarked).length})
+          {t('saved', lang)} ({investigations.filter((i) => i.bookmarked).length})
         </button>
       </div>
 
@@ -54,10 +57,10 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
             <div className="case-list-item-top">
               <span className="case-list-item-id">{inv.caseId}</span>
               <span className={`case-list-priority priority-${inv.priority.toLowerCase()}`}>
-                {inv.priority}
+                {t(inv.priority.toLowerCase(), lang)}
               </span>
             </div>
-            <p className="case-list-item-title">{inv.title}</p>
+            <p className="case-list-item-title">{translateText(inv.title, lang)}</p>
             <div className="case-list-item-progress">
               <div className="progress-bar">
                 <div className="progress-fill" style={{ width: `${inv.progress}%` }} />

@@ -1,9 +1,17 @@
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateDistrictName, translateHotspot } from '../../utils/translate'
+
 export default function MapMarker({ marker, isSelected, onClick, type = 'district' }) {
+  const { lang } = useLanguage()
   const isDistrict = type === 'district'
   const size = isDistrict ? 8 + Math.sqrt(marker.cases) * 0.5 : 6 + marker.cases * 0.3
   const color = marker.risk === 'high' || marker.severity === 'high' ? '#ef4444'
     : marker.risk === 'medium' || marker.severity === 'medium' ? '#f59e0b'
     : '#10b981'
+
+  const displayName = isDistrict
+    ? translateDistrictName(marker.name, lang)
+    : translateHotspot(marker.name, lang)
 
   return (
     <g
@@ -34,7 +42,7 @@ export default function MapMarker({ marker, isSelected, onClick, type = 'distric
           fontFamily="var(--font-sans)"
           className="marker-label"
         >
-          {marker.name}
+          {displayName}
         </text>
       )}
 
@@ -46,7 +54,7 @@ export default function MapMarker({ marker, isSelected, onClick, type = 'distric
           fontSize="9"
           fontFamily="var(--font-sans)"
         >
-          {marker.cases} cases
+          {marker.cases} {t('cases_label', lang)}
         </text>
       )}
     </g>

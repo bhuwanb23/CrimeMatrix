@@ -1,4 +1,9 @@
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
+
 export default function HeatmapOverlay({ districts }) {
+  const { lang } = useLanguage()
+
   return (
     <g className="heatmap-overlay">
       {districts.map((d) => {

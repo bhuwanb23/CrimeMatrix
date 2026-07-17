@@ -6,17 +6,20 @@ import TimelineTab from './TimelineTab'
 import ReasoningTab from './ReasoningTab'
 import RelatedTab from './RelatedTab'
 import AITab from './AITab'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateText, translateStatus, translateDistrictName } from '../../utils/translate'
 
 const tabs = [
-  { id: 'notes', label: 'Notes', icon: FileText },
-  { id: 'evidence', label: 'Evidence', icon: Camera },
-  { id: 'timeline', label: 'Timeline', icon: Clock },
-  { id: 'reasoning', label: 'Reasoning', icon: GitBranch },
-  { id: 'related', label: 'Related', icon: Link },
-  { id: 'ai', label: 'AI', icon: Bot },
+  { id: 'notes', labelKey: 'notes', icon: FileText },
+  { id: 'evidence', labelKey: 'evidence', icon: Camera },
+  { id: 'timeline', labelKey: 'timeline', icon: Clock },
+  { id: 'reasoning', labelKey: 'reasoning', icon: GitBranch },
+  { id: 'related', labelKey: 'related', icon: Link },
+  { id: 'ai', labelKey: 'ai_copilot', icon: Bot },
 ]
 
 export default function WorkspacePanel({ investigation }) {
+  const { lang } = useLanguage()
   const [activeTab, setActiveTab] = useState('notes')
 
   useEffect(() => {
@@ -27,10 +30,23 @@ export default function WorkspacePanel({ investigation }) {
     return (
       <div className="workspace-empty">
         <div className="workspace-empty-icon">🔍</div>
-        <h3>Select an Investigation</h3>
-        <p>Choose a case from the list to start working</p>
+        <h3>{t('select_investigation', lang)}</h3>
+        <p>{t('choose_case_desc', lang)}</p>
       </div>
     )
+  }
+
+  // Translate timeline dates month names if match
+  const translateDateStr = (date) => {
+    const parts = date.split(' ')
+    if (parts.length > 0) {
+      const month = parts[0]
+      const translatedMonth = t(month.toLowerCase(), lang)
+      if (translatedMonth !== month.toLowerCase()) {
+        return date.replace(month, translatedMonth)
+      }
+    }
+    return date
   }
 
   return (
@@ -39,18 +55,18 @@ export default function WorkspacePanel({ investigation }) {
       <div className="workspace-header">
         <div className="workspace-header-top">
           <span className="workspace-case-id">{investigation.caseId}</span>
-          <span className={`status-badge ${investigation.status}`}>{investigation.status}</span>
+          <span className={`status-badge ${investigation.status}`}>{t(investigation.status, lang)}</span>
           <span className={`workspace-priority priority-${investigation.priority.toLowerCase()}`}>
-            {investigation.priority}
+            {t(investigation.priority.toLowerCase(), lang)}
           </span>
         </div>
-        <h2 className="workspace-title">{investigation.title}</h2>
+        <h2 className="workspace-title">{translateText(investigation.title, lang)}</h2>
         <div className="workspace-meta">
-          <span>{investigation.officer}</span>
+          <span>{investigation.officer === 'SI Karthik' ? `SI ${t('si_karthik', lang) || 'Karthik'}` : investigation.officer}</span>
           <span>•</span>
-          <span>{investigation.district}</span>
+          <span>{translateDistrictName(investigation.district, lang)}</span>
           <span>•</span>
-          <span>{investigation.startDate}</span>
+          <span>{translateDateStr(investigation.startDate)}</span>
         </div>
       </div>
 
@@ -63,7 +79,7 @@ export default function WorkspacePanel({ investigation }) {
             onClick={() => setActiveTab(tab.id)}
           >
             <tab.icon size={14} />
-            {tab.label}
+            {t(tab.labelKey, lang)}
           </button>
         ))}
       </div>
@@ -92,7 +108,7 @@ export default function WorkspacePanel({ investigation }) {
       {investigation.suggestions.length > 0 && (
         <div className="workspace-ai-bar">
           <div className="ai-bar-icon">🤖</div>
-          <p className="ai-bar-text">{investigation.suggestions[0]}</p>
+          <p className="ai-bar-text">{translateText(investigation.suggestions[0], lang)}</p>
         </div>
       )}
     </div>

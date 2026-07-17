@@ -1,10 +1,14 @@
 import { ExternalLink } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateText } from '../../utils/translate'
 
 export default function RelatedTab({ relatedCases }) {
+  const { lang } = useLanguage()
+
   if (relatedCases.length === 0) {
     return (
       <div className="related-empty">
-        <p>No related cases found</p>
+        <p>{t('no_related_cases_found', lang)}</p>
       </div>
     )
   }
@@ -16,9 +20,9 @@ export default function RelatedTab({ relatedCases }) {
           <div key={i} className="related-card">
             <div className="related-card-header">
               <span className="related-card-id">{item.id}</span>
-              <span className="related-card-connection">{item.connection}</span>
+              <span className="related-card-connection">{translateText(item.connection, lang)}</span>
             </div>
-            <p className="related-card-title">{item.title}</p>
+            <p className="related-card-title">{translateText(item.title, lang)}</p>
             <div className="related-card-footer">
               <div className="related-similarity">
                 <div className="similarity-bar">
@@ -27,11 +31,11 @@ export default function RelatedTab({ relatedCases }) {
                     style={{ width: `${item.similarity}%` }}
                   />
                 </div>
-                <span className="similarity-value">{item.similarity}% match</span>
+                <span className="similarity-value">{item.similarity}% {t('match', lang)}</span>
               </div>
               <button className="related-view-btn">
                 <ExternalLink size={12} />
-                View
+                {t('view', lang)}
               </button>
             </div>
           </div>

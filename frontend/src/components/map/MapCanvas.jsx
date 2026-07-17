@@ -1,4 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 import MapMarker from './MapMarker'
 import HeatmapOverlay from './HeatmapOverlay'
 import { districts, hotspots, routes, karnatakaOutline } from './mapData'
@@ -11,6 +13,7 @@ const routeColors = {
 }
 
 export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeView }) {
+  const { lang } = useLanguage()
   const svgRef = useRef(null)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })

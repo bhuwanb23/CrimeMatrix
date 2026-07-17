@@ -1,4 +1,9 @@
+import { useLanguage } from '../../context/LanguageContext'
+import { translateText } from '../../utils/translate'
+
 export default function ReasoningTab({ reasoning }) {
+  const { lang } = useLanguage()
+
   return (
     <div className="reasoning-tab">
       <div className="reasoning-chain">
@@ -10,7 +15,7 @@ export default function ReasoningTab({ reasoning }) {
               {i < reasoning.length - 1 && <div className="reasoning-connector-dot" />}
             </div>
             <div className="reasoning-step-content">
-              <p className="reasoning-step-text">{step.text}</p>
+              <p className="reasoning-step-text">{translateText(step.text, lang)}</p>
               <div className="reasoning-confidence">
                 <div className="confidence-bar">
                   <div

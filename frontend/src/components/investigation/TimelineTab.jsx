@@ -1,4 +1,6 @@
 import { FileText, Shield, Camera, AlertTriangle, Plus } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+import { t, translateText } from '../../utils/translate'
 
 const typeIcons = {
   filing: FileText,
@@ -15,6 +17,22 @@ const typeColors = {
 }
 
 export default function TimelineTab({ timeline }) {
+  const { lang } = useLanguage()
+
+  // Translate timeline dates if month matches
+  const translateDate = (date) => {
+    // E.g., "Jul 15, 2026". We can keep as is, or localize month. Let's translate month names if needed
+    const parts = date.split(' ')
+    if (parts.length > 0) {
+      const month = parts[0]
+      const translatedMonth = t(month.toLowerCase(), lang)
+      if (translatedMonth !== month.toLowerCase()) {
+        return date.replace(month, translatedMonth)
+      }
+    }
+    return date
+  }
+
   return (
     <div className="timeline-tab">
       <div className="timeline-visual">
@@ -28,8 +46,8 @@ export default function TimelineTab({ timeline }) {
               </div>
               <div className="timeline-visual-line" style={{ background: color + '30' }} />
               <div className="timeline-visual-content">
-                <span className="timeline-visual-date">{item.date}</span>
-                <p className="timeline-visual-event">{item.event}</p>
+                <span className="timeline-visual-date">{translateDate(item.date)}</span>
+                <p className="timeline-visual-event">{translateText(item.event, lang)}</p>
               </div>
             </div>
           )
@@ -37,7 +55,7 @@ export default function TimelineTab({ timeline }) {
       </div>
       <button className="timeline-add-btn">
         <Plus size={14} />
-        Add Event
+        {t('add_event', lang)}
       </button>
     </div>
   )

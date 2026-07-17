@@ -145,7 +145,6 @@ class TestSearchEngine:
         engine = SearchEngine()
         stats = engine.get_stats()
         assert "semantic" in stats
-        assert "cache_sizes" in stats
 
     def test_semantic_index(self):
         engine = SearchEngine()

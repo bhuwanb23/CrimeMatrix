@@ -5,7 +5,7 @@ import FilterChips from './search/FilterChips'
 import SearchResults from './search/SearchResults'
 import SavedSearches from './search/SavedSearches'
 import SearchHistory from './search/SearchHistory'
-import { searchCrimes, getSuggestions, getFacets, listSavedSearches, saveSearch, deleteSavedSearch, listSearchHistory, recordSearch } from '../services/search'
+import { searchCrimes, getSuggestions, getFacets, listSavedSearches, saveSearch, deleteSavedSearch, listSearchHistory, recordSearch, semanticSearch } from '../services/search'
 
 const ITEMS_PER_PAGE = 8
 
@@ -20,6 +20,7 @@ export default function SearchPage() {
   const [savedSearches, setSavedSearches] = useState([])
   const [searchHistory, setSearchHistory] = useState([])
   const [suggestions, setSuggestions] = useState([])
+  const [semanticMode, setSemanticMode] = useState(false)
 
   // Load saved searches and history on mount
   useEffect(() => {
@@ -52,12 +53,19 @@ export default function SearchPage() {
 
     setIsLoading(true)
     try {
-      // Record in history
-      const filters = activeFilters.includes('all') ? {} : { entity: activeFilters[0] }
-      const result = await searchCrimes(searchQuery, filters, 1, ITEMS_PER_PAGE)
-      const data = result.data || {}
-      setResults(data.results || [])
-      setTotalResults(data.total || 0)
+      let result
+      if (semanticMode) {
+        result = await semanticSearch(searchQuery, 20)
+        const data = result.data || {}
+        setResults(data.results || [])
+        setTotalResults(data.total || data.count || 0)
+      } else {
+        const filters = activeFilters.includes('all') ? {} : { entity: activeFilters[0] }
+        result = await searchCrimes(searchQuery, filters, 1, ITEMS_PER_PAGE)
+        const data = result.data || {}
+        setResults(data.results || [])
+        setTotalResults(data.total || 0)
+      }
 
       // Record search in history
       await recordSearch(searchQuery, data.total || 0)
@@ -68,7 +76,7 @@ export default function SearchPage() {
       setTotalResults(0)
     }
     setIsLoading(false)
-  }, [activeFilters])
+  }, [activeFilters, semanticMode])
 
   const handleToggleFilter = useCallback((filterId) => {
     if (filterId === 'all') {
@@ -129,6 +137,19 @@ export default function SearchPage() {
           onSave={handleSaveSearch}
           suggestions={suggestions}
         />
+
+        {/* Semantic Search Toggle */}
+        <div className="flex items-center gap-2 mb-3">
+          <button
+            onClick={() => setSemanticMode(!semanticMode)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              semanticMode ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
+            }`}
+          >
+            {semanticMode ? '🧠 Semantic Search ON' : '🧠 Semantic Search'}
+          </button>
+          {semanticMode && <span className="text-xs text-purple-500">Search by meaning, not keywords</span>}
+        </div>
 
         <FilterChips
           activeFilters={activeFilters}

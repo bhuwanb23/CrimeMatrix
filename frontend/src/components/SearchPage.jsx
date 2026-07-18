@@ -32,7 +32,7 @@ export default function SearchPage() {
   const loadAllCrimes = async () => {
     setIsLoading(true)
     try {
-      const result = await searchCrimes('', {}, 1, 50)
+      const result = await listAllCrimes(1, 50)
       const data = result.data || {}
       setResults(data.items || data.results || [])
       setTotalResults(data.total || 0)

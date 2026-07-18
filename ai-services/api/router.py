@@ -106,7 +106,7 @@ async def chat_stream(data: ChatRequest):
         _sessions[data.session_id] = ConversationContext(session_id=data.session_id)
     context = _sessions[data.session_id]
 
-    return sse_response(agent.stream(data.message, context,
+    return await sse_response(agent.stream(data.message, context,
                                      session_id=data.session_id, user_id=data.user_id))
 
 

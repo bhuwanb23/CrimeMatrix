@@ -6,7 +6,7 @@ from app.api.v1 import (
     notes, bookmarks, timeline_events, attachments, case_links, case_status,
     search, graph_api, analytics_api, reports_api, notifications_api, audit_api,
     memory_api, embedding_api, monitoring_api, storage_api, copilot,
-    search_saved, search_history, semantic_search
+    search_saved, search_history, semantic_search, search_district
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -82,3 +82,6 @@ router.include_router(search_history.router, prefix="/search/history", tags=["Se
 
 # Semantic Search APIs
 router.include_router(semantic_search.router, prefix="/search/semantic", tags=["Semantic Search"])
+
+# Cross-District Search APIs
+router.include_router(search_district.router, prefix="/search/district", tags=["District Search"])

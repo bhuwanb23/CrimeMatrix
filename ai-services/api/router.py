@@ -61,13 +61,27 @@ async def chat(data: ChatRequest):
             _sessions[data.session_id] = ConversationContext(session_id=data.session_id)
         context = _sessions[data.session_id]
 
-        result = await agent.chat(data.message, context, data.use_tools,
+        # Language pipeline: detect → normalize → translate
+        from language.pipeline import pipeline as lang_pipeline
+        lang_result = lang_pipeline.process_input(data.message, data.language)
+        processed_message = lang_result["normalized_query"]
+        detected_lang = lang_result["detected_language"]
+
+        result = await agent.chat(processed_message, context, data.use_tools,
                                   session_id=data.session_id, user_id=data.user_id,
                                   investigation_context=data.investigation_context)
+
+        # Translate response back to user's language
+        output = lang_pipeline.process_output(result["response"], data.language)
+
         return {
             "success": True,
             "data": {
-                "response": result["response"],
+                "response": output["text"],
+                "original_response": result["response"],
+                "detected_language": detected_lang,
+                "user_language": data.language,
+                "translated": output.get("translated", False),
                 "reasoning_trace": result["reasoning_trace"],
                 "steps": result["steps"],
                 "total_time_ms": result.get("total_time_ms", 0),

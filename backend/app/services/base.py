@@ -14,8 +14,10 @@ class BaseService(Generic[ModelType]):
         return await self.repo.get_by_id(id)
 
     async def get_paginated(self, params: PaginationParams) -> PaginatedResponse:
+        from sqlalchemy import func as sql_func
         items = await self.repo.get_all(skip=params.offset, limit=params.page_size)
-        total = len(items)
+        total_result = await self.repo.db.execute(sql_func.count(self.repo.model.id))
+        total = total_result.scalar()
         return PaginatedResponse(
             items=items,
             total=total,

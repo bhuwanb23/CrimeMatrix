@@ -79,3 +79,6 @@ router.include_router(copilot.router, prefix="/copilot", tags=["Copilot"])
 # Search Saved & History APIs
 router.include_router(search_saved.router, prefix="/search/saved", tags=["Search Saved"])
 router.include_router(search_history.router, prefix="/search/history", tags=["Search History"])
+
+# Semantic Search APIs
+router.include_router(semantic_search.router, prefix="/search/semantic", tags=["Semantic Search"])

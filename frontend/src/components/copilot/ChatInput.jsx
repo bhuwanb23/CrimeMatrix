@@ -16,7 +16,7 @@ const suggestedQueries = [
   "List open cases with high priority",
 ]
 
-export default function ChatInput({ onSend, voiceEnabled = false, onVoiceToggle }) {
+export default function ChatInput({ onSend, voiceEnabled = false, onVoiceToggle, language = 'en', onLanguageChange }) {
   const [value, setValue] = useState('')
   const [source, setSource] = useState('All Sources')
   const [sourceOpen, setSourceOpen] = useState(false)

@@ -19,6 +19,13 @@ KANGlish_KN = {
     "yakendu": "ಯಾಕೆ", "sumne": "ಸುಮ್ಮನೆ", "chennagi": "ಚೆನ್ನಾಗಿ",
     "thumba": "ತುಂಬಾ", "swalpa": "ಸ್ವಲ್ಪ", "ille": "ಇಲ್ಲೇ",
     "illaa": "ಇಲ್ಲ", "barutte": "ಬರುತ್ತೆ", "hogutte": "ಹೋಗುತ್ತೆ",
+    "ge": "ಗೆ", "madi": "ಮಾಡಿ", "beku": "ಬೇಕು", "illa": "ಇಲ್ಲ",
+    "hodi": "ಹೊಡೆ", "hogi": "ಹೋಗಿ", "baa": "ಬಾ", "maadi": "ಮಾಡಿ",
+    "beku": "ಬೇಕು", "illaa": "ಇಲ್ಲ", "sari": "ಸರಿ",
+    "check": "ಪರಿಶೀಲನೆ", "madi": "ಮಾಡಿ", "ge": "ಗೆ",
+    "naanu": "ನಾನು", "naavu": "ನಾವು", "ava": "ಅವರು",
+    "idu": "ಇದು", "adu": "ಅದು", "yenu": "ಏನು",
+    "hosadu": "ಹೊಸದು", "purana": "ಪುರಾತನ",
 }
 
 KANGlish_EN = {
@@ -34,6 +41,11 @@ KANGlish_EN = {
     "elli": "where", "yaavaga": "when", "hege": "how",
     "sumne": "quiet", "chennagi": "good", "thumba": "very",
     "swalpa": "little", "ille": "here",
+    "ge": "to", "madi": "do", "maadi": "do",
+    "hodi": "hit", "hogi": "go", "baa": "come",
+    "naanu": "I", "naavu": "we", "ava": "they",
+    "idu": "this", "adu": "that",
+    "hosadu": "new", "purana": "old",
 }
 
 

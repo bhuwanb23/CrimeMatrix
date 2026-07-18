@@ -16,6 +16,7 @@ export default function CopilotPage() {
   const [sessions, setSessions] = useState([])
   const [voiceEnabled, setVoiceEnabled] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [language, setLanguage] = useState('en')
 
   const loadSessions = useCallback(async () => {
     try {

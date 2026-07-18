@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Send, Paperclip, Mic, MicOff, ChevronDown, Volume2, VolumeX } from 'lucide-react'
-import { startListening, stopListening, isSTTSupported } from '../services/voice'
+import { startListening, stopListening, isSTTSupported } from '../../services/voice'
 
 const sources = ['All Sources', 'FIR Database', 'Suspects', 'Evidence', 'Stations']
 const languages = [

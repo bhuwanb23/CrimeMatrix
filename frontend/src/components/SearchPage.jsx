@@ -1,11 +1,11 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SearchBar from './search/SearchBar'
 import FilterChips from './search/FilterChips'
 import SearchResults from './search/SearchResults'
 import SavedSearches from './search/SavedSearches'
 import SearchHistory from './search/SearchHistory'
-import { cases } from './search/caseData'
+import { searchCrimes, getSuggestions, getFacets, listSavedSearches, saveSearch, deleteSavedSearch, listSearchHistory, recordSearch } from '../services/search'
 
 const ITEMS_PER_PAGE = 8
 
@@ -14,37 +14,61 @@ export default function SearchPage() {
   const [query, setQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState(['all'])
   const [page, setPage] = useState(1)
-  const [savedSearches, setSavedSearches] = useState([
-    { id: 1, query: 'Theft cases Bengaluru 2026', count: 24 },
-    { id: 2, query: 'Unsolved fraud cases', count: 12 },
-    { id: 3, query: 'Repeat offenders Koramangala', count: 8 },
-    { id: 4, query: 'Cybercrime victims under 25', count: 15 },
-  ])
-  const [searchHistory, setSearchHistory] = useState([
-    { id: 1, query: 'FIR #4521 theft', time: '2 min ago' },
-    { id: 2, query: 'Ravi Kumar suspect network', time: '15 min ago' },
-    { id: 3, query: 'Active cases Mysuru', time: '1 hr ago' },
-    { id: 4, query: 'Cyber fraud patterns', time: '2 hrs ago' },
-    { id: 5, query: 'Missing person Koramangala', time: 'Yesterday' },
-    { id: 6, query: 'Vehicle KA-01-AB-1234', time: 'Yesterday' },
-  ])
-  const [nextId, setNextId] = useState(100)
+  const [results, setResults] = useState([])
+  const [totalResults, setTotalResults] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [savedSearches, setSavedSearches] = useState([])
+  const [searchHistory, setSearchHistory] = useState([])
+  const [suggestions, setSuggestions] = useState([])
 
-  const handleSearch = useCallback((searchQuery) => {
+  // Load saved searches and history on mount
+  useEffect(() => {
+    loadSavedSearches()
+    loadSearchHistory()
+  }, [])
+
+  const loadSavedSearches = async () => {
+    try {
+      const result = await listSavedSearches()
+      setSavedSearches(result.data || [])
+    } catch (e) {}
+  }
+
+  const loadSearchHistory = async () => {
+    try {
+      const result = await listSearchHistory()
+      setSearchHistory(result.data || [])
+    } catch (e) {}
+  }
+
+  const handleSearch = useCallback(async (searchQuery) => {
     setQuery(searchQuery)
     setPage(1)
-    if (searchQuery.trim()) {
-      setSearchHistory((prev) => {
-        const newEntry = {
-          id: nextId,
-          query: searchQuery,
-          time: 'Just now',
-        }
-        return [newEntry, ...prev.slice(0, 9)]
-      })
-      setNextId((prev) => prev + 1)
+    if (!searchQuery.trim()) {
+      setResults([])
+      setTotalResults(0)
+      return
     }
-  }, [nextId])
+
+    setIsLoading(true)
+    try {
+      // Record in history
+      const filters = activeFilters.includes('all') ? {} : { entity: activeFilters[0] }
+      const result = await searchCrimes(searchQuery, filters, 1, ITEMS_PER_PAGE)
+      const data = result.data || {}
+      setResults(data.results || [])
+      setTotalResults(data.total || 0)
+
+      // Record search in history
+      await recordSearch(searchQuery, data.total || 0)
+      loadSearchHistory()
+    } catch (e) {
+      console.error('Search error:', e)
+      setResults([])
+      setTotalResults(0)
+    }
+    setIsLoading(false)
+  }, [activeFilters])
 
   const handleToggleFilter = useCallback((filterId) => {
     if (filterId === 'all') {
@@ -52,9 +76,7 @@ export default function SearchPage() {
     } else {
       setActiveFilters((prev) => {
         const next = prev.filter((f) => f !== 'all' && f !== filterId)
-        if (!prev.includes(filterId)) {
-          next.push(filterId)
-        }
+        if (!prev.includes(filterId)) next.push(filterId)
         return next.length === 0 ? ['all'] : next
       })
     }
@@ -70,62 +92,27 @@ export default function SearchPage() {
     navigate(`/cases/${caseId}`)
   }, [navigate])
 
-  const handleSaveSearch = useCallback((searchQuery) => {
+  const handleSaveSearch = useCallback(async (searchQuery) => {
     if (!searchQuery.trim()) return
-    setSavedSearches((prev) => {
-      const exists = prev.some((s) => s.query === searchQuery)
-      if (exists) return prev
-      return [
-        { id: nextId, query: searchQuery, count: 0 },
-        ...prev,
-      ]
-    })
-    setNextId((prev) => prev + 1)
-  }, [nextId])
-
-  const handleDeleteSaved = useCallback((id) => {
-    setSavedSearches((prev) => prev.filter((s) => s.id !== id))
+    try {
+      await saveSearch(searchQuery, searchQuery)
+      loadSavedSearches()
+    } catch (e) {}
   }, [])
 
-  const filteredResults = useMemo(() => {
-    let results = cases
+  const handleDeleteSaved = useCallback(async (id) => {
+    try {
+      await deleteSavedSearch(id)
+      loadSavedSearches()
+    } catch (e) {}
+  }, [])
 
-    if (query) {
-      const q = query.toLowerCase()
-      results = results.filter(
-        (c) =>
-          c.id.toLowerCase().includes(q) ||
-          c.title.toLowerCase().includes(q) ||
-          c.type.toLowerCase().includes(q) ||
-          c.district.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q)
-      )
-    }
+  const handleRunSaved = useCallback((searchQuery) => {
+    setQuery(searchQuery)
+    handleSearch(searchQuery)
+  }, [handleSearch])
 
-    if (!activeFilters.includes('all')) {
-      results = results.filter((c) => {
-        const typeMatch = activeFilters.some(
-          (f) => c.type.toLowerCase() === f
-        )
-        const districtMatch = activeFilters.some(
-          (f) => c.district.toLowerCase().includes(f)
-        )
-        const statusMatch = activeFilters.some(
-          (f) => c.status === f
-        )
-        const firMatch = activeFilters.includes('fir')
-        return typeMatch || districtMatch || statusMatch || firMatch
-      })
-    }
-
-    return results
-  }, [query, activeFilters])
-
-  const totalPages = Math.ceil(filteredResults.length / ITEMS_PER_PAGE)
-  const paginatedResults = filteredResults.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  )
+  const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE)
 
   return (
     <div className="search-page">
@@ -140,6 +127,7 @@ export default function SearchPage() {
           onChange={setQuery}
           onSearch={handleSearch}
           onSave={handleSaveSearch}
+          suggestions={suggestions}
         />
 
         <FilterChips
@@ -149,25 +137,27 @@ export default function SearchPage() {
         />
 
         <SearchResults
-          results={paginatedResults}
+          results={results}
           page={page}
           totalPages={totalPages}
           onPageChange={setPage}
           onViewCase={handleViewCase}
+          isLoading={isLoading}
+          totalResults={totalResults}
         />
       </div>
 
       <aside className="search-sidebar">
         <SavedSearches
           searches={savedSearches}
-          onRunSearch={handleSearch}
+          onRunSearch={handleRunSaved}
           onDelete={handleDeleteSaved}
           onSave={handleSaveSearch}
           currentQuery={query}
         />
         <SearchHistory
           history={searchHistory}
-          onRunSearch={handleSearch}
+          onRunSearch={handleRunSaved}
         />
       </aside>
     </div>

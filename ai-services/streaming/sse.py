@@ -16,9 +16,13 @@ class SSEChunk:
 async def sse_response(generator: AsyncGenerator[str, None], done_event: str = "done"):
     async def event_generator():
         async for chunk in generator:
+            if isinstance(chunk, dict):
+                content = chunk.get("content", "")
+            else:
+                content = str(chunk)
             yield {
                 "event": "message",
-                "data": json.dumps({"content": chunk, "done": False}),
+                "data": json.dumps({"content": content, "done": False}),
             }
         yield {
             "event": done_event,

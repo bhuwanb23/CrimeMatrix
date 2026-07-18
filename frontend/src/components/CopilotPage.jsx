@@ -3,7 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-import { chat, chatStream, listSessions, getSession, deleteSession, deleteAllSessions } from '../services/copilot'
+import { chat, chatStream, listSessions, getSession, deleteSession, deleteAllSessions, togglePin, searchSessions, exportSession } from '../services/copilot'
 import { speak, stopSpeaking, isTTSSupported } from '../services/voice'
 
 export default function CopilotPage() {
@@ -114,11 +114,20 @@ export default function CopilotPage() {
   }
 
   const toggleVoice = () => {
-    if (isSpeaking) {
-      stopSpeaking()
-      setIsSpeaking(false)
-    }
+    if (isSpeaking) { stopSpeaking(); setIsSpeaking(false) }
     setVoiceEnabled(!voiceEnabled)
+  }
+
+  const handlePin = async (sid) => {
+    try { await togglePin(sid); loadSessions() } catch (e) {}
+  }
+
+  const handleSearch = async (query) => {
+    if (!query) { loadSessions(); return }
+    try {
+      const result = await searchSessions(query)
+      setSessions(result.data || [])
+    } catch (e) {}
   }
 
   return (

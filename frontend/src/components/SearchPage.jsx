@@ -22,11 +22,25 @@ export default function SearchPage() {
   const [suggestions, setSuggestions] = useState([])
   const [semanticMode, setSemanticMode] = useState(false)
 
-  // Load saved searches and history on mount
+  // Load saved searches, history, and all crimes on mount
   useEffect(() => {
     loadSavedSearches()
     loadSearchHistory()
+    loadAllCrimes()
   }, [])
+
+  const loadAllCrimes = async () => {
+    setIsLoading(true)
+    try {
+      const result = await searchCrimes('', {}, 1, 50)
+      const data = result.data || {}
+      setResults(data.items || data.results || [])
+      setTotalResults(data.total || 0)
+    } catch (e) {
+      console.error('Load all crimes error:', e)
+    }
+    setIsLoading(false)
+  }
 
   const loadSavedSearches = async () => {
     try {
@@ -46,8 +60,7 @@ export default function SearchPage() {
     setQuery(searchQuery)
     setPage(1)
     if (!searchQuery.trim()) {
-      setResults([])
-      setTotalResults(0)
+      loadAllCrimes()
       return
     }
 

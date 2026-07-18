@@ -5,7 +5,7 @@ import FilterChips from './search/FilterChips'
 import SearchResults from './search/SearchResults'
 import SavedSearches from './search/SavedSearches'
 import SearchHistory from './search/SearchHistory'
-import { searchCrimes, getSuggestions, getFacets, listSavedSearches, saveSearch, deleteSavedSearch, listSearchHistory, recordSearch, semanticSearch } from '../services/search'
+import { searchCrimes, getSuggestions, getFacets, listSavedSearches, saveSearch, deleteSavedSearch, listSearchHistory, recordSearch, semanticSearch, listAllCrimes } from '../services/search'
 
 const ITEMS_PER_PAGE = 8
 

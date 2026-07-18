@@ -39,3 +39,15 @@ export async function recordSearch(query, resultsCount = 0) {
 export async function clearSearchHistory() {
     return del('/search/history');
 }
+
+export async function semanticSearch(query, topK = 5, docType = null) {
+    return post('/search/semantic', { query, top_k: topK, doc_type: docType });
+}
+
+export async function indexDocuments() {
+    return post('/search/semantic/index');
+}
+
+export async function getSemanticStats() {
+    return get('/search/semantic/stats');
+}

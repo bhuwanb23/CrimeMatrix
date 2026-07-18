@@ -5,7 +5,8 @@ from app.api.v1 import (
     districts, vehicles, phones, locations, crimetypes,
     notes, bookmarks, timeline_events, attachments, case_links, case_status,
     search, graph_api, analytics_api, reports_api, notifications_api, audit_api,
-    memory_api, embedding_api, monitoring_api, storage_api, copilot
+    memory_api, embedding_api, monitoring_api, storage_api, copilot,
+    search_saved, search_history
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -74,3 +75,7 @@ router.include_router(storage_api.router, prefix="/storage", tags=["Storage"])
 
 # Copilot APIs
 router.include_router(copilot.router, prefix="/copilot", tags=["Copilot"])
+
+# Search Saved & History APIs
+router.include_router(search_saved.router, prefix="/search/saved", tags=["Search Saved"])
+router.include_router(search_history.router, prefix="/search/history", tags=["Search History"])

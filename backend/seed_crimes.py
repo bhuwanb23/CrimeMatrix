@@ -2,6 +2,7 @@ import asyncio
 import sys
 sys.path.insert(0, '.')
 
+from sqlalchemy import select
 from app.db.session import init_db, async_session
 from app.models.crime import Crime
 from app.models.person import Person

@@ -1,11 +1,9 @@
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SearchBar from './search/SearchBar'
 import FilterChips from './search/FilterChips'
 import SearchResults from './search/SearchResults'
-import SavedSearches from './search/SavedSearches'
-import SearchHistory from './search/SearchHistory'
-import { searchCrimes, getSuggestions, getFacets, listSavedSearches, saveSearch, deleteSavedSearch, listSearchHistory, recordSearch, semanticSearch, listAllCrimes } from '../services/search'
+import { searchCrimes, listAllCrimes, semanticSearch } from '../services/search'
 
 const ITEMS_PER_PAGE = 8
 
@@ -17,15 +15,9 @@ export default function SearchPage() {
   const [results, setResults] = useState([])
   const [totalResults, setTotalResults] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  const [savedSearches, setSavedSearches] = useState([])
-  const [searchHistory, setSearchHistory] = useState([])
-  const [suggestions, setSuggestions] = useState([])
   const [semanticMode, setSemanticMode] = useState(false)
 
-  // Load saved searches, history, and all crimes on mount
   useEffect(() => {
-    loadSavedSearches()
-    loadSearchHistory()
     loadAllCrimes()
   }, [])
 
@@ -37,23 +29,9 @@ export default function SearchPage() {
       setResults(data.items || data.results || [])
       setTotalResults(data.total || 0)
     } catch (e) {
-      console.error('Load all crimes error:', e)
+      console.error('Load error:', e)
     }
     setIsLoading(false)
-  }
-
-  const loadSavedSearches = async () => {
-    try {
-      const result = await listSavedSearches()
-      setSavedSearches(result.data || [])
-    } catch (e) {}
-  }
-
-  const loadSearchHistory = async () => {
-    try {
-      const result = await listSearchHistory()
-      setSearchHistory(result.data || [])
-    } catch (e) {}
   }
 
   const handleSearch = useCallback(async (searchQuery) => {
@@ -63,26 +41,20 @@ export default function SearchPage() {
       loadAllCrimes()
       return
     }
-
     setIsLoading(true)
     try {
-      let result
       if (semanticMode) {
-        result = await semanticSearch(searchQuery, 20)
+        const result = await semanticSearch(searchQuery, 20)
         const data = result.data || {}
         setResults(data.results || [])
         setTotalResults(data.total || data.count || 0)
       } else {
         const filters = activeFilters.includes('all') ? {} : { entity: activeFilters[0] }
-        result = await searchCrimes(searchQuery, filters, 1, ITEMS_PER_PAGE)
+        const result = await searchCrimes(searchQuery, filters, 1, 20)
         const data = result.data || {}
         setResults(data.results || [])
         setTotalResults(data.total || 0)
       }
-
-      // Record search in history
-      await recordSearch(searchQuery, data.total || 0)
-      loadSearchHistory()
     } catch (e) {
       console.error('Search error:', e)
       setResults([])
@@ -113,53 +85,30 @@ export default function SearchPage() {
     navigate(`/cases/${caseId}`)
   }, [navigate])
 
-  const handleSaveSearch = useCallback(async (searchQuery) => {
-    if (!searchQuery.trim()) return
-    try {
-      await saveSearch(searchQuery, searchQuery)
-      loadSavedSearches()
-    } catch (e) {}
-  }, [])
-
-  const handleDeleteSaved = useCallback(async (id) => {
-    try {
-      await deleteSavedSearch(id)
-      loadSavedSearches()
-    } catch (e) {}
-  }, [])
-
-  const handleRunSaved = useCallback((searchQuery) => {
-    setQuery(searchQuery)
-    handleSearch(searchQuery)
-  }, [handleSearch])
-
   const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE)
 
   return (
-    <div className="search-page">
-      <div className="search-main">
-        <div className="search-header">
-          <h1 className="search-title">Crime Search</h1>
-          <p className="search-subtitle">Search everything from one place</p>
+    <div className="flex flex-col h-full p-6">
+      <div className="max-w-6xl mx-auto w-full">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Crime Search</h1>
+          <p className="text-sm text-gray-500">Search everything from one place</p>
         </div>
 
         <SearchBar
           value={query}
           onChange={setQuery}
           onSearch={handleSearch}
-          onSave={handleSaveSearch}
-          suggestions={suggestions}
         />
 
-        {/* Semantic Search Toggle */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mt-3 mb-4">
           <button
             onClick={() => setSemanticMode(!semanticMode)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               semanticMode ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
             }`}
           >
-            {semanticMode ? '🧠 Semantic Search ON' : '🧠 Semantic Search'}
+            {semanticMode ? '🧠 Semantic ON' : '🧠 Semantic'}
           </button>
           {semanticMode && <span className="text-xs text-purple-500">Search by meaning, not keywords</span>}
         </div>
@@ -170,30 +119,18 @@ export default function SearchPage() {
           onClearAll={handleClearFilters}
         />
 
-        <SearchResults
-          results={results}
-          page={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onViewCase={handleViewCase}
-          isLoading={isLoading}
-          totalResults={totalResults}
-        />
+        <div className="mt-4">
+          <SearchResults
+            results={results}
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onViewCase={handleViewCase}
+            isLoading={isLoading}
+            totalResults={totalResults}
+          />
+        </div>
       </div>
-
-      <aside className="search-sidebar">
-        <SavedSearches
-          searches={savedSearches}
-          onRunSearch={handleRunSaved}
-          onDelete={handleDeleteSaved}
-          onSave={handleSaveSearch}
-          currentQuery={query}
-        />
-        <SearchHistory
-          history={searchHistory}
-          onRunSearch={handleRunSaved}
-        />
-      </aside>
     </div>
   )
 }

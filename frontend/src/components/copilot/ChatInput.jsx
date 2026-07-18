@@ -22,7 +22,6 @@ export default function ChatInput({ onSend, voiceEnabled = false, onVoiceToggle,
   const [sourceOpen, setSourceOpen] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(true)
   const [isRecording, setIsRecording] = useState(false)
-  const [language, setLanguage] = useState('en')
   const [langOpen, setLangOpen] = useState(false)
 
   const handleSend = useCallback(() => {

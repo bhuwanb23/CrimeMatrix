@@ -51,34 +51,49 @@ export default function CopilotPage() {
     setMessages(prev => [...prev, userMsg])
     setIsTyping(true)
 
-    try {
-      const result = await chat(content, sessionId, 'default', true, language)
-      const data = result.data
-      if (data) {
-        setSessionId(data.session_id)
-        setActiveChatId(data.session_id)
-        const assistantMsg = {
-          role: 'assistant',
-          content: data.response,
-          time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-        }
-        setMessages(prev => [...prev, assistantMsg])
-
-        // Auto-speak if voice is enabled
-        if (voiceEnabled && data.response) {
-          setIsSpeaking(true)
-          speak(data.response, 'en', () => setIsSpeaking(false))
-        }
-      }
-    } catch (e) {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
-        time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-      }])
+    // Add empty assistant message for streaming
+    const streamMsg = {
+      role: 'assistant',
+      content: '',
+      time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+      streaming: true,
     }
-    setIsTyping(false)
-  }, [sessionId, voiceEnabled])
+    setMessages(prev => [...prev, streamMsg])
+    const msgIdx = messages.length + 1
+
+    try {
+      chatStream(content, sessionId, 'default', language,
+        (chunk) => {
+          setMessages(prev => {
+            const updated = [...prev]
+            if (updated[msgIdx]) {
+              updated[msgIdx] = { ...updated[msgIdx], content: updated[msgIdx].content + chunk }
+            }
+            return updated
+          })
+        },
+        () => {
+          setMessages(prev => {
+            const updated = [...prev]
+            if (updated[msgIdx]) {
+              updated[msgIdx] = { ...updated[msgIdx], streaming: false }
+            }
+            return updated
+          })
+          setIsTyping(false)
+        }
+      )
+    } catch (e) {
+      setMessages(prev => {
+        const updated = [...prev]
+        if (updated[msgIdx]) {
+          updated[msgIdx] = { ...updated[msgIdx], content: 'Sorry, I encountered an error.', streaming: false }
+        }
+        return updated
+      })
+      setIsTyping(false)
+    }
+  }, [sessionId, language])
 
   const handleNewChat = () => {
     setMessages([])

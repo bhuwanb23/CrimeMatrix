@@ -68,14 +68,26 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
         >
           <MessageSquareText size={16} />
         </button>
-        <span className="text-sm font-semibold text-gray-800">AI Copilot</span>
-        <button
-          onClick={onToggleContext}
-          title="Context"
-          className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${contextOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
-        >
-          <Info size={16} />
-        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold text-gray-800">AI Copilot</span>
+          {isSpeaking && <Volume2 size={14} className="text-blue-500 animate-pulse" />}
+        </div>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={onVoiceToggle}
+            title={voiceEnabled ? 'Disable voice' : 'Enable voice'}
+            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${voiceEnabled ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+          >
+            {voiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+          </button>
+          <button
+            onClick={onToggleContext}
+            title="Context"
+            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${contextOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+          >
+            <Info size={16} />
+          </button>
+        </div>
       </div>
 
       {/* Messages / Empty State */}
@@ -101,7 +113,7 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
         )}
       </div>
 
-      <ChatInput onSend={onSend} />
+      <ChatInput onSend={onSend} voiceEnabled={voiceEnabled} />
     </div>
   )
 }

@@ -25,6 +25,7 @@ class ChatRequest(BaseModel):
     source: str = "all"
     case_id: Optional[int] = None
     investigation_id: Optional[int] = None
+    language: str = "en"
 
 
 class SessionCreate(BaseModel):
@@ -70,6 +71,7 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
                 "session_id": session_id,
                 "user_id": data.user_id,
                 "use_tools": data.use_tools,
+                "language": data.language,
             }
             if investigation_context:
                 ai_payload["investigation_context"] = investigation_context

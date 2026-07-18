@@ -1,3 +1,4 @@
+from typing import Dict
 from language.translator import Translator
 from language.kanglish import KanglishNormalizer
 from language.normalizer import QueryNormalizer

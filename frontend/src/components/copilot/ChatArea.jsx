@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Bot, User, Loader2, MessageSquareText, Info } from 'lucide-react'
+import { Bot, User, Loader2, MessageSquareText, Info, Volume2, VolumeX } from 'lucide-react'
 import Markdown from 'react-markdown'
 import ChatInput from './ChatInput'
 

@@ -255,3 +255,101 @@ async def delete_all_sessions(user_id: str = "default", db: AsyncSession = Depen
     await db.execute(delete(ChatSession))
     await db.commit()
     return success_response(message="All sessions deleted")
+
+
+# Pin/Unpin
+@router.put("/sessions/{session_id}/pin")
+async def toggle_pin(session_id: str, db: AsyncSession = Depends(get_db)):
+    session = (await db.execute(
+        select(ChatSession).where(ChatSession.session_id == session_id)
+    )).scalar_one_or_none()
+    if session:
+        session.is_pinned = not session.is_pinned
+        await db.commit()
+    return success_response(data={"is_pinned": session.is_pinned if session else False})
+
+
+# Search sessions
+@router.get("/sessions/search")
+async def search_sessions(q: str = "", db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ChatSession).order_by(ChatSession.created_at.desc()))
+    sessions = result.scalars().all()
+    if q:
+        q_lower = q.lower()
+        sessions = [s for s in sessions if q_lower in (s.title or "").lower()]
+    return success_response(data=[
+        {"session_id": s.session_id, "title": s.title or "New Conversation", "is_pinned": s.is_pinned}
+        for s in sessions[:20]
+    ])
+
+
+# Bookmark message
+class BookmarkRequest(BaseModel):
+    session_id: str
+    message_content: str
+    message_role: str = "assistant"
+    note: Optional[str] = None
+
+
+@router.post("/bookmarks")
+async def bookmark_message(data: BookmarkRequest, db: AsyncSession = Depends(get_db)):
+    from app.models.chat import BookmarkedMessage
+    bm = BookmarkedMessage(
+        session_id=data.session_id,
+        message_content=data.message_content,
+        message_role=data.message_role,
+        note=data.note,
+    )
+    db.add(bm)
+    await db.commit()
+    return success_response(data={"id": bm.id}, message="Bookmarked")
+
+
+@router.get("/bookmarks")
+async def list_bookmarks(session_id: str = None, db: AsyncSession = Depends(get_db)):
+    from app.models.chat import BookmarkedMessage
+    query = select(BookmarkedMessage)
+    if session_id:
+        query = query.where(BookmarkedMessage.session_id == session_id)
+    result = await db.execute(query.order_by(BookmarkedMessage.created_at.desc()))
+    bookmarks = [
+        {"id": b.id, "session_id": b.session_id, "content": b.message_content[:200], "role": b.message_role, "note": b.note}
+        for b in result.scalars().all()
+    ]
+    return success_response(data=bookmarks)
+
+
+@router.delete("/bookmarks/{bookmark_id}")
+async def delete_bookmark(bookmark_id: int, db: AsyncSession = Depends(get_db)):
+    from app.models.chat import BookmarkedMessage
+    from sqlalchemy import delete
+    await db.execute(delete(BookmarkedMessage).where(BookmarkedMessage.id == bookmark_id))
+    await db.commit()
+    return success_response(message="Deleted")
+
+
+# Export conversation
+@router.get("/sessions/{session_id}/export")
+async def export_session(session_id: str, db: AsyncSession = Depends(get_db)):
+    session = (await db.execute(
+        select(ChatSession).where(ChatSession.session_id == session_id)
+    )).scalar_one_or_none()
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    messages_result = await db.execute(
+        select(ChatMessage).where(ChatMessage.session_id == session_id).order_by(ChatMessage.created_at)
+    )
+    messages = [
+        {"role": m.role, "content": m.content, "timestamp": str(m.created_at) if m.created_at else None}
+        for m in messages_result.scalars().all()
+    ]
+
+    export_data = {
+        "session_id": session.session_id,
+        "title": session.title,
+        "exported_at": str(__import__('datetime').datetime.now()),
+        "messages": messages,
+    }
+
+    return success_response(data=export_data)

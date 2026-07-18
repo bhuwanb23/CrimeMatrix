@@ -32,6 +32,7 @@ class ChatRequest(BaseModel):
     user_id: str = "default"
     use_tools: bool = True
     investigation_context: Optional[str] = None
+    language: str = "en"
 
 
 class ToolInvokeRequest(BaseModel):

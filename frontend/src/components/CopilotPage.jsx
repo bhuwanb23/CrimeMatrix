@@ -3,7 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-import { chat, listSessions, getSession, deleteSession, deleteAllSessions } from '../services/copilot'
+import { chat, chatStream, listSessions, getSession, deleteSession, deleteAllSessions } from '../services/copilot'
 import { speak, stopSpeaking, isTTSSupported } from '../services/voice'
 
 export default function CopilotPage() {

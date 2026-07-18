@@ -133,7 +133,7 @@ export default function ChatInput({ onSend, voiceEnabled = false, onVoiceToggle,
                 <button
                   key={l.code}
                   className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 ${l.code === language ? 'text-blue-600 font-medium' : 'text-gray-700'}`}
-                  onClick={() => { setLanguage(l.code); setLangOpen(false) }}
+                  onClick={() => { onLanguageChange?.(l.code); setLangOpen(false) }}
                 >
                   {l.label}
                 </button>

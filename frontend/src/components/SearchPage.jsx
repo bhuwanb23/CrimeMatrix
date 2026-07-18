@@ -3,9 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import SearchBar from './search/SearchBar'
 import FilterChips from './search/FilterChips'
 import SearchResults from './search/SearchResults'
-import { searchCrimes, listAllCrimes, semanticSearch } from '../services/search'
+import { searchCrimes, listAllCrimes, semanticSearch, crossDistrictSearch, listDistricts } from '../services/search'
 
 const ITEMS_PER_PAGE = 8
+
+const DISTRICT_COLORS = {
+  'Bengaluru Urban': 'bg-blue-100 text-blue-700',
+  'Mysuru': 'bg-purple-100 text-purple-700',
+  'Mangaluru': 'bg-green-100 text-green-700',
+  'Hubballi-Dharwad': 'bg-amber-100 text-amber-700',
+  'Kalaburagi': 'bg-rose-100 text-rose-700',
+  'default': 'bg-gray-100 text-gray-700',
+}
 
 export default function SearchPage() {
   const navigate = useNavigate()
@@ -16,10 +25,18 @@ export default function SearchPage() {
   const [totalResults, setTotalResults] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [semanticMode, setSemanticMode] = useState(false)
+  const [selectedDistricts, setSelectedDistricts] = useState([])
+  const [showDistrictPicker, setShowDistrictPicker] = useState(false)
+  const [districts, setDistricts] = useState([])
 
-  useEffect(() => {
-    loadAllCrimes()
-  }, [])
+  useEffect(() => { loadAllCrimes(); loadDistricts() }, [])
+
+  const loadDistricts = async () => {
+    try {
+      const result = await listDistricts()
+      setDistricts(result.data || [])
+    } catch (e) {}
+  }
 
   const loadAllCrimes = async () => {
     setIsLoading(true)
@@ -28,62 +45,57 @@ export default function SearchPage() {
       const data = result.data || {}
       setResults(data.items || data.results || [])
       setTotalResults(data.total || 0)
-    } catch (e) {
-      console.error('Load error:', e)
-    }
+    } catch (e) {}
     setIsLoading(false)
   }
 
   const handleSearch = useCallback(async (searchQuery) => {
     setQuery(searchQuery)
     setPage(1)
-    if (!searchQuery.trim()) {
-      loadAllCrimes()
-      return
-    }
+    if (!searchQuery.trim()) { loadAllCrimes(); return }
     setIsLoading(true)
     try {
-      if (semanticMode) {
+      if (selectedDistricts.length > 0) {
+        const result = await crossDistrictSearch(searchQuery, selectedDistricts, 30)
+        const data = result.data || {}
+        setResults(data.results || [])
+        setTotalResults(data.total || 0)
+      } else if (semanticMode) {
         const result = await semanticSearch(searchQuery, 20)
         const data = result.data || {}
         setResults(data.results || [])
         setTotalResults(data.total || data.count || 0)
       } else {
-        const filters = activeFilters.includes('all') ? {} : { entity: activeFilters[0] }
-        const result = await searchCrimes(searchQuery, filters, 1, 20)
+        const result = await searchCrimes(searchQuery, {}, 1, 20)
         const data = result.data || {}
         setResults(data.results || [])
         setTotalResults(data.total || 0)
       }
     } catch (e) {
-      console.error('Search error:', e)
       setResults([])
       setTotalResults(0)
     }
     setIsLoading(false)
-  }, [activeFilters, semanticMode])
+  }, [selectedDistricts, semanticMode])
+
+  const handleToggleDistrict = useCallback((district) => {
+    setSelectedDistricts(prev => {
+      if (prev.includes(district)) return prev.filter(d => d !== district)
+      return [...prev, district]
+    })
+  }, [])
 
   const handleToggleFilter = useCallback((filterId) => {
-    if (filterId === 'all') {
-      setActiveFilters(['all'])
-    } else {
-      setActiveFilters((prev) => {
-        const next = prev.filter((f) => f !== 'all' && f !== filterId)
-        if (!prev.includes(filterId)) next.push(filterId)
-        return next.length === 0 ? ['all'] : next
-      })
-    }
+    if (filterId === 'all') { setActiveFilters(['all']); return }
+    setActiveFilters(prev => {
+      const next = prev.filter(f => f !== 'all' && f !== filterId)
+      if (!prev.includes(filterId)) next.push(filterId)
+      return next.length === 0 ? ['all'] : next
+    })
     setPage(1)
   }, [])
 
-  const handleClearFilters = useCallback(() => {
-    setActiveFilters(['all'])
-    setPage(1)
-  }, [])
-
-  const handleViewCase = useCallback((caseId) => {
-    navigate(`/cases/${caseId}`)
-  }, [navigate])
+  const handleViewCase = useCallback((caseId) => { navigate(`/cases/${caseId}`) }, [navigate])
 
   const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE)
 
@@ -92,43 +104,60 @@ export default function SearchPage() {
       <div className="max-w-6xl mx-auto w-full">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Crime Search</h1>
-          <p className="text-sm text-gray-500">Search everything from one place</p>
+          <p className="text-sm text-gray-500">Search across Karnataka — statewide intelligence</p>
         </div>
 
-        <SearchBar
-          value={query}
-          onChange={setQuery}
-          onSearch={handleSearch}
-        />
+        <SearchBar value={query} onChange={setQuery} onSearch={handleSearch} />
 
-        <div className="flex items-center gap-2 mt-3 mb-4">
-          <button
-            onClick={() => setSemanticMode(!semanticMode)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              semanticMode ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
-            }`}
-          >
+        {/* Controls Row */}
+        <div className="flex items-center gap-3 mt-3 mb-4 flex-wrap">
+          <button onClick={() => setSemanticMode(!semanticMode)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${semanticMode ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'}`}>
             {semanticMode ? '🧠 Semantic ON' : '🧠 Semantic'}
           </button>
-          {semanticMode && <span className="text-xs text-purple-500">Search by meaning, not keywords</span>}
+
+          <button onClick={() => setShowDistrictPicker(!showDistrictPicker)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${selectedDistricts.length > 0 ? 'bg-blue-100 text-blue-700 border border-blue-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'}`}>
+            🗺️ {selectedDistricts.length > 0 ? `${selectedDistricts.length} Districts` : 'Districts'}
+          </button>
+
+          {selectedDistricts.length > 0 && (
+            <div className="flex items-center gap-1">
+              {selectedDistricts.map(d => (
+                <span key={d} onClick={() => handleToggleDistrict(d)}
+                  className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 text-xs cursor-pointer hover:bg-blue-100">
+                  {d} ×
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        <FilterChips
-          activeFilters={activeFilters}
-          onToggleFilter={handleToggleFilter}
-          onClearAll={handleClearFilters}
-        />
+        {/* District Picker */}
+        {showDistrictPicker && (
+          <div className="mb-4 p-3 bg-white border border-gray-200 rounded-xl shadow-sm">
+            <p className="text-xs text-gray-500 mb-2">Select districts for cross-district search:</p>
+            <div className="flex flex-wrap gap-2">
+              {districts.map(d => (
+                <button key={d.id} onClick={() => handleToggleDistrict(d.name)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    selectedDistricts.includes(d.name) ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}>
+                  {d.name}
+                </button>
+              ))}
+            </div>
+            {selectedDistricts.length > 0 && (
+              <button onClick={() => setSelectedDistricts([])} className="mt-2 text-xs text-red-500 hover:text-red-700">Clear all</button>
+            )}
+          </div>
+        )}
+
+        <FilterChips activeFilters={activeFilters} onToggleFilter={handleToggleFilter} />
 
         <div className="mt-4">
-          <SearchResults
-            results={results}
-            page={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
-            onViewCase={handleViewCase}
-            isLoading={isLoading}
-            totalResults={totalResults}
-          />
+          <SearchResults results={results} page={page} totalPages={totalPages}
+            onPageChange={setPage} onViewCase={handleViewCase} isLoading={isLoading} totalResults={totalResults} />
         </div>
       </div>
     </div>

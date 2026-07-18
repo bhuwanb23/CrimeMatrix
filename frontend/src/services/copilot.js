@@ -1,11 +1,12 @@
 import { get, post, put, del, stream } from './api';
 
-export async function chat(message, sessionId, userId = 'default', useTools = true) {
+export async function chat(message, sessionId, userId = 'default', useTools = true, language = 'en') {
     return post('/copilot/chat', {
         message,
         session_id: sessionId,
         user_id: userId,
         use_tools: useTools,
+        language,
     });
 }
 

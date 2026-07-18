@@ -55,3 +55,15 @@ export async function getSemanticStats() {
 export async function listAllCrimes(page = 1, perPage = 50) {
     return get(`/crimes/?page=${page}&page_size=${perPage}`);
 }
+
+export async function listDistricts() {
+    return get('/search/district/districts');
+}
+
+export async function crossDistrictSearch(query, districts = [], limit = 20) {
+    return post('/search/district', { query, districts, limit });
+}
+
+export async function getDistrictStats(districtName) {
+    return get(`/search/district/stats/${encodeURIComponent(districtName)}`);
+}

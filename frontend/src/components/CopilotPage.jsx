@@ -52,7 +52,7 @@ export default function CopilotPage() {
     setIsTyping(true)
 
     try {
-      const result = await chat(content, sessionId, 'default', true)
+      const result = await chat(content, sessionId, 'default', true, language)
       const data = result.data
       if (data) {
         setSessionId(data.session_id)
@@ -127,6 +127,8 @@ export default function CopilotPage() {
         voiceEnabled={voiceEnabled}
         onVoiceToggle={toggleVoice}
         isSpeaking={isSpeaking}
+        language={language}
+        onLanguageChange={setLanguage}
       />
 
       {/* History Overlay */}

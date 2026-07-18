@@ -1,9 +1,10 @@
 import { useState, useCallback, useEffect } from 'react'
-import { MessageSquare, Brain } from 'lucide-react'
+import { Volume2, VolumeX } from 'lucide-react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
 import { chat, listSessions, getSession, deleteSession, deleteAllSessions } from '../services/copilot'
+import { speak, stopSpeaking, isTTSSupported } from '../services/voice'
 
 export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
@@ -13,6 +14,8 @@ export default function CopilotPage() {
   const [historyOpen, setHistoryOpen] = useState(false)
   const [contextOpen, setContextOpen] = useState(false)
   const [sessions, setSessions] = useState([])
+  const [voiceEnabled, setVoiceEnabled] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
 
   const loadSessions = useCallback(async () => {
     try {
@@ -53,11 +56,18 @@ export default function CopilotPage() {
       if (data) {
         setSessionId(data.session_id)
         setActiveChatId(data.session_id)
-        setMessages(prev => [...prev, {
+        const assistantMsg = {
           role: 'assistant',
           content: data.response,
           time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-        }])
+        }
+        setMessages(prev => [...prev, assistantMsg])
+
+        // Auto-speak if voice is enabled
+        if (voiceEnabled && data.response) {
+          setIsSpeaking(true)
+          speak(data.response, 'en', () => setIsSpeaking(false))
+        }
       }
     } catch (e) {
       setMessages(prev => [...prev, {
@@ -67,12 +77,14 @@ export default function CopilotPage() {
       }])
     }
     setIsTyping(false)
-  }, [sessionId])
+  }, [sessionId, voiceEnabled])
 
   const handleNewChat = () => {
     setMessages([])
     setActiveChatId(null)
     setSessionId(null)
+    stopSpeaking()
+    setIsSpeaking(false)
     loadSessions()
   }
 
@@ -85,8 +97,24 @@ export default function CopilotPage() {
     loadSessions()
   }
 
+  const toggleVoice = () => {
+    if (isSpeaking) {
+      stopSpeaking()
+      setIsSpeaking(false)
+    }
+    setVoiceEnabled(!voiceEnabled)
+  }
+
   return (
     <div className="flex flex-col h-full">
+      {/* Voice mode indicator */}
+      {voiceEnabled && (
+        <div className="flex items-center justify-center gap-2 py-1.5 bg-blue-50 border-b border-blue-100 text-xs text-blue-600">
+          <Volume2 size={12} />
+          Voice mode active — Speak to interact
+        </div>
+      )}
+
       <ChatArea
         messages={messages}
         onSend={handleSend}
@@ -95,6 +123,9 @@ export default function CopilotPage() {
         onToggleContext={() => setContextOpen(!contextOpen)}
         historyOpen={historyOpen}
         contextOpen={contextOpen}
+        voiceEnabled={voiceEnabled}
+        onVoiceToggle={toggleVoice}
+        isSpeaking={isSpeaking}
       />
 
       {/* History Overlay */}

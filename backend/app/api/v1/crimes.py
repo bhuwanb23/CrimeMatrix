@@ -22,7 +22,7 @@ async def list_crimes(page: int = 1, page_size: int = 20, db: AsyncSession = Dep
     return {
         "success": True,
         "data": {
-            "items": [{"id": c.id, "title": c.title, "crime_type": c.crime_type, "district": c.district, "status": c.status, "priority": c.priority} for c in result.items],
+            "items": [{"id": c.id, "title": c.title, "crime_type_id": c.crime_type_id, "district_id": c.district_id, "status": c.status, "priority": c.priority} for c in result.items],
             "total": result.total,
             "page": result.page,
             "page_size": result.page_size,

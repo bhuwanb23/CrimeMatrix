@@ -166,6 +166,7 @@ export default function CopilotPage() {
               onSelectChat={(id) => { loadConversation(id); setHistoryOpen(false) }}
               onNewChat={() => { handleNewChat(); setHistoryOpen(false) }}
               onDeleteAll={handleDeleteAll}
+              onSearch={handleSearch}
               onClose={() => setHistoryOpen(false)}
             />
           </div>

@@ -48,7 +48,7 @@ function MessageBubble({ msg }) {
   )
 }
 
-export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, onToggleContext, historyOpen, contextOpen }) {
+export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, onToggleContext, historyOpen, contextOpen, voiceEnabled, onVoiceToggle, isSpeaking }) {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {

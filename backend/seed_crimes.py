@@ -12,9 +12,9 @@ from app.models.station import Station
 from app.models.crimetype import CrimeType
 
 DISTRICTS = [
-    ("Bengaluru Urban", "BLR"), ("Bengaluru Rural", "BLR-R"),
+    ("Bengaluru Urban", "BLR-U"), ("Bengaluru Rural", "BLR-R"),
     ("Mysuru", "MYS"), ("Mangaluru", "MNG"), ("Hubballi-Dharwad", "HUB"),
-    ("Kalaburagi", "KLB"), ("Ballari", "BLR"), ("Vijayapura", "VJP"),
+    ("Kalaburagi", "KLB"), ("Ballari", "BLY"), ("Vijayapura", "VJP"),
     ("Shivamogga", "SHV"), ("Davangere", "DVG"), ("Hassan", "HSM"),
     ("Mandya", "MDY"), ("Tumakuru", "TMK"), ("Kolar", "KLR"),
     ("Chikkaballapur", "CKB"), ("Ramanagara", "RMR"),

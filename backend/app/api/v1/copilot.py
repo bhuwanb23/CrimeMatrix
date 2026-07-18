@@ -151,9 +151,15 @@ async def copilot_chat_stream(data: ChatRequest, db: AsyncSession = Depends(get_
                                 break
                             try:
                                 chunk = json.loads(chunk_data)
-                                if chunk.get("type") == "message" and chunk.get("content"):
-                                    full_response.append(chunk["content"])
-                                    yield f"data: {json.dumps({'content': chunk['content'], 'done': False})}\n\n"
+                                content = chunk.get("content", "")
+                                if isinstance(content, str) and content:
+                                    full_response.append(content)
+                                    yield f"data: {json.dumps({'content': content, 'done': False})}\n\n"
+                                elif isinstance(content, dict):
+                                    text = content.get("content", "")
+                                    if text:
+                                        full_response.append(text)
+                                        yield f"data: {json.dumps({'content': text, 'done': False})}\n\n"
                             except json.JSONDecodeError:
                                 pass
         except Exception as e:

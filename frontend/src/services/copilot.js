@@ -10,12 +10,13 @@ export async function chat(message, sessionId, userId = 'default', useTools = tr
     });
 }
 
-export function chatStream(message, sessionId, userId = 'default', onChunk, onDone) {
+export function chatStream(message, sessionId, userId = 'default', language = 'en', onChunk, onDone) {
     return stream('/copilot/chat/stream', {
         message,
         session_id: sessionId,
         user_id: userId,
         use_tools: true,
+        language,
     }, onChunk, onDone);
 }
 

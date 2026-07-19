@@ -15,12 +15,14 @@ import {
   Bell,
   BookOpen,
   Brain,
+  GitBranch,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', to: '/', id: 'dashboard' },
   { icon: Brain, label: 'Intelligence', to: '/intelligence', id: 'intelligence' },
+  { icon: GitBranch, label: 'Patterns', to: '/patterns', id: 'patterns' },
   { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
   { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },

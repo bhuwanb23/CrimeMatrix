@@ -100,6 +100,9 @@ export default function DashboardContent() {
         <InvestmentCalendar />
         <StatusBars />
       </div>
+
+      {/* Row 4: Recommendations */}
+      <RecommendationsPanel />
     </div>
   )
 }

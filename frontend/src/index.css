@@ -10777,3 +10777,340 @@
     min-width: 100%;
   }
 }
+
+/* ==========================================
+   Phase 2 — Crime Pattern Discovery
+   ========================================== */
+
+.pattern-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pattern-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pattern-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pattern-header-left svg {
+  color: var(--color-accent);
+}
+
+.pattern-header-left h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pattern-header-left p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.pattern-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.pattern-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.pattern-stat svg {
+  color: var(--color-accent);
+}
+
+.pattern-filters {
+  display: flex;
+  gap: 6px;
+}
+
+.pattern-filter-btn {
+  padding: 6px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pattern-filter-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--text-primary);
+}
+
+.pattern-filter-btn.active {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.pattern-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: similarCardIn 0.3s ease-out backwards;
+}
+
+.pattern-card:hover {
+  border-color: var(--color-accent);
+  background: var(--bg-active);
+}
+
+.pattern-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pattern-card-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.pattern-card-meta {
+  flex: 1;
+}
+
+.pattern-card-type {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: block;
+}
+
+.pattern-card-freq {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pattern-card-score {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.pattern-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.pattern-card-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.pattern-card-mo {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.pattern-card-mo-label {
+  font-weight: 600;
+}
+
+.pattern-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pattern-card-tag {
+  font-size: 9px;
+  padding: 2px 6px;
+  background: var(--bg-hover);
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.pattern-card-arrow {
+  margin-left: auto;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.pattern-card:hover .pattern-card-arrow {
+  opacity: 1;
+}
+
+/* Pattern Explorer Modal */
+.pattern-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.pattern-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 640px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+.pattern-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pattern-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pattern-modal-title h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pattern-modal-type {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pattern-modal-body {
+  padding: 20px;
+}
+
+.pattern-detail-section {
+  margin-bottom: 16px;
+}
+
+.pattern-detail-section h4 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.pattern-detail-section p {
+  font-size: 12px;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pattern-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pattern-detail-item {
+  background: var(--bg-hover);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.pattern-detail-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pattern-detail-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pattern-occurrences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pattern-occurrence-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--bg-hover);
+  border-radius: 6px;
+}
+
+.pattern-occurrence-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pattern-occurrence-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-primary);
+}
+
+.pattern-occurrence-score .similar-dim-bar {
+  width: 60px;
+}

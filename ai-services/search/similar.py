@@ -15,6 +15,22 @@ class SimilarCaseSearch:
         self.backend_url = backend_url or BACKEND_URL
 
     async def find_similar(self, case_id: int, top_k: int = 5) -> List[dict]:
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{self.backend_url}/api/v1/similar-cases/{case_id}",
+                    params={"top_k": top_k},
+                    timeout=15.0,
+                )
+                if resp.status_code == 200:
+                    data = resp.json().get("data", {})
+                    return data.get("similar_cases", [])
+        except Exception as e:
+            logger.warning("similar_cases_api_fallback", case_id=case_id, error=str(e))
+
+        return await self._fallback_vector_search(case_id, top_k)
+
+    async def _fallback_vector_search(self, case_id: int, top_k: int) -> List[dict]:
         case = await self._load_case(case_id)
         if not case:
             return []

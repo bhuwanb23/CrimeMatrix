@@ -80,6 +80,7 @@ def create_app() -> FastAPI:
     from tools.language.translate import TranslatorTool
     from tools.embeddings.search import EmbeddingSearchTool
     from tools.workflows.run import WorkflowRunTool
+    from tools.similar.cases import SimilarCasesTool
 
     for tool_cls in [
         CalculatorTool, WebFetchTool,
@@ -89,7 +90,7 @@ def create_app() -> FastAPI:
         InvestigationNotesTool, InvestigationTimelineTool, CaseStatusTool,
         ReportGenerateTool, RAGSearchTool, SearchIntelligentTool, IdentityMatchTool,
         KnowledgeGraphTool, ReasoningAnalyzeTool, PredictionEngineTool, TranslatorTool,
-        EmbeddingSearchTool, WorkflowRunTool,
+        EmbeddingSearchTool, WorkflowRunTool, SimilarCasesTool,
     ]:
         tool_registry.register(tool_cls())
 

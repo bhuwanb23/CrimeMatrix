@@ -1,28 +1,44 @@
-import { Bookmark, FileText, Download, Share2, Printer, BarChart3, Clock, StickyNote } from 'lucide-react'
+import { useState } from 'react'
+import { Bookmark, FileText, Download, Share2, Printer, BarChart3, Clock, StickyNote, Save, Play } from 'lucide-react'
+import { toggleSaveInvestigation } from '../../services/investigations'
 
-export default function ToolsPanel({ investigation }) {
+export default function ToolsPanel({ investigation, onRefresh }) {
+  const [toggling, setToggling] = useState(false)
+
   if (!investigation) return null
+
+  const isSaved = investigation.status === 'saved'
+
+  const handleToggleSave = async () => {
+    if (toggling) return
+    setToggling(true)
+    try {
+      await toggleSaveInvestigation(investigation.id)
+      onRefresh?.(investigation.id)
+    } catch (e) {
+      console.error('Failed to toggle save', e)
+    } finally {
+      setToggling(false)
+    }
+  }
 
   return (
     <div className="tools-panel">
-      {/* Bookmarks */}
+      {/* Save/Resume */}
       <div className="tools-section">
         <h3 className="tools-section-title">
-          <Bookmark size={14} />
-          Bookmarks
+          {isSaved ? <Play size={14} /> : <Save size={14} />}
+          {isSaved ? 'Resume' : 'Save'}
         </h3>
         <div className="tools-bookmarks">
-          {investigation.bookmarked ? (
-            <div className="bookmark-active">
-              <Bookmark size={14} />
-              <span>Bookmarked</span>
-            </div>
-          ) : (
-            <button className="bookmark-add">
-              <Bookmark size={14} />
-              Add Bookmark
-            </button>
-          )}
+          <button
+            className={`tools-save-btn ${isSaved ? 'tools-save-resume' : 'tools-save-active'}`}
+            onClick={handleToggleSave}
+            disabled={toggling}
+          >
+            {isSaved ? <Play size={14} /> : <Save size={14} />}
+            <span>{toggling ? 'Updating...' : (isSaved ? 'Resume Investigation' : 'Save Investigation')}</span>
+          </button>
         </div>
       </div>
 
@@ -69,28 +85,28 @@ export default function ToolsPanel({ investigation }) {
           <div className="tools-stat">
             <StickyNote size={14} />
             <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.notes.length}</span>
+              <span className="tools-stat-value">{investigation.notes?.length || 0}</span>
               <span className="tools-stat-label">Notes</span>
             </div>
           </div>
           <div className="tools-stat">
             <FileText size={14} />
             <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.evidence.length}</span>
+              <span className="tools-stat-value">{investigation.evidence?.length || 0}</span>
               <span className="tools-stat-label">Evidence</span>
             </div>
           </div>
           <div className="tools-stat">
             <Clock size={14} />
             <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.timeline.length}</span>
+              <span className="tools-stat-value">{investigation.timeline?.length || 0}</span>
               <span className="tools-stat-label">Events</span>
             </div>
           </div>
           <div className="tools-stat">
             <BarChart3 size={14} />
             <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.progress}%</span>
+              <span className="tools-stat-value">{investigation.progress || 0}%</span>
               <span className="tools-stat-label">Progress</span>
             </div>
           </div>

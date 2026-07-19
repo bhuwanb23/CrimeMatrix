@@ -4,6 +4,7 @@ import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
   Camera, Phone, MapPin, Bot, CheckCircle2, ExternalLink,
 } from 'lucide-react'
+import SimilarCasesPanel from './similar/SimilarCasesPanel'
 
 const timelineIcons = {
   filing: FileText,
@@ -163,6 +164,11 @@ export default function CaseDetailPage() {
           <div className="case-ai-insights">
             <p>{caseData.aiInsights}</p>
           </div>
+        </div>
+
+        {/* Similar Cases */}
+        <div className="case-card full-width">
+          <SimilarCasesPanel caseId={caseData.id} />
         </div>
       </div>
     </div>

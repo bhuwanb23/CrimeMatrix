@@ -10217,3 +10217,563 @@
   color: var(--text-primary);
   background: var(--bg-hover);
 }
+
+/* ==========================================
+   Feature 3 Phase 1 — Crime Intelligence Dashboard
+   ========================================== */
+
+.intel-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.intel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.intel-header-left svg {
+  color: var(--color-accent);
+}
+
+.intel-header-left h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.intel-header-left p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.intel-refresh {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.intel-refresh:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.intel-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Filters */
+.intel-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  flex-wrap: wrap;
+}
+
+.intel-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.intel-filter-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.intel-filter-select {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  min-width: 140px;
+}
+
+.intel-filter-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.intel-time-btns {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-hover);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.intel-time-btn {
+  padding: 5px 10px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.intel-time-btn:hover {
+  color: var(--text-primary);
+}
+
+.intel-time-btn.active {
+  background: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.intel-filter-reset {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.intel-filter-reset:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Overview Cards */
+.intel-overview-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.intel-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  animation: similarCardIn 0.3s ease-out backwards;
+}
+
+.intel-stat-card:nth-child(1) { animation-delay: 0.05s; }
+.intel-stat-card:nth-child(2) { animation-delay: 0.1s; }
+.intel-stat-card:nth-child(3) { animation-delay: 0.15s; }
+.intel-stat-card:nth-child(4) { animation-delay: 0.2s; }
+.intel-stat-card:nth-child(5) { animation-delay: 0.25s; }
+
+.intel-stat-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.intel-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.intel-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.intel-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Grid Layout */
+.intel-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intel-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Widget Headers */
+.intel-widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.intel-widget-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.intel-widget-header h3 svg {
+  color: var(--color-accent);
+}
+
+/* Trend Widget */
+.intel-trend-widget,
+.intel-hotspot-widget,
+.intel-criminal-widget,
+.intel-ai-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.intel-trend-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.intel-trend-up {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.intel-trend-down {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.intel-trend-stable {
+  color: var(--text-muted);
+  background: var(--bg-hover);
+}
+
+.intel-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 100px;
+}
+
+.intel-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.intel-bar-wrapper {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.intel-bar {
+  width: 100%;
+  background: var(--color-accent);
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+  transition: height 0.3s ease-out;
+  opacity: 0.8;
+}
+
+.intel-bar:hover {
+  opacity: 1;
+}
+
+.intel-bar-label {
+  font-size: 8px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.intel-trend-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.intel-trend-period,
+.intel-trend-summary {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Hotspot Widget */
+.intel-hotspot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intel-hotspot-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.intel-hotspot-rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-accent);
+  width: 20px;
+}
+
+.intel-hotspot-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.intel-hotspot-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: block;
+}
+
+.intel-hotspot-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.intel-hotspot-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transition: width 0.4s ease-out;
+}
+
+.intel-hotspot-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.intel-hotspot-types {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.intel-hotspot-types h4 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.intel-type-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.intel-type-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+}
+
+.intel-type-count {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* Criminal Activity Widget */
+.intel-criminal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.intel-criminal-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-hover);
+  border-radius: 8px;
+}
+
+.intel-criminal-icon {
+  flex-shrink: 0;
+}
+
+.intel-criminal-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.intel-criminal-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.intel-criminal-label {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.intel-criminal-alert {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 6px;
+  font-size: 11px;
+  color: #f59e0b;
+}
+
+/* AI Panel */
+.intel-ai-summary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.intel-ai-alerts,
+.intel-ai-insights {
+  margin-bottom: 12px;
+}
+
+.intel-ai-alerts h4,
+.intel-ai-insights h4 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.intel-ai-alert-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.intel-ai-alert-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.intel-ai-alert-msg {
+  font-size: 11px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.intel-ai-insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 4px 0;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.intel-ai-insight-item svg {
+  margin-top: 2px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .intel-overview-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .intel-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .intel-overview-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .intel-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .intel-filter-select {
+    min-width: 100%;
+  }
+}

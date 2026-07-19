@@ -102,3 +102,6 @@ router.include_router(investigation_analysis.router, prefix="/investigations", t
 
 # Recommendation APIs
 router.include_router(recommendations_api.router, prefix="/recommendations", tags=["Recommendations"])
+
+# Intelligence APIs
+router.include_router(intelligence_api.router, prefix="/intelligence", tags=["Intelligence"])

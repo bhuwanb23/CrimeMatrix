@@ -7,7 +7,8 @@ from app.api.v1 import (
     search, graph_api, analytics_api, reports_api, notifications_api, audit_api,
     memory_api, embedding_api, monitoring_api, storage_api, copilot,
     search_saved, search_history, semantic_search, search_district,
-    similar_cases_api
+    similar_cases_api,
+    investigations_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -89,3 +90,6 @@ router.include_router(search_district.router, prefix="/search/district", tags=["
 
 # Similar Case Discovery APIs
 router.include_router(similar_cases_api.router, prefix="/similar-cases", tags=["Similar Cases"])
+
+# Investigation Workspace APIs
+router.include_router(investigations_api.router, prefix="/investigations", tags=["Investigations"])

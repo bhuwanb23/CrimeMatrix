@@ -12,7 +12,8 @@ from app.api.v1 import (
     investigation_analysis,
     recommendations_api,
     intelligence_api,
-    patterns_api
+    patterns_api,
+    trends_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -109,3 +110,6 @@ router.include_router(intelligence_api.router, prefix="/intelligence", tags=["In
 
 # Pattern Discovery APIs
 router.include_router(patterns_api.router, prefix="/patterns", tags=["Patterns"])
+
+# Trend Analysis APIs
+router.include_router(trends_api.router, prefix="/trends", tags=["Trends"])

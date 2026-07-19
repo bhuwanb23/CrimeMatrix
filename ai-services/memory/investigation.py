@@ -73,5 +73,26 @@ class InvestigationContext:
                 lines.append(f"- {k}: {str(v)[:300]}")
         return "\n".join(lines)
 
+    async def get_investigation_analysis(self, investigation_id: int, analysis_type: str = "summary") -> Optional[Dict]:
+        cache_key = f"analysis_{investigation_id}_{analysis_type}"
+        cached = await self._cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(
+                    f"{self.backend_url}/api/v1/investigations/{investigation_id}/analyze",
+                    json={"analysis_type": analysis_type},
+                    timeout=20.0,
+                )
+                if resp.status_code == 200:
+                    data = resp.json().get("data", {})
+                    await self._cache.set(cache_key, data, ttl_seconds=120)
+                    return data
+        except Exception as e:
+            logger.warning("investigation_analysis_error", id=investigation_id, error=str(e))
+        return None
+
     async def clear_cache(self):
         await self._cache.clear()

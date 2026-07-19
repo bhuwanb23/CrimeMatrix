@@ -32,7 +32,6 @@ const navItems = [
 
 const bottomItems = [
   { icon: Settings, label: 'Settings', id: 'settings', to: '/settings' },
-  { icon: LogOut, label: 'Logout', id: 'logout' },
 ]
 
 export default function Sidebar() {
@@ -56,12 +55,6 @@ export default function Sidebar() {
     <>
       <aside className="sidebar">
         <div className="sidebar-inner">
-          <div className="sidebar-logo">
-            <div className="sidebar-logo-mark">
-              <LogoIcon size={22} />
-            </div>
-          </div>
-
           <nav className="sidebar-nav">
             {navItems.map((item) => (
               <div
@@ -111,10 +104,6 @@ export default function Sidebar() {
                 )}
               </div>
             ))}
-
-            <div className="sidebar-avatar">
-              <div className="sidebar-avatar-circle">SK</div>
-            </div>
           </div>
         </div>
       </aside>

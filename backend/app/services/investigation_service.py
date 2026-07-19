@@ -18,14 +18,19 @@ class InvestigationService:
         self.db = db
 
     async def list_investigations(
-        self, status: str = None, search: str = None, limit: int = 50, offset: int = 0
+        self, status: str = None, search: str = None, sort_by: str = "created_at",
+        limit: int = 50, offset: int = 0
     ) -> List[dict]:
         stmt = select(Investigation)
         if status:
             stmt = stmt.where(Investigation.status == status)
         if search:
             stmt = stmt.where(Investigation.title.ilike(f"%{search}%"))
-        stmt = stmt.order_by(Investigation.created_at.desc()).offset(offset).limit(limit)
+        if sort_by == "recent":
+            stmt = stmt.order_by(Investigation.last_accessed.desc().nullslast())
+        else:
+            stmt = stmt.order_by(Investigation.created_at.desc())
+        stmt = stmt.offset(offset).limit(limit)
 
         result = await self.db.execute(stmt)
         investigations = result.scalars().all()
@@ -55,6 +60,11 @@ class InvestigationService:
         if not inv:
             return None
 
+        # Auto-update last_accessed
+        inv.last_accessed = sql_func.now()
+        await self.db.commit()
+        await self.db.refresh(inv)
+
         notes = await self._get_notes(investigation_id)
         evidence = await self._get_evidence(inv.case_id)
         timeline = await self._get_timeline(investigation_id)
@@ -74,6 +84,7 @@ class InvestigationService:
             "officer_id": inv.officer_id,
             "created_at": str(inv.created_at) if inv.created_at else None,
             "updated_at": str(inv.updated_at) if inv.updated_at else None,
+            "last_accessed": str(inv.last_accessed) if inv.last_accessed else None,
             "notes": notes,
             "evidence": evidence,
             "timeline": timeline,
@@ -132,6 +143,48 @@ class InvestigationService:
         await self.db.delete(inv)
         await self.db.commit()
         return True
+
+    async def save_investigation(self, investigation_id: int) -> Optional[dict]:
+        stmt = select(Investigation).where(Investigation.id == investigation_id)
+        result = await self.db.execute(stmt)
+        inv = result.scalar()
+        if not inv:
+            return None
+        inv.status = "saved" if inv.status == "active" else "active"
+        await self.db.commit()
+        await self.db.refresh(inv)
+        return {"id": inv.id, "status": inv.status, "title": inv.title}
+
+    async def get_recent(self, limit: int = 3) -> List[dict]:
+        stmt = (
+            select(Investigation)
+            .where(Investigation.last_accessed.isnot(None))
+            .order_by(Investigation.last_accessed.desc())
+            .limit(limit)
+        )
+        result = await self.db.execute(stmt)
+        investigations = result.scalars().all()
+        items = []
+        for inv in investigations:
+            counts = await self._get_counts(inv.id)
+            items.append({
+                "id": inv.id,
+                "case_id": inv.case_id,
+                "title": inv.title,
+                "status": inv.status,
+                "priority": inv.priority,
+                "progress": inv.progress,
+                "district": inv.district,
+                "last_accessed": str(inv.last_accessed) if inv.last_accessed else None,
+                **counts,
+            })
+        return items
+
+    async def get_stats(self) -> dict:
+        total = await self._count(Investigation, Investigation.id.isnot(None))
+        active = await self._count(Investigation, Investigation.status == "active")
+        saved = await self._count(Investigation, Investigation.status == "saved")
+        return {"total": total, "active": active, "saved": saved}
 
     async def _get_counts(self, investigation_id: int) -> dict:
         notes_count = await self._count(Note, Note.investigation_id == investigation_id)

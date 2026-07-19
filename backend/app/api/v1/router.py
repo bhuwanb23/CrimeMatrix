@@ -8,7 +8,8 @@ from app.api.v1 import (
     memory_api, embedding_api, monitoring_api, storage_api, copilot,
     search_saved, search_history, semantic_search, search_district,
     similar_cases_api,
-    investigations_api
+    investigations_api,
+    investigation_analysis
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -93,3 +94,6 @@ router.include_router(similar_cases_api.router, prefix="/similar-cases", tags=["
 
 # Investigation Workspace APIs
 router.include_router(investigations_api.router, prefix="/investigations", tags=["Investigations"])
+
+# Investigation Analysis APIs
+router.include_router(investigation_analysis.router, prefix="/investigations", tags=["Investigation Analysis"])

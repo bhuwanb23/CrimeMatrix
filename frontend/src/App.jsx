@@ -15,6 +15,7 @@ import ReportsPage from './components/ReportsPage'
 import SettingsPage from './components/SettingsPage'
 import BookmarksPage from './components/BookmarksPage'
 import CrimeIntelligencePage from './components/CrimeIntelligencePage'
+import PatternDiscoveryPage from './components/PatternDiscoveryPage'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/cases/:id" element={<CaseDetailPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/intelligence" element={<CrimeIntelligencePage />} />
+          <Route path="/patterns" element={<PatternDiscoveryPage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

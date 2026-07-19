@@ -10,5 +10,7 @@ from app.models.case_similarity import CaseSimilarity
 from app.models.crime_pattern import CrimePattern
 from app.models.pattern_occurrence import PatternOccurrence
 from app.models.pattern_cluster import PatternCluster
+from app.models.crime_statistic import CrimeStatistic
+from app.models.trend_snapshot import TrendSnapshot
 
-__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster"]
+__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot"]

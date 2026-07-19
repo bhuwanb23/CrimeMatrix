@@ -1,4 +1,4 @@
-import { Camera, FileText, Phone, MapPin, Fingerprint, Plus } from 'lucide-react'
+import { Camera, FileText, Phone, MapPin, Fingerprint } from 'lucide-react'
 
 const typeIcons = {
   CCTV: Camera,
@@ -11,32 +11,36 @@ const typeIcons = {
   Physical: Fingerprint,
 }
 
-export default function EvidenceTab({ evidence }) {
+export default function EvidenceTab({ caseId, evidence }) {
   return (
     <div className="evidence-tab">
-      <div className="evidence-grid">
-        {evidence.map((item, i) => {
-          const Icon = typeIcons[item.type] || FileText
-          return (
-            <div key={i} className="evidence-card">
-              <div className="evidence-card-header">
-                <div className="evidence-card-icon">
-                  <Icon size={16} />
+      {evidence.length === 0 ? (
+        <div className="similar-empty">
+          <p>No evidence collected for this case</p>
+        </div>
+      ) : (
+        <div className="evidence-grid">
+          {evidence.map((item, i) => {
+            const Icon = typeIcons[item.evidence_type] || typeIcons[item.type] || FileText
+            const type = item.evidence_type || item.type || 'Unknown'
+            const status = item.status || 'Pending'
+            return (
+              <div key={item.id || i} className="evidence-card">
+                <div className="evidence-card-header">
+                  <div className="evidence-card-icon">
+                    <Icon size={16} />
+                  </div>
+                  <span className="evidence-card-type">{type}</span>
+                  <span className={`evidence-status-badge ${status.toLowerCase().replace(' ', '-')}`}>
+                    {status}
+                  </span>
                 </div>
-                <span className="evidence-card-type">{item.type}</span>
-                <span className={`evidence-status-badge ${item.status.toLowerCase().replace(' ', '-')}`}>
-                  {item.status}
-                </span>
+                <p className="evidence-card-desc">{item.description}</p>
               </div>
-              <p className="evidence-card-desc">{item.description}</p>
-            </div>
-          )
-        })}
-      </div>
-      <button className="evidence-add-btn">
-        <Plus size={14} />
-        Add Evidence
-      </button>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

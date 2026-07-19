@@ -9307,3 +9307,158 @@
   font-size: 10px;
   color: var(--text-muted);
 }
+
+/* ==========================================
+   Phase 7 — Saved Investigations
+   ========================================== */
+
+.case-list-create-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.case-list-create-btn:hover {
+  opacity: 0.9;
+}
+
+.case-create-form {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: similarCardIn 0.2s ease-out;
+}
+
+.case-create-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.case-create-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.case-create-row {
+  display: flex;
+  gap: 8px;
+}
+
+.case-create-select {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.case-create-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.case-create-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Recently Viewed */
+.case-list-section {
+  margin-bottom: 8px;
+}
+
+.case-list-section-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.case-list-section-header svg {
+  color: var(--color-accent);
+}
+
+.case-list-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.case-list-item-recent {
+  padding: 6px 8px !important;
+}
+
+.case-list-item-time {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* Save/Resume Button */
+.tools-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tools-save-active {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-accent);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.tools-save-active:hover {
+  background: rgba(245, 158, 11, 0.25);
+}
+
+.tools-save-resume {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.tools-save-resume:hover {
+  background: rgba(16, 185, 129, 0.25);
+}
+
+.tools-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -11,7 +11,8 @@ from app.api.v1 import (
     investigations_api,
     investigation_analysis,
     recommendations_api,
-    intelligence_api
+    intelligence_api,
+    patterns_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -105,3 +106,6 @@ router.include_router(recommendations_api.router, prefix="/recommendations", tag
 
 # Intelligence APIs
 router.include_router(intelligence_api.router, prefix="/intelligence", tags=["Intelligence"])
+
+# Pattern Discovery APIs
+router.include_router(patterns_api.router, prefix="/patterns", tags=["Patterns"])

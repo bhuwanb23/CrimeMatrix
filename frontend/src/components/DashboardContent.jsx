@@ -4,6 +4,7 @@ import CrimeTypeChart from './charts/CrimeTypeChart'
 import DistrictDonut from './charts/DistrictDonut'
 import StatusBars from './charts/StatusBars'
 import InvestmentCalendar from './charts/InvestmentCalendar'
+import RecommendationsPanel from './recommendations/RecommendationsPanel'
 
 const stats = [
   {

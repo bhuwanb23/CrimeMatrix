@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
-import { FileText, Camera, Clock, GitBranch, Link, Bot } from 'lucide-react'
+import { FileText, Camera, Clock, GitBranch, Link, Bot, Paperclip, Bookmark } from 'lucide-react'
 import NotesTab from './NotesTab'
 import EvidenceTab from './EvidenceTab'
 import TimelineTab from './TimelineTab'
 import ReasoningTab from './ReasoningTab'
 import RelatedTab from './RelatedTab'
 import AITab from './AITab'
+import AttachmentsTab from './AttachmentsTab'
+import BookmarksTab from './BookmarksTab'
+import { getSimilarCases } from '../../services/similarCases'
 
 const tabs = [
   { id: 'notes', label: 'Notes', icon: FileText },
@@ -13,15 +16,43 @@ const tabs = [
   { id: 'timeline', label: 'Timeline', icon: Clock },
   { id: 'reasoning', label: 'Reasoning', icon: GitBranch },
   { id: 'related', label: 'Related', icon: Link },
+  { id: 'attachments', label: 'Files', icon: Paperclip },
+  { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
   { id: 'ai', label: 'AI', icon: Bot },
 ]
 
-export default function WorkspacePanel({ investigation }) {
+export default function WorkspacePanel({ investigation, loading }) {
   const [activeTab, setActiveTab] = useState('notes')
+  const [relatedCases, setRelatedCases] = useState([])
 
   useEffect(() => {
     setActiveTab('notes')
   }, [investigation?.id])
+
+  useEffect(() => {
+    if (investigation?.case_id && activeTab === 'related') {
+      loadRelated()
+    }
+  }, [investigation?.case_id, activeTab])
+
+  async function loadRelated() {
+    try {
+      const res = await getSimilarCases(investigation.case_id, 5)
+      const data = res?.data || res
+      setRelatedCases(data?.similar_cases || [])
+    } catch (e) {
+      setRelatedCases([])
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="workspace-empty">
+        <div className="similar-spinner" />
+        <p>Loading investigation...</p>
+      </div>
+    )
+  }
 
   if (!investigation) {
     return (
@@ -33,24 +64,25 @@ export default function WorkspacePanel({ investigation }) {
     )
   }
 
+  const caseId = investigation.case_id
+  const invId = investigation.id
+
   return (
     <div className="workspace-panel">
       {/* Header */}
       <div className="workspace-header">
         <div className="workspace-header-top">
-          <span className="workspace-case-id">{investigation.caseId}</span>
+          <span className="workspace-case-id">INV-{String(invId).padStart(3, '0')}</span>
           <span className={`status-badge ${investigation.status}`}>{investigation.status}</span>
-          <span className={`workspace-priority priority-${investigation.priority.toLowerCase()}`}>
+          <span className={`workspace-priority priority-${(investigation.priority || 'medium').toLowerCase()}`}>
             {investigation.priority}
           </span>
         </div>
         <h2 className="workspace-title">{investigation.title}</h2>
         <div className="workspace-meta">
-          <span>{investigation.officer}</span>
-          <span>•</span>
-          <span>{investigation.district}</span>
-          <span>•</span>
-          <span>{investigation.startDate}</span>
+          {investigation.district && <span>{investigation.district}</span>}
+          {investigation.district && <span>•</span>}
+          {investigation.progress !== undefined && <span>{investigation.progress}% complete</span>}
         </div>
       </div>
 
@@ -69,32 +101,26 @@ export default function WorkspacePanel({ investigation }) {
       </div>
 
       {/* Tab Content */}
-      <div className="workspace-content" key={`${investigation.id}-${activeTab}`}>
+      <div className="workspace-content" key={`${invId}-${activeTab}`}>
         {activeTab === 'notes' && (
-          <NotesTab
-            notes={investigation.notes}
-            onUpdateNotes={(notes) => { /* would update state */ }}
-          />
+          <NotesTab investigationId={invId} notes={investigation.notes || []} />
         )}
-        {activeTab === 'evidence' && <EvidenceTab evidence={investigation.evidence} />}
-        {activeTab === 'timeline' && <TimelineTab timeline={investigation.timeline} />}
-        {activeTab === 'reasoning' && <ReasoningTab reasoning={investigation.reasoning} />}
-        {activeTab === 'related' && <RelatedTab relatedCases={investigation.relatedCases} />}
-        {activeTab === 'ai' && (
-          <AITab
-            aiInsights={investigation.aiInsights}
-            suggestions={investigation.suggestions}
-          />
+        {activeTab === 'evidence' && (
+          <EvidenceTab caseId={caseId} evidence={investigation.evidence || []} />
         )}
+        {activeTab === 'timeline' && (
+          <TimelineTab investigationId={invId} timeline={investigation.timeline || []} />
+        )}
+        {activeTab === 'reasoning' && <ReasoningTab reasoning={[]} />}
+        {activeTab === 'related' && <RelatedTab caseId={caseId} relatedCases={relatedCases} />}
+        {activeTab === 'attachments' && (
+          <AttachmentsTab investigationId={invId} attachments={investigation.attachments || []} />
+        )}
+        {activeTab === 'bookmarks' && (
+          <BookmarksTab investigationId={invId} bookmarks={investigation.status_logs || []} />
+        )}
+        {activeTab === 'ai' && <AITab aiInsights="" suggestions={[]} />}
       </div>
-
-      {/* AI Suggestions Bar */}
-      {investigation.suggestions.length > 0 && (
-        <div className="workspace-ai-bar">
-          <div className="ai-bar-icon">🤖</div>
-          <p className="ai-bar-text">{investigation.suggestions[0]}</p>
-        </div>
-      )}
     </div>
   )
 }

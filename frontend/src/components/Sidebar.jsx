@@ -14,6 +14,7 @@ import {
   Network,
   Bell,
   BookOpen,
+  Brain,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 

@@ -5,6 +5,7 @@ import {
   Camera, Phone, MapPin, Bot, CheckCircle2, ExternalLink,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
+import BookmarkButton from './bookmarks/BookmarkButton'
 
 const timelineIcons = {
   filing: FileText,
@@ -40,6 +41,7 @@ export default function CaseDetailPage() {
         <div className="case-header-info">
           <h1 className="case-header-id">{caseData.id}</h1>
           <span className={`status-badge ${caseData.status}`}>{caseData.status}</span>
+          <BookmarkButton entityType="case" entityId={caseData.id} />
         </div>
         <p className="case-header-title">{caseData.title}</p>
       </div>

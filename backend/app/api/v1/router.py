@@ -10,7 +10,8 @@ from app.api.v1 import (
     similar_cases_api,
     investigations_api,
     investigation_analysis,
-    recommendations_api
+    recommendations_api,
+    intelligence_api
 )
 
 router = APIRouter(prefix="/api/v1")

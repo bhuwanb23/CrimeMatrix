@@ -11114,3 +11114,225 @@
 .pattern-occurrence-score .similar-dim-bar {
   width: 60px;
 }
+
+/* ==========================================
+   Phase 3 — Crime Trend Analysis (Connected)
+   ========================================== */
+
+.trend-chart-widget {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.trend-chart-area {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.trend-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.trend-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trend-bar-wrapper {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.trend-bar {
+  width: 100%;
+  background: var(--color-accent);
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+  opacity: 0.8;
+  transition: height 0.3s ease-out;
+}
+
+.trend-bar:hover {
+  opacity: 1;
+}
+
+.trend-chart-avg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--text-muted);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.trend-avg-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  position: absolute;
+  right: 0;
+  top: -12px;
+}
+
+.trend-chart-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.trend-label {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.trend-chart-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* District Comparison */
+.district-compare-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.district-compare-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.district-compare-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.district-compare-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.district-compare-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.district-compare-total {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.district-compare-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.district-compare-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease-out;
+}
+
+/* Seasonal Patterns */
+.seasonal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.seasonal-chart h4 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+
+.seasonal-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 60px;
+}
+
+.seasonal-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seasonal-bar-wrapper {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.seasonal-bar {
+  width: 100%;
+  background: var(--color-accent);
+  border-radius: 1px 1px 0 0;
+  min-height: 1px;
+  opacity: 0.7;
+}
+
+.seasonal-bar-label {
+  font-size: 7px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* Trend Insights */
+.trend-insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trend-insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-hover);
+  border-radius: 8px;
+}
+
+.trend-insight-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.trend-insight-msg {
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+@media (max-width: 1023px) {
+  .seasonal-grid {
+    grid-template-columns: 1fr;
+  }
+}

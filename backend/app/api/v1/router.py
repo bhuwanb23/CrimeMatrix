@@ -14,7 +14,8 @@ from app.api.v1 import (
     intelligence_api,
     patterns_api,
     trends_api,
-    hotspots_api
+    hotspots_api,
+    maps_api
 )
 
 router = APIRouter(prefix="/api/v1")

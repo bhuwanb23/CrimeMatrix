@@ -120,7 +120,9 @@ export default function WorkspacePanel({ investigation, loading }) {
         {activeTab === 'bookmarks' && (
           <BookmarksTab investigationId={invId} bookmarks={investigation.status_logs || []} />
         )}
-        {activeTab === 'ai' && <AITab aiInsights="" suggestions={[]} />}
+        {activeTab === 'ai' && (
+          <InvestigationAI investigationId={invId} investigation={investigation} />
+        )}
       </div>
     </div>
   )

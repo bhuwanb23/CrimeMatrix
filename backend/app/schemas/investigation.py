@@ -36,6 +36,7 @@ class InvestigationResponse(BaseModel):
     officer_id: Optional[int]
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
+    last_accessed: Optional[datetime]
     # Nested data
     notes: List[dict] = []
     evidence: List[dict] = []

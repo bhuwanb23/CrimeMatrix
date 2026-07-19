@@ -9092,3 +9092,218 @@
     font-size: 22px;
   }
 }
+
+/* ==========================================
+   Investigation Workspace — Phase 6
+   ========================================== */
+
+.case-list-refresh {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.case-list-refresh:hover {
+  color: var(--color-accent);
+}
+
+.note-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.note-card:hover .note-delete,
+.attachment-card:hover .note-delete,
+.timeline-visual-item:hover .note-delete {
+  opacity: 1;
+}
+
+.note-delete:hover {
+  color: #ef4444;
+}
+
+.note-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.timeline-visual-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-visual-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+/* Timeline Form */
+.timeline-form {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  animation: similarCardIn 0.2s ease-out;
+}
+
+.timeline-form-input,
+.timeline-form-select {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.timeline-form-input:focus,
+.timeline-form-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.timeline-form-row {
+  display: flex;
+  gap: 8px;
+}
+
+.timeline-form-row > * {
+  flex: 1;
+}
+
+.timeline-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Attachments */
+.attachments-tab {
+  display: flex;
+  flex-direction: column;
+}
+
+.attachments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.attachment-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.attachment-card:hover {
+  border-color: var(--color-accent);
+}
+
+.attachment-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.attachment-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.attachment-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Status Logs / Bookmarks */
+.bookmarks-tab {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-log-card {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.status-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.status-log-statuses {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-log-arrow {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.status-log-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.status-log-notes {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 4px;
+  line-height: 1.4;
+}
+
+.status-log-author {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-muted);
+}

@@ -15,5 +15,6 @@ class Investigation(Base):
     officer_id = Column(Integer, ForeignKey("users.id"))
     progress = Column(Integer, default=0)
     district = Column(String(100))
+    last_accessed = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

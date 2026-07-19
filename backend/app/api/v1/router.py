@@ -9,7 +9,8 @@ from app.api.v1 import (
     search_saved, search_history, semantic_search, search_district,
     similar_cases_api,
     investigations_api,
-    investigation_analysis
+    investigation_analysis,
+    recommendations_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -97,3 +98,6 @@ router.include_router(investigations_api.router, prefix="/investigations", tags=
 
 # Investigation Analysis APIs
 router.include_router(investigation_analysis.router, prefix="/investigations", tags=["Investigation Analysis"])
+
+# Recommendation APIs
+router.include_router(recommendations_api.router, prefix="/recommendations", tags=["Recommendations"])

@@ -14,5 +14,6 @@ class Investigation(Base):
     priority = Column(String(20), default="medium")
     officer_id = Column(Integer, ForeignKey("users.id"))
     progress = Column(Integer, default=0)
+    district = Column(String(100))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

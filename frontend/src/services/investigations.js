@@ -29,6 +29,18 @@ export async function deleteInvestigation(id) {
   return del(`/investigations/${id}`);
 }
 
+export async function getRecentInvestigations(limit = 3) {
+  return get(`/investigations/recent?limit=${limit}`);
+}
+
+export async function toggleSaveInvestigation(id) {
+  return put(`/investigations/${id}/save`);
+}
+
+export async function getInvestigationStats() {
+  return get('/investigations/stats');
+}
+
 // Notes
 export async function listNotes(investigationId) {
   return get(`/notes/investigation/${investigationId}`);

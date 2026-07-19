@@ -49,6 +49,11 @@ export default function InvestigationPage() {
     }
   }
 
+  function handleCreated(inv) {
+    loadInvestigations()
+    if (inv?.id) setSelectedId(inv.id)
+  }
+
   return (
     <div className="investigation-page">
       <CaseListPanel
@@ -57,6 +62,7 @@ export default function InvestigationPage() {
         onSelectCase={setSelectedId}
         loading={loading}
         onRefresh={loadInvestigations}
+        onCreated={handleCreated}
       />
       <WorkspacePanel investigation={selectedInvestigation} loading={detailLoading} />
       <ToolsPanel investigation={selectedInvestigation} onRefresh={loadInvestigationDetail} />

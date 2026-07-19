@@ -1,22 +1,53 @@
 import { useState } from 'react'
-import { Plus, Send, User } from 'lucide-react'
+import { Send, User, Trash2 } from 'lucide-react'
+import { createNote, deleteNote } from '../../services/investigations'
 
-export default function NotesTab({ notes: initialNotes, onUpdateNotes }) {
+export default function NotesTab({ investigationId, notes: initialNotes }) {
   const [notes, setNotes] = useState(initialNotes)
   const [newNote, setNewNote] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleAddNote = () => {
-    if (!newNote.trim()) return
-    const note = {
-      id: Date.now(),
-      text: newNote.trim(),
-      time: 'Just now',
-      author: 'SI Karthik',
+  const handleAddNote = async () => {
+    if (!newNote.trim() || submitting) return
+    setSubmitting(true)
+    try {
+      const res = await createNote({
+        investigation_id: investigationId,
+        content: newNote.trim(),
+      })
+      const created = res?.data || res
+      const note = {
+        id: created?.id || Date.now(),
+        content: newNote.trim(),
+        author_id: null,
+        created_at: new Date().toISOString(),
+      }
+      setNotes([note, ...notes])
+      setNewNote('')
+    } catch (e) {
+      console.error('Failed to create note', e)
+    } finally {
+      setSubmitting(false)
     }
-    const updated = [note, ...notes]
-    setNotes(updated)
-    onUpdateNotes(updated)
-    setNewNote('')
+  }
+
+  const handleDeleteNote = async (noteId) => {
+    try {
+      await deleteNote(noteId)
+      setNotes(notes.filter(n => n.id !== noteId))
+    } catch (e) {
+      console.error('Failed to delete note', e)
+    }
+  }
+
+  function formatTime(dateStr) {
+    if (!dateStr) return 'Just now'
+    try {
+      const d = new Date(dateStr)
+      return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+    } catch {
+      return dateStr
+    }
   }
 
   return (
@@ -38,26 +69,35 @@ export default function NotesTab({ notes: initialNotes, onUpdateNotes }) {
         <button
           className="notes-submit"
           onClick={handleAddNote}
-          disabled={!newNote.trim()}
+          disabled={!newNote.trim() || submitting}
         >
           <Send size={14} />
-          Add Note
+          {submitting ? 'Adding...' : 'Add Note'}
         </button>
       </div>
 
       <div className="notes-list">
-        {notes.map((note) => (
-          <div key={note.id} className="note-card">
-            <div className="note-header">
-              <div className="note-author">
-                <User size={12} />
-                {note.author}
+        {notes.length === 0 ? (
+          <div className="similar-empty"><p>No notes yet</p></div>
+        ) : (
+          notes.map((note) => (
+            <div key={note.id} className="note-card">
+              <div className="note-header">
+                <div className="note-author">
+                  <User size={12} />
+                  {note.author_id ? `Officer #${note.author_id}` : 'You'}
+                </div>
+                <div className="note-header-right">
+                  <span className="note-time">{formatTime(note.created_at)}</span>
+                  <button className="note-delete" onClick={() => handleDeleteNote(note.id)}>
+                    <Trash2 size={12} />
+                  </button>
+                </div>
               </div>
-              <span className="note-time">{note.time}</span>
+              <p className="note-text">{note.content}</p>
             </div>
-            <p className="note-text">{note.text}</p>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   )

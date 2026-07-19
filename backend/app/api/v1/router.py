@@ -13,7 +13,8 @@ from app.api.v1 import (
     recommendations_api,
     intelligence_api,
     patterns_api,
-    trends_api
+    trends_api,
+    hotspots_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -113,3 +114,6 @@ router.include_router(patterns_api.router, prefix="/patterns", tags=["Patterns"]
 
 # Trend Analysis APIs
 router.include_router(trends_api.router, prefix="/trends", tags=["Trends"])
+
+# Hotspot Detection APIs
+router.include_router(hotspots_api.router, prefix="/hotspots", tags=["Hotspots"])

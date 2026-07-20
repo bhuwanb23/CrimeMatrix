@@ -35,5 +35,7 @@ from app.models.forecast_snapshot import ForecastSnapshot
 from app.models.case_priority import CasePriority
 from app.models.priority_history_record import PriorityHistoryRecord
 from app.models.priority_explanation import PriorityExplanation
+from app.models.prediction_explanation_record import PredictionExplanationRecord
+from app.models.prediction_source import PredictionSource
 
-__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord", "CrimePrediction", "PredictionModelRecord", "PredictionResult", "EarlyWarningAlert", "AlertRule", "AlertEvent", "SuspectRiskScore", "RiskScoreHistory", "RiskFactor", "CrimeForecastRecord", "ForecastSnapshot", "CasePriority", "PriorityHistoryRecord", "PriorityExplanation"]
+__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord", "CrimePrediction", "PredictionModelRecord", "PredictionResult", "EarlyWarningAlert", "AlertRule", "AlertEvent", "SuspectRiskScore", "RiskScoreHistory", "RiskFactor", "CrimeForecastRecord", "ForecastSnapshot", "CasePriority", "PriorityHistoryRecord", "PriorityExplanation", "PredictionExplanationRecord", "PredictionSource"]

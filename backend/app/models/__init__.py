@@ -21,5 +21,8 @@ from app.models.offender_score import OffenderScore
 from app.models.mo_profile import MOProfile
 from app.models.mo_embedding import MOEmbedding
 from app.models.mo_similarity_record import MOSimilarityRecord
+from app.models.crime_prediction import CrimePrediction
+from app.models.prediction_model import PredictionModelRecord
+from app.models.prediction_result import PredictionResult
 
-__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord"]
+__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord", "CrimePrediction", "PredictionModelRecord", "PredictionResult"]

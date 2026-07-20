@@ -23,7 +23,8 @@ from app.api.v1 import (
     analytics_dashboard_api,
     prediction_api,
     early_warning_api,
-    suspect_risk_api
+    suspect_risk_api,
+    priority_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -153,3 +154,6 @@ router.include_router(early_warning_api.router, prefix="/early-warning", tags=["
 
 # Suspect Risk Scoring APIs
 router.include_router(suspect_risk_api.router, prefix="/suspect-risk", tags=["Suspect Risk"])
+
+# Case Prioritization APIs
+router.include_router(priority_api.router, prefix="/priorities", tags=["Priorities"])

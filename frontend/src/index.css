@@ -11927,3 +11927,126 @@
     height: 400px;
   }
 }
+
+/* ==========================================
+   Phase 6 — Criminal Network (Connected)
+   ========================================== */
+
+.graph-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.graph-build-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.graph-build-btn:hover { opacity: 0.9; }
+.graph-build-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.graph-refresh-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.graph-refresh-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+.graph-type-filters {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--bg-hover);
+  border-radius: 6px;
+}
+
+.graph-type-filters svg { color: var(--text-muted); }
+
+.graph-type-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.graph-type-btn:hover { background: var(--bg-card); border-color: var(--border); }
+.graph-type-btn.active { background: var(--bg-card); border-color: var(--color-accent); }
+
+.graph-type-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.graph-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.legend-title {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.legend-items {
+  display: flex;
+  gap: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-line {
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+.legend-line.dashed {
+  border-top: 2px dashed;
+  height: 0;
+  background: none;
+}

@@ -13233,3 +13233,103 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================
+   Feature 4 Phase 2 — Predictive Analytics
+   ========================================== */
+
+.analytics-district-list,
+.analytics-type-list,
+.analytics-model-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analytics-district-item,
+.analytics-type-item,
+.analytics-model-item {
+  padding: 8px 10px;
+  background: var(--bg-hover);
+  border-radius: 8px;
+}
+
+.analytics-district-header,
+.analytics-type-header,
+.analytics-model-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.analytics-district-name,
+.analytics-type-name,
+.analytics-model-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.analytics-district-count,
+.analytics-type-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.analytics-model-version {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.analytics-district-bar,
+.analytics-type-bar,
+.analytics-model-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.analytics-district-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease-out;
+}
+
+.analytics-type-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.analytics-model-fill {
+  height: 100%;
+  background: #10b981;
+  border-radius: 2px;
+}
+
+.analytics-model-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.analytics-model-status {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 9px;
+}
+
+.analytics-model-status.active {
+  color: #10b981;
+}
+
+.analytics-model-status.inactive {
+  color: #ef4444;
+}

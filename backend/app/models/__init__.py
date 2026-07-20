@@ -18,5 +18,8 @@ from app.models.behavior_profile import BehaviorProfile
 from app.models.behavior_feature import BehaviorFeature
 from app.models.repeat_offender import RepeatOffender
 from app.models.offender_score import OffenderScore
+from app.models.mo_profile import MOProfile
+from app.models.mo_embedding import MOEmbedding
+from app.models.mo_similarity_record import MOSimilarityRecord
 
-__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore"]
+__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord"]

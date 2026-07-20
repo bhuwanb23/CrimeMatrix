@@ -20,6 +20,7 @@ import CriminalTimelinePage from './components/CriminalTimelinePage'
 import AIAnalyticsPage from './components/AIAnalyticsPage'
 import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
 import EarlyWarningPage from './components/EarlyWarningPage'
+import SuspectRiskPage from './components/SuspectRiskPage'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/analytics-dashboard" element={<AIAnalyticsPage />} />
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
           <Route path="/early-warning" element={<EarlyWarningPage />} />
+          <Route path="/suspect-risk" element={<SuspectRiskPage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

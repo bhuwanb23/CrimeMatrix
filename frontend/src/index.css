@@ -12677,3 +12677,163 @@
   color: #f59e0b;
   flex-shrink: 0;
 }
+
+/* ==========================================
+   Phase 10 — MO Fingerprinting (Connected)
+   ========================================== */
+
+.mo-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.mo-compare-form {
+  margin-bottom: 14px;
+}
+
+.mo-compare-form h4 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+
+.mo-compare-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mo-compare-arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.mo-compare-result {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.mo-compare-score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mo-compare-score-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+.mo-compare-score-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.mo-compare-match {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.mo-compare-match.strong {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.mo-compare-match.moderate {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.mo-compare-match.weak {
+  background: rgba(100, 116, 139, 0.15);
+  color: #64748b;
+}
+
+.mo-compare-features h5 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 6px;
+}
+
+.mo-feature-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.mo-feature-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+.mo-profiles-section h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+
+.mo-profiles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mo-profile-card {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.mo-profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.mo-profile-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.mo-profile-confidence {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mo-profile-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.mo-profile-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}

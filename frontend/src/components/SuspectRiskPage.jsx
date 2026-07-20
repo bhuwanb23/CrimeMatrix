@@ -31,141 +31,101 @@ export default function SuspectRiskPage() {
   const [loading, setLoading] = useState(true)
   const [scoring, setScoring] = useState(false)
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  useEffect(() => { loadData() }, [])
 
   async function loadData() {
     setLoading(true)
     try {
-      const [statsRes, rankingsRes] = await Promise.all([
-        getSuspectRiskStats(),
-        getSuspectRiskRankings(10),
-      ])
+      const [statsRes, rankingsRes] = await Promise.all([getSuspectRiskStats(), getSuspectRiskRankings(10)])
       setStats(statsRes?.data || statsRes)
       setRankings(rankingsRes?.data || [])
-    } catch (e) {
-      console.error('Failed to load risk data', e)
-    } finally {
-      setLoading(false)
-    }
+    } catch (e) { console.error(e) } finally { setLoading(false) }
   }
 
   async function handleBatchScore() {
     setScoring(true)
-    try {
-      await batchScoreSuspects()
-      await loadData()
-    } catch (e) {
-      console.error('Batch score failed', e)
-    } finally {
-      setScoring(false)
-    }
+    try { await batchScoreSuspects(); await loadData() } catch (e) { console.error(e) } finally { setScoring(false) }
   }
 
   async function handleSelectSuspect(suspectId) {
-    if (selectedSuspect === suspectId) {
-      setSelectedSuspect(null)
-      setSelectedScore(null)
-      setSelectedFactors([])
-      return
-    }
+    if (selectedSuspect === suspectId) { setSelectedSuspect(null); setSelectedScore(null); setSelectedFactors([]); return }
     setSelectedSuspect(suspectId)
     try {
-      const [scoreRes, factorsRes] = await Promise.all([
-        getSuspectRiskScore(suspectId),
-        getSuspectRiskFactors(suspectId),
-      ])
+      const [scoreRes, factorsRes] = await Promise.all([getSuspectRiskScore(suspectId), getSuspectRiskFactors(suspectId)])
       setSelectedScore(scoreRes?.data || null)
       setSelectedFactors(factorsRes?.data?.items || [])
-    } catch (e) {
-      console.error('Failed to load suspect details', e)
-    }
+    } catch (e) { console.error(e) }
   }
 
   return (
-    <div className="suspect-risk-page">
-      <div className="intel-header">
-        <div className="intel-header-left">
-          <Shield size={22} />
+    <div className="flex flex-col gap-5">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Shield size={22} className="text-amber-500" />
           <div>
-            <h1>Suspect Risk Scoring</h1>
-            <p>Transparent, explainable risk assessment for suspects</p>
+            <h1 className="text-xl font-bold text-slate-900">Suspect Risk Scoring</h1>
+            <p className="text-xs text-slate-500">Transparent, explainable risk assessment</p>
           </div>
         </div>
-        <div className="intel-header-actions">
-          <button className="similar-btn similar-btn-primary" onClick={handleBatchScore} disabled={scoring}>
+        <div className="flex items-center gap-2">
+          <button onClick={handleBatchScore} disabled={scoring} className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-slate-900 rounded-lg text-xs font-semibold hover:opacity-90 disabled:opacity-50">
             {scoring ? 'Scoring...' : 'Batch Score All'}
           </button>
-          <button className="intel-refresh" onClick={loadData} disabled={loading}>
-            <RefreshCw size={14} className={loading ? 'similar-spinning' : ''} />
+          <button onClick={loadData} disabled={loading} className="p-1.5 bg-white border border-slate-200 rounded-lg hover:border-amber-500">
+            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           </button>
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats Cards */}
       {stats && (
-        <div className="analytics-summary-cards">
-          <div className="analytics-pred-card">
-            <div className="analytics-pred-icon" style={{ color: '#f59e0b' }}>
-              <Users size={18} />
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { label: 'Scored', value: stats.total_scored || 0, icon: Users, color: 'text-amber-500' },
+            { label: 'High Risk', value: stats.high_risk || 0, icon: AlertTriangle, color: 'text-red-500' },
+            { label: 'Avg Score', value: `${stats.avg_score || 0}%`, icon: TrendingUp, color: 'text-blue-500' },
+          ].map((card, i) => (
+            <div key={i} className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl p-3.5">
+              <div className={`w-9 h-9 flex items-center justify-center bg-slate-50 rounded-lg ${card.color}`}>
+                <card.icon size={18} />
+              </div>
+              <div>
+                <span className="block text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{card.label}</span>
+                <span className="text-xl font-bold text-slate-900">{card.value}</span>
+              </div>
             </div>
-            <div className="analytics-pred-info">
-              <span className="analytics-pred-label">Scored</span>
-              <span className="analytics-pred-value">{stats.total_scored || 0}</span>
-            </div>
-          </div>
-          <div className="analytics-pred-card">
-            <div className="analytics-pred-icon" style={{ color: '#ef4444' }}>
-              <AlertTriangle size={18} />
-            </div>
-            <div className="analytics-pred-info">
-              <span className="analytics-pred-label">High Risk</span>
-              <span className="analytics-pred-value">{stats.high_risk || 0}</span>
-            </div>
-          </div>
-          <div className="analytics-pred-card">
-            <div className="analytics-pred-icon" style={{ color: '#3b82f6' }}>
-              <TrendingUp size={18} />
-            </div>
-            <div className="analytics-pred-info">
-              <span className="analytics-pred-label">Avg Score</span>
-              <span className="analytics-pred-value">{stats.avg_score || 0}%</span>
-            </div>
-          </div>
+          ))}
         </div>
       )}
 
-      <div className="intel-row">
+      <div className="grid grid-cols-2 gap-4">
         {/* Rankings */}
-        <div className="analytics-panel">
-          <div className="analytics-panel-header">
-            <Shield size={14} />
-            <h3>Suspect Rankings</h3>
+        <div className="bg-white border border-slate-200 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Shield size={14} className="text-amber-500" />
+            <h3 className="text-sm font-semibold text-slate-900">Suspect Rankings</h3>
           </div>
           {rankings.length === 0 ? (
-            <div className="similar-empty"><p>No suspects scored yet. Click Batch Score.</p></div>
+            <p className="text-xs text-slate-400 text-center py-8">No suspects scored yet. Click Batch Score.</p>
           ) : (
-            <div className="analytics-risk-list">
+            <div className="flex flex-col gap-2">
               {rankings.map((r, i) => {
                 const color = riskColors[r.risk_level] || '#64748b'
                 const isSelected = selectedSuspect === r.suspect_id
                 return (
-                  <div
-                    key={r.suspect_id || i}
-                    className={`analytics-risk-item ${isSelected ? 'selected' : ''}`}
-                    onClick={() => handleSelectSuspect(r.suspect_id)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div className="analytics-risk-rank">#{i + 1}</div>
-                    <div className="analytics-risk-info">
-                      <span className="analytics-risk-name">{r.name}</span>
-                      <div className="analytics-risk-bar">
-                        <div className="analytics-risk-fill" style={{ width: `${r.overall_score}%`, background: color }} />
+                  <div key={r.suspect_id || i}
+                    className={`flex items-center gap-2.5 p-2 rounded-lg cursor-pointer transition-all ${isSelected ? 'bg-amber-50 border border-amber-400' : 'bg-slate-50 border border-transparent hover:border-slate-200'}`}
+                    onClick={() => handleSelectSuspect(r.suspect_id)}>
+                    <span className="text-xs font-bold text-amber-500 w-5">#{i + 1}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="block text-xs font-medium text-slate-900">{r.name}</span>
+                      <div className="h-1.5 bg-slate-200 rounded-full mt-1 overflow-hidden">
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${r.overall_score}%`, background: color }} />
                       </div>
-                      <div className="analytics-risk-meta">
-                        <span>{r.district}</span>
-                        <span className="analytics-risk-badge" style={{ color }}>{r.risk_level}</span>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="text-[10px] text-slate-400">{r.district}</span>
+                        <span className="text-[10px] font-semibold uppercase" style={{ color }}>{r.risk_level}</span>
                       </div>
                     </div>
                   </div>
@@ -176,43 +136,43 @@ export default function SuspectRiskPage() {
         </div>
 
         {/* Score Breakdown */}
-        <div className="analytics-panel">
-          <div className="analytics-panel-header">
-            <AlertTriangle size={14} />
-            <h3>Score Breakdown</h3>
+        <div className="bg-white border border-slate-200 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <AlertTriangle size={14} className="text-amber-500" />
+            <h3 className="text-sm font-semibold text-slate-900">Score Breakdown</h3>
           </div>
           {selectedScore ? (
-            <div className="risk-breakdown">
-              <div className="risk-overall">
-                <span className="risk-overall-score" style={{ color: riskColors[selectedScore.risk_level] }}>
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center gap-2.5 pb-2.5 border-b border-slate-100">
+                <span className="text-3xl font-extrabold" style={{ color: riskColors[selectedScore.risk_level] }}>
                   {selectedScore.overall_score}%
                 </span>
-                <span className="risk-overall-level" style={{ color: riskColors[selectedScore.risk_level] }}>
+                <span className="text-sm font-semibold uppercase" style={{ color: riskColors[selectedScore.risk_level] }}>
                   {selectedScore.risk_level}
                 </span>
               </div>
-              {selectedScore.explanation && selectedScore.explanation.map((exp, i) => (
-                <div key={i} className="risk-explanation-item">
-                  <AlertTriangle size={10} style={{ color: '#f59e0b' }} />
+              {selectedScore.explanation?.map((exp, i) => (
+                <div key={i} className="flex items-center gap-1.5 text-[11px] text-slate-600">
+                  <AlertTriangle size={10} className="text-amber-500" />
                   <span>{exp}</span>
                 </div>
               ))}
               {selectedFactors.length > 0 && (
-                <div className="risk-factors">
+                <div className="flex flex-col gap-1.5 mt-2">
                   {selectedFactors.map((f, i) => (
-                    <div key={i} className="risk-factor-item">
-                      <span className="risk-factor-name">{f.name.replace(/_/g, ' ')}</span>
-                      <div className="risk-factor-bar">
-                        <div className="risk-factor-fill" style={{ width: `${f.value}%`, background: factorColors[f.name] || '#64748b' }} />
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="text-[10px] text-slate-500 w-24 capitalize">{f.name.replace(/_/g, ' ')}</span>
+                      <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${f.value}%`, background: factorColors[f.name] || '#64748b' }} />
                       </div>
-                      <span className="risk-factor-value">{f.value}%</span>
+                      <span className="text-[10px] font-semibold text-slate-900 w-7 text-right">{f.value}%</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
           ) : (
-            <div className="similar-empty"><p>Select a suspect to view breakdown</p></div>
+            <p className="text-xs text-slate-400 text-center py-8">Select a suspect to view breakdown</p>
           )}
         </div>
       </div>

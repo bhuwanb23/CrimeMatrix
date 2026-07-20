@@ -138,3 +138,6 @@ router.include_router(repeat_offenders_api.router, prefix="/repeat-offenders", t
 
 # MO Fingerprinting APIs
 router.include_router(mo_api.router, prefix="/mo", tags=["MO Fingerprinting"])
+
+# AI Analytics Dashboard APIs
+router.include_router(analytics_dashboard_api.router, prefix="/analytics-dashboard", tags=["AI Analytics Dashboard"])

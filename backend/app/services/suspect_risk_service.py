@@ -39,16 +39,20 @@ class SuspectRiskService:
 
         # Calculate individual scores
         scores = {}
-        scores["criminal_history"] = self._score_criminal_history(criminal)
-        scores["offense_severity"] = self._score_offense_severity(criminal)
-        scores["age_factor"] = self._score_age(suspect)
-        scores["location_risk"] = self._score_location(suspect)
-        scores["associate_risk"] = self._score_associates(criminal)
-        scores["recency"] = self._score_recency(criminal)
-        scores["network_influence"] = self._score_network(suspect)
-        scores["mo_similarity"] = self._score_mo(criminal)
-        scores["investigation_links"] = self._score_investigation(suspect)
-        scores["behavioral"] = self._score_behavioral(criminal)
+        try:
+            scores["criminal_history"] = self._score_criminal_history(criminal)
+            scores["offense_severity"] = self._score_offense_severity(criminal)
+            scores["age_factor"] = self._score_age(suspect)
+            scores["location_risk"] = self._score_location(suspect)
+            scores["associate_risk"] = self._score_associates(criminal)
+            scores["recency"] = self._score_recency(criminal)
+            scores["network_influence"] = self._score_network(suspect)
+            scores["mo_similarity"] = self._score_mo(criminal)
+            scores["investigation_links"] = self._score_investigation(suspect)
+            scores["behavioral"] = self._score_behavioral(criminal)
+        except Exception as e:
+            logger.warning("score_calculation_error", suspect_id=suspect_id, error=str(e))
+            scores = {k: 20.0 for k in WEIGHTS}
 
         overall = sum(scores[k] * WEIGHTS[k] for k in scores)
         risk_level = "very_high" if overall >= 75 else "high" if overall >= 50 else "medium" if overall >= 25 else "low"
@@ -122,7 +126,10 @@ class SuspectRiskService:
             self.db.add(rf)
 
         # Update suspect risk_score
-        suspect.risk_score = round(overall / 100, 2)
+        try:
+            suspect.risk_score = round(overall / 100, 2)
+        except Exception:
+            pass
         await self.db.commit()
 
         return {
@@ -184,10 +191,16 @@ class SuspectRiskService:
         result = await self.db.execute(stmt)
         suspects = result.scalars().all()
         scored = 0
+        errors = 0
         for suspect in suspects:
-            await self.score_suspect(suspect.id)
-            scored += 1
-        return {"suspects_scored": scored}
+            try:
+                await self.score_suspect(suspect.id)
+                scored += 1
+            except Exception as e:
+                logger.warning("batch_score_error", suspect_id=suspect.id, error=str(e))
+                errors += 1
+                await self.db.rollback()
+        return {"suspects_scored": scored, "errors": errors}
 
     async def get_stats(self) -> dict:
         total = (await self.db.execute(select(sql_func.count(SuspectRiskScore.id)))).scalar() or 0

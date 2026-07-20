@@ -111,3 +111,41 @@ async def forecast_history(
 async def forecast_stats(db: AsyncSession = Depends(get_db)):
     svc = ForecastService(db)
     return success_response(data=await svc.get_forecast_stats())
+
+
+# Explanation endpoints
+from app.services.explanation_service import ExplanationService
+
+
+@router.post("/explain/{prediction_id}")
+async def explain_prediction(prediction_id: int, db: AsyncSession = Depends(get_db)):
+    svc = ExplanationService(db)
+    result = await svc.explain_prediction(prediction_id)
+    if "error" in result:
+        return success_response(message=result["error"])
+    return success_response(data=result, message="Explanation generated")
+
+
+@router.get("/explain/{prediction_id}")
+async def get_explanation(prediction_id: int, db: AsyncSession = Depends(get_db)):
+    svc = ExplanationService(db)
+    result = await svc.get_explanation(prediction_id)
+    if not result:
+        return success_response(message="No explanation found")
+    return success_response(data=result)
+
+
+@router.get("/sources/{prediction_id}")
+async def get_sources(prediction_id: int, db: AsyncSession = Depends(get_db)):
+    svc = ExplanationService(db)
+    sources = await svc.get_sources(prediction_id)
+    return success_response(data={"items": sources, "total": len(sources)})
+
+
+@router.get("/confidence/{prediction_id}")
+async def get_confidence(prediction_id: int, db: AsyncSession = Depends(get_db)):
+    svc = ExplanationService(db)
+    result = await svc.get_confidence_breakdown(prediction_id)
+    if "error" in result:
+        return success_response(message=result["error"])
+    return success_response(data=result)

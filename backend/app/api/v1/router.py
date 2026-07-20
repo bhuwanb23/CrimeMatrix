@@ -146,3 +146,6 @@ router.include_router(analytics_dashboard_api.router, prefix="/analytics-dashboa
 
 # Predictive Analytics APIs
 router.include_router(prediction_api.router, prefix="/predictions", tags=["Predictions"])
+
+# Early Warning APIs
+router.include_router(early_warning_api.router, prefix="/early-warning", tags=["Early Warning"])

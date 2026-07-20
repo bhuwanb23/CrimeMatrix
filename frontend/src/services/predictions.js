@@ -31,3 +31,23 @@ export async function getPredictionModels() {
 export async function getPredictionStats() {
   return get('/predictions/stats')
 }
+
+export async function forecastDistrict(districtId, periods = 30) {
+  return post('/predictions/forecast/district', { district_id: districtId, periods })
+}
+
+export async function forecastCategory(crimeTypeId, periods = 30) {
+  return post('/predictions/forecast/category', { crime_type_id: crimeTypeId, periods })
+}
+
+export async function getSeasonalPatterns(days = 365) {
+  return get(`/predictions/forecast/seasonal?days=${days}`)
+}
+
+export async function getForecastHistory(limit = 30) {
+  return get(`/predictions/forecast/history?limit=${limit}`)
+}
+
+export async function getForecastStats() {
+  return get('/predictions/forecast/stats')
+}

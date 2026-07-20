@@ -18,6 +18,7 @@ import CrimeIntelligencePage from './components/CrimeIntelligencePage'
 import PatternDiscoveryPage from './components/PatternDiscoveryPage'
 import CriminalTimelinePage from './components/CriminalTimelinePage'
 import AIAnalyticsPage from './components/AIAnalyticsPage'
+import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/patterns" element={<PatternDiscoveryPage />} />
           <Route path="/timeline" element={<CriminalTimelinePage />} />
           <Route path="/analytics-dashboard" element={<AIAnalyticsPage />} />
+          <Route path="/predictions" element={<PredictionAnalyticsPage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

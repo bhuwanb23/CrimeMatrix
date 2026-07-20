@@ -19,6 +19,7 @@ import PatternDiscoveryPage from './components/PatternDiscoveryPage'
 import CriminalTimelinePage from './components/CriminalTimelinePage'
 import AIAnalyticsPage from './components/AIAnalyticsPage'
 import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
+import EarlyWarningPage from './components/EarlyWarningPage'
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/timeline" element={<CriminalTimelinePage />} />
           <Route path="/analytics-dashboard" element={<AIAnalyticsPage />} />
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
+          <Route path="/early-warning" element={<EarlyWarningPage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

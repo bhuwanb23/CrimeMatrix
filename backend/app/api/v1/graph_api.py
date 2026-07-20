@@ -258,3 +258,74 @@ async def save_all_nodes_edges(data: dict):
     loader.graph = graph.graph
     stats = await loader.save()
     return success_response(data=stats)
+
+
+@router.post("/build-from-crimes")
+async def build_graph_from_crimes():
+    from sqlalchemy import select
+    from app.models.suspect import Suspect
+    from app.models.criminal import Criminal
+    from app.models.victim import Victim
+    from app.models.witness import Witness
+    from app.models.vehicle import Vehicle
+    from app.models.phone import Phone
+    from app.models.crime import Crime
+    from app.models.evidence import Evidence
+
+    db = None
+    async for session in get_db():
+        db = session
+        break
+    if not db:
+        return success_response(message="No DB session")
+
+    nodes_created = 0
+    edges_created = 0
+
+    # Add suspects
+    result = await db.execute(select(Suspect))
+    for s in result.scalars().all():
+        node_id = f"S_{s.id}"
+        if node_id not in graph.graph:
+            graph.graph.add_node(node_id, node_type="suspect", label=s.name, risk=s.risk_score or 0, district=s.district or "", status=s.status or "")
+            nodes_created += 1
+
+    # Add criminals
+    result = await db.execute(select(Criminal))
+    for c in result.scalars().all():
+        node_id = f"CR_{c.id}"
+        if node_id not in graph.graph:
+            graph.graph.add_node(node_id, node_type="criminal", label=c.alias or f"Criminal #{c.id}", risk=c.risk_score or 0, status=c.status or "")
+            nodes_created += 1
+        if c.person_id:
+            person_node = f"S_{c.person_id}"
+            if person_node in graph.graph and not graph.graph.has_edge(person_node, node_id):
+                graph.graph.add_edge(person_node, node_id, relation="is_criminal", weight=1.0)
+                edges_created += 1
+
+    # Add vehicles
+    result = await db.execute(select(Vehicle))
+    for v in result.scalars().all():
+        node_id = f"V_{v.id}"
+        if node_id not in graph.graph:
+            graph.graph.add_node(node_id, node_type="vehicle", label=v.registration_number or f"Vehicle #{v.id}", make=v.make or "", model=v.model or "", color=v.color or "")
+            nodes_created += 1
+
+    # Add phones
+    result = await db.execute(select(Phone))
+    for p in result.scalars().all():
+        node_id = f"P_{p.id}"
+        if node_id not in graph.graph:
+            graph.graph.add_node(node_id, node_type="phone", label=p.number or f"Phone #{p.id}", carrier=p.carrier or "")
+            nodes_created += 1
+
+    # Add evidence
+    result = await db.execute(select(Evidence))
+    for e in result.scalars().all():
+        node_id = f"E_{e.id}"
+        if node_id not in graph.graph:
+            graph.graph.add_node(node_id, node_type="evidence", label=f"{e.evidence_type} #{e.id}", evidence_type=e.evidence_type or "", status=e.status or "")
+            nodes_created += 1
+
+    stats = {"nodes_created": nodes_created, "edges_created": edges_created, "total_nodes": graph.graph.number_of_nodes(), "total_edges": graph.graph.number_of_edges()}
+    return success_response(data=stats, message="Graph built from crime data")

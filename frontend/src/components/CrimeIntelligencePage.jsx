@@ -17,6 +17,7 @@ import HotspotRankings from './hotspots/HotspotRankings'
 import HotspotHeatmap from './hotspots/HotspotHeatmap'
 import RiskMap from './hotspots/RiskMap'
 import BehavioralProfileTab from './intelligence/BehavioralProfileTab'
+import RepeatOffenderTab from './intelligence/RepeatOffenderTab'
 
 export default function CrimeIntelligencePage() {
   const [data, setData] = useState(null)
@@ -128,8 +129,11 @@ export default function CrimeIntelligencePage() {
             <RecommendationsPanel />
           </div>
 
-          {/* Behavioral Profiling */}
-          <BehavioralProfileTab />
+          {/* Behavioral Profiling + Repeat Offenders */}
+          <div className="intel-row">
+            <BehavioralProfileTab />
+            <RepeatOffenderTab />
+          </div>
         </div>
       ) : (
         <div className="similar-empty">

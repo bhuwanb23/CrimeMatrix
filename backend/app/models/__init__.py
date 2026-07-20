@@ -30,5 +30,7 @@ from app.models.alert_event import AlertEvent
 from app.models.suspect_risk_score import SuspectRiskScore
 from app.models.risk_score_history import RiskScoreHistory
 from app.models.risk_factor import RiskFactor
+from app.models.crime_forecast_record import CrimeForecastRecord
+from app.models.forecast_snapshot import ForecastSnapshot
 
-__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord", "CrimePrediction", "PredictionModelRecord", "PredictionResult", "EarlyWarningAlert", "AlertRule", "AlertEvent", "SuspectRiskScore", "RiskScoreHistory", "RiskFactor"]
+__all__ = ["User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert", "CaseEmbedding", "CaseSimilarity", "CrimePattern", "PatternOccurrence", "PatternCluster", "CrimeStatistic", "TrendSnapshot", "CrimeHotspot", "LocationCluster", "BehaviorProfile", "BehaviorFeature", "RepeatOffender", "OffenderScore", "MOProfile", "MOEmbedding", "MOSimilarityRecord", "CrimePrediction", "PredictionModelRecord", "PredictionResult", "EarlyWarningAlert", "AlertRule", "AlertEvent", "SuspectRiskScore", "RiskScoreHistory", "RiskFactor", "CrimeForecastRecord", "ForecastSnapshot"]

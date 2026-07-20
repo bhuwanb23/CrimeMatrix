@@ -13333,3 +13333,104 @@
 .analytics-model-status.inactive {
   color: #ef4444;
 }
+
+/* ==========================================
+   Feature 4 Phase 3 — Early Warning Alerts
+   ========================================== */
+
+.early-warning-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ew-alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ew-alert-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  animation: similarCardIn 0.3s ease-out backwards;
+}
+
+.ew-alert-card.acknowledged {
+  opacity: 0.6;
+}
+
+.ew-alert-severity {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 10px 0 0 10px;
+}
+
+.ew-alert-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.ew-alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ew-alert-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.ew-alert-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ew-alert-badge {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.ew-alert-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.ew-alert-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.ew-alert-ack {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+}

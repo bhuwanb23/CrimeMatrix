@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis,
   CartesianGrid, Tooltip, PieChart, Pie, Cell,
 } from 'recharts'
-import { alerts as initialAlerts, alertTypes } from './alerts/alertsData'
+import { listAlerts as fetchAlerts, acknowledgeAlert as apiAcknowledge } from '../services/earlyWarning'
 import {
   AlertTriangle, Clock, CheckCircle2, Activity,
   TrendingUp, TrendingDown, ChevronRight, ExternalLink,
@@ -11,29 +11,45 @@ import {
 
 const filters = [
   { id: 'all', label: 'All' },
-  { id: 'whisper', label: 'Whisper' },
-  { id: 'fir-match', label: 'FIR Match' },
-  { id: 'cross-district', label: 'Cross-District' },
-  { id: 'evidence', label: 'Evidence' },
-  { id: 'ai', label: 'AI' },
-]
-
-const trendData = [
-  { day: 'Mon', alerts: 12 },
-  { day: 'Tue', alerts: 18 },
-  { day: 'Wed', alerts: 15 },
-  { day: 'Thu', alerts: 22 },
-  { day: 'Fri', alerts: 19 },
-  { day: 'Sat', alerts: 8 },
-  { day: 'Sun', alerts: 10 },
+  { id: 'spike', label: 'Spike' },
+  { id: 'hotspot', label: 'Hotspot' },
+  { id: 'serial', label: 'Serial' },
+  { id: 'escalation', label: 'Escalation' },
 ]
 
 const donutColors = ['#ef4444', '#f59e0b', '#8b5cf6', '#3b82f6', '#10b981']
 
 export default function AlertsPage() {
-  const [alerts, setAlerts] = useState(initialAlerts)
+  const [alerts, setAlerts] = useState([])
   const [activeFilter, setActiveFilter] = useState('all')
   const [selectedAlert, setSelectedAlert] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadAlerts()
+  }, [])
+
+  async function loadAlerts() {
+    setLoading(true)
+    try {
+      const res = await fetchAlerts()
+      const data = res?.data || res
+      setAlerts(data?.items || [])
+    } catch (e) {
+      console.error('Failed to load alerts', e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleAcknowledge(alertId) {
+    try {
+      await apiAcknowledge(alertId)
+      setAlerts(alerts.map(a => a.id === alertId ? { ...a, status: 'acknowledged' } : a))
+    } catch (e) {
+      console.error('Failed to acknowledge', e)
+    }
+  }
 
   const filteredAlerts = useMemo(() => {
     if (activeFilter === 'all') return alerts

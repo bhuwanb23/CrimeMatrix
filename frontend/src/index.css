@@ -12523,3 +12523,157 @@
   font-size: 10px;
   color: var(--text-muted);
 }
+
+/* ==========================================
+   Phase 9 — Repeat Offender Tracking (Connected)
+   ========================================== */
+
+.repeat-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.repeat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.repeat-card {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.repeat-card:hover {
+  border-color: var(--color-accent);
+}
+
+.repeat-card.expanded {
+  border-color: var(--color-accent);
+}
+
+.repeat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.repeat-card-rank {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent);
+  width: 24px;
+}
+
+.repeat-card-info {
+  flex: 1;
+}
+
+.repeat-card-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.repeat-card-offenses {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.repeat-card-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repeat-card-overall {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.repeat-risk-badge {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.repeat-card-dimensions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.repeat-dim-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.repeat-dim-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.repeat-dim-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.repeat-dim-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease-out;
+}
+
+.repeat-dim-value {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  width: 28px;
+  text-align: right;
+}
+
+.repeat-card-factors {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.repeat-card-factors h5 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.repeat-factor-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.repeat-factor-item svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}

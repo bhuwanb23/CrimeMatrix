@@ -51,3 +51,19 @@ export async function getForecastHistory(limit = 30) {
 export async function getForecastStats() {
   return get('/predictions/forecast/stats')
 }
+
+export async function explainPrediction(predictionId) {
+  return post(`/predictions/explain/${predictionId}`)
+}
+
+export async function getPredictionExplanation(predictionId) {
+  return get(`/predictions/explain/${predictionId}`)
+}
+
+export async function getPredictionSources(predictionId) {
+  return get(`/predictions/sources/${predictionId}`)
+}
+
+export async function getPredictionConfidence(predictionId) {
+  return get(`/predictions/confidence/${predictionId}`)
+}

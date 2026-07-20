@@ -128,6 +128,13 @@ export default function PredictionAnalyticsPage() {
             <SeasonalPatternsChart patterns={seasonal} />
             <ForecastConfidenceDisplay forecast={forecast} />
           </div>
+
+          {/* Explanation Row */}
+          <div className="grid grid-cols-3 gap-4">
+            <PredictionExplanationPanel predictionId={predictions[0]?.id} />
+            <ConfidenceBreakdown forecast={forecast} />
+            <SourceReferences predictionId={predictions[0]?.id} />
+          </div>
         </div>
       )}
     </div>

@@ -135,6 +135,9 @@ export default function CrimeIntelligencePage() {
             <BehavioralProfileTab />
             <RepeatOffenderTab />
           </div>
+
+          {/* MO Fingerprinting */}
+          <MOComparisonTab />
         </div>
       ) : (
         <div className="similar-empty">

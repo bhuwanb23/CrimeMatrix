@@ -261,14 +261,14 @@ export default function AlertsPage() {
           </div>
           <div className="card-body feed-body">
             {filteredAlerts.slice(0, 5).map((alert) => {
-              const typeInfo = alertTypes[alert.type]
+              const typeInfo = alertTypes[alert.type] || { color: '#64748b', label: alert.type || 'Alert', icon: '⚪' }
               return (
                 <div
                   key={alert.id}
                   className={`feed-item ${selectedAlert?.id === alert.id ? 'selected' : ''}`}
                   onClick={() => setSelectedAlert(selectedAlert?.id === alert.id ? null : alert)}
                 >
-                  <div className="feed-avatar" style={{ background: typeInfo.color + '20', color: typeInfo.color }}>
+                  <div className="feed-avatar" style={{ background: (typeInfo.color || '#64748b') + '20', color: typeInfo.color || '#64748b' }}>
                     {typeInfo.icon}
                   </div>
                   <div className="feed-info">

@@ -21,6 +21,7 @@ import AIAnalyticsPage from './components/AIAnalyticsPage'
 import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
 import EarlyWarningPage from './components/EarlyWarningPage'
 import SuspectRiskPage from './components/SuspectRiskPage'
+import PrioritizationDashboard from './components/PrioritizationDashboard'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
           <Route path="/early-warning" element={<EarlyWarningPage />} />
           <Route path="/suspect-risk" element={<SuspectRiskPage />} />
+          <Route path="/prioritizations" element={<PrioritizationDashboard />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

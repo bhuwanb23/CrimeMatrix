@@ -16,7 +16,8 @@ from app.api.v1 import (
     trends_api,
     hotspots_api,
     maps_api,
-    criminal_timeline_api
+    criminal_timeline_api,
+    behavior_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -125,3 +126,6 @@ router.include_router(maps_api.router, prefix="/maps", tags=["Maps"])
 
 # Criminal Timeline APIs
 router.include_router(criminal_timeline_api.router, prefix="/criminal-timeline", tags=["Criminal Timeline"])
+
+# Behavioral Profiling APIs
+router.include_router(behavior_api.router, prefix="/behavior", tags=["Behavioral Profiling"])

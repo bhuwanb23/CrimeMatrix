@@ -18,6 +18,7 @@ import {
   GitBranch,
   Clock,
   LineChart,
+  Bell,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 

@@ -21,7 +21,8 @@ from app.api.v1 import (
     repeat_offenders_api,
     mo_api,
     analytics_dashboard_api,
-    prediction_api
+    prediction_api,
+    early_warning_api
 )
 
 router = APIRouter(prefix="/api/v1")

@@ -22,7 +22,8 @@ from app.api.v1 import (
     mo_api,
     analytics_dashboard_api,
     prediction_api,
-    early_warning_api
+    early_warning_api,
+    suspect_risk_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -149,3 +150,6 @@ router.include_router(prediction_api.router, prefix="/predictions", tags=["Predi
 
 # Early Warning APIs
 router.include_router(early_warning_api.router, prefix="/early-warning", tags=["Early Warning"])
+
+# Suspect Risk Scoring APIs
+router.include_router(suspect_risk_api.router, prefix="/suspect-risk", tags=["Suspect Risk"])

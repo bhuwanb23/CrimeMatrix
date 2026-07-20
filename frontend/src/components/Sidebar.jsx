@@ -17,7 +17,6 @@ import {
   Brain,
   GitBranch,
   Clock,
-  BarChart3,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 

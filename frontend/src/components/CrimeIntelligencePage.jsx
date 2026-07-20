@@ -16,6 +16,7 @@ import TrendInsights from './trends/TrendInsights'
 import HotspotRankings from './hotspots/HotspotRankings'
 import HotspotHeatmap from './hotspots/HotspotHeatmap'
 import RiskMap from './hotspots/RiskMap'
+import BehavioralProfileTab from './intelligence/BehavioralProfileTab'
 
 export default function CrimeIntelligencePage() {
   const [data, setData] = useState(null)

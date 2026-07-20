@@ -19,7 +19,8 @@ from app.api.v1 import (
     criminal_timeline_api,
     behavior_api,
     repeat_offenders_api,
-    mo_api
+    mo_api,
+    analytics_dashboard_api
 )
 
 router = APIRouter(prefix="/api/v1")

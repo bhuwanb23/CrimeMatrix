@@ -127,6 +127,9 @@ export default function CrimeIntelligencePage() {
             <IntelligenceAIPanel insights={data.ai_insights} />
             <RecommendationsPanel />
           </div>
+
+          {/* Behavioral Profiling */}
+          <BehavioralProfileTab />
         </div>
       ) : (
         <div className="similar-empty">

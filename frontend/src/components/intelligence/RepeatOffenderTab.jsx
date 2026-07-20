@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { UserX, RefreshCw, AlertTriangle, Clock, MapPin, Shield, TrendingUp } from 'lucide-react'
-import { listRepeatOffenders, getRepeatOffenderStats, analyzeRepeatOffenders } from '../services/repeatOffenders'
+import { listRepeatOffenders, getRepeatOffenderStats, analyzeRepeatOffenders } from '../../services/repeatOffenders'
 
 const riskColors = {
   critical: '#ef4444',

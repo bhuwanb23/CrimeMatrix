@@ -20,7 +20,8 @@ from app.api.v1 import (
     behavior_api,
     repeat_offenders_api,
     mo_api,
-    analytics_dashboard_api
+    analytics_dashboard_api,
+    prediction_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -141,3 +142,6 @@ router.include_router(mo_api.router, prefix="/mo", tags=["MO Fingerprinting"])
 
 # AI Analytics Dashboard APIs
 router.include_router(analytics_dashboard_api.router, prefix="/analytics-dashboard", tags=["AI Analytics Dashboard"])
+
+# Predictive Analytics APIs
+router.include_router(prediction_api.router, prefix="/predictions", tags=["Predictions"])

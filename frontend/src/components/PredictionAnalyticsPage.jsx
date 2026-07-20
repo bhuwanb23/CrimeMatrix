@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { LineChart, RefreshCw } from 'lucide-react'
 import { generateForecast, getPredictionStats, getPredictionModels, listPredictions } from '../services/predictions'
+import { get } from '../services/api'
 import { listDistricts } from '../services/search'
 import PredictionSummaryCards from './predictions/PredictionSummaryCards'
 import PredictionForecastChart from './predictions/PredictionForecastChart'
@@ -8,6 +9,9 @@ import DistrictPredictionMap from './predictions/DistrictPredictionMap'
 import CrimeTypePredictions from './predictions/CrimeTypePredictions'
 import ModelPerformance from './predictions/ModelPerformance'
 import AIPredictionsPanel from './predictions/AIPredictionsPanel'
+import DistrictForecastPanel from './predictions/DistrictForecastPanel'
+import SeasonalPatternsChart from './predictions/SeasonalPatternsChart'
+import ForecastConfidenceDisplay from './predictions/ForecastConfidenceDisplay'
 
 export default function PredictionAnalyticsPage() {
   const [stats, setStats] = useState(null)
@@ -19,6 +23,7 @@ export default function PredictionAnalyticsPage() {
   const [forecasting, setForecasting] = useState(false)
   const [selectedDistrict, setSelectedDistrict] = useState('')
   const [timeHorizon, setTimeHorizon] = useState(30)
+  const [seasonal, setSeasonal] = useState(null)
 
   useEffect(() => {
     loadAll()
@@ -27,16 +32,18 @@ export default function PredictionAnalyticsPage() {
   async function loadAll() {
     setLoading(true)
     try {
-      const [statsRes, modelsRes, predsRes, districtsRes] = await Promise.all([
+      const [statsRes, modelsRes, predsRes, districtsRes, seasonalRes] = await Promise.all([
         getPredictionStats(),
         getPredictionModels(),
         listPredictions(),
         listDistricts().catch(() => ({ data: [] })),
+        get(`/predictions/forecast/seasonal?days=365`).catch(() => ({ data: null })),
       ])
       setStats(statsRes?.data || statsRes)
       setModels(modelsRes?.data || [])
       setPredictions(predsRes?.data?.items || [])
       setDistricts(districtsRes?.data?.items || districtsRes?.data || [])
+      setSeasonal(seasonalRes?.data || seasonalRes)
     } catch (e) {
       console.error('Failed to load prediction data', e)
     } finally {
@@ -111,6 +118,13 @@ export default function PredictionAnalyticsPage() {
           </div>
 
           <AIPredictionsPanel forecast={forecast} predictions={predictions} districts={districts} />
+
+          {/* Forecast Detail Row */}
+          <div className="grid grid-cols-3 gap-4">
+            <DistrictForecastPanel district={districts.find(d => d.id?.toString() === selectedDistrict)} forecast={forecast} />
+            <SeasonalPatternsChart patterns={seasonal} />
+            <ForecastConfidenceDisplay forecast={forecast} />
+          </div>
         </div>
       )}
     </div>

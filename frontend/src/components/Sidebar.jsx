@@ -29,6 +29,7 @@ const navItems = [
   { icon: Clock, label: 'Timeline', to: '/timeline', id: 'timeline' },
   { icon: BarChart3, label: 'Analytics', to: '/analytics-dashboard', id: 'analytics-dashboard' },
   { icon: LineChart, label: 'Predictions', to: '/predictions', id: 'predictions' },
+  { icon: Bell, label: 'Alerts', to: '/early-warning', id: 'early-warning' },
   { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
   { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },

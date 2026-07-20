@@ -4,6 +4,7 @@ import {
   CartesianGrid, Tooltip, PieChart, Pie, Cell,
 } from 'recharts'
 import { listAlerts as fetchAlerts, acknowledgeAlert as apiAcknowledge } from '../services/earlyWarning'
+import { alertTypes } from './alerts/alertsData'
 import {
   AlertTriangle, Clock, CheckCircle2, Activity,
   TrendingUp, TrendingDown, ChevronRight, ExternalLink,

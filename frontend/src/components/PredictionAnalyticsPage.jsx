@@ -12,6 +12,9 @@ import AIPredictionsPanel from './predictions/AIPredictionsPanel'
 import DistrictForecastPanel from './predictions/DistrictForecastPanel'
 import SeasonalPatternsChart from './predictions/SeasonalPatternsChart'
 import ForecastConfidenceDisplay from './predictions/ForecastConfidenceDisplay'
+import PredictionExplanationPanel from './predictions/PredictionExplanationPanel'
+import ConfidenceBreakdown from './predictions/ConfidenceBreakdown'
+import SourceReferences from './predictions/SourceReferences'
 
 export default function PredictionAnalyticsPage() {
   const [stats, setStats] = useState(null)

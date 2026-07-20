@@ -12050,3 +12050,244 @@
   height: 0;
   background: none;
 }
+
+/* ==========================================
+   Phase 7 — Criminal Timeline Analysis
+   ========================================== */
+
+.timeline-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.timeline-header-left svg {
+  color: var(--color-accent);
+}
+
+.timeline-header-left h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.timeline-header-left p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.timeline-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.timeline-time-btns {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-hover);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.timeline-suspect-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 4px 4px 10px;
+}
+
+.timeline-suspect-search svg {
+  color: var(--text-muted);
+}
+
+.timeline-suspect-search input {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  padding: 4px 0;
+  min-width: 140px;
+}
+
+.timeline-suspect-search input:focus {
+  outline: none;
+}
+
+.timeline-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.timeline-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  text-align: center;
+}
+
+.timeline-stat-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.timeline-stat-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Timeline Groups */
+.timeline-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.timeline-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.timeline-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.timeline-group-header:hover {
+  background: var(--bg-hover);
+}
+
+.timeline-group-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.timeline-group-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-hover);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.timeline-group-events {
+  padding: 0 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-event-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.timeline-event-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.timeline-event-line {
+  position: absolute;
+  left: 9px;
+  top: 20px;
+  width: 2px;
+  bottom: -6px;
+}
+
+.timeline-event-item:last-child .timeline-event-line {
+  display: none;
+}
+
+.timeline-event-content {
+  flex: 1;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.timeline-event-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.timeline-event-type {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.timeline-event-source {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.timeline-event-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.timeline-event-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+  .timeline-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .timeline-suspect-search {
+    width: 100%;
+  }
+}

@@ -118,3 +118,6 @@ router.include_router(trends_api.router, prefix="/trends", tags=["Trends"])
 
 # Hotspot Detection APIs
 router.include_router(hotspots_api.router, prefix="/hotspots", tags=["Hotspots"])
+
+# Map / Geospatial APIs
+router.include_router(maps_api.router, prefix="/maps", tags=["Maps"])

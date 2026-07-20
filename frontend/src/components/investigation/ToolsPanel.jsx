@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Bookmark, FileText, Download, Share2, Printer, BarChart3, Clock, StickyNote, Save, Play, Zap, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Bookmark, FileText, Download, Share2, Printer, BarChart3, Clock, StickyNote, Save, Play, Zap, AlertTriangle } from 'lucide-react'
 import { toggleSaveInvestigation } from '../../services/investigations'
 import { scoreInvestigation, getPriorityExplain } from '../../services/priorities'
 
@@ -11,34 +11,23 @@ export default function ToolsPanel({ investigation, onRefresh }) {
   const [explanations, setExplanations] = useState([])
   const [scoringPriority, setScoringPriority] = useState(false)
 
-  useEffect(() => {
-    if (investigation?.id) loadPriority()
-  }, [investigation?.id])
+  useEffect(() => { if (investigation?.id) loadPriority() }, [investigation?.id])
 
   async function loadPriority() {
     try {
-      const [priRes, expRes] = await Promise.all([
+      const [priRes, rankRes] = await Promise.all([
         getPriorityExplain(investigation.id),
-        // Also get the score from rankings
-        fetch(`${window.location.origin}/api/v1/priorities/`).then(r => r.json()),
+        fetch(`${window.location.origin}/api/v1/priorities/rankings?limit=50`).then(r => r.json()),
       ])
-      const expData = expRes?.data?.items || []
-      setExplanations(expData)
-
-      // Get the priority score for this investigation
-      const rankRes = await fetch(`${window.location.origin}/api/v1/priorities/rankings?limit=50`).then(r => r.json())
-      const rankData = rankRes?.data || []
-      const found = rankData.find(r => r.investigation_id === investigation.id)
+      setExplanations(priRes?.data?.items || [])
+      const found = (rankRes?.data || []).find(r => r.investigation_id === investigation.id)
       if (found) setPriority(found)
     } catch (e) { /* ignore */ }
   }
 
   async function handleScorePriority() {
     setScoringPriority(true)
-    try {
-      await scoreInvestigation(investigation.id)
-      await loadPriority()
-    } catch (e) { console.error(e) } finally { setScoringPriority(false) }
+    try { await scoreInvestigation(investigation.id); await loadPriority() } catch (e) { console.error(e) } finally { setScoringPriority(false) }
   }
 
   if (!investigation) return null
@@ -48,39 +37,24 @@ export default function ToolsPanel({ investigation, onRefresh }) {
   const handleToggleSave = async () => {
     if (toggling) return
     setToggling(true)
-    try {
-      await toggleSaveInvestigation(investigation.id)
-      onRefresh?.(investigation.id)
-    } catch (e) { console.error(e) } finally { setToggling(false) }
+    try { await toggleSaveInvestigation(investigation.id); onRefresh?.(investigation.id) } catch (e) { console.error(e) } finally { setToggling(false) }
   }
 
   return (
     <div className="tools-panel">
       {/* Save/Resume */}
       <div className="tools-section">
-        <h3 className="tools-section-title">
+        <h3 className="tools-section-title">{isSaved ? <Play size={14} /> : <Save size={14} />} {isSaved ? 'Resume' : 'Save'}</h3>
+        <button className={`tools-save-btn ${isSaved ? 'tools-save-resume' : 'tools-save-active'}`} onClick={handleToggleSave} disabled={toggling}>
           {isSaved ? <Play size={14} /> : <Save size={14} />}
-          {isSaved ? 'Resume' : 'Save'}
-        </h3>
-        <div className="tools-bookmarks">
-          <button
-            className={`tools-save-btn ${isSaved ? 'tools-save-resume' : 'tools-save-active'}`}
-            onClick={handleToggleSave}
-            disabled={toggling}
-          >
-            {isSaved ? <Play size={14} /> : <Save size={14} />}
-            <span>{toggling ? 'Updating...' : (isSaved ? 'Resume Investigation' : 'Save Investigation')}</span>
-          </button>
-        </div>
+          <span>{toggling ? 'Updating...' : (isSaved ? 'Resume Investigation' : 'Save Investigation')}</span>
+        </button>
       </div>
 
       {/* Priority Score */}
       <div className="tools-section">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="tools-section-title">
-            <Zap size={14} />
-            Priority Score
-          </h3>
+          <h3 className="tools-section-title"><Zap size={14} /> Priority Score</h3>
           <button onClick={handleScorePriority} disabled={scoringPriority} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
             {scoringPriority ? 'Scoring...' : 'Score'}
           </button>
@@ -88,12 +62,8 @@ export default function ToolsPanel({ investigation, onRefresh }) {
         {priority ? (
           <div className="p-2 bg-slate-50 rounded-lg">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg font-bold" style={{ color: priorityColors[priority.priority_level] }}>
-                {priority.overall_score}%
-              </span>
-              <span className="text-[10px] font-semibold uppercase" style={{ color: priorityColors[priority.priority_level] }}>
-                {priority.priority_level}
-              </span>
+              <span className="text-lg font-bold" style={{ color: priorityColors[priority.priority_level] }}>{priority.overall_score}%</span>
+              <span className="text-[10px] font-semibold uppercase" style={{ color: priorityColors[priority.priority_level] }}>{priority.priority_level}</span>
             </div>
             {explanations.length > 0 && (
               <div className="mt-1.5 space-y-1">
@@ -113,172 +83,22 @@ export default function ToolsPanel({ investigation, onRefresh }) {
 
       {/* Reports */}
       <div className="tools-section">
-        <h3 className="tools-section-title">
-          <FileText size={14} />
-          Reports
-        </h3>
+        <h3 className="tools-section-title"><FileText size={14} /> Reports</h3>
         <div className="tools-reports">
-          <button className="tools-report-btn">
-            <FileText size={14} />
-            <span>Generate Report</span>
-          </button>
-          <button className="tools-report-btn">
-            <Download size={14} />
-            <span>Export PDF</span>
-          </button>
-          <button className="tools-report-btn">
-            <Printer size={14} />
-            <span>Print</span>
-          </button>
+          <button className="tools-report-btn"><FileText size={14} /><span>Generate Report</span></button>
+          <button className="tools-report-btn"><Download size={14} /><span>Export PDF</span></button>
+          <button className="tools-report-btn"><Printer size={14} /><span>Print</span></button>
         </div>
       </div>
 
       {/* Stats */}
       <div className="tools-section">
-        <h3 className="tools-section-title">
-          <BarChart3 size={14} />
-          Investigation Stats
-        </h3>
+        <h3 className="tools-section-title"><BarChart3 size={14} /> Investigation Stats</h3>
         <div className="tools-stats">
-          <div className="tools-stat">
-            <StickyNote size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.notes?.length || 0}</span>
-              <span className="tools-stat-label">Notes</span>
-            </div>
-          </div>
-          <div className="tools-stat">
-            <FileText size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.evidence?.length || 0}</span>
-              <span className="tools-stat-label">Evidence</span>
-            </div>
-          </div>
-          <div className="tools-stat">
-            <Clock size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.timeline?.length || 0}</span>
-              <span className="tools-stat-label">Events</span>
-            </div>
-          </div>
-          <div className="tools-stat">
-            <BarChart3 size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.progress || 0}%</span>
-              <span className="tools-stat-label">Progress</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-  if (!investigation) return null
-
-  const isSaved = investigation.status === 'saved'
-
-  const handleToggleSave = async () => {
-    if (toggling) return
-    setToggling(true)
-    try {
-      await toggleSaveInvestigation(investigation.id)
-      onRefresh?.(investigation.id)
-    } catch (e) {
-      console.error('Failed to toggle save', e)
-    } finally {
-      setToggling(false)
-    }
-  }
-
-  return (
-    <div className="tools-panel">
-      {/* Save/Resume */}
-      <div className="tools-section">
-        <h3 className="tools-section-title">
-          {isSaved ? <Play size={14} /> : <Save size={14} />}
-          {isSaved ? 'Resume' : 'Save'}
-        </h3>
-        <div className="tools-bookmarks">
-          <button
-            className={`tools-save-btn ${isSaved ? 'tools-save-resume' : 'tools-save-active'}`}
-            onClick={handleToggleSave}
-            disabled={toggling}
-          >
-            {isSaved ? <Play size={14} /> : <Save size={14} />}
-            <span>{toggling ? 'Updating...' : (isSaved ? 'Resume Investigation' : 'Save Investigation')}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Reports */}
-      <div className="tools-section">
-        <h3 className="tools-section-title">
-          <FileText size={14} />
-          Reports
-        </h3>
-        <div className="tools-reports">
-          <button className="tools-report-btn">
-            <FileText size={14} />
-            <span>Generate Report</span>
-          </button>
-          <button className="tools-report-btn">
-            <Download size={14} />
-            <span>Export PDF</span>
-          </button>
-          <button className="tools-report-btn">
-            <Printer size={14} />
-            <span>Print</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="tools-section">
-        <h3 className="tools-section-title">Quick Actions</h3>
-        <div className="tools-actions">
-          <button className="tools-action-btn">
-            <Share2 size={14} />
-            Share with Team
-          </button>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="tools-section">
-        <h3 className="tools-section-title">
-          <BarChart3 size={14} />
-          Investigation Stats
-        </h3>
-        <div className="tools-stats">
-          <div className="tools-stat">
-            <StickyNote size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.notes?.length || 0}</span>
-              <span className="tools-stat-label">Notes</span>
-            </div>
-          </div>
-          <div className="tools-stat">
-            <FileText size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.evidence?.length || 0}</span>
-              <span className="tools-stat-label">Evidence</span>
-            </div>
-          </div>
-          <div className="tools-stat">
-            <Clock size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.timeline?.length || 0}</span>
-              <span className="tools-stat-label">Events</span>
-            </div>
-          </div>
-          <div className="tools-stat">
-            <BarChart3 size={14} />
-            <div className="tools-stat-info">
-              <span className="tools-stat-value">{investigation.progress || 0}%</span>
-              <span className="tools-stat-label">Progress</span>
-            </div>
-          </div>
+          <div className="tools-stat"><StickyNote size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.notes?.length || 0}</span><span className="tools-stat-label">Notes</span></div></div>
+          <div className="tools-stat"><FileText size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.evidence?.length || 0}</span><span className="tools-stat-label">Evidence</span></div></div>
+          <div className="tools-stat"><Clock size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.timeline?.length || 0}</span><span className="tools-stat-label">Events</span></div></div>
+          <div className="tools-stat"><BarChart3 size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.progress || 0}%</span><span className="tools-stat-label">Progress</span></div></div>
         </div>
       </div>
     </div>

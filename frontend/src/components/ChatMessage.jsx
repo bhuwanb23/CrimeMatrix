@@ -17,9 +17,9 @@ export default function ChatMessage({ role, content, time }) {
       </div>
       <div className="chat-message-body">
         <div className="chat-message-bubble">
-          <p>{content}</p>
+          <p>{t(content, lang)}</p>
         </div>
-        <span className="chat-message-time">{time}</span>
+        <span className="chat-message-time">{t(time, lang)}</span>
       </div>
     </div>
   )

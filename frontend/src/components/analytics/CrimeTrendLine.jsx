@@ -4,20 +4,22 @@ import {
   CartesianGrid, Tooltip,
 } from 'recharts'
 import { monthlyTrend } from './analyticsData'
+import { useLanguage } from '../../context/LanguageContext'
+import { t } from '../../utils/translate'
 
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload, label, lang }) {
   if (!active || !payload?.length) return null
   return (
     <div className="analytics-tooltip">
       <p className="analytics-tooltip-label">{label} 2026</p>
       <div className="analytics-tooltip-row">
         <span className="tooltip-dot" style={{ background: '#f59e0b' }} />
-        <span>{payload[0].value} cases</span>
+        <span>{payload[0].value} {t('cases_label', lang)}</span>
       </div>
       {payload[1] && (
         <div className="analytics-tooltip-row">
           <span className="tooltip-dot" style={{ background: '#10b981' }} />
-          <span>{payload[1].value} resolved</span>
+          <span>{payload[1].value} {t('resolved', lang)}</span>
         </div>
       )}
     </div>
@@ -25,20 +27,21 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 export default function CrimeTrendLine() {
-  const [period, setPeriod] = useState('Monthly')
+  const { lang } = useLanguage()
+  const [period, setPeriod] = useState('monthly')
 
   return (
     <div className="analytics-trend-card">
       <div className="analytics-trend-header">
-        <h3>Crime Trend</h3>
+        <h3>{t('crime_trend', lang)}</h3>
         <div className="analytics-trend-filters">
-          {['Daily', 'Weekly', 'Monthly', 'Annually'].map((p) => (
+          {['daily', 'weekly', 'monthly', 'annually'].map((p) => (
             <button
               key={p}
               className={`trend-filter-btn ${period === p ? 'active' : ''}`}
               onClick={() => setPeriod(p)}
             >
-              {p}
+              {t(p, lang)}
             </button>
           ))}
         </div>
@@ -69,7 +72,7 @@ export default function CrimeTrendLine() {
               tickLine={false}
               tick={{ fontSize: 11, fill: 'var(--text-muted)' }}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip lang={lang} />} />
             <Area
               type="monotone"
               dataKey="cases"
@@ -91,11 +94,11 @@ export default function CrimeTrendLine() {
       <div className="analytics-trend-legend">
         <div className="legend-item">
           <span className="legend-dot" style={{ background: '#f59e0b' }} />
-          <span>Cases Filed</span>
+          <span>{t('cases_filed', lang)}</span>
         </div>
         <div className="legend-item">
           <span className="legend-dot" style={{ background: '#10b981' }} />
-          <span>Resolved</span>
+          <span>{t('resolved', lang)}</span>
         </div>
       </div>
     </div>

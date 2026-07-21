@@ -13,6 +13,7 @@ from app.api.v1 import (
     recommendations_api,
     intelligence_api,
     patterns_api,
+    suspects_api,
     trends_api,
     hotspots_api,
     maps_api,
@@ -113,6 +114,9 @@ router.include_router(investigations_api.router, prefix="/investigations", tags=
 
 # Investigation Analysis APIs
 router.include_router(investigation_analysis.router, prefix="/investigations", tags=["Investigation Analysis"])
+
+# Suspects APIs
+router.include_router(suspects_api.router, prefix="/suspects", tags=["Suspects"])
 
 # Recommendation APIs
 router.include_router(recommendations_api.router, prefix="/recommendations", tags=["Recommendations"])

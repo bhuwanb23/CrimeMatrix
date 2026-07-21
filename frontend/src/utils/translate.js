@@ -1854,6 +1854,9 @@ const rawTranslations = {
  * @returns {string} Translated string or the key if missing.
  */
 export function t(key, lang = "en") {
+  if (rawTranslations[key] && lang !== "en") {
+    return rawTranslations[key][lang] || rawTranslations[key].en || key;
+  }
   const langDict = translations[lang] || translations.en;
   return langDict[key] || translations.en[key] || key;
 }

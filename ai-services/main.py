@@ -84,6 +84,11 @@ def create_app() -> FastAPI:
     from tools.investigation.analyze import InvestigationAnalyzeTool
     from tools.recommendations.engine import RecommendationTool
     from tools.patterns.detect import PatternDetectTool
+    from tools.prediction.forecast import ForecastAnalysisTool
+    from tools.prediction.risk import RiskAssessmentTool
+    from tools.prediction.priority import PriorityAnalysisTool
+    from tools.alerts.check import EarlyWarningCheckTool
+    from tools.evaluation.report import EvaluationReportTool
 
     for tool_cls in [
         CalculatorTool, WebFetchTool,
@@ -94,7 +99,8 @@ def create_app() -> FastAPI:
         ReportGenerateTool, RAGSearchTool, SearchIntelligentTool, IdentityMatchTool,
         KnowledgeGraphTool, ReasoningAnalyzeTool, PredictionEngineTool, TranslatorTool,
         EmbeddingSearchTool, WorkflowRunTool, SimilarCasesTool, InvestigationAnalyzeTool,
-        RecommendationTool, PatternDetectTool,
+        RecommendationTool, PatternDetectTool, ForecastAnalysisTool, RiskAssessmentTool,
+        PriorityAnalysisTool, EarlyWarningCheckTool, EvaluationReportTool,
     ]:
         tool_registry.register(tool_cls())
 

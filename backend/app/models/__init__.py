@@ -99,7 +99,8 @@ __all__ = [
     # Prediction
     "CrimePrediction", "PredictionModelRecord", "PredictionResult",
     "Prediction", "PredictionExplanationRecord", "PredictionSource",
-    "CrimeForecastRecord", "ForecastSnapshot",
+    "CrimeForecastRecord", "ForecastSnapshot", "ModelMetric",
+    "PredictionFeedbackRecord", "EvaluationResult",
     # Risk & priority
     "SuspectRiskScore", "RiskScoreHistory", "RiskFactor",
     "CasePriority", "PriorityHistoryRecord", "PriorityExplanation",

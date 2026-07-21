@@ -195,16 +195,6 @@ Three independent services — deployable separately, scalable independently. Se
 
 ---
 
-## API
-
-Two REST APIs with interactive documentation:
-
-| Service | URL | Endpoints |
-|---------|-----|-----------|
-| Backend API | `localhost:8000/docs` | 50+ crime data, investigations, search |
-| AI Services | `localhost:8002/docs` | 70+ AI reasoning, RAG, predictions |
-
----
 
 ## Contributing
 
@@ -219,29 +209,16 @@ Contributions are welcome! Here's how:
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
+<div align="center">
 
-## Acknowledgments
+## License - [MIT](LICENSE)
 
-Built with the incredible work of the open source community:
+</div>
 
-- [FastAPI](https://fastapi.tiangolo.com/) — Modern Python web framework
-- [React](https://react.dev/) — UI library
-- [Ollama](https://ollama.ai/) — Local LLM inference
-- [FAISS](https://github.com/facebookresearch/faiss) — Vector similarity search
-- [NetworkX](https://networkx.org/) — Graph analysis
-- [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS
-
----
-
-## License
-
-[MIT](LICENSE)
-
----
 
 <div align="center">
 
-**Built for [Datathon 2026](https://hack2skill.com/event/datathon2026) by [Hack2Skill](https://hack2skill.com)**
+**Built for [Datathon 2026](https://hack2skill.com/event/datathon2026)**
 
 *Transforming law enforcement with AI-powered investigation intelligence*
 

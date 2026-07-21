@@ -32,7 +32,7 @@ const navItems = [
 
   { icon: Shield, label: 'Risk Score', to: '/suspect-risk', id: 'suspect-risk' },
   { icon: Zap, label: 'Priority', to: '/prioritizations', id: 'prioritizations' },
-  { icon: Search, label: 'Search', to: '/search/cases', id: 'search' },
+  { icon: Search, label: 'Search', to: '/search', id: 'search' },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
 
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },

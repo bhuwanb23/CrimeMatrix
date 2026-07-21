@@ -26,8 +26,7 @@ import LogoIcon from './icons/LogoIcon'
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', to: '/', id: 'dashboard' },
   { icon: Brain, label: 'Intelligence', to: '/intelligence', id: 'intelligence' },
-  { icon: GitBranch, label: 'Patterns', to: '/patterns', id: 'patterns' },
-  { icon: Clock, label: 'Timeline', to: '/timeline', id: 'timeline' },
+  { icon: GitBranch, label: 'Pattern-Timeline', to: '/pattern-timeline', id: 'pattern-timeline' },
   { icon: BarChart3, label: 'Analytics', to: '/analytics-dashboard', id: 'analytics-dashboard' },
   { icon: LineChart, label: 'Predictions', to: '/predictions', id: 'predictions' },
   { icon: Bell, label: 'Alerts', to: '/early-warning', id: 'early-warning' },

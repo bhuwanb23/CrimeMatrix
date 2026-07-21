@@ -7,6 +7,9 @@ import ForecastChart from './analytics/ForecastChart'
 import HighRiskSuspectsList from './analytics/HighRiskSuspectsList'
 import PriorityCasesList from './analytics/PriorityCasesList'
 import AIRecommendationsPanel from './analytics/AIRecommendationsPanel'
+import ModelEvaluationPanel from './analytics/ModelEvaluationPanel'
+import AccuracyTrendChart from './analytics/AccuracyTrendChart'
+import FeedbackSummary from './analytics/FeedbackSummary'
 
 export default function AIAnalyticsPage() {
   const [summary, setSummary] = useState(null)

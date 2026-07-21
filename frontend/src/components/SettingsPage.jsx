@@ -102,7 +102,7 @@ export default function SettingsPage() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-lg font-bold text-[var(--text-primary)]">{profile.name}</div>
-            <div className="text-[13px] text-[var(--text-secondary)]">{profile.role}</div>
+            <div className="text-[13px] text-[var(--text-secondary)]">{t(profile.role, lang)}</div>
             <div className="text-[13px] text-[var(--text-muted)]">{profile.email}</div>
           </div>
           <button

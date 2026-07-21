@@ -44,7 +44,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                   <span className="case-id-badge">{row.id}</span>
                 </td>
                 <td>
-                  <span className="case-title-text">{row.title}</span>
+                  <span className="case-title-text">{t(row.title, lang)}</span>
                 </td>
                 <td>
                   <span className="case-type-tag">{t(row.type.toLowerCase().replace(/ /g, '_'), lang) || row.type}</span>

@@ -12,7 +12,6 @@ import {
   LogOut,
   Bot,
   Network,
-  Bell,
   BookOpen,
   Brain,
   GitBranch,
@@ -29,7 +28,7 @@ const navItems = [
   { icon: GitBranch, label: 'Pattern-Timeline', to: '/pattern-timeline', id: 'pattern-timeline' },
   { icon: BarChart3, label: 'Analytics', to: '/analytics-dashboard', id: 'analytics-dashboard' },
   { icon: LineChart, label: 'Predictions', to: '/predictions', id: 'predictions' },
-  { icon: Bell, label: 'Alerts', to: '/early-warning', id: 'early-warning' },
+
   { icon: Shield, label: 'Risk Score', to: '/suspect-risk', id: 'suspect-risk' },
   { icon: Zap, label: 'Priority', to: '/prioritizations', id: 'prioritizations' },
   { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },

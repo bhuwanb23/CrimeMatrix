@@ -81,7 +81,7 @@ class TestDatabaseTables:
 
     def test_crime_forecasts_table(self):
         assert self._check_table('crime_forecasts', [
-            'id', 'forecast_type', 'district_id', 'predicted_value', 'confidence'
+            'id', 'district_id', 'period', 'predicted_count', 'actual_count', 'confidence'
         ])
 
     def test_forecast_snapshots_table(self):

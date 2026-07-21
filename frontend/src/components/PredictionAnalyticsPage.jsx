@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { LineChart, RefreshCw, TrendingUp, BarChart3, Brain, Target, Database } from 'lucide-react'
+import { LineChart, RefreshCw, TrendingUp, Zap, Target, Database } from 'lucide-react'
 import { generateForecast, getPredictionStats, getPredictionModels, listPredictions } from '../services/predictions'
 import { get } from '../services/api'
 import { listDistricts } from '../services/search'
@@ -9,7 +9,6 @@ import DistrictPredictionMap from './predictions/DistrictPredictionMap'
 import CrimeTypePredictions from './predictions/CrimeTypePredictions'
 import ModelPerformance from './predictions/ModelPerformance'
 import AIPredictionsPanel from './predictions/AIPredictionsPanel'
-import DistrictForecastPanel from './predictions/DistrictForecastPanel'
 import SeasonalPatternsChart from './predictions/SeasonalPatternsChart'
 import ForecastConfidenceDisplay from './predictions/ForecastConfidenceDisplay'
 import PredictionExplanationPanel from './predictions/PredictionExplanationPanel'
@@ -45,6 +44,14 @@ export default function PredictionAnalyticsPage() {
       setPredictions(predsRes?.data?.items || [])
       setDistricts(districtsRes?.data?.items || districtsRes?.data || [])
       setSeasonal(seasonalRes?.data || seasonalRes)
+
+      // Auto-generate forecast if none exists
+      if (!forecast) {
+        try {
+          const forecastRes = await generateForecast({ periods: timeHorizon })
+          setForecast(forecastRes?.data || forecastRes)
+        } catch (e) { console.error(e) }
+      }
     } catch (e) { console.error(e) } finally { setLoading(false) }
   }
 
@@ -105,40 +112,28 @@ export default function PredictionAnalyticsPage() {
       {/* Row 1: Summary Cards */}
       <PredictionSummaryCards stats={stats} />
 
-      {/* Row 2: Main Forecast + District Map */}
-      <div className="grid grid-cols-5 gap-4">
-        <div className="col-span-3">
-          <PredictionForecastChart forecast={forecast} />
-        </div>
-        <div className="col-span-2">
-          <DistrictPredictionMap districts={districts} />
-        </div>
+      {/* Row 2: Forecast + District Map (balanced 50/50) */}
+      <div className="grid grid-cols-2 gap-4">
+        <PredictionForecastChart forecast={forecast} />
+        <DistrictPredictionMap districts={districts} />
       </div>
 
-      {/* Row 3: Seasonal + Confidence */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Row 3: Seasonal + Confidence + Crime Types */}
+      <div className="grid grid-cols-3 gap-4">
         <SeasonalPatternsChart patterns={seasonal} />
         <ConfidenceBreakdown forecast={forecast} />
+        <CrimeTypePredictions predictions={predictions} />
       </div>
 
-      {/* Row 4: Crime Types + Model Performance */}
-      <div className="grid grid-cols-2 gap-4">
-        <CrimeTypePredictions predictions={predictions} />
+      {/* Row 4: AI Predictions + Model Performance */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-2">
+          <AIPredictionsPanel forecast={forecast} predictions={predictions} districts={districts} />
+        </div>
         <ModelPerformance models={models} />
       </div>
 
-      {/* Row 5: AI Predictions */}
-      <AIPredictionsPanel forecast={forecast} predictions={predictions} districts={districts} />
-
-      {/* Row 6: District Forecast */}
-      <div className="grid grid-cols-3 gap-4">
-        <DistrictForecastPanel
-          district={districts.find(d => d.id?.toString() === selectedDistrict)}
-          forecast={forecast}
-        />
-      </div>
-
-      {/* Row 7: Explanation + Sources */}
+      {/* Row 5: Explanation + Sources */}
       <div className="grid grid-cols-2 gap-4">
         <PredictionExplanationPanel predictionId={predictions[0]?.id} />
         <SourceReferences predictionId={predictions[0]?.id} />

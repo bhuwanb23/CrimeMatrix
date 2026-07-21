@@ -71,3 +71,7 @@ export async function getDistrictStats(districtName) {
 export async function listCriminals(page = 1, perPage = 20) {
     return get(`/criminals/?page=${page}&page_size=${perPage}`);
 }
+
+export async function listSuspects(page = 1, perPage = 20, search = '') {
+    return get(`/suspects/?page=${page}&page_size=${perPage}` + (search ? `&search=${encodeURIComponent(search)}` : ''));
+}

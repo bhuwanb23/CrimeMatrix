@@ -12,7 +12,6 @@ import {
   LogOut,
   Bot,
   Network,
-  Bell,
   BookOpen,
   Brain,
   GitBranch,
@@ -20,22 +19,22 @@ import {
   LineChart,
   Shield,
   Zap,
+  Search,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', to: '/', id: 'dashboard' },
   { icon: Brain, label: 'Intelligence', to: '/intelligence', id: 'intelligence' },
-  { icon: GitBranch, label: 'Patterns', to: '/patterns', id: 'patterns' },
-  { icon: Clock, label: 'Timeline', to: '/timeline', id: 'timeline' },
+  { icon: GitBranch, label: 'Pattern-Timeline', to: '/pattern-timeline', id: 'pattern-timeline' },
   { icon: BarChart3, label: 'Analytics', to: '/analytics-dashboard', id: 'analytics-dashboard' },
   { icon: LineChart, label: 'Predictions', to: '/predictions', id: 'predictions' },
-  { icon: Bell, label: 'Alerts', to: '/early-warning', id: 'early-warning' },
+
   { icon: Shield, label: 'Risk Score', to: '/suspect-risk', id: 'suspect-risk' },
   { icon: Zap, label: 'Priority', to: '/prioritizations', id: 'prioritizations' },
-  { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
+  { icon: Search, label: 'Search', to: '/search/cases', id: 'search' },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
-  { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
+
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },
   { icon: BookOpen, label: 'Reports', to: '/reports', id: 'reports' },
 ]

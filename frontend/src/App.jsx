@@ -19,9 +19,11 @@ import PatternDiscoveryPage from './components/PatternDiscoveryPage'
 import CriminalTimelinePage from './components/CriminalTimelinePage'
 import AIAnalyticsPage from './components/AIAnalyticsPage'
 import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
-import EarlyWarningPage from './components/EarlyWarningPage'
+import UnifiedAlertsPage from './components/UnifiedAlertsPage'
 import SuspectRiskPage from './components/SuspectRiskPage'
 import PrioritizationDashboard from './components/PrioritizationDashboard'
+import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
+import UnifiedSearchPage from './components/UnifiedSearchPage'
 
 function App() {
   return (
@@ -32,13 +34,17 @@ function App() {
           <Route path="/copilot" element={<CopilotPage />} />
           <Route path="/cases" element={<SearchPage />} />
           <Route path="/cases/:id" element={<CaseDetailPage />} />
+          <Route path="/search" element={<UnifiedSearchPage />} />
+          <Route path="/search/cases" element={<UnifiedSearchPage />} />
+          <Route path="/search/suspects" element={<UnifiedSearchPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/intelligence" element={<CrimeIntelligencePage />} />
           <Route path="/patterns" element={<PatternDiscoveryPage />} />
           <Route path="/timeline" element={<CriminalTimelinePage />} />
+          <Route path="/pattern-timeline" element={<CrimePatternTimelinePage />} />
           <Route path="/analytics-dashboard" element={<AIAnalyticsPage />} />
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
-          <Route path="/early-warning" element={<EarlyWarningPage />} />
+          <Route path="/early-warning" element={<UnifiedAlertsPage />} />
           <Route path="/suspect-risk" element={<SuspectRiskPage />} />
           <Route path="/prioritizations" element={<PrioritizationDashboard />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
@@ -46,7 +52,7 @@ function App() {
           <Route path="/suspects" element={<SuspectsPage />} />
           <Route path="/suspects/:id" element={<SuspectDetailPage />} />
           <Route path="/investigations" element={<InvestigationPage />} />
-          <Route path="/alerts" element={<AlertsPage />} />
+          <Route path="/alerts" element={<UnifiedAlertsPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />

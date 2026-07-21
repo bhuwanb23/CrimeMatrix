@@ -47,11 +47,11 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                   <span className="case-title-text">{row.title}</span>
                 </td>
                 <td>
-                  <span className="case-type-tag">{row.type}</span>
+                  <span className="case-type-tag">{t(row.type.toLowerCase().replace(/ /g, '_'), lang) || row.type}</span>
                 </td>
-                <td>{row.district}</td>
+                <td>{t(row.district.toLowerCase().replace(/ /g, '_'), lang) || row.district}</td>
                 <td>
-                  <span className={`status-badge ${row.status}`}>{row.status}</span>
+                  <span className={`status-badge ${row.status}`}>{t(row.status.toLowerCase(), lang) || row.status}</span>
                 </td>
                 <td className="date-cell">{row.date}</td>
                 <td>

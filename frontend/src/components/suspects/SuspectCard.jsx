@@ -15,8 +15,8 @@ export default function SuspectCard({ suspect }) {
         {suspect.initials}
       </div>
       <div className="suspect-card-info">
-        <span className="suspect-card-name">{suspect.name}</span>
-        <span className="suspect-card-meta">{suspect.age} {t('yrs', lang) || "yrs"} • {suspect.district}</span>
+        <span className="suspect-card-name">{t(suspect.name, lang)}</span>
+        <span className="suspect-card-meta">{suspect.age} {t('yrs', lang)} • {t(suspect.district.toLowerCase().replace(/ /g, '_'), lang) || suspect.district}</span>
       </div>
       <div className="suspect-card-stats">
         <div className="suspect-card-risk">
@@ -34,9 +34,9 @@ export default function SuspectCard({ suspect }) {
         </div>
         <div className="suspect-card-badges">
           <span className={`suspect-status-badge ${suspect.status.toLowerCase().replace(' ', '-')}`}>
-            {suspect.status}
+            {t(suspect.status.toLowerCase().replace(' ', '_'), lang) || suspect.status}
           </span>
-          <span className="suspect-cases-count">{suspect.cases} {t('cases', lang) || "cases"}</span>
+          <span className="suspect-cases-count">{suspect.cases} {t('cases', lang)}</span>
         </div>
       </div>
     </button>

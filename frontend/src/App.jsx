@@ -19,7 +19,7 @@ import PatternDiscoveryPage from './components/PatternDiscoveryPage'
 import CriminalTimelinePage from './components/CriminalTimelinePage'
 import AIAnalyticsPage from './components/AIAnalyticsPage'
 import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
-import EarlyWarningPage from './components/EarlyWarningPage'
+import UnifiedAlertsPage from './components/UnifiedAlertsPage'
 import SuspectRiskPage from './components/SuspectRiskPage'
 import PrioritizationDashboard from './components/PrioritizationDashboard'
 import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
@@ -40,7 +40,7 @@ function App() {
           <Route path="/pattern-timeline" element={<CrimePatternTimelinePage />} />
           <Route path="/analytics-dashboard" element={<AIAnalyticsPage />} />
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
-          <Route path="/early-warning" element={<EarlyWarningPage />} />
+          <Route path="/early-warning" element={<UnifiedAlertsPage />} />
           <Route path="/suspect-risk" element={<SuspectRiskPage />} />
           <Route path="/prioritizations" element={<PrioritizationDashboard />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
@@ -48,7 +48,7 @@ function App() {
           <Route path="/suspects" element={<SuspectsPage />} />
           <Route path="/suspects/:id" element={<SuspectDetailPage />} />
           <Route path="/investigations" element={<InvestigationPage />} />
-          <Route path="/alerts" element={<AlertsPage />} />
+          <Route path="/alerts" element={<UnifiedAlertsPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />

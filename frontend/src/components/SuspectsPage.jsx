@@ -16,7 +16,7 @@ export default function SuspectsPage() {
   async function loadSuspects() {
     setLoading(true)
     try {
-      const res = await listSuspects(page, 20)
+      const res = await listSuspects(page, 20, searchQuery)
       const data = res?.data || res
       setSuspects(data?.items || [])
       setTotal(data?.total || 0)

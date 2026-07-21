@@ -23,6 +23,7 @@ import UnifiedAlertsPage from './components/UnifiedAlertsPage'
 import SuspectRiskPage from './components/SuspectRiskPage'
 import PrioritizationDashboard from './components/PrioritizationDashboard'
 import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
+import UnifiedSearchPage from './components/UnifiedSearchPage'
 
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
           <Route path="/copilot" element={<CopilotPage />} />
           <Route path="/cases" element={<SearchPage />} />
           <Route path="/cases/:id" element={<CaseDetailPage />} />
+          <Route path="/search" element={<UnifiedSearchPage />} />
+          <Route path="/search/cases" element={<UnifiedSearchPage />} />
+          <Route path="/search/suspects" element={<UnifiedSearchPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/intelligence" element={<CrimeIntelligencePage />} />
           <Route path="/patterns" element={<PatternDiscoveryPage />} />

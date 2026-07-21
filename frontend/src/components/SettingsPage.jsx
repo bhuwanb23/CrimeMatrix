@@ -79,17 +79,17 @@ export default function SettingsPage() {
       <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div>
           <h1 className="text-[22px] font-bold tracking-tight text-[var(--text-primary)]">
-            Settings
+            {t('settings', lang)}
           </h1>
           <p className="mt-0.5 text-[13px] text-[var(--text-muted)]">
-            Personal preferences
+            {t('personal_preferences', lang)}
           </p>
         </div>
         <button
           type="button"
           onClick={handleSave} disabled={isSaving} className={`rounded-xl px-5 py-2.5 text-[13px] font-semibold text-white transition-all duration-150 hover:-translate-y-px ${saveSuccess ? 'bg-[var(--color-success)]' : 'bg-[var(--color-primary)] hover:bg-[#1e293b]'}`}
         >
-          Save Changes
+          {t('save_changes', lang)}
         </button>
       </div>
 
@@ -119,19 +119,19 @@ export default function SettingsPage() {
           <div className="flex flex-col gap-3.5">
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
-                Primary Language
+                {t('primary_language', lang)}
               </label>
               <Select value={primaryLang} onChange={setPrimaryLang} options={languages} />
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
-                Secondary Language
+                {t('secondary_language', lang)}
               </label>
               <Select value={secondaryLang} onChange={setSecondaryLang} options={languages} />
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
-                UI Language (App)
+                {t('ui_language', lang)}
               </label>
               <select
                 value={lang}
@@ -252,7 +252,7 @@ export default function SettingsPage() {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-semibold tracking-wide text-[var(--text-muted)] uppercase">
-                Sync Frequency
+                {t('sync_frequency', lang)}
               </label>
               <Select
                 value={offline.sync}

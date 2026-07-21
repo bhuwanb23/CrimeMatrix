@@ -4,47 +4,67 @@
 
 # CrimeMatrix
 
-**AI Investigation Copilot for Karnataka State Police**
+### KSP Crime Intelligence Copilot
 
+[![Hackathon](https://img.shields.io/badge/Datathon-2026-FF6B35)](https://hack2skill.com/event/datathon2026)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
 ![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![CI](https://img.shields.io/badge/CI-Passing-brightgreen)
 ![Tests](https://img.shields.io/badge/87-Tests-Passing-brightgreen)
-![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-blue)
 
 </div>
 
 ---
 
-> **Built for the officers who protect Karnataka's 70 million citizens.**
+> **An AI Investigation Copilot that transforms how Karnataka State Police investigates crimes.**
 
-CrimeMatrix is an AI-powered crime intelligence platform that transforms how law enforcement officers investigate crimes, identify suspects, and uncover criminal networks across Karnataka's 31 districts.
+Built for [Datathon 2026](https://hack2skill.com/event/datathon2026), CrimeMatrix addresses the KSP problem statement: **Conversational AI, Analytics, and Predictive Policing** for law enforcement.
 
-It handles **200,000+ FIRs annually** — resolving fragmented identities, connecting cross-district cases, and delivering explainable AI recommendations with reasoning chains.
+We went beyond the requirements by building an **AI Investigation Partner** — not just a chatbot, but a system that proactively assists officers through the entire investigation lifecycle.
 
 ---
 
-## Why CrimeMatrix?
+## The Problem
 
-Law enforcement in Karnataka faces real challenges that technology can solve:
+Karnataka State Police processes **200,000+ FIRs annually** across 31 districts. Officers face challenges that no existing system solves:
 
-- **Same person, different names** — "Raj" in Bengaluru, "Rajesh" in Mysuru, "Rajendra" in Mangaluru. Without identity resolution, criminals slip through jurisdictional cracks.
+| Challenge | Reality |
+|-----------|---------|
+| **Fragmented Identities** | Same suspect appears as "Raj" in Bengaluru, "Rajesh" in Mysuru, "Rajendra" in Mangaluru |
+| **Language Barrier** | Officers type in Kanglish: *"Bellary suspect ge phone match check madi"* |
+| **Reactive Intelligence** | Patterns are spotted after crimes, not before |
+| **Black-Box AI** | Officers need to know *why* AI recommends action |
+| **Disconnected Districts** | Each district maintains separate records — no cross-district intelligence |
 
-- **Language barrier** — Field officers think in Kannada and type in Kanglish. Existing systems demand English-only input.
+---
 
-- **Reactive intelligence** — By the time patterns are spotted across districts, the damage is done. CrimeMatrix makes intelligence **proactive**.
+## Our Approach
 
-- **Black-box AI** — When AI recommends action, officers need to know **why**. Every CrimeMatrix recommendation includes a reasoning chain.
+Most teams will build an AI chatbot over crime records. Some will add dashboards and predictive models.
+
+**We built an AI Investigation Copilot** that proactively assists officers throughout the investigation lifecycle — from FIR registration and identity resolution to criminal network discovery, predictive intelligence, explainable reasoning, and court-ready reporting.
+
+### Innovation Tiers
+
+| Tier | Innovation | Impact |
+|------|------------|--------|
+| **Core** | Indian Identity Resolution Engine | Eliminates duplicate suspects across districts |
+| **Core** | Explainable Investigation Reasoning | Transparent AI chains for every recommendation |
+| **Core** | Modus Operandi Fingerprinting | Detect serial crimes without direct entity matches |
+| **Core** | Whisper Alerts | Proactive intelligence — not reactive search |
+| **Operational** | Kanglish & Code-Mixed AI | Real-world multilingual usability |
+| **Operational** | Officer-Aware Recommendations | Actionable, workload-conscious suggestions |
+| **Legal** | Court-Ready Investigation Reports | Evidence references, reasoning chains, audit trails |
 
 ---
 
 ## How It Works
 
-CrimeMatrix is not a chatbot — it's a structured reasoning system that assists officers through the entire investigation lifecycle.
+CrimeMatrix is not a chatbot — it's a structured reasoning system.
 
 ```
-Officer asks: "Show me similar robbery cases across Karnataka"
+Officer: "Show me similar robbery cases across Karnataka"
         ↓
 Language Pipeline: Detect → Normalize (Kanglish/English/Kannada)
         ↓
@@ -61,16 +81,29 @@ Response: "Found 12 cases across 4 districts. Confidence: 87%"
 
 ## Features
 
-| | Feature | Description |
-|---|---------|-------------|
-| | **AI Copilot** | Natural language investigation assistant with multi-turn context |
-| | **Identity Resolution** | Phonetic matching, 28+ nickname mappings, Kannada transliteration |
-| | **Knowledge Graph** | Criminal network analysis across 68 interconnected data models |
-| | **Predictive Analytics** | Crime forecasting, hotspot detection, risk scoring |
-| | **Explainable AI** | Every recommendation includes reasoning chain and confidence score |
-| | **Kanglish Support** | Understands "Bellary suspect ge phone match check madi" naturally |
-| | **Whisper Alerts** | Proactive cross-district intelligence matching as new FIRs arrive |
-| | **Court-Ready Reports** | Investigation reports with evidence references and audit trails |
+| Feature | Description |
+|---------|-------------|
+| **AI Copilot** | Natural language investigation assistant with multi-turn context |
+| **Identity Resolution** | Phonetic matching, 28+ nickname mappings, Kannada transliteration |
+| **Knowledge Graph** | Criminal network analysis across 68 interconnected data models |
+| **Predictive Analytics** | Crime forecasting, hotspot detection, risk scoring |
+| **Explainable AI** | Every recommendation includes reasoning chain and confidence score |
+| **Kanglish Support** | Understands mixed Kannada-English queries naturally |
+| **Whisper Alerts** | Proactive cross-district intelligence matching |
+| **Court-Ready Reports** | Investigation reports with evidence references and audit trails |
+
+---
+
+## Impact
+
+| Metric | Value |
+|--------|-------|
+| FIRs Processed Annually | 200,000+ |
+| Districts Covered | 31 |
+| Database Models | 68 |
+| AI Tools | 28 |
+| API Endpoints | 120+ |
+| Tests Passing | 87 |
 
 ---
 
@@ -187,14 +220,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## Community
-
-- [GitHub Issues](https://github.com/your-org/CrimeMatrix/issues) — Bug reports & feature requests
-- [Contributing Guide](CONTRIBUTING.md) — How to contribute
-- [Security Policy](SECURITY.md) — Vulnerability reporting
-
----
-
 ## Acknowledgments
 
 Built with the incredible work of the open source community:
@@ -206,8 +231,6 @@ Built with the incredible work of the open source community:
 - [NetworkX](https://networkx.org/) — Graph analysis
 - [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS
 
-Inspired by the real challenges faced by law enforcement in Karnataka.
-
 ---
 
 ## License
@@ -217,6 +240,10 @@ Inspired by the real challenges faced by law enforcement in Karnataka.
 ---
 
 <div align="center">
+
+**Built for [Datathon 2026](https://hack2skill.com/event/datathon2026) by [Hack2Skill](https://hack2skill.com)**
+
+*Transforming law enforcement with AI-powered investigation intelligence*
 
 **If you find this useful, give it a star. It helps others discover it.**
 

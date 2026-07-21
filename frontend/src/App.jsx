@@ -22,6 +22,7 @@ import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
 import EarlyWarningPage from './components/EarlyWarningPage'
 import SuspectRiskPage from './components/SuspectRiskPage'
 import PrioritizationDashboard from './components/PrioritizationDashboard'
+import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/intelligence" element={<CrimeIntelligencePage />} />
           <Route path="/patterns" element={<PatternDiscoveryPage />} />
           <Route path="/timeline" element={<CriminalTimelinePage />} />
+          <Route path="/pattern-timeline" element={<CrimePatternTimelinePage />} />
           <Route path="/analytics-dashboard" element={<AIAnalyticsPage />} />
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
           <Route path="/early-warning" element={<EarlyWarningPage />} />

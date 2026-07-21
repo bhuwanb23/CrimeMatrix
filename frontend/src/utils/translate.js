@@ -572,6 +572,10 @@ const translations = {
     bengaluru: "பெங்களூரு",
     crime_search: "வழக்குகளைத் தேடு",
     search_everything: "அனைத்தையும் தேடு",
+    title: "தலைப்பு",
+    date: "தேதி",
+    status: "நிலை",
+    actions: "செயல்கள்",
   },
   kn: {
     settings: "ಅமைப்புகள்", personal_preferences: "ವೈಯಕ್ತಿಕ ಆದ್ಯತೆಗಳು", saving: "ಉಳಿಸಲಾಗುತ್ತಿದೆ...", saved: "ಉಳಿಸಲಾಗಿದೆ!", save_changes: "ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ", profile: "ಪ್ರೊಫೈಲ್", edit_profile: "ಪ್ರೊಫೈಲ್ ಎಡಿಟ್ ಮಾಡಿ", opening: "ತೆರೆಯಲಾಗುತ್ತಿದೆ...", language: "ಭಾಷೆ", primary_language: "ಪ್ರಾಥಮಿಕ ಭಾಷೆ", secondary_language: "ದ್ವಿತೀಯ ಭಾಷೆ", ui_language: "UI ಭಾಷೆ (ಅಪ್ಲಿಕೇಶನ್)", theme: "ಥೀಮ್", notifications: "ಅಧಿಸೂಚನೆಗಳು", voice_settings: "ಧ್ವನಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು", voice_assistant: "ಧ್ವನಿ ಸಹಾಯಕ", speed: "ವೇಗ", auto_transcribe: "ಸ್ವಯಂ ನಕಲು", offline_sync: "ಆಫ್‌ಲೈನ್ ಸಿಂಕ್", enable_offline: "ಆಫ್‌ಲೈನ್ ಸಕ್ರಿಯಗೊಳಿಸಿ", sync_frequency: "ಸಿಂಕ್ ಆವರ್ತನ", storage_used: "ಬಳಕೆಯಾದ ಶೇಖರಣೆ", clear_cache: "ಕ್ಯಾಶ್ ತೆರವುಗೊಳಿಸಿ", cleared: "ತೆರವುಗೊಳಿಸಲಾಗಿದೆ!", device_management: "ಸಾಧನ ನಿರ್ವಹಣೆ", this_device: "ಈ ಸಾಧನ", active: "ಸಕ್ರಿಯ", last_sync: "ಕೊನೆಯ ಸಿಂಕ್", minutes_ago: "ನಿಮಿಷಗಳ ಹಿಂದೆ", sync_now: "ಈಗ ಸಿಂಕ್ ಮಾಡಿ", synced: "ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ!", other_devices: "ಇತರ ಸಾಧನಗಳು", tablet: "ಟ್ಯಾಬ್ಲೆಟ್", desktop: "ಡೆಸ್ಕ್‌ಟಾಪ್", manage_devices: "ಸಾಧನಗಳನ್ನು ನಿರ್ವಹಿಸಿ", light: "ಬೆಳಕು", dark: "ಕತ್ತಲೆ", system: "ವ್ಯವಸ್ಥೆ", push: "ಪುಶ್", email: "ಇಮೇಲ್", sound: "ಧ್ವನಿ", whisper: "ವಿಸ್ಪರ್",
@@ -850,6 +854,10 @@ const translations = {
     bengaluru: "ಬೆಂಗಳೂರು",
     crime_search: "ಪ್ರಕರಣಗಳನ್ನು ಹುಡುಕಿ",
     search_everything: "ಎಲ್ಲವನ್ನೂ ಹುಡುಕಿ",
+    title: "ಶೀರ್ಷಿಕೆ",
+    date: "ದಿನಾಂಕ",
+    status: "ಸ್ಥಿತಿ",
+    actions: "ಕ್ರಿಯೆಗಳು",
   },
   te: {
     settings: "సెట్టింగులు", personal_preferences: "వ్యక్తిగత ప్రాధాన్యతలు", saving: "సేవ్ చేయబడుతోంది...", saved: "సేవ్ చేయబడింది!", save_changes: "మార్పులను సేవ్ చేయండి", profile: "ప్రొఫైల్", edit_profile: "ప్రొఫైల్‌ను సవరించండి", opening: "తెరవబడుతోంది...", language: "భాష", primary_language: "ప్రాథమిక భాష", secondary_language: "ద్వితీయ భాష", ui_language: "UI భాష (యాప్)", theme: "థీమ్", notifications: "నోటిఫికేషన్‌లు", voice_settings: "వాయిస్ సెట్టింగులు", voice_assistant: "వాయిస్ అసిస్టెంట్", speed: "వేగం", auto_transcribe: "ఆటో-ట్రాన్స్‌క్రైబ్", offline_sync: "ఆఫ్‌లైన్ సమకాలీకరణ", enable_offline: "ఆఫ్‌లైన్‌ను ప్రారంభించండి", sync_frequency: "సమకాలీకరణ ఫ్రీక్వెన్సీ", storage_used: "ఉపయోగించిన నిల్వ", clear_cache: "కాష్ క్లియర్ చేయండి", cleared: "క్లియర్ చేయబడింది!", device_management: "పరికర నిర్వహణ", this_device: "ఈ పరికరం", active: "క్రియాశీల", last_sync: "చివరి సమకాలీకరణ", minutes_ago: "నిమిషాల క్రితం", sync_now: "ఇప్పుడే సమకాలీకరించండి", synced: "సమకాలీకరించబడింది!", other_devices: "ఇతర పరికరాలు", tablet: "టాబ్లెట్", desktop: "డెస్క్‌టాప్", manage_devices: "పరికరాలను నిర్వహించండి", light: "కాంతి", dark: "చీకటి", system: "సిస్టమ్", push: "పుష్", email: "ఇమెయిల్", sound: "ధ్వని", whisper: "విస్పర్",
@@ -1128,6 +1136,10 @@ const translations = {
     bengaluru: "బెంగళూరు",
     crime_search: "కేసులను శోధించండి",
     search_everything: "అంతటా వెతకండి",
+    title: "శీర్షిక",
+    date: "తేదీ",
+    status: "స్థితి",
+    actions: "చర్యలు",
   },
   hi: {
     settings: "सेटिंग्स", personal_preferences: "व्यक्तिगत प्राथमिकताएँ", saving: "सहेजा जा रहा है...", saved: "सहेज लिया गया!", save_changes: "परिवर्तन सहेजें", profile: "प्रोफ़ाइल", edit_profile: "प्रोफ़ाइल संपादित करें", opening: "खुल रहा है...", language: "भाषा", primary_language: "प्राथमिक भाषा", secondary_language: "द्वितीयक भाषा", ui_language: "UI भाषा (ऐप)", theme: "थीम", notifications: "सूचनाएं", voice_settings: "वॉयस सेटिंग्स", voice_assistant: "वॉयस असिस्टेंट", speed: "गति", auto_transcribe: "ऑटो-ट्रांसक्राइब", offline_sync: "ऑफ़लाइन सिंक", enable_offline: "ऑफ़लाइन सक्षम करें", sync_frequency: "सिंक आवृत्ति", storage_used: "उपयोग किया गया स्टोरेज", clear_cache: "कैश साफ़ करें", cleared: "साफ़ किया गया!", device_management: "डिवाइस प्रबंधन", this_device: "यह डिवाइस", active: "सक्रिय", last_sync: "अंतिम सिंक", minutes_ago: "मिनट पहले", sync_now: "अभी सिंक करें", synced: "सिंक किया गया!", other_devices: "अन्य उपकरण", tablet: "टैबलेट", desktop: "डेस्कटॉप", manage_devices: "उपकरण प्रबंधित करें", light: "रोशनी", dark: "अंधेरा", system: "सिस्टम", push: "पुश", email: "ईमेल", sound: "ध्वनि", whisper: "विस्पर",
@@ -1406,6 +1418,10 @@ const translations = {
     bengaluru: "बेंगलुरु",
     crime_search: "मामले खोजें",
     search_everything: "सब कुछ खोजें",
+    title: "शीर्षक",
+    date: "दिनांक",
+    status: "स्थिति",
+    actions: "कार्रवाई",
   },
 };
 

@@ -67,3 +67,11 @@ export async function crossDistrictSearch(query, districts = [], limit = 20) {
 export async function getDistrictStats(districtName) {
     return get(`/search/district/stats/${encodeURIComponent(districtName)}`);
 }
+
+export async function listCriminals(page = 1, perPage = 20) {
+    return get(`/criminals/?page=${page}&page_size=${perPage}`);
+}
+
+export async function listSuspects(page = 1, perPage = 20, search = '') {
+    return get(`/suspects/?page=${page}&page_size=${perPage}` + (search ? `&search=${encodeURIComponent(search)}` : ''));
+}

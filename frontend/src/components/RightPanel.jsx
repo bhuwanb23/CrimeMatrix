@@ -105,7 +105,7 @@ export default function RightPanel({ isOpen }) {
                     <stat.icon size={14} strokeWidth={1.8} />
                   </div>
                   <div className="quick-stat-value">{stat.value}</div>
-                  <div className="quick-stat-label">{stat.label}</div>
+                  <div className="quick-stat-label">{t(stat.label.toLowerCase().replace(' ', '_'), lang) || stat.label}</div>
                 </div>
               ))}
             </div>
@@ -120,9 +120,9 @@ export default function RightPanel({ isOpen }) {
                     <item.icon size={14} strokeWidth={1.8} />
                   </div>
                   <div className="activity-content">
-                    <p className="activity-title">{item.title}</p>
-                    <p className="activity-subtitle">{item.subtitle}</p>
-                    <span className="activity-time">{item.time}</span>
+                    <p className="activity-title">{t(item.title, lang)}</p>
+                    <p className="activity-subtitle">{t(item.subtitle, lang)}</p>
+                    <span className="activity-time">{t(item.time, lang)}</span>
                   </div>
                 </div>
               ))}

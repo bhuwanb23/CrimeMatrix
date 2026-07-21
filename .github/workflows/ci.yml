@@ -29,7 +29,9 @@ jobs:
 
       - name: Seed database
         working-directory: backend
-        run: python seed_crimes.py
+        run: |
+          mkdir -p data
+          python seed_crimes.py
 
       - name: Run tests
         working-directory: backend

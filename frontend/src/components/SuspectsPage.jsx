@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Eye, RefreshCw } from 'lucide-react'
-import { listCriminals } from '../services/search'
+import { listSuspects } from '../services/search'
 
 export default function SuspectsPage() {
   const [suspects, setSuspects] = useState([])
@@ -16,7 +16,7 @@ export default function SuspectsPage() {
   async function loadSuspects() {
     setLoading(true)
     try {
-      const res = await listCriminals(page, 20)
+      const res = await listSuspects(page, 20)
       const data = res?.data || res
       setSuspects(data?.items || [])
       setTotal(data?.total || 0)

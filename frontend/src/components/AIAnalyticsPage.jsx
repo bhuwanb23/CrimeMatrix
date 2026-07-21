@@ -82,6 +82,13 @@ export default function AIAnalyticsPage() {
 
           {/* AI Recommendations */}
           <AIRecommendationsPanel alerts={alerts} highRisk={highRisk} priority={priority} />
+
+          {/* Model Evaluation Row */}
+          <div className="grid grid-cols-3 gap-4">
+            <ModelEvaluationPanel />
+            <AccuracyTrendChart />
+            <FeedbackSummary />
+          </div>
         </div>
       ) : (
         <div className="similar-empty">

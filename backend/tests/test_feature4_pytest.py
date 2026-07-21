@@ -23,7 +23,9 @@ class TestDatabaseTables:
 
     def _check_table(self, table_name, expected_columns):
         import sqlite3
-        conn = sqlite3.connect(r'D:\projects\website\crimematrix\backend\data\crimematrix.db')
+        import pathlib
+        db_path = pathlib.Path(__file__).parent.parent / "data" / "crimematrix.db"
+        conn = sqlite3.connect(str(db_path))
         c = conn.cursor()
         c.execute(f"PRAGMA table_info({table_name})")
         columns = [r[1] for r in c.fetchall()]
@@ -81,7 +83,7 @@ class TestDatabaseTables:
 
     def test_crime_forecasts_table(self):
         assert self._check_table('crime_forecasts', [
-            'id', 'district_id', 'period', 'predicted_count', 'actual_count', 'confidence'
+            'id', 'district_id', 'target_period', 'predicted_value', 'actual_value', 'confidence'
         ])
 
     def test_forecast_snapshots_table(self):

@@ -24,7 +24,8 @@ from app.api.v1 import (
     prediction_api,
     early_warning_api,
     suspect_risk_api,
-    priority_api
+    priority_api,
+    evaluation_api
 )
 
 router = APIRouter(prefix="/api/v1")

@@ -11,7 +11,7 @@ export default function SuspectsPage() {
   const [total, setTotal] = useState(0)
   const navigate = useNavigate()
 
-  useEffect(() => { loadSuspects() }, [page])
+  useEffect(() => { loadSuspects() }, [page, searchQuery])
 
   async function loadSuspects() {
     setLoading(true)

@@ -19,6 +19,7 @@ import {
   LineChart,
   Shield,
   Zap,
+  Search,
 } from 'lucide-react'
 import LogoIcon from './icons/LogoIcon'
 
@@ -31,9 +32,9 @@ const navItems = [
 
   { icon: Shield, label: 'Risk Score', to: '/suspect-risk', id: 'suspect-risk' },
   { icon: Zap, label: 'Priority', to: '/prioritizations', id: 'prioritizations' },
-  { icon: FileText, label: 'FIR & Cases', to: '/cases', id: 'cases', badge: true },
+  { icon: Search, label: 'Search', to: '/search/cases', id: 'search' },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },
-  { icon: Users, label: 'Suspects', to: '/suspects', id: 'suspects' },
+
   { icon: ClipboardList, label: 'Investigations', to: '/investigations', id: 'investigations' },
   { icon: BookOpen, label: 'Reports', to: '/reports', id: 'reports' },
 ]

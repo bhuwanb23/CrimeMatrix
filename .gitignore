@@ -1,3 +1,60 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Test
+.pytest_cache/
+htmlcov/
+.coverage
+coverage/
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+
+# Ollama
 .mimocode/
 .serena/
-__pycache__/
+
+# FAISS index
+*.faiss
+
+# Docker
+docker-compose.override.yml

@@ -158,3 +158,6 @@ router.include_router(suspect_risk_api.router, prefix="/suspect-risk", tags=["Su
 
 # Case Prioritization APIs
 router.include_router(priority_api.router, prefix="/priorities", tags=["Priorities"])
+
+# Model Evaluation APIs
+router.include_router(evaluation_api.router, prefix="/evaluation", tags=["Evaluation"])

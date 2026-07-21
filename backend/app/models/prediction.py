@@ -26,15 +26,3 @@ class RiskScore(Base):
     factors = Column(Text)
     calculated_at = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-
-
-class CrimeForecast(Base):
-    __tablename__ = "crime_forecasts"
-
-    id = Column(Integer, primary_key=True, index=True)
-    district_id = Column(Integer)
-    period = Column(String(20))
-    predicted_count = Column(Integer)
-    actual_count = Column(Integer)
-    confidence = Column(Float)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())

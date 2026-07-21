@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import GraphNode from './GraphNode'
 import GraphEdge from './GraphEdge'
 import { nodes as fallbackNodes, edges as fallbackEdges } from './graphData'
 
-// Force-directed layout for real data
+// Force-directed layout — memoized to prevent recalculation on zoom/pan/hover
 function forceLayout(nodes, edges, width = 800, height = 500) {
   if (!nodes.length) return { positionedNodes: [], positionedEdges: [] }
 
@@ -13,7 +13,7 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
   // Initialize positions in a circle
   nodes.forEach((n, i) => {
     const angle = (2 * Math.PI * i) / nodes.length
-    const r = 150 + Math.random() * 50
+    const r = 150 + (((i * 7 + 13) % 50)) // deterministic spread
     nodeMap[n.id || n.node_id] = {
       ...n,
       x: cx + r * Math.cos(angle),
@@ -21,9 +21,8 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
     }
   })
 
-  // Simple force simulation (30 iterations)
+  // Force simulation (30 iterations)
   for (let iter = 0; iter < 30; iter++) {
-    // Repulsion between all nodes
     const keys = Object.keys(nodeMap)
     for (let i = 0; i < keys.length; i++) {
       for (let j = i + 1; j < keys.length; j++) {
@@ -37,7 +36,6 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
       }
     }
 
-    // Attraction along edges
     edges.forEach((e) => {
       const src = nodeMap[e.source || e.source_id]
       const tgt = nodeMap[e.target || e.target_id]
@@ -50,11 +48,9 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
       tgt.x -= fx; tgt.y -= fy
     })
 
-    // Center gravity
     keys.forEach((k) => {
       nodeMap[k].x += (cx - nodeMap[k].x) * 0.01
       nodeMap[k].y += (cy - nodeMap[k].y) * 0.01
-      // Keep in bounds
       nodeMap[k].x = Math.max(40, Math.min(width - 40, nodeMap[k].x))
       nodeMap[k].y = Math.max(40, Math.min(height - 40, nodeMap[k].y))
     })
@@ -83,19 +79,37 @@ const nodeColors = {
 
 export default function GraphCanvas({ selectedNode, onNodeSelect, activeView, nodes: realNodes, edges: realEdges }) {
   const svgRef = useRef(null)
+  const containerRef = useRef(null)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [isPanning, setIsPanning] = useState(false)
   const [panStart, setPanStart] = useState({ x: 0, y: 0 })
   const [hoveredNode, setHoveredNode] = useState(null)
+  const [containerSize, setContainerSize] = useState({ width: 800, height: 500 })
 
   // Use real data if provided, fallback to hardcoded
   const useRealData = realNodes && realNodes.length > 0
   const rawNodes = useRealData ? realNodes : fallbackNodes
   const rawEdges = useRealData ? realEdges : fallbackEdges
 
-  // Apply force layout to real data
-  const { positionedNodes, positionedEdges } = forceLayout(rawNodes, rawEdges)
+  // KEY FIX: Memoize force layout — only recalculates when nodes/edges change
+  const { positionedNodes, positionedEdges } = useMemo(
+    () => forceLayout(rawNodes, rawEdges, containerSize.width, containerSize.height),
+    [rawNodes, rawEdges, containerSize.width, containerSize.height]
+  )
+
+  // Responsive container sizing
+  useEffect(() => {
+    const updateSize = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect()
+        setContainerSize({ width: rect.width || 800, height: rect.height || 500 })
+      }
+    }
+    updateSize()
+    window.addEventListener('resize', updateSize)
+    return () => window.removeEventListener('resize', updateSize)
+  }, [])
 
   const handleWheel = useCallback((e) => {
     e.preventDefault()
@@ -138,70 +152,67 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView, no
     }
   })
 
-  const connectedNodeIds = new Set()
-  if (selectedNode) {
-    const selId = selectedNode.id || selectedNode.node_id
-    positionedEdges.forEach((e) => {
-      const src = e.source || e.source_id
-      const tgt = e.target || e.target_id
-      if (src === selId) connectedNodeIds.add(tgt)
-      if (tgt === selId) connectedNodeIds.add(src)
-    })
-  }
+  const connectedNodeIds = useMemo(() => {
+    const ids = new Set()
+    if (selectedNode) {
+      const selId = selectedNode.id || selectedNode.node_id
+      positionedEdges.forEach((e) => {
+        const src = e.source || e.source_id
+        const tgt = e.target || e.target_id
+        if (src === selId) ids.add(tgt)
+        if (tgt === selId) ids.add(src)
+      })
+    }
+    return ids
+  }, [selectedNode, positionedEdges])
 
   return (
-    <svg
-      ref={svgRef}
-      className="graph-svg"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-    >
-      <rect className="graph-bg" width="100%" height="100%" fill="transparent" />
+    <div ref={containerRef} className="w-full h-full min-h-[400px]">
+      <svg
+        ref={svgRef}
+        className="w-full h-full"
+        style={{ cursor: isPanning ? 'grabbing' : 'grab' }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
+        <rect className="graph-bg" width="100%" height="100%" fill="transparent" />
 
-      <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-        {/* Edges */}
-        {positionedEdges.map((edge, i) => {
-          if (!edge.sourceNode || !edge.targetNode) return null
-          const srcId = edge.source || edge.source_id
-          const tgtId = edge.target || edge.target_id
-          const selId = selectedNode?.id || selectedNode?.node_id
-          const isHighlighted = selId && (srcId === selId || tgtId === selId)
-          return (
-            <GraphEdge
-              key={i}
-              edge={edge}
-              sourceNode={edge.sourceNode}
-              targetNode={edge.targetNode}
-              isHighlighted={isHighlighted}
-            />
-          )
-        })}
+        <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
+          {positionedEdges.map((edge, i) => {
+            if (!edge.sourceNode || !edge.targetNode) return null
+            const srcId = edge.source || edge.source_id
+            const tgtId = edge.target || edge.target_id
+            const selId = selectedNode?.id || selectedNode?.node_id
+            const isHighlighted = selId && (srcId === selId || tgtId === selId)
+            return (
+              <GraphEdge key={i} edge={edge} sourceNode={edge.sourceNode} targetNode={edge.targetNode} isHighlighted={isHighlighted} />
+            )
+          })}
 
-        {/* Nodes */}
-        {positionedNodes.map((node) => {
-          const nodeId = node.id || node.node_id
-          return (
-            <GraphNode
-              key={nodeId}
-              node={node}
-              isSelected={(selectedNode?.id || selectedNode?.node_id) === nodeId}
-              isHighlighted={connectedNodeIds.has(nodeId)}
-              onClick={onNodeSelect}
-              onMouseEnter={() => setHoveredNode(node)}
-              onMouseLeave={() => setHoveredNode(null)}
-            />
-          )
-        })}
-      </g>
+          {positionedNodes.map((node) => {
+            const nodeId = node.id || node.node_id
+            return (
+              <GraphNode
+                key={nodeId}
+                node={node}
+                isSelected={(selectedNode?.id || selectedNode?.node_id) === nodeId}
+                isHighlighted={connectedNodeIds.has(nodeId)}
+                onClick={onNodeSelect}
+                onMouseEnter={() => setHoveredNode(node)}
+                onMouseLeave={() => setHoveredNode(null)}
+              />
+            )
+          })}
+        </g>
 
-      {/* Tooltip */}
-      {hoveredNode && !selectedNode && (
-        <div className="graph-tooltip" style={{ left: (hoveredNode.x || 0) * zoom + pan.x + 20, top: (hoveredNode.y || 0) * zoom + pan.y - 10 }}>
-          {hoveredNode.label || hoveredNode.name || hoveredNode.node_id}
-        </div>
-      )}
-    </svg>
+        {hoveredNode && !selectedNode && (
+          <div className="graph-tooltip" style={{ left: (hoveredNode.x || 0) * zoom + pan.x + 20, top: (hoveredNode.y || 0) * zoom + pan.y - 10 }}>
+            {hoveredNode.label || hoveredNode.name || hoveredNode.node_id}
+          </div>
+        )}
+      </svg>
+    </div>
   )
 }

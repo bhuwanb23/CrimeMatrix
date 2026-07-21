@@ -15,7 +15,7 @@ export default function SuspectCard({ suspect }) {
         {suspect.initials}
       </div>
       <div className="suspect-card-info">
-        <span className="suspect-card-name">{t(suspect.name, lang)}</span>
+        <span className="suspect-card-name">{t(suspect.name.toLowerCase().replace(/ /g, '_'), lang) || suspect.name}</span>
         <span className="suspect-card-meta">{suspect.age} {t('yrs', lang)} • {t(suspect.district.toLowerCase().replace(/ /g, '_'), lang) || suspect.district}</span>
       </div>
       <div className="suspect-card-stats">

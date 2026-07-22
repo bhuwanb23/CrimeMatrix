@@ -21,10 +21,10 @@ export default function UnifiedSearchPage() {
     <div className="flex flex-col gap-4">
       {/* Tab Bar */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <Search size={18} className="text-amber-500" />
           <h1 className="text-lg font-bold text-slate-900">Search</h1>
-        </div>
+        </div> */}
         <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1">
           {tabs.map((tab) => {
             const Icon = tab.icon

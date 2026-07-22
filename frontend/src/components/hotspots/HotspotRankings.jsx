@@ -1,4 +1,4 @@
-import { MapPin, AlertTriangle, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { MapPin, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 
 const riskColors = {
   critical: '#ef4444',

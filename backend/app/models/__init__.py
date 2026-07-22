@@ -43,6 +43,9 @@ from app.models.evaluation_result import EvaluationResult
 from app.models.intelligence_event import IntelligenceEvent
 from app.models.event_queue_record import EventQueueRecord
 from app.models.processed_event import ProcessedEvent
+from app.models.fir_suggestion import FIRSuggestion
+from app.models.fir_analysis_history_record import FIRAnalysisHistoryRecord
+from app.models.processed_event import ProcessedEvent
 
 # Core crime data models
 from app.models.crime import Crime

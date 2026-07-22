@@ -26,7 +26,8 @@ const navItems = [
   { icon: LineChart, label: 'Predictions', to: '/predictions', id: 'predictions' },
 
   { icon: Shield, label: 'Risk Score', to: '/suspect-risk', id: 'suspect-risk' },
-  { icon: Zap, label: 'Priority & Proactive', to: '/prioritizations', id: 'prioritizations' },
+  { icon: Zap, label: 'Priority', to: '/prioritizations', id: 'prioritizations' },
+  { icon: Radar, label: 'Proactive', to: '/proactive', id: 'proactive' },
   { icon: Clock, label: 'Timeline', to: '/intelligence-timeline', id: 'intelligence-timeline' },
   { icon: Search, label: 'Search', to: '/search', id: 'search' },
   { icon: Building2, label: 'Stations', to: '/stations', id: 'stations' },

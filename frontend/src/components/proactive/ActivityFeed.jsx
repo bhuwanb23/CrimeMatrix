@@ -1,4 +1,4 @@
-import { AlertTriangle, FileText, Camera, Shield, Clock } from 'lucide-react'
+import { AlertTriangle, FileText, Camera, Shield, Clock, Activity } from 'lucide-react'
 
 const eventIcons = {
   crime_update: FileText,

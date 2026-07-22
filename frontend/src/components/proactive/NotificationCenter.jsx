@@ -1,4 +1,4 @@
-import { Bell, CheckCircle, AlertTriangle, Clock } from 'lucide-react'
+import { Bell, CheckCircle, AlertTriangle } from 'lucide-react'
 
 export default function NotificationCenter({ events }) {
   if (!events || events.length === 0) {

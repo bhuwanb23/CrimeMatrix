@@ -17,7 +17,7 @@ function CollapsibleSection({ title, defaultOpen = true, children }) {
   )
 }
 
-function ChatItem({ item, active, onClick, onPin }) {
+function ChatItem({ item, active, onClick }) {
   const colorIdx = Math.abs((item.session_id || '').charCodeAt(0) || 0) % COLORS.length
   const initial = (item.title || 'N')[0].toUpperCase()
   return (
@@ -29,7 +29,7 @@ function ChatItem({ item, active, onClick, onPin }) {
   )
 }
 
-export default function ChatHistory({ sessions = [], activeChatId, onSelectChat, onNewChat, onDeleteChat, onDeleteAll, onSearch, onClose }) {
+export default function ChatHistory({ sessions = [], activeChatId, onSelectChat, onNewChat, onDeleteChat: _onDeleteChat, onDeleteAll, onSearch: _onSearch, onClose }) {
   const [searchQuery, setSearchQuery] = useState('')
   const today = new Date().toDateString()
 

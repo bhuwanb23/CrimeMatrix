@@ -20,18 +20,21 @@ const riskLevels = [
   { value: 'low', label: 'Low' },
 ]
 
+const selectClass =
+  'bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 font-[inherit] min-w-[110px] max-w-[160px] focus:outline-none focus:border-amber-500'
+
 export default function MapFilterPanel({ filters, onChange }) {
   return (
-    <div className="map-filter-panel">
-      <span className="map-control-label">
+    <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
         <Filter size={13} aria-hidden="true" />
         Filters
       </span>
-      <div className="map-filter-row">
-        <label className="map-filter-field">
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <label className="block min-w-0">
           <span className="sr-only">Crime type</span>
           <select
-            className="map-filter-select"
+            className={selectClass}
             value={filters.crime_type || ''}
             onChange={(e) => onChange({ ...filters, crime_type: e.target.value })}
           >
@@ -40,10 +43,10 @@ export default function MapFilterPanel({ filters, onChange }) {
             ))}
           </select>
         </label>
-        <label className="map-filter-field">
+        <label className="block min-w-0">
           <span className="sr-only">Risk level</span>
           <select
-            className="map-filter-select"
+            className={selectClass}
             value={filters.risk_level || ''}
             onChange={(e) => onChange({ ...filters, risk_level: e.target.value })}
           >

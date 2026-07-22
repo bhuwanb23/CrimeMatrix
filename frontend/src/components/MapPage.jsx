@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { RefreshCw } from 'lucide-react'
 import MapCanvas from './map/MapCanvas'
 import DistrictPanel from './map/DistrictPanel'
@@ -16,11 +16,7 @@ export default function MapPage() {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    loadMapData()
-  }, [days, filters.crime_type])
-
-  async function loadMapData() {
+  const loadMapData = useCallback(async () => {
     setLoading(true)
     try {
       const [crimesRes, districtsRes, heatmapRes, hotspotsRes, stationsRes, routesRes, statsRes] = await Promise.all([
@@ -46,7 +42,11 @@ export default function MapPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [days, filters.crime_type])
+
+  useEffect(() => {
+    loadMapData()
+  }, [loadMapData])
 
   function toggleLayer(layerId) {
     setActiveLayers((prev) =>

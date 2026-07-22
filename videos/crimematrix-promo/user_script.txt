@@ -1,0 +1,47 @@
+**[Opening | 0:00–0:15]**
+
+Every day, thousands of crime records are generated across Karnataka. Yet investigators still spend countless hours searching through fragmented databases, connecting evidence manually, and trying to uncover hidden relationships between cases.
+
+What if an AI could become every investigator's intelligent partner?
+
+Introducing **CrimeMatrix** — an AI-powered Crime Intelligence Platform built for the Karnataka State Police.
+
+---
+
+**[AI Copilot | 0:15–0:40]**
+
+CrimeMatrix transforms investigations through a conversational AI assistant.
+
+Instead of navigating multiple systems, officers simply ask questions in natural language—or even by voice—in English, Kannada, or Kanglish.
+
+The AI understands context, remembers ongoing investigations, and provides instant, explainable answers, making complex investigations faster and more intuitive.
+
+---
+
+**[Investigation & Intelligence | 0:40–1:10]**
+
+Beyond search, CrimeMatrix uncovers intelligence hidden within millions of records.
+
+Investigators can perform semantic crime searches, discover similar cases across districts, visualize criminal networks, explore relationship graphs, analyze crime trends, detect hotspots, and trace complete criminal timelines.
+
+Our Indian Identity Resolution Engine intelligently links duplicate identities despite spelling variations and multilingual records, ensuring investigators never miss critical connections.
+
+---
+
+**[Predictive & Proactive AI | 1:10–1:40]**
+
+CrimeMatrix doesn't just analyze the past—it helps prevent future crime.
+
+AI predicts emerging crime patterns, identifies high-risk suspects, prioritizes investigations, and forecasts crime trends.
+
+Most importantly, our proactive intelligence engine continuously monitors new FIRs and evidence, automatically generating Whisper Alerts, detecting cross-district links, recommending investigative leads, and connecting evidence in real time—often before investigators even know to ask.
+
+---
+
+**[Closing | 1:40–2:00]**
+
+CrimeMatrix is more than a dashboard.
+
+It is an AI Investigation Copilot, a Crime Intelligence Platform, and a proactive decision-support system built to empower law enforcement with faster investigations, smarter insights, and safer communities.
+
+**CrimeMatrix — Transforming Crime Data into Actionable Intelligence.**

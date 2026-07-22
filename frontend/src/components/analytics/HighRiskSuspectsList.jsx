@@ -1,4 +1,4 @@
-import { Shield, AlertTriangle } from 'lucide-react'
+import { Shield } from 'lucide-react'
 
 const riskColors = {
   critical: '#ef4444',

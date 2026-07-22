@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .stage {
+          position: absolute;
+          inset: 120px 120px 180px 120px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 18px;
+        }
+
+        .opener {
+          font-size: 54px;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          color: #475569;
+          margin-bottom: 28px;
+        }
+
+        .opener strong {
+          color: #0f172a;
+          font-weight: 700;
+        }
+
+        .role-stack {
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+        }
+
+        .role-line {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+        }
+
+        .role-marker {
+          width: 8px;
+          height: 64px;
+          border-radius: 100px;
+          background: #f59e0b;
+          flex-shrink: 0;
+        }
+
+        .depth-stack {
+          position: relative;
+        }
+
+        .depth-layer {
+          font-size: 92px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 0.95;
+          text-transform: none;
+        }
+
+        .depth-layer.is-back {
+          position: absolute;
+          top: 0;
+          left: 0;
+          pointer-events: none;
+        }
+
+        .depth-layer.is-front {
+          position: relative;
+          z-index: 10;
+        }
+
+        .role-accent {
+          color: #f59e0b;
+        }
+
+        .empower {
+          margin-top: 36px;
+          font-size: 34px;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          color: #475569;
+        }
+
+        .empower span {
+          color: #f59e0b;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="11-three-roles"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="stage">
+          <div class="opener" id="el-11-three-roles-opener">
+            <strong>More</strong> than a dashboard
+          </div>
+
+          <div class="role-stack">
+            <div class="role-line" id="el-11-role-1">
+              <div class="role-marker"></div>
+              <div class="depth-stack" id="el-11-depth-1"></div>
+            </div>
+            <div class="role-line" id="el-11-role-2">
+              <div class="role-marker"></div>
+              <div class="depth-stack" id="el-11-depth-2"></div>
+            </div>
+            <div class="role-line" id="el-11-role-3">
+              <div class="role-marker"></div>
+              <div class="depth-stack" id="el-11-depth-3"></div>
+            </div>
+          </div>
+
+          <div class="empower" id="el-11-three-roles-empower">
+            Faster investigations · <span>safer communities</span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const COMP_ID = "11-three-roles";
+        const DURATION = 17.771;
+        const tl = gsap.timeline({ paused: true });
+
+        const ROLES = [
+          { id: "11-depth-1", text: "AI Investigation Copilot", accentFrom: 17 },
+          { id: "11-depth-2", text: "Crime Intelligence Platform", accentFrom: 20 },
+          { id: "11-depth-3", text: "Decision-support system", accentFrom: 18 },
+        ];
+
+        const LAYER_COUNT = 5;
+        const OFFSET_X = 3;
+        const OFFSET_Y = 3;
+
+        function buildDepthStack(containerId, text, accentFrom) {
+          const stack = document.getElementById(containerId);
+          const main = text.slice(0, accentFrom);
+          const accent = text.slice(accentFrom);
+          const html =
+            '<span class="depth-main">' +
+            main +
+            '</span><span class="role-accent">' +
+            accent +
+            "</span>";
+
+          for (let i = LAYER_COUNT - 1; i >= 0; i--) {
+            const el = document.createElement("div");
+            el.className = "depth-layer " + (i === 0 ? "is-front" : "is-back");
+            el.innerHTML = html;
+            if (i > 0) {
+              const alpha = Math.max(0.08, 0.22 - i * 0.035);
+              el.style.color = "rgba(15, 23, 42, " + alpha + ")";
+              el.style.transform = "translate(" + i * OFFSET_X + "px, " + i * OFFSET_Y + "px)";
+            }
+            stack.appendChild(el);
+          }
+        }
+
+        ROLES.forEach((r) => buildDepthStack(r.id, r.text, r.accentFrom));
+
+        gsap.set("#el-11-three-roles-opener", { opacity: 0, scale: 1.35, filter: "blur(12px)" });
+        gsap.set(["#el-11-role-1", "#el-11-role-2", "#el-11-role-3"], { opacity: 0, x: -80 });
+        gsap.set(".role-marker", { scaleY: 0, transformOrigin: "center bottom" });
+        gsap.set("#el-11-three-roles-empower", { opacity: 0, y: 20 });
+
+        const BEATS = [0.35, 4.2, 7.8, 11.4];
+
+        tl.fromTo(
+          "#el-11-three-roles-opener",
+          { opacity: 0, scale: 1.35, filter: "blur(12px)" },
+          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "power4.out" },
+          BEATS[0]
+        );
+
+        const SEQUENCE = [
+          { t: 0.0, text: "" },
+          { t: 1.2, text: "More" },
+          { t: 1.45, text: "More than" },
+          { t: 1.75, text: "More than a" },
+          { t: 2.05, text: "More than a dashboard" },
+        ];
+
+        const openerEl = document.getElementById("11-three-roles-opener");
+        tl.to(
+          {},
+          {
+            duration: 2.4,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time();
+              let current = "";
+              for (let i = SEQUENCE.length - 1; i >= 0; i--) {
+                if (t >= SEQUENCE[i].t) {
+                  current = SEQUENCE[i].text;
+                  break;
+                }
+              }
+              if (current === "") {
+                openerEl.innerHTML = "";
+              } else if (current === "More") {
+                openerEl.innerHTML = "<strong>More</strong>";
+              } else {
+                openerEl.innerHTML = "<strong>More</strong> than a dashboard";
+              }
+            },
+          },
+          1.0
+        );
+
+        function slamRole(roleSel, beat, entrance) {
+          tl.fromTo(
+            roleSel,
+            entrance.from,
+            Object.assign({ duration: 0.58, ease: entrance.ease }, entrance.to),
+            beat
+          );
+          tl.fromTo(
+            roleSel + " .role-marker",
+            { scaleY: 0 },
+            { scaleY: 1, duration: 0.45, ease: "power3.out" },
+            beat + 0.08
+          );
+        }
+
+        slamRole(
+          "#el-11-role-1",
+          BEATS[1],
+          { from: { opacity: 0, x: -120, rotateZ: -4 }, to: { opacity: 1, x: 0, rotateZ: 0 }, ease: "expo.out" }
+        );
+        slamRole(
+          "#el-11-role-2",
+          BEATS[2],
+          { from: { opacity: 0, x: 100, scale: 0.88 }, to: { opacity: 1, x: 0, scale: 1 }, ease: "power4.out" }
+        );
+        slamRole(
+          "#el-11-role-3",
+          BEATS[3],
+          { from: { opacity: 0, y: 60, rotateZ: 3 }, to: { opacity: 1, y: 0, rotateZ: 0 }, ease: "circ.out" }
+        );
+
+        tl.fromTo(
+          "#el-11-three-roles-empower",
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" },
+          13.8
+        );
+
+        tl.to(
+          {},
+          {
+            duration: DURATION,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time();
+              if (t < 13.8) return;
+              const breath = 1 + Math.sin((t - 13.8) * 1.6) * 0.012;
+              gsap.set("#el-11-three-roles-empower span", { scale: breath });
+            },
+          },
+          0
+        );
+
+        tl.to({}, { duration: 0.01, ease: "none" }, DURATION);
+
+        window.__timelines[COMP_ID] = tl;
+      </script>
+    </template>
+  </body>
+</html>

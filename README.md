@@ -1,227 +1,129 @@
-<div align="center">
-
-![CrimeMatrix Dashboard](frontend/src/assets/hero.png)
-
 # CrimeMatrix
 
-### KSP Crime Intelligence Copilot
+**AI Investigation Copilot for Karnataka State Police**
 
-[![Hackathon](https://img.shields.io/badge/Datathon-2026-FF6B35)](https://hack2skill.com/event/datathon2026)
+[![Datathon 2026](https://img.shields.io/badge/Datathon-2026-FF6B35)](https://hack2skill.com/event/datathon2026)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
 ![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![CI](https://img.shields.io/badge/CI-Passing-brightgreen)
-![Tests](https://img.shields.io/badge/87-Tests-Passing-brightgreen)
 
-</div>
+CrimeMatrix helps investigation officers query crime records, resolve identities across districts, surface patterns early, and produce explainable, audit-ready investigation outputs — in English, Kannada, and Kanglish.
 
----
-
-> **An AI Investigation Copilot that transforms how Karnataka State Police investigates crimes.**
-
-Built for [Datathon 2026](https://hack2skill.com/event/datathon2026), CrimeMatrix addresses the KSP problem statement: **Conversational AI, Analytics, and Predictive Policing** for law enforcement.
-
-We went beyond the requirements by building an **AI Investigation Partner** — not just a chatbot, but a system that proactively assists officers through the entire investigation lifecycle.
+Built for [Datathon 2026](https://hack2skill.com/event/datathon2026) against the KSP brief on conversational AI, analytics, and predictive policing.
 
 ---
 
-## The Problem
+## The Challenge
 
-Karnataka State Police processes **200,000+ FIRs annually** across 31 districts. Officers face challenges that no existing system solves:
+Karnataka State Police handles **200,000+ FIRs** each year across **31 districts**. Day-to-day investigation work is slowed by:
 
-| Challenge | Reality |
-|-----------|---------|
-| **Fragmented Identities** | Same suspect appears as "Raj" in Bengaluru, "Rajesh" in Mysuru, "Rajendra" in Mangaluru |
-| **Language Barrier** | Officers type in Kanglish: *"Bellary suspect ge phone match check madi"* |
-| **Reactive Intelligence** | Patterns are spotted after crimes, not before |
-| **Black-Box AI** | Officers need to know *why* AI recommends action |
-| **Disconnected Districts** | Each district maintains separate records — no cross-district intelligence |
+| Challenge | What it looks like in practice |
+|-----------|--------------------------------|
+| Fragmented identities | The same person appears under different names and spellings across stations |
+| Language friction | Officers often query in Kanglish, not clean English or Kannada alone |
+| Reactive intelligence | Patterns emerge after crimes stack up, not before |
+| Opaque recommendations | Officers need to know *why* a suggestion was made |
+| Siloed districts | Records stay local; cross-district links are hard to find |
 
 ---
 
-## Our Approach
+## What CrimeMatrix Does
 
-Most teams will build an AI chatbot over crime records. Some will add dashboards and predictive models.
+CrimeMatrix is an investigation copilot — not a standalone chatbot. It supports the full loop from intake and search through analysis and reporting.
 
-**We built an AI Investigation Copilot** that proactively assists officers throughout the investigation lifecycle — from FIR registration and identity resolution to criminal network discovery, predictive intelligence, explainable reasoning, and court-ready reporting.
-
-### Innovation Tiers
-
-| Tier | Innovation | Impact |
-|------|------------|--------|
-| **Core** | Indian Identity Resolution Engine | Eliminates duplicate suspects across districts |
-| **Core** | Explainable Investigation Reasoning | Transparent AI chains for every recommendation |
-| **Core** | Modus Operandi Fingerprinting | Detect serial crimes without direct entity matches |
-| **Core** | Whisper Alerts | Proactive intelligence — not reactive search |
-| **Operational** | Kanglish & Code-Mixed AI | Real-world multilingual usability |
-| **Operational** | Officer-Aware Recommendations | Actionable, workload-conscious suggestions |
-| **Legal** | Court-Ready Investigation Reports | Evidence references, reasoning chains, audit trails |
+| Capability | What officers get |
+|------------|-------------------|
+| **Investigation Copilot** | Natural-language Q&A with multi-turn context and structured reasoning |
+| **Identity Resolution** | Phonetic matching, nickname variants, and Kannada transliteration across districts |
+| **Modus Operandi Matching** | Serial-crime links from behavioural fingerprints, not only shared entities |
+| **Knowledge Graph** | Network views of people, cases, vehicles, phones, and locations |
+| **Predictive Intelligence** | Forecasting, hotspot signals, and risk scoring for proactive response |
+| **Whisper Alerts** | Cross-district matches surfaced without waiting for a manual search |
+| **Explainable Outputs** | Reasoning chains and confidence with every recommendation |
+| **Court-Ready Reports** | Investigation summaries with evidence references and audit trail |
 
 ---
 
 ## How It Works
 
-CrimeMatrix is not a chatbot — it's a structured reasoning system.
+1. The officer asks a question in English, Kannada, or Kanglish.
+2. A language pipeline detects and normalizes the query.
+3. An agent plans steps, runs specialized investigation tools, and builds context.
+4. The response returns findings with a reasoning chain and confidence.
 
-```
-Officer: "Show me similar robbery cases across Karnataka"
-        ↓
-Language Pipeline: Detect → Normalize (Kanglish/English/Kannada)
-        ↓
-AI Agent Loop:
-  1. Planner — Decomposes query into steps
-  2. Executor — Runs 28 specialized tools
-  3. Context Builder — Compiles results
-  4. Responder — Generates answer with reasoning chain
-        ↓
-Response: "Found 12 cases across 4 districts. Confidence: 87%"
-```
+Example:
 
----
-
-## Features
-
-| Feature | Description |
-|---------|-------------|
-| **AI Copilot** | Natural language investigation assistant with multi-turn context |
-| **Identity Resolution** | Phonetic matching, 28+ nickname mappings, Kannada transliteration |
-| **Knowledge Graph** | Criminal network analysis across 68 interconnected data models |
-| **Predictive Analytics** | Crime forecasting, hotspot detection, risk scoring |
-| **Explainable AI** | Every recommendation includes reasoning chain and confidence score |
-| **Kanglish Support** | Understands mixed Kannada-English queries naturally |
-| **Whisper Alerts** | Proactive cross-district intelligence matching |
-| **Court-Ready Reports** | Investigation reports with evidence references and audit trails |
-
----
-
-## Impact
-
-| Metric | Value |
-|--------|-------|
-| FIRs Processed Annually | 200,000+ |
-| Districts Covered | 31 |
-| Database Models | 68 |
-| AI Tools | 28 |
-| API Endpoints | 120+ |
-| Tests Passing | 87 |
+> *"Show me similar robbery cases across Karnataka"*  
+> → Matched cases across districts, with rationale and confidence — not a bare search list.
 
 ---
 
 ## Quick Start
 
+**Requirements:** Docker and Docker Compose.
+
 ```bash
-git clone https://github.com/your-org/CrimeMatrix.git
+git clone https://github.com/bhuwanb23/CrimeMatrix.git
 cd CrimeMatrix
 docker compose up
 ```
 
-> **5 minutes to running** — Access at `http://localhost:5173`
+Open the application at [http://localhost:5173](http://localhost:5173).
 
 <details>
-<summary>Manual setup</summary>
+<summary>Manual setup (without Docker)</summary>
+
+Run each service in its own terminal.
 
 ```bash
-# Backend
-cd backend && python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt && python seed_crimes.py
-uvicorn main:app --port 8000
-
-# AI Services
-cd ai-services && python -m venv venv && source venv/bin/activate
+# Backend — http://localhost:8000
+cd backend
+python -m venv venv
+# Windows: venv\Scripts\activate
+source venv/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --port 8002
+python seed_crimes.py
+uvicorn main:app --port 8000 --reload
 
-# Frontend
-cd frontend && npm install && npm run dev
+# AI Services — http://localhost:8002
+cd ai-services
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --port 8002 --reload
+
+# Frontend — http://localhost:5173
+cd frontend
+npm install
+npm run dev
 ```
+
+For local LLM support, run [Ollama](https://ollama.com/) and pull a model (for example `llama3.2:1b`). Configure API keys in each service’s `.env` as needed. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for deployment notes.
 
 </details>
 
 ---
 
-## Architecture
+## Stack
 
-```mermaid
-graph LR
-    subgraph Frontend["Frontend — React 19"]
-        UI[Dashboard + Copilot]
-    end
-    
-    subgraph Backend["Backend API — FastAPI"]
-        API[50+ Endpoints]
-        DB[(SQLite — 68 Tables)]
-    end
-    
-    subgraph AI["AI Services — FastAPI"]
-        Agent[Agent Loop]
-        Tools[28 Tools]
-        KG[Knowledge Graph]
-        RAG[RAG Pipeline]
-        Predict[Prediction Engine]
-    end
-    
-    subgraph Providers["AI Providers"]
-        Ollama[Ollama — Local]
-        OpenAI[OpenAI — Cloud]
-        Gemini[Gemini — Cloud]
-    end
-    
-    UI -->|REST + SSE| API
-    API --> DB
-    API --> Agent
-    Agent --> Tools
-    Agent --> KG
-    Agent --> RAG
-    Agent --> Predict
-    Agent --> Ollama
-    Agent --> OpenAI
-    Agent --> Gemini
-```
+| Layer | Technologies |
+|-------|----------------|
+| Interface | React 19, Vite, Tailwind CSS |
+| API & data | FastAPI, SQLAlchemy, SQLite |
+| Intelligence | Ollama, OpenAI, Gemini · FAISS · NetworkX · sentence-transformers |
 
-Three independent services — deployable separately, scalable independently. See [Architecture Docs](docs/ARCHITECTURE.md) for details.
+Further design notes live in [docs/](docs/).
 
 ---
-
-## Built With
-
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| **Frontend** | React 19, Tailwind 4, Vite 8 | Modern, fast, component-based UI |
-| **Backend** | FastAPI, SQLAlchemy 2.0, SQLite | Async performance, zero-config database |
-| **AI Engine** | Ollama (local), OpenAI, Gemini | Offline-first with cloud fallback |
-| **Vector Search** | FAISS | Fast semantic document retrieval |
-| **Knowledge Graph** | NetworkX | Python-native graph analysis |
-| **NLP** | sentence-transformers | Domain-specific embeddings |
-
----
-
 
 ## Contributing
 
-Contributions are welcome! Here's how:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Security concerns: [SECURITY.md](SECURITY.md).
 
 ---
-<div align="center">
 
-## License - [MIT](LICENSE)
+## License
 
-</div>
+Released under the [MIT License](LICENSE).
 
-
-<div align="center">
-
-**Built for [Datathon 2026](https://hack2skill.com/event/datathon2026)**
-
-*Transforming law enforcement with AI-powered investigation intelligence*
-
-**If you find this useful, give it a star. It helps others discover it.**
-
-</div>
+Built for [Datathon 2026](https://hack2skill.com/event/datathon2026).

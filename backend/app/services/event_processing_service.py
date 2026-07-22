@@ -163,3 +163,29 @@ class EventProcessingService:
             select(sql_func.count(EventQueueRecord.id)).where(EventQueueRecord.status == "queued")
         )).scalar() or 0
         return {"total_events": total, "pending": pending, "processed": processed, "queued": queued}
+
+    # Auto-trigger methods — called when CRUD operations happen
+    async def on_crime_created(self, crime_id: int) -> dict:
+        return await self.create_event("crime_created", entity_id=crime_id, entity_type="crime",
+            event_data=json.dumps({"action": "new_fir", "crime_id": crime_id}))
+
+    async def on_evidence_added(self, evidence_id: int, case_id: int = None) -> dict:
+        return await self.create_event("evidence_added", entity_id=evidence_id, entity_type="evidence",
+            event_data=json.dumps({"action": "evidence_collected", "evidence_id": evidence_id, "case_id": case_id}))
+
+    async def on_investigation_created(self, investigation_id: int) -> dict:
+        return await self.create_event("investigation_created", entity_id=investigation_id, entity_type="investigation",
+            event_data=json.dumps({"action": "new_investigation", "investigation_id": investigation_id}))
+
+    async def on_case_updated(self, case_id: int, old_status: str, new_status: str) -> dict:
+        return await self.create_event("case_updated", entity_id=case_id, entity_type="case",
+            event_data=json.dumps({"action": "status_change", "old_status": old_status, "new_status": new_status}))
+
+    async def on_arrest_made(self, suspect_id: int, case_id: int = None) -> dict:
+        return await self.create_event("arrest_made", entity_id=suspect_id, entity_type="suspect",
+            event_data=json.dumps({"action": "arrest", "suspect_id": suspect_id, "case_id": case_id}))
+
+    async def batch_process(self) -> dict:
+        result = await self.process_pending()
+        scanned = await self.scan_for_new_data()
+        return {"processed": result.get("processed", 0), "scanned": scanned.get("events_created", 0)}

@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .pad {
+          position: absolute;
+          inset: 96px 96px 180px 96px;
+        }
+
+        .header-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 48px;
+        }
+
+        .eyebrow {
+          font-size: 22px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .monitor {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 16px;
+          color: #475569;
+        }
+
+        .pulse-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #f59e0b;
+        }
+
+        .map-stage {
+          position: relative;
+          height: 620px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-radius: 14px;
+        }
+
+        .link-svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+        }
+
+        .link-path {
+          fill: none;
+          stroke: #f59e0b;
+          stroke-width: 3;
+          stroke-linecap: round;
+        }
+
+        .district {
+          position: absolute;
+          width: 220px;
+          padding: 20px 22px;
+          background: #ffffff;
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-radius: 14px;
+          text-align: center;
+        }
+
+        .district-a {
+          left: 180px;
+          top: 220px;
+        }
+
+        .district-b {
+          right: 180px;
+          top: 280px;
+        }
+
+        .district-label {
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #475569;
+          margin-bottom: 8px;
+        }
+
+        .district-name {
+          font-size: 26px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+
+        .district-code {
+          margin-top: 8px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 13px;
+          color: #f59e0b;
+        }
+
+        .toast {
+          position: absolute;
+          top: 48px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 520px;
+          padding: 22px 26px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.35);
+          border-radius: 14px;
+          box-shadow: none;
+        }
+
+        .toast-badge {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 100px;
+          background: #f59e0b;
+          color: #ffffff;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+        }
+
+        .toast-title {
+          font-size: 28px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          margin-bottom: 8px;
+        }
+
+        .toast-sub {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 15px;
+          color: #475569;
+        }
+
+        .track-box {
+          position: absolute;
+          left: 620px;
+          top: 300px;
+          width: 280px;
+          height: 120px;
+          pointer-events: none;
+        }
+
+        .corner {
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          border-color: #f59e0b;
+          border-style: solid;
+        }
+
+        .corner.tl {
+          top: 0;
+          left: 0;
+          border-width: 3px 0 0 3px;
+        }
+        .corner.tr {
+          top: 0;
+          right: 0;
+          border-width: 3px 3px 0 0;
+        }
+        .corner.bl {
+          bottom: 0;
+          left: 0;
+          border-width: 0 0 3px 3px;
+        }
+        .corner.br {
+          bottom: 0;
+          right: 0;
+          border-width: 0 3px 3px 0;
+        }
+
+        .track-label {
+          position: absolute;
+          top: -34px;
+          left: 0;
+          padding: 4px 10px;
+          background: #f59e0b;
+          color: #ffffff;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          font-weight: 700;
+          border-radius: 6px;
+          white-space: nowrap;
+        }
+
+        .emphasis {
+          position: absolute;
+          bottom: 36px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 42px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          color: #0f172a;
+        }
+
+        .emphasis span {
+          color: #f59e0b;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="10-whisper-alerts"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="pad">
+          <div class="header-row">
+            <div class="eyebrow" id="el-10-whisper-alerts-eyebrow">Proactive intelligence</div>
+            <div class="monitor" id="el-10-whisper-alerts-monitor">
+              <div class="pulse-dot" id="el-10-whisper-pulse"></div>
+              Monitoring FIRs
+            </div>
+          </div>
+
+          <div class="map-stage" id="el-10-whisper-map">
+            <svg class="link-svg" viewBox="0 0 1728 620" xmlns="http://www.w3.org/2000/svg">
+              <path
+                class="link-path"
+                id="el-10-whisper-link"
+                d="M 300 310 Q 864 180 1428 360"
+              />
+            </svg>
+
+            <div class="district district-a" id="el-10-whisper-district-a">
+              <div class="district-label">District A</div>
+              <div class="district-name">Bengaluru Rural</div>
+              <div class="district-code">FIR/BR/2026/1847</div>
+            </div>
+
+            <div class="district district-b" id="el-10-whisper-district-b">
+              <div class="district-label">District B</div>
+              <div class="district-name">Mysuru</div>
+              <div class="district-code">FIR/MY/2026/0921</div>
+            </div>
+
+            <div class="track-box" id="el-10-whisper-track">
+              <div class="corner tl"></div>
+              <div class="corner tr"></div>
+              <div class="corner bl"></div>
+              <div class="corner br"></div>
+              <div class="track-label">MATCH · 94%</div>
+            </div>
+
+            <div class="toast" id="el-10-whisper-toast">
+              <div class="toast-badge">Whisper Alert</div>
+              <div class="toast-title">Cross-district link</div>
+              <div class="toast-sub">Evidence pattern · auto-detected</div>
+            </div>
+          </div>
+
+          <div class="emphasis" id="el-10-whisper-emphasis">Before <span>you ask</span></div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const COMP_ID = "10-whisper-alerts";
+        const DURATION = 20.523;
+        const tl = gsap.timeline({ paused: true });
+
+        const link = document.getElementById("10-whisper-link");
+        const linkLen = link.getTotalLength();
+        gsap.set(link, { strokeDasharray: linkLen, strokeDashoffset: linkLen });
+
+        gsap.set(
+          ["#el-10-whisper-alerts-eyebrow", "#el-10-whisper-alerts-monitor", "#el-10-whisper-map"],
+          { opacity: 0, y: 20 }
+        );
+        gsap.set(["#el-10-whisper-district-a", "#el-10-whisper-district-b"], { opacity: 0, scale: 0.9 });
+        gsap.set("#el-10-whisper-toast", { opacity: 0, y: -60, scale: 0.85 });
+        gsap.set("#el-10-whisper-track", { opacity: 0, scale: 0.92 });
+        gsap.set("#el-10-whisper-emphasis", { opacity: 0, y: 24 });
+
+        tl.fromTo(
+          ["#el-10-whisper-alerts-eyebrow", "#el-10-whisper-alerts-monitor"],
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.1 },
+          0.2
+        );
+
+        tl.fromTo(
+          "#el-10-whisper-map",
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+          0.5
+        );
+
+        tl.to(
+          {},
+          {
+            duration: DURATION,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time();
+              const pulse = 1 + Math.sin(t * 4.2) * 0.35;
+              gsap.set("#el-10-whisper-pulse", { scale: pulse, opacity: 0.55 + Math.sin(t * 4.2) * 0.35 });
+            },
+          },
+          0
+        );
+
+        tl.fromTo(
+          "#el-10-whisper-district-a",
+          { opacity: 0, scale: 0.9 },
+          { opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" },
+          2.0
+        );
+        tl.fromTo(
+          "#el-10-whisper-district-b",
+          { opacity: 0, scale: 0.9 },
+          { opacity: 1, scale: 1, duration: 0.65, ease: "power3.out" },
+          2.4
+        );
+
+        const TOAST_AT = 5.5;
+        tl.fromTo(
+          "#el-10-whisper-toast",
+          { opacity: 0, y: -60, scale: 0.85 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(2)" },
+          TOAST_AT
+        );
+        tl.to("#el-10-whisper-toast", { scale: 0.96, duration: 0.12, ease: "power1.in" }, TOAST_AT + 0.55);
+        tl.to("#el-10-whisper-toast", { scale: 1, duration: 0.35, ease: "back.out(2.2)" }, TOAST_AT + 0.67);
+
+        tl.to(link, { strokeDashoffset: 0, duration: 2.8, ease: "power2.out" }, 9.0);
+
+        const TRACK_AT = 13.5;
+        tl.fromTo(
+          "#el-10-whisper-track",
+          { opacity: 0, scale: 0.92 },
+          { opacity: 1, scale: 1, duration: 0.7, ease: "power3.out" },
+          TRACK_AT
+        );
+
+        tl.to(
+          {},
+          {
+            duration: 3.5,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time() - TRACK_AT;
+              if (t < 0 || t > 3.5) return;
+              const dx = Math.sin(t * 1.8) * 8;
+              const dy = Math.cos(t * 2.1) * 6;
+              const sc = 1 + Math.sin(t * 2.4) * 0.025;
+              gsap.set("#el-10-whisper-track", { x: dx, y: dy, scale: sc, transformOrigin: "50% 50%" });
+            },
+          },
+          TRACK_AT
+        );
+
+        tl.fromTo(
+          "#el-10-whisper-emphasis",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.7, ease: "power4.out" },
+          17.5
+        );
+        tl.to("#el-10-whisper-emphasis span", { scale: 1.06, duration: 0.3, ease: "power2.out" }, 18.4);
+        tl.to("#el-10-whisper-emphasis span", { scale: 1, duration: 0.35, ease: "power2.out" }, 18.7);
+
+        tl.to({}, { duration: 0.01, ease: "none" }, DURATION);
+
+        window.__timelines[COMP_ID] = tl;
+      </script>
+    </template>
+  </body>
+</html>

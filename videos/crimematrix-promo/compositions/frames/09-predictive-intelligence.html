@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          container-type: size;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .pad {
+          position: absolute;
+          inset: 5cqw 5cqw 180px 5cqw;
+        }
+
+        .slide-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 2.4cqw;
+        }
+
+        .eyebrow {
+          font-size: 1.4cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.55cqw 1.4cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.1cqw;
+          font-weight: 500;
+          color: #f59e0b;
+        }
+
+        .title {
+          font-size: 3.2cqw;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          line-height: 1.1;
+          margin-bottom: 3cqw;
+        }
+
+        .layout {
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 3cqw;
+          align-items: start;
+        }
+
+        .chart-panel {
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-radius: 14px;
+          padding: 2.4cqw;
+          height: 52cqw;
+        }
+
+        .chart-label {
+          font-size: 1.2cqw;
+          font-weight: 600;
+          color: #475569;
+          margin-bottom: 1.6cqw;
+        }
+
+        .chart-svg {
+          width: 100%;
+          height: 42cqw;
+        }
+
+        .chart-svg path {
+          fill: none;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .axis-line {
+          stroke: rgba(71, 85, 105, 0.35);
+          stroke-width: 2;
+        }
+
+        .grid-line {
+          stroke: rgba(71, 85, 105, 0.12);
+          stroke-width: 1;
+        }
+
+        .forecast-line {
+          stroke: #f59e0b;
+          stroke-width: 4;
+        }
+
+        .forecast-area {
+          fill: rgba(245, 158, 11, 0.12);
+          stroke: none;
+        }
+
+        .cards-col {
+          display: flex;
+          flex-direction: column;
+          gap: 1.4cqw;
+        }
+
+        .risk-card {
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-radius: 14px;
+          padding: 2cqw 2.2cqw;
+        }
+
+        .risk-card.is-high {
+          border-color: rgba(245, 158, 11, 0.45);
+          background: rgba(245, 158, 11, 0.08);
+        }
+
+        .risk-label {
+          font-size: 1.1cqw;
+          font-weight: 600;
+          color: #475569;
+          margin-bottom: 0.8cqw;
+        }
+
+        .risk-value {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 3.4cqw;
+          font-weight: 700;
+          color: #f59e0b;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+
+        .risk-bar-track {
+          margin-top: 1.2cqw;
+          height: 0.85cqw;
+          border-radius: 6px;
+          background: rgba(245, 158, 11, 0.08);
+          overflow: hidden;
+        }
+
+        .risk-bar-fill {
+          width: 100%;
+          height: 100%;
+          background: #f59e0b;
+          transform: scaleX(0);
+          transform-origin: left center;
+          border-radius: 6px;
+        }
+
+        .risk-desc {
+          margin-top: 0.7cqw;
+          font-size: 1.05cqw;
+          color: #475569;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="09-predictive-intelligence"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="pad">
+          <div class="slide-header">
+            <div class="eyebrow" id="el-09-predictive-intelligence-eyebrow">Predictive intelligence</div>
+            <div class="tag-pill" id="el-09-predictive-intelligence-tag">Forecast</div>
+          </div>
+          <div class="title" id="el-09-predictive-intelligence-title">Emerging crime patterns</div>
+
+          <div class="layout">
+            <div class="chart-panel" id="el-09-predictive-intelligence-chart-panel">
+              <div class="chart-label">7-day trend forecast</div>
+              <svg class="chart-svg" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
+                <path class="grid-line" id="el-09-pi-grid-1" d="M 80 80 L 760 80" />
+                <path class="grid-line" id="el-09-pi-grid-2" d="M 80 180 L 760 180" />
+                <path class="grid-line" id="el-09-pi-grid-3" d="M 80 280 L 760 280" />
+                <path class="axis-line" id="el-09-pi-axis-x" d="M 80 340 L 760 340" />
+                <path class="axis-line" id="el-09-pi-axis-y" d="M 80 60 L 80 340" />
+                <path
+                  class="forecast-area"
+                  id="el-09-pi-area"
+                  d="M 80 300 L 200 270 L 320 240 L 440 210 L 560 170 L 680 130 L 760 100 L 760 340 L 80 340 Z"
+                />
+                <path
+                  class="forecast-line"
+                  id="el-09-pi-forecast"
+                  d="M 80 300 L 200 270 L 320 240 L 440 210 L 560 170 L 680 130 L 760 100"
+                />
+              </svg>
+            </div>
+
+            <div class="cards-col">
+              <div class="risk-card is-high" id="el-09-pi-card-1">
+                <div class="risk-label">High-risk suspects</div>
+                <div class="risk-value" id="el-09-pi-val-1">0%</div>
+                <div class="risk-bar-track">
+                  <div class="risk-bar-fill" id="el-09-pi-bar-1" style="--pct: 0.87"></div>
+                </div>
+                <div class="risk-desc">Priority queue</div>
+              </div>
+              <div class="risk-card" id="el-09-pi-card-2">
+                <div class="risk-label">Investigation priority</div>
+                <div class="risk-value" id="el-09-pi-val-2">0%</div>
+                <div class="risk-bar-track">
+                  <div class="risk-bar-fill" id="el-09-pi-bar-2" style="--pct: 0.72"></div>
+                </div>
+                <div class="risk-desc">Ranked cases</div>
+              </div>
+              <div class="risk-card" id="el-09-pi-card-3">
+                <div class="risk-label">Trend delta</div>
+                <div class="risk-value" id="el-09-pi-val-3">+0%</div>
+                <div class="risk-bar-track">
+                  <div class="risk-bar-fill" id="el-09-pi-bar-3" style="--pct: 0.58"></div>
+                </div>
+                <div class="risk-desc">Week-over-week</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const COMP_ID = "09-predictive-intelligence";
+        const DURATION = 15.211;
+        const tl = gsap.timeline({ paused: true });
+
+        const drawPaths = ["09-pi-grid-1", "09-pi-grid-2", "09-pi-grid-3", "09-pi-axis-x", "09-pi-axis-y"];
+        drawPaths.forEach((id) => {
+          const path = document.getElementById(id);
+          const len = path.getTotalLength();
+          gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+        });
+
+        const forecast = document.getElementById("09-pi-forecast");
+        const forecastLen = forecast.getTotalLength();
+        gsap.set(forecast, { strokeDasharray: forecastLen, strokeDashoffset: forecastLen });
+
+        const area = document.getElementById("09-pi-area");
+        gsap.set(area, { opacity: 0 });
+
+        gsap.set(
+          ["#el-09-predictive-intelligence-eyebrow", "#el-09-predictive-intelligence-tag", "#el-09-predictive-intelligence-title"],
+          { opacity: 0, y: 24 }
+        );
+        gsap.set("#el-09-predictive-intelligence-chart-panel", { opacity: 0, x: -40 });
+        gsap.set(["#el-09-pi-card-1", "#el-09-pi-card-2", "#el-09-pi-card-3"], { opacity: 0, y: 36, scale: 0.94 });
+
+        const AXIS_AT = 0.2;
+        const AXIS_DUR = 1.2;
+        drawPaths.forEach((id, i) => {
+          tl.to(
+            "#" + id,
+            { strokeDashoffset: 0, duration: AXIS_DUR * 0.35, ease: "power2.out" },
+            AXIS_AT + i * 0.08
+          );
+        });
+
+        tl.fromTo(
+          ["#el-09-predictive-intelligence-eyebrow", "#el-09-predictive-intelligence-tag", "#el-09-predictive-intelligence-title"],
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.08 },
+          0.1
+        );
+
+        tl.fromTo(
+          "#el-09-predictive-intelligence-chart-panel",
+          { opacity: 0, x: -40 },
+          { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" },
+          AXIS_AT
+        );
+
+        tl.to(forecast, { strokeDashoffset: 0, duration: 2.2, ease: "power2.out" }, AXIS_AT + AXIS_DUR);
+        tl.to(area, { opacity: 1, duration: 1.0, ease: "power2.out" }, AXIS_AT + AXIS_DUR + 1.0);
+
+        const CARDS_AT = 5.2;
+        tl.fromTo(
+          "#el-09-pi-card-1",
+          { opacity: 0, y: 36, scale: 0.94 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "back.out(1.6)" },
+          CARDS_AT
+        );
+        tl.fromTo(
+          "#el-09-pi-card-2",
+          { opacity: 0, y: 36, scale: 0.94 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "back.out(1.6)" },
+          CARDS_AT + 0.35
+        );
+        tl.fromTo(
+          "#el-09-pi-card-3",
+          { opacity: 0, y: 36, scale: 0.94 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "back.out(1.6)" },
+          CARDS_AT + 0.7
+        );
+
+        const counterProxy = { v1: 0, v2: 0, v3: 0, s1: 48, s2: 48, s3: 48 };
+        const val1 = document.getElementById("09-pi-val-1");
+        const val2 = document.getElementById("09-pi-val-2");
+        const val3 = document.getElementById("09-pi-val-3");
+
+        tl.to(
+          counterProxy,
+          {
+            v1: 87,
+            v2: 72,
+            v3: 14,
+            s1: 72,
+            s2: 64,
+            s3: 58,
+            duration: 2.4,
+            ease: "power3.out",
+            onUpdate: () => {
+              val1.textContent = Math.round(counterProxy.v1) + "%";
+              val2.textContent = Math.round(counterProxy.v2) + "%";
+              val3.textContent = "+" + Math.round(counterProxy.v3) + "%";
+              val1.style.fontSize = counterProxy.s1 + "px";
+              val2.style.fontSize = counterProxy.s2 + "px";
+              val3.style.fontSize = counterProxy.s3 + "px";
+            },
+          },
+          CARDS_AT + 0.2
+        );
+
+        tl.to("#el-09-pi-bar-1", { scaleX: 0.87, duration: 1.4, ease: "power2.out" }, CARDS_AT + 0.5);
+        tl.to("#el-09-pi-bar-2", { scaleX: 0.72, duration: 1.2, ease: "power2.out" }, CARDS_AT + 0.85);
+        tl.to("#el-09-pi-bar-3", { scaleX: 0.58, duration: 1.0, ease: "power2.out" }, CARDS_AT + 1.15);
+
+        const PIVOT_AT = 9.0;
+        tl.to("#el-09-predictive-intelligence-chart-panel", { x: -30, scale: 0.96, duration: 1.0, ease: "power3.out" }, PIVOT_AT);
+        tl.to(".cards-col", { x: -10, duration: 1.0, ease: "power3.out" }, PIVOT_AT);
+
+        const PULSE_AT = 12.8;
+        tl.to("#el-09-pi-card-1", { scale: 1.04, duration: 0.35, ease: "power2.out" }, PULSE_AT);
+        tl.to("#el-09-pi-card-1", { scale: 1.0, duration: 0.45, ease: "power2.out" }, PULSE_AT + 0.35);
+
+        tl.to({}, { duration: 0.01, ease: "none" }, DURATION);
+
+        window.__timelines[COMP_ID] = tl;
+      </script>
+    </template>
+  </body>
+</html>

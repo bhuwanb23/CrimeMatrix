@@ -19,7 +19,6 @@ import BehavioralProfileTab from './intelligence/BehavioralProfileTab'
 import RepeatOffenderTab from './intelligence/RepeatOffenderTab'
 import MOComparisonTab from './intelligence/MOComparisonTab'
 import CrossDistrictSection from './intelligence/CrossDistrictSection'
-import EvidenceLinkingSection from './intelligence/EvidenceLinkingSection'
 
 export default function CrimeIntelligencePage() {
   const [data, setData] = useState(null)

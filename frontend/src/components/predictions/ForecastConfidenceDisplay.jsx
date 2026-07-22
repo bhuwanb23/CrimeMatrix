@@ -1,4 +1,4 @@
-import { CheckCircle, AlertTriangle, Info } from 'lucide-react'
+import { Info } from 'lucide-react'
 
 export default function ForecastConfidenceDisplay({ forecast }) {
   if (!forecast) return null
@@ -6,8 +6,6 @@ export default function ForecastConfidenceDisplay({ forecast }) {
   const confidence = forecast.confidence || 0
   const level = confidence >= 75 ? 'high' : confidence >= 50 ? 'medium' : 'low'
   const colors = { high: 'text-green-500 bg-green-50', medium: 'text-amber-500 bg-amber-50', low: 'text-red-500 bg-red-50' }
-  const icons = { high: CheckCircle, medium: AlertTriangle, low: Info }
-  const Icon = icons[level]
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-4">

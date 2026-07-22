@@ -9,16 +9,18 @@ export default function SourceReferences({ predictionId }) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (predictionId) loadSources()
-  }, [predictionId])
+    if (!predictionId) return
 
-  async function loadSources() {
-    setLoading(true)
-    try {
-      const res = await getPredictionSources(predictionId)
-      setSources(res?.data?.items || [])
-    } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+    async function loadSources() {
+      setLoading(true)
+      try {
+        const res = await getPredictionSources(predictionId)
+        setSources(res?.data?.items || [])
+      } catch (e) { console.error(e) } finally { setLoading(false) }
+    }
+
+    loadSources()
+  }, [predictionId])
 
   if (sources.length === 0 && !loading) return null
 

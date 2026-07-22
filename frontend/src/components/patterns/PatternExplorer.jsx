@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Clock, MapPin, Crosshair, Layers, FileText } from 'lucide-react'
-import { getPattern, getPatternOccurrences } from '../../services/patterns'
+import { getPattern } from '../../services/patterns'
 
 const typeConfig = {
   time: { icon: Clock, label: 'Time Pattern', color: '#3b82f6' },
@@ -15,22 +15,23 @@ export default function PatternExplorer({ patternId, onClose }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (patternId) loadPattern()
-  }, [patternId])
+    if (!patternId) return
 
-  async function loadPattern() {
-    setLoading(true)
-    try {
-      const res = await getPattern(patternId)
-      const data = res?.data || res
-      setPattern(data)
-      setOccurrences(data?.occurrences || [])
-    } catch (e) {
-      console.error('Failed to load pattern', e)
-    } finally {
-      setLoading(false)
+    async function loadPattern() {
+      setLoading(true)
+      try {
+        const res = await getPattern(patternId)
+        const data = res?.data || res
+        setPattern(data)
+        setOccurrences(data?.occurrences || [])
+      } catch (e) {
+        console.error('Failed to load pattern', e)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
+    loadPattern()
+  }, [patternId])
 
   if (loading) {
     return (

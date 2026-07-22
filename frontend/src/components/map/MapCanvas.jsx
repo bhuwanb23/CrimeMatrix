@@ -1,7 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import MapMarker from './MapMarker'
-import HeatmapOverlay from './HeatmapOverlay'
-import { districts as fallbackDistricts, hotspots as fallbackHotspots, routes as fallbackRoutes, karnatakaOutline } from './mapData'
+import { karnatakaOutline } from './mapData'
 
 const routeColors = {
   'suspect-movement': '#ef4444',
@@ -20,7 +18,7 @@ function latLngToSvg(lat, lng) {
   return { x, y }
 }
 
-export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLayers = [], mapData, loading }) {
+export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistrictSelect, activeLayers = [], mapData, loading }) {
   const svgRef = useRef(null)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })

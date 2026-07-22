@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { HelpCircle, ChevronDown, ChevronRight, AlertTriangle } from 'lucide-react'
-import { explainPrediction, getPredictionSources } from '../../services/predictions'
+import { HelpCircle, AlertTriangle } from 'lucide-react'
+import { explainPrediction } from '../../services/predictions'
 
 export default function PredictionExplanationPanel({ predictionId }) {
   const [explanation, setExplanation] = useState(null)
-  const [expanded, setExpanded] = useState(false)
   const [loading, setLoading] = useState(false)
 
   async function handleExplain() {
@@ -13,7 +12,6 @@ export default function PredictionExplanationPanel({ predictionId }) {
     try {
       const res = await explainPrediction(predictionId)
       setExplanation(res?.data || res)
-      setExpanded(true)
     } catch (e) { console.error(e) } finally { setLoading(false) }
   }
 

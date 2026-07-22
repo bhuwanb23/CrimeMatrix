@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>08-identity-resolution</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap");
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          container-type: size;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .scene {
+          position: absolute;
+          inset: 0;
+          padding: 5cqw 5cqw 0;
+          box-sizing: border-box;
+          max-height: 900px;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .slide-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 2cqw;
+        }
+
+        .eyebrow {
+          font-size: 1.4cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.55cqw 1.4cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.1cqw;
+          font-weight: 600;
+          color: #f59e0b;
+        }
+
+        .headline {
+          font-size: 3.8cqw;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          margin-bottom: 2.4cqw;
+        }
+
+        .resolve-stage {
+          position: relative;
+          flex: 1;
+          min-height: 0;
+        }
+
+        .orbit-wrap {
+          position: absolute;
+          left: 50%;
+          top: 42%;
+          width: 0;
+          height: 0;
+        }
+
+        .name-chip {
+          position: absolute;
+          left: 0;
+          top: 0;
+          padding: 1.2cqw 2.4cqw;
+          border-radius: 100px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 2cqw;
+          font-weight: 700;
+          transform: translate(-50%, -50%);
+          will-change: transform, opacity;
+        }
+
+        .network-svg {
+          position: absolute;
+          inset: 10% 8% 18%;
+          width: 84%;
+          height: 72%;
+          pointer-events: none;
+          opacity: 0;
+        }
+
+        .network-line {
+          stroke: rgba(245, 158, 11, 0.25);
+          stroke-width: 2;
+          stroke-dasharray: 6 8;
+        }
+
+        .morph-card {
+          position: absolute;
+          left: 50%;
+          top: 42%;
+          width: 520px;
+          height: 280px;
+          transform: translate(-50%, -50%);
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          overflow: hidden;
+          display: grid;
+          place-items: center;
+          opacity: 0;
+          will-change: transform, opacity, width, height, border-radius;
+        }
+
+        .identity-inner {
+          text-align: center;
+          padding: 2cqw;
+        }
+
+        .identity-name {
+          font-size: 3.2cqw;
+          font-weight: 700;
+          margin-bottom: 0.8cqw;
+        }
+
+        .identity-meta {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 1.2cqw;
+          color: #475569;
+          margin-bottom: 1.4cqw;
+        }
+
+        .resolved-chip {
+          display: inline-block;
+          padding: 0.7cqw 1.8cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.15);
+          border: 1.5px solid rgba(245, 158, 11, 0.35);
+          font-size: 1.15cqw;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #f59e0b;
+          opacity: 0;
+        }
+
+        .conf-row {
+          margin-top: 1.2cqw;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 1.5cqw;
+          font-weight: 700;
+          color: #f59e0b;
+          opacity: 0;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="08-identity-resolution"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          class="scene clip"
+          id="el-08-identity-resolution-scene"
+          data-start="0"
+          data-duration="13.312"
+          data-track-index="0"
+        >
+          <div class="slide-header">
+            <div class="eyebrow">Identity engine</div>
+            <div class="tag-pill">Indian records</div>
+          </div>
+          <h1 class="headline">One person, many spellings</h1>
+
+          <div class="resolve-stage">
+            <svg class="network-svg" viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg">
+              <line class="network-line" id="el-08-identity-resolution-line-1" x1="600" y1="260" x2="280" y2="120" />
+              <line class="network-line" id="el-08-identity-resolution-line-2" x1="600" y1="260" x2="920" y2="100" />
+              <line class="network-line" id="el-08-identity-resolution-line-3" x1="600" y1="260" x2="600" y2="440" />
+            </svg>
+
+            <div class="orbit-wrap" id="el-08-identity-resolution-orbit">
+              <div class="name-chip" id="el-08-identity-resolution-chip-1">Raj</div>
+              <div class="name-chip" id="el-08-identity-resolution-chip-2">Rajesh</div>
+              <div class="name-chip" id="el-08-identity-resolution-chip-3">Rajendra</div>
+            </div>
+
+            <div class="morph-card" id="el-08-identity-resolution-card">
+              <div class="identity-inner">
+                <div class="identity-name">Rajendra K.</div>
+                <div class="identity-meta">3 records · 2 districts · 1 person</div>
+                <div class="resolved-chip" id="el-08-identity-resolution-badge">Identity resolved</div>
+                <div class="conf-row" id="el-08-identity-resolution-conf">94% match</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        (function () {
+          const DURATION = 13.312;
+          const tl = gsap.timeline({ paused: true });
+
+          const chips = [
+            document.getElementById("08-identity-resolution-chip-1"),
+            document.getElementById("08-identity-resolution-chip-2"),
+            document.getElementById("08-identity-resolution-chip-3"),
+          ];
+          const card = document.getElementById("08-identity-resolution-card");
+          const lines = [
+            document.getElementById("08-identity-resolution-line-1"),
+            document.getElementById("08-identity-resolution-line-2"),
+            document.getElementById("08-identity-resolution-line-3"),
+          ];
+
+          lines.forEach(function (line) {
+            const len = Math.hypot(
+              Number(line.getAttribute("x2")) - Number(line.getAttribute("x1")),
+              Number(line.getAttribute("y2")) - Number(line.getAttribute("y1")),
+            );
+            line.style.strokeDasharray = "6 8";
+            line.style.strokeDashoffset = String(len);
+          });
+
+          tl.fromTo(
+            ".slide-header, .headline",
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.65, ease: "power3.out", stagger: 0.1 },
+            0.1,
+          );
+
+          tl.fromTo(
+            chips[0],
+            { x: -520, y: -40, opacity: 0 },
+            { x: -320, y: -120, opacity: 1, duration: 0.75, ease: "power3.out" },
+            0.4,
+          );
+          tl.fromTo(
+            chips[1],
+            { x: 520, y: -20, opacity: 0 },
+            { x: 340, y: -160, opacity: 1, duration: 0.75, ease: "power3.out" },
+            0.55,
+          );
+          tl.fromTo(
+            chips[2],
+            { x: 0, y: 420, opacity: 0 },
+            { x: 20, y: 200, opacity: 1, duration: 0.75, ease: "power3.out" },
+            0.7,
+          );
+
+          const orbit = { angle: 0 };
+          tl.to(
+            orbit,
+            {
+              angle: Math.PI * 2,
+              duration: 3.2,
+              ease: "power2.inOut",
+              onUpdate: function () {
+                const r = 220 - orbit.angle * 18;
+                const offsets = [0, (Math.PI * 2) / 3, (Math.PI * 4) / 3];
+                chips.forEach(function (chip, i) {
+                  const a = orbit.angle + offsets[i];
+                  const x = Math.cos(a) * r;
+                  const y = Math.sin(a) * r * 0.55;
+                  gsap.set(chip, { x: x, y: y });
+                });
+              },
+            },
+            1.6,
+          );
+
+          tl.to(chips, { opacity: 0, scale: 0.65, duration: 0.45, ease: "power2.in", stagger: 0.06 }, 4.6);
+
+          tl.fromTo(
+            card,
+            { opacity: 0, scale: 0.72, width: 200, height: 80, borderRadius: 100 },
+            { opacity: 1, scale: 1, width: 520, height: 280, borderRadius: 14, duration: 0.9, ease: "power2.inOut" },
+            4.85,
+          );
+
+          tl.to(".network-svg", { opacity: 1, duration: 0.5, ease: "power2.out" }, 5.2);
+          lines.forEach(function (line, i) {
+            tl.to(line, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, 5.35 + i * 0.12);
+          });
+
+          tl.fromTo(
+            "#el-08-identity-resolution-badge",
+            { opacity: 0, scale: 0.85 },
+            { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(1.7)" },
+            6.4,
+          );
+
+          const confEl = document.getElementById("08-identity-resolution-conf");
+          const confState = { v: 0 };
+          tl.to(
+            confState,
+            {
+              v: 94,
+              duration: 1.6,
+              ease: "power3.out",
+              onUpdate: function () {
+                confEl.textContent = Math.round(confState.v) + "% match";
+                confEl.style.opacity = confState.v > 0 ? "1" : "0";
+              },
+            },
+            6.8,
+          );
+
+          tl.to(
+            card,
+            { backgroundColor: "rgba(245,158,11,0.08)", duration: 0.5, ease: "power2.out" },
+            8.6,
+          );
+
+          const breath = { p: 0 };
+          tl.to(
+            breath,
+            {
+              p: Math.PI * 2,
+              duration: 3.0,
+              ease: "none",
+              onUpdate: function () {
+                const s = 1 + Math.sin(breath.p) * 0.02;
+                gsap.set(card, { scale: s });
+              },
+            },
+            10.0,
+          );
+
+          window.__timelines["08-identity-resolution"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

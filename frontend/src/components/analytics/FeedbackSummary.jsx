@@ -4,17 +4,16 @@ import { getEvaluationFeedback } from '../../services/analytics'
 
 export default function FeedbackSummary() {
   const [feedback, setFeedback] = useState([])
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => { loadFeedback() }, [])
-
-  async function loadFeedback() {
-    setLoading(true)
-    try {
-      const res = await getEvaluationFeedback()
-      setFeedback(res?.data?.items || [])
-    } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+  useEffect(() => {
+    async function loadFeedback() {
+      try {
+        const res = await getEvaluationFeedback()
+        setFeedback(res?.data?.items || [])
+      } catch (e) { console.error(e) }
+    }
+    loadFeedback()
+  }, [])
 
   const correct = feedback.filter(f => f.feedback_type === 'correct').length
   const incorrect = feedback.filter(f => f.feedback_type === 'incorrect').length

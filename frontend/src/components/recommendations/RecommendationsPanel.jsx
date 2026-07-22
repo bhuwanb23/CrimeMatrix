@@ -296,6 +296,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                     >
                       <ThumbsDown size={10} />
                     </button>
+                    <ExplainButton onClick={() => handleExplain(rec.id)} loading={explainingId === rec.id} />
                     <ChevronRight size={12} className="ml-auto text-white/20 group-hover:text-white/40 transition-colors" />
                   </div>
                 )}

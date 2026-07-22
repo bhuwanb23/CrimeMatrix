@@ -174,3 +174,6 @@ router.include_router(proactive_api.router, prefix="/proactive", tags=["Proactiv
 
 # FIR Intelligence APIs
 router.include_router(fir_intelligence_api.router, prefix="/fir-intelligence", tags=["FIR Intelligence"])
+
+# Cross-District Intelligence APIs
+router.include_router(cross_district_api.router, prefix="/cross-district", tags=["Cross-District"])

@@ -1,0 +1,123 @@
+﻿{
+  "ok": false,
+  "errorCount": 2,
+  "warningCount": 13,
+  "infoCount": 10,
+  "findings": [
+    {
+      "code": "composition_file_too_large",
+      "severity": "warning",
+      "message": "This HTML composition file has 316 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+      "fixHint": "Split coherent scenes or layers into separate .html files under compositions/, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\index.html"
+    },
+    {
+      "code": "gsap_non_transform_motion",
+      "severity": "error",
+      "message": "GSAP tween on \"#counter\" uses motion that snaps to integer device pixels: fontSize. Layout and text-reflow properties snap during browser layout; roundProps rounds the tween value. Slow motion or an ease-out tail then stutters under the seek-by-frame capture engine ΓÇö animate transforms (x/y/scale/opacity) instead.",
+      "selector": "#counter",
+      "fixHint": "do not animate fontSize (they reflow text and snap glyph positions): replace fontSize with scale (same visual, no reflow). Transforms interpolate sub-pixel and stay smooth at any speed.",
+      "snippet": "tl.fromTo(\"#counter\", { fontSize: \"3.2cqw\", duration: 6.5, ease: \"power3.out\" }, 2.4)",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\01-fragmented-records.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\01-fragmented-records.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\02-intelligent-partner.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\03-introducing-crimematrix.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\04-conversational-copilot.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\05-multilingual-voice.html"
+    },
+    {
+      "code": "gsap_non_transform_motion",
+      "severity": "error",
+      "message": "GSAP tween on \"proxy ΓåÆ style.fontSize\" uses motion that snaps to integer device pixels: fontSize. Layout and text-reflow properties snap during browser layout; roundProps rounds the tween value. Slow motion or an ease-out tail then stutters under the seek-by-frame capture engine ΓÇö animate transforms (x/y/scale/opacity) instead.",
+      "selector": "proxy ΓåÆ style.fontSize",
+      "fixHint": "do not animate fontSize (they reflow text and snap glyph positions): replace fontSize with scale (same visual, no reflow). Transforms interpolate sub-pixel and stay smooth at any speed.",
+      "snippet": "tl.to(\"proxy ΓåÆ style.fontSize\", { value: 92, fontSize: 112, duration: 2.4, ease: \"power3.out\" }, 3.8)",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\06-explainable-answers.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\06-explainable-answers.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\07-intelligence-mosaic.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\08-identity-resolution.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\09-predictive-intelligence.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\10-whisper-alerts.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\11-three-roles.html"
+    },
+    {
+      "code": "google_fonts_import",
+      "severity": "warning",
+      "message": "Composition loads fonts from fonts.googleapis.com. The producer resolves Google Fonts during compile/render, but raw external font requests add latency and can fail before canonicalization. Prefer mapped family names or local @font-face declarations when possible.",
+      "fixHint": "For bundled fonts, remove the Google Fonts <link> or @import and keep the font-family declaration. For custom fonts, use @font-face { font-family: '...'; src: url('...woff2'); }.",
+      "file": "C:\\Users\\bhuwan.bhawarlal\\Desktop\\projects\\CrimeMatrix\\videos\\crimematrix-promo\\compositions\\frames\\12-tagline-cta.html"
+    }
+  ],
+  "filesScanned": 13,
+  "_meta": {
+    "version": "0.7.68",
+    "latestVersion": "0.7.68",
+    "updateAvailable": false
+  }
+}

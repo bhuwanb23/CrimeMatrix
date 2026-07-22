@@ -45,7 +45,8 @@ from app.models.event_queue_record import EventQueueRecord
 from app.models.processed_event import ProcessedEvent
 from app.models.fir_suggestion import FIRSuggestion
 from app.models.fir_analysis_history_record import FIRAnalysisHistoryRecord
-from app.models.processed_event import ProcessedEvent
+from app.models.cross_district_match import CrossDistrictMatch
+from app.models.match_history_record import MatchHistoryRecord
 
 # Core crime data models
 from app.models.crime import Crime

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .rings {
+          position: absolute;
+          left: 50%;
+          top: 42%;
+          transform: translate(-50%, -50%);
+          width: 720px;
+          height: 720px;
+          pointer-events: none;
+        }
+
+        .ring {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 1.5px solid rgba(245, 158, 11, 0.12);
+        }
+
+        .ring:nth-child(2) {
+          inset: 60px;
+          border-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .ring:nth-child(3) {
+          inset: 120px;
+          border-color: rgba(245, 158, 11, 0.08);
+        }
+
+        .stage {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 140px;
+        }
+
+        .accent-line {
+          width: 60px;
+          height: 4px;
+          border-radius: 2px;
+          background: #f59e0b;
+          margin-bottom: 28px;
+        }
+
+        .wordmark {
+          font-size: 118px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1;
+          margin-bottom: 18px;
+        }
+
+        .wordmark span {
+          color: #f59e0b;
+        }
+
+        .tagline {
+          font-size: 44px;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          color: #475569;
+          margin-bottom: 36px;
+        }
+
+        .datathon-pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px 34px;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-family: "JetBrains Mono", monospace;
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          color: #f59e0b;
+          transform-origin: 50% 50%;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="12-tagline-cta"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="rings" id="el-12-tagline-rings">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+
+        <div class="stage">
+          <div class="accent-line" id="el-12-tagline-accent"></div>
+          <div class="wordmark" id="el-12-tagline-wordmark">Crime<span>Matrix</span></div>
+          <div class="tagline" id="el-12-tagline-text">Actionable Intelligence</div>
+          <div class="datathon-pill" id="el-12-tagline-pill">Datathon 2026</div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const COMP_ID = "12-tagline-cta";
+        const DURATION = 4.757;
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set("#el-12-tagline-rings", { opacity: 0, scale: 0.92 });
+        gsap.set("#el-12-tagline-accent", { scaleX: 0, transformOrigin: "center center" });
+        gsap.set("#el-12-tagline-wordmark", { opacity: 0, y: 40, scale: 0.88 });
+        gsap.set("#el-12-tagline-text", { opacity: 0, y: 30, scale: 1.15, filter: "blur(8px)" });
+        gsap.set("#el-12-tagline-pill", { opacity: 0, scale: 0.7 });
+
+        const INTRO_START = 0.15;
+        const INTRO_DUR = 0.55;
+
+        tl.fromTo(
+          "#el-12-tagline-rings",
+          { opacity: 0, scale: 0.92 },
+          { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" },
+          0
+        );
+
+        tl.to("#el-12-tagline-accent", { scaleX: 1, duration: 0.45, ease: "power3.out" }, INTRO_START);
+
+        tl.fromTo(
+          "#el-12-tagline-wordmark",
+          { opacity: 0, y: 40, scale: 0.88 },
+          { opacity: 1, y: 0, scale: 1, duration: INTRO_DUR, ease: "back.out(1.7)" },
+          INTRO_START + 0.05
+        );
+
+        const TAGLINE_AT = INTRO_START + INTRO_DUR + 0.35;
+        tl.fromTo(
+          "#el-12-tagline-text",
+          { opacity: 0, y: 30, scale: 1.15, filter: "blur(8px)" },
+          { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "power4.out" },
+          TAGLINE_AT
+        );
+
+        const PILL_AT = 2.35;
+        tl.fromTo(
+          "#el-12-tagline-pill",
+          { opacity: 0, scale: 0.7 },
+          { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2)" },
+          PILL_AT
+        );
+
+        const PRESS_AT = PILL_AT + 0.65;
+        tl.to("#el-12-tagline-pill", { scale: 0.94, duration: 0.1, ease: "power1.in" }, PRESS_AT);
+        tl.to("#el-12-tagline-pill", { scale: 1, duration: 0.32, ease: "back.out(2.2)" }, PRESS_AT + 0.1);
+
+        tl.to(
+          {},
+          {
+            duration: DURATION,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time();
+              const rot = Math.sin(t * 1.4) * 2.5;
+              const scale = 1 + Math.sin(t * 1.4) * 0.008;
+              gsap.set("#el-12-tagline-wordmark span", { rotate: rot, scale: scale, transformOrigin: "50% 50%" });
+            },
+          },
+          PRESS_AT + 0.5
+        );
+
+        tl.to({}, { duration: 0.01, ease: "none" }, DURATION);
+
+        window.__timelines[COMP_ID] = tl;
+      </script>
+    </template>
+  </body>
+</html>

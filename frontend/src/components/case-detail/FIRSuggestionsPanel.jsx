@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Lightbulb, ExternalLink, Shield, MapPin, Crosshair } from 'lucide-react'
 import { analyzeFIR, getFIRSuggestions } from '../../services/firIntelligence'
 
@@ -15,11 +15,7 @@ export default function FIRSuggestionsPanel({ firId }) {
   const [loading, setLoading] = useState(false)
   const [analyzed, setAnalyzed] = useState(false)
 
-  useEffect(() => {
-    if (firId) loadSuggestions()
-  }, [firId, loadSuggestions])
-
-  async function loadSuggestions() {
+  const loadSuggestions = useCallback(async () => {
     setLoading(true)
     try {
       const res = await getFIRSuggestions(firId)
@@ -27,7 +23,11 @@ export default function FIRSuggestionsPanel({ firId }) {
       setSuggestions(data?.items || [])
       setAnalyzed((data?.items || []).length > 0)
     } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+  }, [firId])
+
+  useEffect(() => {
+    if (firId) loadSuggestions()
+  }, [firId, loadSuggestions])
 
   async function handleAnalyze() {
     setLoading(true)

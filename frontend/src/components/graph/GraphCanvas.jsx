@@ -66,18 +66,7 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
   }
 }
 
-const edgeColors = {
-  accomplice: '#ef4444', fence: '#f59e0b', evidence: '#3b82f6',
-  vehicle: '#8b5cf6', phone: '#10b981', is_criminal: '#f59e0b',
-  has_evidence: '#3b82f6', uses: '#8b5cf6', owns: '#10b981',
-}
-
-const nodeColors = {
-  suspect: '#ef4444', criminal: '#f59e0b', evidence: '#3b82f6',
-  vehicle: '#8b5cf6', phone: '#10b981', victim: '#64748b', witness: '#64748b',
-}
-
-export default function GraphCanvas({ selectedNode, onNodeSelect, activeView, nodes: realNodes, edges: realEdges }) {
+export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _activeView, nodes: realNodes, edges: realEdges }) {
   const svgRef = useRef(null)
   const containerRef = useRef(null)
   const [zoom, setZoom] = useState(1)
@@ -140,9 +129,9 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView, no
 
   const handleMouseUp = () => setIsPanning(false)
 
-  const handleZoomIn = () => setZoom((z) => Math.min(3, z + 0.2))
-  const handleZoomOut = () => setZoom((z) => Math.max(0.3, z - 0.2))
-  const handleReset = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
+  const handleZoomIn = useCallback(() => setZoom((z) => Math.min(3, z + 0.2)), [])
+  const handleZoomOut = useCallback(() => setZoom((z) => Math.max(0.3, z - 0.2)), [])
+  const handleReset = useCallback(() => { setZoom(1); setPan({ x: 0, y: 0 }) }, [])
 
   useEffect(() => {
     if (svgRef.current) {
@@ -150,7 +139,7 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView, no
       svgRef.current.zoomOut = handleZoomOut
       svgRef.current.resetView = handleReset
     }
-  })
+  }, [handleZoomIn, handleZoomOut, handleReset])
 
   const connectedNodeIds = useMemo(() => {
     const ids = new Set()

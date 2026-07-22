@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06-explainable-answers</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap");
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          container-type: size;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .scene {
+          position: absolute;
+          inset: 0;
+          padding: 5cqw 5cqw 0;
+          box-sizing: border-box;
+          max-height: 900px;
+        }
+
+        .slide-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 2cqw;
+        }
+
+        .eyebrow {
+          font-size: 1.4cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.55cqw 1.4cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.1cqw;
+          font-weight: 600;
+          color: #f59e0b;
+        }
+
+        .headline {
+          font-size: 3.6cqw;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          margin-bottom: 2.8cqw;
+        }
+
+        .chain-layout {
+          display: grid;
+          grid-template-columns: 1fr 22cqw;
+          gap: 3cqw;
+          align-items: start;
+        }
+
+        .chain-wrap {
+          position: relative;
+          height: 52cqw;
+        }
+
+        .chain-svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .chain-svg path {
+          fill: none;
+          stroke: rgba(245, 158, 11, 0.35);
+          stroke-width: 3;
+          stroke-linecap: round;
+        }
+
+        .step {
+          position: absolute;
+          width: 18cqw;
+          padding: 1.6cqw 1.8cqw;
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          transform: translate(-50%, -50%);
+          will-change: transform, opacity;
+        }
+
+        .step-num {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 1.1cqw;
+          font-weight: 700;
+          color: #f59e0b;
+          margin-bottom: 0.6cqw;
+        }
+
+        .step-label {
+          font-size: 1.55cqw;
+          font-weight: 700;
+          line-height: 1.25;
+        }
+
+        .step-detail {
+          margin-top: 0.5cqw;
+          font-size: 1.15cqw;
+          color: #475569;
+          line-height: 1.4;
+        }
+
+        .step-final {
+          border-left: 4px solid #f59e0b;
+          background: rgba(245, 158, 11, 0.08);
+        }
+
+        .confidence-card {
+          padding: 2.4cqw;
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          text-align: center;
+        }
+
+        .conf-label {
+          font-size: 1.3cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #475569;
+          margin-bottom: 1.2cqw;
+        }
+
+        .conf-value {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 7cqw;
+          font-weight: 700;
+          color: #f59e0b;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+
+        .conf-suffix {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 3cqw;
+          font-weight: 700;
+          color: #f59e0b;
+        }
+
+        .conf-caption {
+          margin-top: 1.2cqw;
+          font-size: 1.25cqw;
+          color: #475569;
+        }
+
+        .answer-swap {
+          position: relative;
+          margin-top: 2.4cqw;
+          height: 10cqw;
+        }
+
+        .swap-card {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          padding: 0 2.4cqw;
+          border-radius: 12px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.5cqw;
+          font-weight: 600;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .swap-out {
+          z-index: 1;
+        }
+
+        .swap-in {
+          z-index: 2;
+          opacity: 0;
+          transform: scale(0.72);
+          border-left: 4px solid #f59e0b;
+          background: rgba(245, 158, 11, 0.08);
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="06-explainable-answers"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          class="scene clip"
+          id="el-06-explainable-answers-scene"
+          data-start="0"
+          data-duration="12.544"
+          data-track-index="0"
+        >
+          <div class="slide-header">
+            <div class="eyebrow">Explainable AI</div>
+            <div class="tag-pill">Reasoning chain</div>
+          </div>
+          <h1 class="headline">Every answer shows its work</h1>
+
+          <div class="chain-layout">
+            <div class="chain-wrap">
+              <svg class="chain-svg" viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg">
+                <path id="el-06-explainable-answers-path-1" d="M 120 80 L 420 80 L 420 180" />
+                <path id="el-06-explainable-answers-path-2" d="M 420 180 L 720 180 L 720 280" />
+                <path id="el-06-explainable-answers-path-3" d="M 720 280 L 1020 280 L 1020 380" />
+              </svg>
+
+              <div class="step" id="el-06-explainable-answers-step-1" style="left: 10%; top: 15%">
+                <div class="step-num">01</div>
+                <div class="step-label">Parse query</div>
+                <div class="step-detail">Intent + entities</div>
+              </div>
+              <div class="step" id="el-06-explainable-answers-step-2" style="left: 35%; top: 35%">
+                <div class="step-num">02</div>
+                <div class="step-label">Load context</div>
+                <div class="step-detail">Active case memory</div>
+              </div>
+              <div class="step" id="el-06-explainable-answers-step-3" style="left: 60%; top: 54%">
+                <div class="step-num">03</div>
+                <div class="step-label">Cross-reference</div>
+                <div class="step-detail">FIR + evidence links</div>
+              </div>
+              <div class="step step-final" id="el-06-explainable-answers-step-4" style="left: 85%; top: 73%">
+                <div class="step-num">04</div>
+                <div class="step-label">Answer</div>
+                <div class="step-detail">Cited + actionable</div>
+              </div>
+            </div>
+
+            <div class="confidence-card">
+              <div class="conf-label">Confidence</div>
+              <div>
+                <span class="conf-value" id="el-06-explainable-answers-conf">0</span
+                ><span class="conf-suffix">%</span>
+              </div>
+              <div class="conf-caption">Model certainty score</div>
+            </div>
+          </div>
+
+          <div class="answer-swap">
+            <div class="swap-card swap-out" id="el-06-explainable-answers-swap-out">
+              Processing reasoning steps…
+            </div>
+            <div class="swap-card swap-in" id="el-06-explainable-answers-swap-in">
+              3 linked FIRs · 2 districts · sources cited
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+
+          const paths = [
+            document.getElementById("06-explainable-answers-path-1"),
+            document.getElementById("06-explainable-answers-path-2"),
+            document.getElementById("06-explainable-answers-path-3"),
+          ];
+          paths.forEach(function (p) {
+            const len = p.getTotalLength();
+            p.style.strokeDasharray = String(len);
+            p.style.strokeDashoffset = String(len);
+          });
+
+          tl.fromTo(
+            ".slide-header, .headline",
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.65, ease: "power3.out", stagger: 0.1 },
+            0.1,
+          );
+
+          tl.to(
+            "#el-06-explainable-answers-path-1",
+            { strokeDashoffset: 0, duration: 0.55, ease: "power2.out" },
+            0.45,
+          );
+          tl.to(
+            "#el-06-explainable-answers-path-2",
+            { strokeDashoffset: 0, duration: 0.55, ease: "power2.out" },
+            0.85,
+          );
+          tl.to(
+            "#el-06-explainable-answers-path-3",
+            { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" },
+            1.25,
+          );
+
+          const steps = [
+            "#el-06-explainable-answers-step-1",
+            "#el-06-explainable-answers-step-2",
+            "#el-06-explainable-answers-step-3",
+            "#el-06-explainable-answers-step-4",
+          ];
+          steps.forEach(function (sel, i) {
+            tl.fromTo(
+              sel,
+              { opacity: 0, scale: 0.82, y: 16 },
+              { opacity: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.5)" },
+              0.55 + i * 0.85,
+            );
+          });
+
+          tl.fromTo(
+            ".confidence-card",
+            { opacity: 0, x: 40 },
+            { opacity: 1, x: 0, duration: 0.7, ease: "power2.out" },
+            1.0,
+          );
+
+          const counter = document.getElementById("el-06-explainable-answers-conf");
+          const state = { value: 0 };
+          tl.fromTo(counter, { scale: 0.85 }, { scale: 1.12, duration: 2.4, ease: "power3.out" }, 3.8);
+          tl.to(
+            state,
+            {
+              value: 92,
+              duration: 2.4,
+              ease: "power3.out",
+              onUpdate: function () {
+                counter.textContent = String(Math.round(state.value));
+              },
+            },
+            3.8,
+          );
+
+          const TRIGGER = 6.2;
+          tl.to(
+            "#el-06-explainable-answers-swap-out",
+            { scale: 0.72, opacity: 0, duration: 0.4, ease: "power2.in" },
+            TRIGGER,
+          );
+          tl.to(
+            "#el-06-explainable-answers-swap-in",
+            { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.6)" },
+            TRIGGER + 0.22,
+          );
+
+          tl.to(
+            "#el-06-explainable-answers-step-4",
+            {
+              backgroundColor: "rgba(245,158,11,0.15)",
+              scale: 1.04,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            8.4,
+          );
+
+          const glow = { p: 0 };
+          tl.to(
+            glow,
+            {
+              p: Math.PI * 2,
+              duration: 2.8,
+              ease: "none",
+              onUpdate: function () {
+                const pulse = 1 + Math.sin(glow.p) * 0.04;
+                gsap.set("#el-06-explainable-answers-step-4", { scale: pulse });
+              },
+            },
+            9.5,
+          );
+
+          window.__timelines["06-explainable-answers"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -41,6 +41,10 @@ function App() {
           <Route path="/search/suspects" element={<UnifiedSearchPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/intelligence" element={<CrimeIntelligencePage />} />
+          <Route path="/intelligence/profiling" element={<CrimeIntelligencePage />} />
+          <Route path="/intelligence/mo" element={<CrimeIntelligencePage />} />
+          <Route path="/intelligence/cross-district" element={<CrimeIntelligencePage />} />
+          <Route path="/intelligence/evidence-linking" element={<CrimeIntelligencePage />} />
           <Route path="/patterns" element={<PatternDiscoveryPage />} />
           <Route path="/timeline" element={<CriminalTimelinePage />} />
           <Route path="/pattern-timeline" element={<CrimePatternTimelinePage />} />

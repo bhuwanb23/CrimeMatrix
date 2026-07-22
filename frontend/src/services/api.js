@@ -54,7 +54,7 @@ export function stream(path, data, onChunk, onDone) {
                             const chunk = JSON.parse(line.slice(6));
                             if (chunk.done) { onDone(); return; }
                             if (chunk.content) { onChunk(chunk.content); }
-                        } catch (e) {}
+                        } catch { /* ignore malformed chunk */ }
                     }
                 }
                 read();

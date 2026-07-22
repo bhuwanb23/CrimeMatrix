@@ -1,4 +1,4 @@
-import { ArrowUpRight, ArrowDownRight, Minus, AlertTriangle, Users, Shield, FileText, TrendingUp } from 'lucide-react'
+import { AlertTriangle, Users, Shield, FileText, TrendingUp } from 'lucide-react'
 
 const cardConfig = [
   { key: 'total_crimes', label: 'Total Crimes', icon: FileText, color: '#f59e0b' },

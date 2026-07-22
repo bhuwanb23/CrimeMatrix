@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { GitBranch, RefreshCw, Layers, Search } from 'lucide-react'
 import { detectPatterns, listPatterns, getPatternStats } from '../services/patterns'
 import PatternCard from './patterns/PatternCard'
@@ -20,11 +20,7 @@ export default function PatternDiscoveryPage() {
   const [typeFilter, setTypeFilter] = useState('')
   const [selectedPattern, setSelectedPattern] = useState(null)
 
-  useEffect(() => {
-    loadData()
-  }, [typeFilter])
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true)
     try {
       const [patternsRes, statsRes] = await Promise.all([
@@ -40,7 +36,11 @@ export default function PatternDiscoveryPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [typeFilter])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   async function handleDetect() {
     setDetecting(true)

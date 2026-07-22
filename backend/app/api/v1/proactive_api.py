@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from app.db.session import get_db
 from app.services.event_processing_service import EventProcessingService
+from app.services.intelligence_explanation_service import IntelligenceExplanationService
 from app.core.response import success_response
 
 router = APIRouter()

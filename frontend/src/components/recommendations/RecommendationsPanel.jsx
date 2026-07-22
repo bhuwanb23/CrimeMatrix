@@ -8,6 +8,9 @@ import {
   getDashboardRecommendations, getCaseRecommendations, getInvestigationRecommendations,
   getAllRecommendations, submitFeedback, generateRecommendations,
 } from '../../services/recommendations'
+import { explainRecommendation } from '../../services/proactive'
+import ExplainButton from '../intelligence/ExplainButton'
+import ExplanationPanel from '../intelligence/ExplanationPanel'
 
 const typeConfig = {
   similar_case: { icon: FileText, label: 'Similar Case', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', route: '/cases' },

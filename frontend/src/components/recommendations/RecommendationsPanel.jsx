@@ -39,6 +39,8 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [feedbackMap, setFeedbackMap] = useState({})
+  const [explainingId, setExplainingId] = useState(null)
+  const [explanation, setExplanation] = useState(null)
   const navigate = useNavigate()
 
   const loadRecommendations = useCallback(async () => {

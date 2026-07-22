@@ -1,4 +1,4 @@
-import { Search, RotateCcw } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 
 const timeRanges = [
   { value: '7d', label: '7 Days' },

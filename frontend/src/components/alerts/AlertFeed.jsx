@@ -1,5 +1,5 @@
 import { alertTypes } from './alertsData'
-import { ChevronRight, ExternalLink } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 
 export default function AlertFeed({ alerts, onAlertSelect, selectedAlert }) {
   return (

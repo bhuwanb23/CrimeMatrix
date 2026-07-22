@@ -120,7 +120,7 @@ export default function CrimeIntelligencePage() {
                 onClick={() => navigate(tab.path)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                   activeTab === tab.id
-                    ? 'bg-blue-500 text-white shadow-sm'
+                    ? 'bg-orange-500 text-white shadow-sm'
                     : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                 }`}
               >

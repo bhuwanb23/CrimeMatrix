@@ -98,3 +98,10 @@ async def activity_feed(
     svc = get_service(db)
     activity = await svc.get_activity(limit)
     return success_response(data={"items": activity, "total": len(activity)})
+
+
+@router.post("/batch-process")
+async def batch_process(db: AsyncSession = Depends(get_db)):
+    svc = get_service(db)
+    result = await svc.batch_process()
+    return success_response(data=result, message="Batch processing complete")

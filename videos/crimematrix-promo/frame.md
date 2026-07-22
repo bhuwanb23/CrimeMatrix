@@ -14,16 +14,14 @@ colors:
   bg: "#ffffff"
   primary: "#f59e0b"
   text: "#0f172a"
-  text-muted: "#D07206"
-  text-light: "#FAA13A"
+  text-muted: "#475569"
+  text-light: "#94a3b8"
   accent-light: "rgba(245,158,11,0.08)"
   accent-medium: "rgba(245,158,11,0.15)"
   border: "rgba(245,158,11,0.2)"
   card-bg: "rgba(15,23,42,0.04)"
   positive: "#10b981"
   negative: "#ef4444"
-  text-muted: "#475569"
-  text-light: "#94a3b8"
 
 radii:
   pill: "100px"

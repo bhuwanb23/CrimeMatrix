@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ClipboardList } from 'lucide-react'
 import CaseListPanel from './investigation/CaseListPanel'
 import WorkspacePanel from './investigation/WorkspacePanel'
 import ToolsPanel from './investigation/ToolsPanel'
@@ -55,7 +56,24 @@ export default function InvestigationPage() {
   }
 
   return (
-    <div className="investigation-page">
+    <div className="flex flex-col gap-4 h-[calc(100vh-var(--header-height))]">
+      {/* Hero Header */}
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 text-white shadow-lg shadow-orange-500/20 shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+            <ClipboardList size={20} />
+          </div>
+          <div>
+            <h1 className="text-lg font-bold">Investigation Workspace</h1>
+            <p className="text-white/80 text-xs">Command center for active investigations</p>
+          </div>
+          <div className="ml-auto flex items-center gap-2 text-white/80 text-xs">
+            <span>{investigations.length} investigations</span>
+            {selectedId && <span className="text-white/60">• Viewing #{selectedId}</span>}
+          </div>
+        </div>
+      </div>
+      <div className="investigation-page flex-1 min-h-0">
       <CaseListPanel
         investigations={investigations}
         selectedId={selectedId}

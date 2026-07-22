@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          container-type: size;
+          background: #ffffff;
+          overflow: hidden;
+          font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+          color: #0f172a;
+        }
+
+        .bg-glow {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            ellipse at 50% 42%,
+            rgba(245, 158, 11, 0.06) 0%,
+            transparent 55%
+          );
+          pointer-events: none;
+        }
+
+        .phrase-wrap {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 8cqw;
+        }
+
+        .phrase-stage {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
+          justify-content: center;
+          max-width: 78cqw;
+          font-size: 4.2cqw;
+          font-weight: 700;
+          line-height: 1.12;
+          letter-spacing: -0.02em;
+          white-space: pre-wrap;
+          text-align: center;
+          will-change: transform, opacity;
+        }
+
+        .phrase-main {
+          color: #0f172a;
+        }
+
+        .phrase-accent {
+          color: #f59e0b;
+        }
+
+        .phrase-cursor {
+          display: inline-block;
+          width: 0.35cqw;
+          height: 4.4cqw;
+          background: #0f172a;
+          margin-left: 0.3cqw;
+          vertical-align: baseline;
+          transform: translateY(0.15cqw);
+          will-change: opacity, transform;
+        }
+
+        .accent-line {
+          position: absolute;
+          left: 50%;
+          top: 62cqh;
+          width: 0;
+          height: 4px;
+          border-radius: 2px;
+          background: #f59e0b;
+          transform: translateX(-50%);
+          will-change: transform, opacity;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="02-intelligent-partner"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="bg-glow"></div>
+        <div class="phrase-wrap">
+          <div class="phrase-stage" id="phrase-stage">
+            <span class="phrase-main" id="phrase-main"></span
+            ><span class="phrase-accent" id="phrase-accent"></span
+            ><span class="phrase-cursor" id="phrase-cursor"></span>
+          </div>
+        </div>
+        <div class="accent-line" id="accent-line"></div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const DURATION = 4.715;
+
+        const TEXT_MAIN = "What if · ";
+        const TEXT_ACCENT = "intelligent partner";
+        const CHAR_SPEED = 0.05;
+        const TYPE_START = 0.55;
+        const TYPE_END = TYPE_START + (TEXT_MAIN.length + TEXT_ACCENT.length) * CHAR_SPEED;
+        const UNDERLINE_START = TYPE_END + 0.15;
+        const BLINK_CYCLE = 0.9;
+
+        const stage = document.getElementById("phrase-stage");
+        const mainEl = document.getElementById("phrase-main");
+        const accentEl = document.getElementById("phrase-accent");
+        const cursorEl = document.getElementById("phrase-cursor");
+        const lineEl = document.getElementById("accent-line");
+
+        tl.fromTo(
+          stage,
+          { opacity: 0, scale: 1.18, y: 40 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: "power4.out" },
+          0,
+        );
+
+        tl.to(
+          { clock: 0 },
+          {
+            clock: DURATION,
+            duration: DURATION,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time();
+              if (t < TYPE_START) {
+                mainEl.textContent = "";
+                accentEl.textContent = "";
+              } else if (t < TYPE_END) {
+                const activeT = t - TYPE_START;
+                const charIdx = Math.floor(activeT / CHAR_SPEED);
+                const mainLen = TEXT_MAIN.length;
+                const visMain = TEXT_MAIN.slice(0, Math.min(charIdx, mainLen));
+                const visAccent = TEXT_ACCENT.slice(0, Math.max(0, charIdx - mainLen));
+                if (mainEl.textContent !== visMain) mainEl.textContent = visMain;
+                if (accentEl.textContent !== visAccent) accentEl.textContent = visAccent;
+                const inAccent = visMain.length === mainLen && visAccent.length > 0;
+                cursorEl.style.background = inAccent ? "#f59e0b" : "#el-0f172a";
+              } else {
+                mainEl.textContent = TEXT_MAIN;
+                accentEl.textContent = TEXT_ACCENT;
+                cursorEl.style.background = "#f59e0b";
+              }
+              cursorEl.style.opacity = (t % BLINK_CYCLE) < BLINK_CYCLE / 2 ? "1" : "0";
+            },
+          },
+          0,
+        );
+
+        tl.fromTo(
+          lineEl,
+          { width: 0, opacity: 0 },
+          { width: 420, opacity: 1, duration: 0.55, ease: "power2.out" },
+          UNDERLINE_START,
+        );
+
+        tl.to(
+          { tick: 0 },
+          {
+            tick: 1,
+            duration: DURATION - UNDERLINE_START - 0.55,
+            ease: "none",
+            onUpdate: function () {
+              const idle = Math.max(0, tl.time() - (UNDERLINE_START + 0.55));
+              const omega = (idle / 2.2) * Math.PI * 2;
+              gsap.set(stage, { scale: 1 + Math.sin(omega) * 0.012 });
+              gsap.set(lineEl, { scaleX: 1 + Math.sin(omega) * 0.04, transformOrigin: "50% 50%" });
+            },
+          },
+          UNDERLINE_START + 0.55,
+        );
+
+        window.__timelines["02-intelligent-partner"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

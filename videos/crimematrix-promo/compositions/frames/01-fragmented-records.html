@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          container-type: size;
+          background: #ffffff;
+          overflow: hidden;
+          font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+          color: #0f172a;
+        }
+
+        .header-band {
+          position: absolute;
+          top: 5cqw;
+          left: 5cqw;
+          right: 5cqw;
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          z-index: 2;
+        }
+
+        .eyebrow {
+          font-size: 0.8cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.45cqw 1.1cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          color: #f59e0b;
+          font-size: 0.65cqw;
+          font-weight: 500;
+        }
+
+        .stat-block {
+          position: absolute;
+          top: 14cqw;
+          left: 5cqw;
+          z-index: 3;
+        }
+
+        .stat-num {
+          font-size: 3.2cqw;
+          font-weight: 700;
+          line-height: 1;
+          color: #f59e0b;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+          margin-top: 0.6cqw;
+          font-size: 1.1cqw;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #475569;
+        }
+
+        .grid-stage {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+        }
+
+        .card-field {
+          position: relative;
+          width: 78cqw;
+          height: 58cqh;
+        }
+
+        .fir-card {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 14cqw;
+          padding: 1.1cqw 1.2cqw;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-radius: 12px;
+          will-change: transform, opacity;
+        }
+
+        .fir-id {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.72cqw;
+          font-weight: 600;
+          color: #f59e0b;
+          margin-bottom: 0.5cqw;
+        }
+
+        .fir-district {
+          font-size: 0.85cqw;
+          font-weight: 600;
+          color: #0f172a;
+          margin-bottom: 0.35cqw;
+        }
+
+        .fir-meta {
+          font-size: 0.7cqw;
+          color: #475569;
+          line-height: 1.4;
+        }
+
+        .orphan-chip {
+          position: absolute;
+          bottom: 18cqh;
+          right: 8cqw;
+          padding: 0.5cqw 1cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.15);
+          color: #f59e0b;
+          font-size: 0.75cqw;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          will-change: transform;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="01-fragmented-records"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="header-band">
+          <div class="eyebrow">Operational pain</div>
+          <div class="tag-pill">Fragmented</div>
+        </div>
+
+        <div class="stat-block">
+          <div class="stat-num" id="counter">0</div>
+          <div class="stat-label">Records / day</div>
+        </div>
+
+        <div class="grid-stage">
+          <div class="card-field" id="card-field">
+            <div class="fir-card" data-tx="-520" data-ty="-180" data-drift-x="18" data-drift-y="-12" data-rot="-4">
+              <div class="fir-id">FIR/2024/0892</div>
+              <div class="fir-district">Bengaluru Urban</div>
+              <div class="fir-meta">Theft · Pending link</div>
+            </div>
+            <div class="fir-card" data-tx="-260" data-ty="-220" data-drift-x="-14" data-drift-y="8" data-rot="3">
+              <div class="fir-id">FIR/2024/1147</div>
+              <div class="fir-district">Mysuru</div>
+              <div class="fir-meta">Assault · No match</div>
+            </div>
+            <div class="fir-card" data-tx="0" data-ty="-240" data-drift-x="22" data-drift-y="-6" data-rot="-2">
+              <div class="fir-id">FIR/2024/0318</div>
+              <div class="fir-district">Hubballi</div>
+              <div class="fir-meta">Fraud · Isolated</div>
+            </div>
+            <div class="fir-card" data-tx="260" data-ty="-200" data-drift-x="-20" data-drift-y="14" data-rot="5">
+              <div class="fir-id">FIR/2024/0563</div>
+              <div class="fir-district">Belagavi</div>
+              <div class="fir-meta">Burglary · Unlinked</div>
+            </div>
+            <div class="fir-card" data-tx="520" data-ty="-160" data-drift-x="10" data-drift-y="-18" data-rot="-3">
+              <div class="fir-id">FIR/2024/0921</div>
+              <div class="fir-district">Mangaluru</div>
+              <div class="fir-meta">Cyber · Siloed</div>
+            </div>
+            <div class="fir-card" data-tx="-480" data-ty="40" data-drift-x="-16" data-drift-y="10" data-rot="2">
+              <div class="fir-id">FIR/2024/0445</div>
+              <div class="fir-district">Kalaburagi</div>
+              <div class="fir-meta">Robbery · Manual</div>
+            </div>
+            <div class="fir-card" data-tx="-140" data-ty="80" data-drift-x="24" data-drift-y="-8" data-rot="-5">
+              <div class="fir-id">FIR/2024/0788</div>
+              <div class="fir-district">Davanagere</div>
+              <div class="fir-meta">Missing · Orphan</div>
+            </div>
+            <div class="fir-card" data-tx="180" data-ty="60" data-drift-x="-12" data-drift-y="16" data-rot="4">
+              <div class="fir-id">FIR/2024/1203</div>
+              <div class="fir-district">Shivamogga</div>
+              <div class="fir-meta">NDPS · Split DB</div>
+            </div>
+            <div class="fir-card" data-tx="480" data-ty="100" data-drift-x="8" data-drift-y="-10" data-rot="-1">
+              <div class="fir-id">FIR/2024/0677</div>
+              <div class="fir-district">Ballari</div>
+              <div class="fir-meta">Vehicle · No graph</div>
+            </div>
+            <div class="fir-card orphan-card" data-tx="60" data-ty="240" data-drift-x="30" data-drift-y="20" data-rot="7">
+              <div class="fir-id">FIR/2024/0156</div>
+              <div class="fir-district">Tumakuru</div>
+              <div class="fir-meta">Chain snatch · Lost</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="orphan-chip" id="orphan-chip">Unlinked record</div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const DURATION = 16.661;
+
+        const cards = gsap.utils.toArray(".fir-card");
+        const counterEl = document.getElementById("counter");
+        const orphanChip = document.getElementById("orphan-chip");
+        const orphanCard = document.querySelector(".orphan-card");
+
+        cards.forEach((card) => {
+          const tx = Number(card.dataset.tx);
+          const ty = Number(card.dataset.ty);
+          gsap.set(card, {
+            x: 0,
+            y: 0,
+            xPercent: -50,
+            yPercent: -50,
+            opacity: 0,
+            scale: 0.6,
+            rotation: 0,
+          });
+          card._tx = tx;
+          card._ty = ty;
+          card._driftX = Number(card.dataset.driftX);
+          card._driftY = Number(card.dataset.driftY);
+          card._rot = Number(card.dataset.rot);
+        });
+
+        gsap.set(".stat-block", { opacity: 0, y: 24 });
+        gsap.set(orphanChip, { opacity: 0, y: 16 });
+
+        tl.fromTo(
+          cards,
+          { opacity: 0, scale: 0.6, x: 0, y: 0 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 1.8,
+            ease: "power2.out",
+            stagger: 0.06,
+          },
+          0,
+        );
+
+        tl.to(
+          { progress: 0 },
+          {
+            progress: 1,
+            duration: 2.2,
+            ease: "power3.out",
+            onUpdate: function () {
+              const p = this.targets()[0].progress;
+              cards.forEach((card) => {
+                gsap.set(card, {
+                  x: card._tx * p,
+                  y: card._ty * p,
+                  rotation: card._rot * p,
+                });
+              });
+            },
+          },
+          0.15,
+        );
+
+        tl.fromTo(
+          ".stat-block",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+          2.2,
+        );
+
+        tl.fromTo(
+          counterEl,
+          { scale: 0.85 },
+          { scale: 1.08, duration: 6.5, ease: "power3.out" },
+          2.4,
+        );
+
+        tl.to(
+          { val: 0 },
+          {
+            val: 2400,
+            duration: 6.5,
+            ease: "power3.out",
+            onUpdate: function () {
+              const v = Math.round(this.targets()[0].val);
+              counterEl.textContent = v.toLocaleString("en-IN");
+            },
+          },
+          2.4,
+        );
+
+        tl.to(
+          { drift: 0 },
+          {
+            drift: 1,
+            duration: 9.0,
+            ease: "none",
+            onUpdate: function () {
+              const d = this.targets()[0].drift;
+              cards.forEach((card) => {
+                gsap.set(card, {
+                  x: card._tx + card._driftX * d,
+                  y: card._ty + card._driftY * d,
+                  rotation: card._rot + card._rot * 0.4 * d,
+                });
+              });
+            },
+          },
+          3.0,
+        );
+
+        tl.fromTo(
+          orphanChip,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+          11.5,
+        );
+
+        const orphanFinalX = orphanCard._tx + orphanCard._driftX;
+        const orphanFinalY = orphanCard._ty + orphanCard._driftY;
+
+        tl.to(
+          { tick: 0 },
+          {
+            tick: 1,
+            duration: DURATION - 12.0,
+            ease: "none",
+            onUpdate: function () {
+              const idle = Math.max(0, tl.time() - 12.0);
+              const omega = (idle / 2.0) * Math.PI * 2;
+              const breath = Math.sin(omega) * 0.035;
+              gsap.set(orphanCard, {
+                scale: 1 + breath,
+                y: orphanFinalY + Math.sin(omega) * 6,
+                x: orphanFinalX + Math.cos(omega) * 4,
+              });
+            },
+          },
+          12.0,
+        );
+
+        window.__timelines["01-fragmented-records"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

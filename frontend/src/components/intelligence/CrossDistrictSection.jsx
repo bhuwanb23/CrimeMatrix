@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Globe, RefreshCw, ArrowRight, MapPin, Shield, Phone, Car } from 'lucide-react'
+import { Globe, ArrowRight, MapPin, Shield, Phone, Car } from 'lucide-react'
 import { detectCrossDistrict, listCrossDistrictMatches, getCrossDistrictStats } from '../../services/crossDistrict'
 
 const matchIcons = { suspect: Shield, vehicle: Car, phone: Phone, evidence: MapPin }
@@ -7,22 +7,18 @@ const matchColors = { suspect: '#ef4444', vehicle: '#8b5cf6', phone: '#10b981', 
 
 export default function CrossDistrictSection() {
   const [matches, setMatches] = useState([])
-  const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [detecting, setDetecting] = useState(false)
 
   useEffect(() => { loadData() }, [])
 
   async function loadData() {
-    setLoading(true)
     try {
-      const [matchesRes, statsRes] = await Promise.all([
+      const [matchesRes] = await Promise.all([
         listCrossDistrictMatches(),
         getCrossDistrictStats(),
       ])
       setMatches(matchesRes?.data?.items || [])
-      setStats(statsRes?.data || statsRes)
-    } catch (e) { console.error(e) } finally { setLoading(false) }
+    } catch (e) { console.error(e) }
   }
 
   async function handleDetect() {

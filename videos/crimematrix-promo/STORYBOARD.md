@@ -21,7 +21,7 @@ vo_mode: verbatim
 - persuasion: Pain agitation
 - beat: overwhelm + frustration
 - scene: Dense grid of siloed FIR cards drifting out of alignment
-- duration: 8s
+- duration: 16.661s
 - poster: 3s
 - transition_in: cut
 - status: outline
@@ -44,7 +44,7 @@ Entrance: FIR cards scatter from center into a messy grid. Development: a count-
 - persuasion: Future pacing
 - beat: curiosity + intrigue
 - scene: Single display question on calm navy-gold field
-- duration: 4s
+- duration: 4.715s
 - poster: 2s
 - transition_in: crossfade
 - status: outline
@@ -68,7 +68,7 @@ Entrance: question phrase slams in on beat. Development: Base messaging-multi-ph
 - persuasion: Category announcement
 - beat: clarity + confidence
 - scene: CrimeMatrix wordmark lockup with KSP positioning line
-- duration: 3s
+- duration: 7.488s
 - poster: 1.5s
 - transition_in: crossfade
 - status: outline
@@ -92,7 +92,7 @@ Entrance: companion “Introducing” assembles beside CrimeMatrix. Development:
 - persuasion: Show-don’t-tell proof
 - beat: ease + trust
 - scene: Officer chat mock — natural-language question to AI answer card
-- duration: 10s
+- duration: 5.461s
 - poster: 4s
 - transition_in: crossfade
 - status: outline
@@ -115,7 +115,7 @@ Entrance: chat shell rises. Development: officer question types in; AI answer ca
 - persuasion: Friction reduction
 - beat: relief + belonging
 - scene: Language chips EN / KN / Kanglish with sample Kanglish query
-- duration: 7s
+- duration: 10.304s
 - poster: 3s
 - transition_in: crossfade
 - status: outline
@@ -138,7 +138,7 @@ Entrance: three language pills slide in. Development: Kanglish sample query type
 - persuasion: Risk reversal
 - beat: trust + control
 - scene: Reasoning chain steps with confidence percentage
-- duration: 8s
+- duration: 12.544s
 - poster: 3s
 - transition_in: crossfade
 - status: outline
@@ -161,7 +161,7 @@ Entrance: chain nodes draw in via SVG path. Development: steps reveal sequential
 - persuasion: Value stacking
 - beat: awe + power
 - scene: Rapid mosaic of graph, hotspot map, timeline rail
-- duration: 15s
+- duration: 21.717s
 - poster: 6s
 - transition_in: crossfade
 - status: outline
@@ -185,7 +185,7 @@ Entrance: capability tiles expand from center. Development: Base messaging-multi
 - persuasion: Demonstration of capability
 - beat: clarity + relief
 - scene: Name variants Raj / Rajesh / Rajendra merge into one identity card
-- duration: 15s
+- duration: 13.312s
 - poster: 6s
 - transition_in: crossfade
 - status: outline
@@ -208,7 +208,7 @@ Entrance: three name chips enter from edges. Development: chips orbit then colla
 - persuasion: Future pacing
 - beat: confidence + control
 - scene: Forecast chart with risk score cards
-- duration: 15s
+- duration: 15.211s
 - poster: 6s
 - transition_in: crossfade
 - status: outline
@@ -232,7 +232,7 @@ Entrance: chart axis draws. Development: Base metric-video-text-pivot — Keep m
 - persuasion: Urgency / empowerment and control
 - beat: awe + urgency
 - scene: Whisper Alert toast linking two districts in real time
-- duration: 15s
+- duration: 20.523s
 - poster: 6s
 - transition_in: crossfade
 - status: outline
@@ -255,7 +255,7 @@ Entrance: monitoring pulse. Development: Whisper Alert toast springs in; SVG lin
 - persuasion: Rule of three
 - beat: inevitability + confidence
 - scene: Three stacked role lines as typographic manifesto
-- duration: 12s
+- duration: 17.771s
 - poster: 5s
 - transition_in: crossfade
 - status: outline
@@ -279,7 +279,7 @@ Entrance: “more than a dashboard” strikes. Development: Base messaging-multi
 - persuasion: Authority by association
 - beat: triumph + peace of mind
 - scene: CrimeMatrix wordmark, tagline, Datathon 2026 line
-- duration: 8s
+- duration: 4.757s
 - poster: 3s
 - transition_in: crossfade
 - status: outline

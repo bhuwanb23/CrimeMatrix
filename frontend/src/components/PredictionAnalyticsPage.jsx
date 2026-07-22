@@ -145,6 +145,7 @@ export default function PredictionAnalyticsPage() {
         <PredictionExplanationPanel predictionId={predictions[0]?.id} />
         <SourceReferences predictionId={predictions[0]?.id} />
       </div>
+      </div>
     </div>
   )
 }

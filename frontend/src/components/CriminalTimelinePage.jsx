@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Clock, RefreshCw, Filter, User, FileText, Shield, Camera, AlertTriangle, ArrowRight } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Clock, RefreshCw, User, FileText, Shield, Camera, AlertTriangle, ArrowRight } from 'lucide-react'
 import { getFullTimeline, getTimelineStats, getSuspectTimeline } from '../services/criminalTimeline'
 
 const typeConfig = {
@@ -34,11 +34,7 @@ export default function CriminalTimelinePage() {
   const [suspectSearch, setSuspectSearch] = useState('')
   const [expandedGroup, setExpandedGroup] = useState(null)
 
-  useEffect(() => {
-    loadTimeline()
-  }, [days, eventType])
-
-  async function loadTimeline() {
+  const loadTimeline = useCallback(async () => {
     setLoading(true)
     try {
       const [timelineRes, statsRes] = await Promise.all([
@@ -52,7 +48,11 @@ export default function CriminalTimelinePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [days, eventType])
+
+  useEffect(() => {
+    loadTimeline()
+  }, [loadTimeline])
 
   async function handleSuspectSearch() {
     if (!suspectSearch.trim()) return

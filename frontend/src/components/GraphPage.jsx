@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
-import { Network, RefreshCw, Plus } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { RefreshCw, Plus } from 'lucide-react'
 import GraphCanvas from './graph/GraphCanvas'
 import NodeDetailsPanel from './graph/NodeDetailsPanel'
 import GraphControls from './graph/GraphControls'
@@ -16,11 +16,7 @@ export default function GraphPage() {
   const [typeFilter, setTypeFilter] = useState([])
   const canvasRef = useRef(null)
 
-  useEffect(() => {
-    loadGraph()
-  }, [])
-
-  async function loadGraph() {
+  const loadGraph = useCallback(async () => {
     setLoading(true)
     try {
       const [nodesRes, edgesRes, statsRes] = await Promise.all([
@@ -38,7 +34,11 @@ export default function GraphPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    loadGraph()
+  }, [loadGraph])
 
   async function handleBuildGraph() {
     setBuilding(true)

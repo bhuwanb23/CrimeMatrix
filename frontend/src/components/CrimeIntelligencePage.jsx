@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Brain, RefreshCw } from 'lucide-react'
 import { getIntelligenceSummary } from '../services/intelligence'
 import { getDailyTrends, getSeasonalPatterns } from '../services/trends'
@@ -12,7 +12,6 @@ import RecommendationsPanel from './recommendations/RecommendationsPanel'
 import TrendMainChart from './trends/TrendMainChart'
 import DistrictComparisonChart from './trends/DistrictComparisonChart'
 import SeasonalPatterns from './trends/SeasonalPatterns'
-import TrendInsights from './trends/TrendInsights'
 import HotspotRankings from './hotspots/HotspotRankings'
 import HotspotHeatmap from './hotspots/HotspotHeatmap'
 import RiskMap from './hotspots/RiskMap'
@@ -29,11 +28,7 @@ export default function CrimeIntelligencePage() {
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({ district: '', time_range: '30d', crime_type: '' })
 
-  useEffect(() => {
-    loadAll()
-  }, [filters])
-
-  async function loadAll() {
+  const loadAll = useCallback(async () => {
     setLoading(true)
     try {
       const days = filters.time_range === '7d' ? 7 : filters.time_range === '90d' ? 90 : filters.time_range === '1y' ? 365 : 30
@@ -54,7 +49,11 @@ export default function CrimeIntelligencePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filters])
+
+  useEffect(() => {
+    loadAll()
+  }, [loadAll])
 
   async function handleDetectHotspots() {
     try {

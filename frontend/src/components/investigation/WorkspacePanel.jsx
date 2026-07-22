@@ -5,7 +5,6 @@ import EvidenceTab from './EvidenceTab'
 import TimelineTab from './TimelineTab'
 import ReasoningTab from './ReasoningTab'
 import RelatedTab from './RelatedTab'
-import AITab from './AITab'
 import InvestigationAI from './InvestigationAI'
 import AttachmentsTab from './AttachmentsTab'
 import BookmarksTab from './BookmarksTab'
@@ -31,20 +30,21 @@ export default function WorkspacePanel({ investigation, loading }) {
   }, [investigation?.id])
 
   useEffect(() => {
-    if (investigation?.case_id && activeTab === 'related') {
-      loadRelated()
-    }
-  }, [investigation?.case_id, activeTab])
+    if (!investigation?.case_id || activeTab !== 'related') return
 
-  async function loadRelated() {
-    try {
-      const res = await getSimilarCases(investigation.case_id, 5)
-      const data = res?.data || res
-      setRelatedCases(data?.similar_cases || [])
-    } catch (e) {
-      setRelatedCases([])
+    let cancelled = false
+    async function loadRelated() {
+      try {
+        const res = await getSimilarCases(investigation.case_id, 5)
+        const data = res?.data || res
+        if (!cancelled) setRelatedCases(data?.similar_cases || [])
+      } catch {
+        if (!cancelled) setRelatedCases([])
+      }
     }
-  }
+    loadRelated()
+    return () => { cancelled = true }
+  }, [investigation?.case_id, activeTab])
 
   if (loading) {
     return (

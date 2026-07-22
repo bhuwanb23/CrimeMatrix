@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, MapPin } from 'lucide-react'
 import MapCanvas from './map/MapCanvas'
 import DistrictPanel from './map/DistrictPanel'
 import MapLayerControls from './map/MapLayerControls'

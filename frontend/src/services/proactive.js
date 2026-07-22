@@ -36,6 +36,10 @@ export async function getActivity(limit = 20) {
   return get(`/proactive/activity?limit=${limit}`)
 }
 
+export async function batchProcess() {
+  return post('/proactive/batch-process')
+}
+
 function toQuery(params) {
   const qs = Object.entries(params)
     .filter(([, v]) => v !== undefined && v !== null && v !== '')

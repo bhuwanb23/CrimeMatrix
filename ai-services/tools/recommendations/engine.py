@@ -17,9 +17,9 @@ class RecommendationTool(Tool):
     def get_description(self) -> str:
         return (
             "Get intelligent recommendations for cases, suspects, or investigations. "
-            "Combines MO patterns, location, timing, cross-district analysis, and "
-            "similarity scoring to proactively suggest related cases, suspects, and "
-            "investigation leads."
+            "Combines MO patterns, location, timing, cross-district analysis, evidence review, "
+            "officer assignment, priority escalation, and similarity scoring to proactively "
+            "suggest actionable next steps for investigators."
         )
 
     def get_parameters(self) -> dict:
@@ -58,13 +58,24 @@ class RecommendationTool(Tool):
                         return "No recommendations available at this time."
 
                     lines = [f"## Recommendations ({len(recs)} found)\n"]
+                    type_labels = {
+                        "similar_case": "Similar Case",
+                        "suspect_alert": "Suspect Alert",
+                        "cross_district": "Cross-District Pattern",
+                        "mo_pattern": "MO Pattern Match",
+                        "evidence_review": "Evidence Review",
+                        "officer_assignment": "Officer Assignment",
+                        "priority_escalation": "Priority Escalation",
+                        "related_investigation": "Related Investigation",
+                    }
                     for i, rec in enumerate(recs, 1):
                         rtype = rec.get("type", "unknown")
                         score = rec.get("score", 0)
+                        label = type_labels.get(rtype, rtype.replace("_", " ").title())
 
                         if rtype == "similar_case":
                             lines.append(
-                                f"{i}. **Similar Case** — {rec.get('title', 'Unknown')} "
+                                f"{i}. **{label}** — {rec.get('title', 'Unknown')} "
                                 f"(Score: {score}%)\n"
                                 f"   Crime: {rec.get('crime_type', '?')} | "
                                 f"District: {rec.get('district', '?')}\n"
@@ -72,7 +83,7 @@ class RecommendationTool(Tool):
                             )
                         elif rtype == "suspect_alert":
                             lines.append(
-                                f"{i}. **Suspect Alert** — {rec.get('name', 'Unknown')} "
+                                f"{i}. **{label}** — {rec.get('name', 'Unknown')} "
                                 f"(Risk: {score}%)\n"
                                 f"   District: {rec.get('district', '?')} | "
                                 f"Status: {rec.get('status', '?')}\n"
@@ -80,12 +91,19 @@ class RecommendationTool(Tool):
                             )
                         elif rtype == "cross_district":
                             lines.append(
-                                f"{i}. **Cross-District Pattern** — {rec.get('district', '?')}\n"
+                                f"{i}. **{label}** — {rec.get('district', '?')}\n"
                                 f"   {rec.get('message', '')}"
                             )
-                        elif rtype == "mo_pattern":
+                        elif rtype in ("evidence_review", "officer_assignment", "priority_escalation", "related_investigation"):
                             lines.append(
-                                f"{i}. **MO Pattern Match** — {rec.get('title', 'Unknown')} "
+                                f"{i}. **{label}** — {rec.get('title', 'Unknown')} "
+                                f"(Score: {score}%)\n"
+                                f"   {rec.get('description', '')}\n"
+                                f"   Reasons: {', '.join(rec.get('reasons', []))}"
+                            )
+                        else:
+                            lines.append(
+                                f"{i}. **{label}** — {rec.get('title', rec.get('name', 'Unknown'))} "
                                 f"(Score: {score}%)\n"
                                 f"   {', '.join(rec.get('reasons', []))}"
                             )

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Bookmark, FileText, Download, Share2, Printer, BarChart3, Clock, StickyNote, Save, Play, Zap, AlertTriangle } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { FileText, Download, Printer, BarChart3, Clock, StickyNote, Save, Play, Zap, AlertTriangle } from 'lucide-react'
 import { toggleSaveInvestigation } from '../../services/investigations'
 import { scoreInvestigation, getPriorityExplain } from '../../services/priorities'
 
@@ -11,9 +11,8 @@ export default function ToolsPanel({ investigation, onRefresh }) {
   const [explanations, setExplanations] = useState([])
   const [scoringPriority, setScoringPriority] = useState(false)
 
-  useEffect(() => { if (investigation?.id) loadPriority() }, [investigation?.id])
-
-  async function loadPriority() {
+  const loadPriority = useCallback(async () => {
+    if (!investigation?.id) return
     try {
       const [priRes, rankRes] = await Promise.all([
         getPriorityExplain(investigation.id),
@@ -22,8 +21,12 @@ export default function ToolsPanel({ investigation, onRefresh }) {
       setExplanations(priRes?.data?.items || [])
       const found = (rankRes?.data || []).find(r => r.investigation_id === investigation.id)
       if (found) setPriority(found)
-    } catch (e) { /* ignore */ }
-  }
+    } catch { /* ignore */ }
+  }, [investigation?.id])
+
+  useEffect(() => {
+    loadPriority()
+  }, [loadPriority])
 
   async function handleScorePriority() {
     setScoringPriority(true)

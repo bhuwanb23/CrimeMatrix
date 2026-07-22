@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Bookmark, FileText, User, Clock, Camera, ExternalLink, Trash2 } from 'lucide-react'
+import { FileText, User, Clock, Camera, ExternalLink, Trash2 } from 'lucide-react'
 import { removeBookmark } from '../../services/bookmarks'
 
 const entityConfig = {

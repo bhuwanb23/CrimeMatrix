@@ -5,8 +5,6 @@ const statuses = [
   { label: 'Closed', value: 25, pct: 19, color: '#e0e0e0' },
 ]
 
-const maxPct = Math.max(...statuses.map((s) => s.pct))
-
 export default function StatusBars() {
   return (
     <div className="chart-card">

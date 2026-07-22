@@ -1,4 +1,4 @@
-import { Brain, Target, AlertTriangle, TrendingUp, Activity, Shield } from 'lucide-react'
+import { Brain, Target, TrendingUp, Activity } from 'lucide-react'
 
 const cards = [
   { key: 'total_models', label: 'AI Models', icon: Brain, color: '#f59e0b' },

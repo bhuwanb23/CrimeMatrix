@@ -1,4 +1,4 @@
-import { ClipboardList, AlertTriangle } from 'lucide-react'
+import { ClipboardList } from 'lucide-react'
 
 const priorityColors = {
   high: '#ef4444',

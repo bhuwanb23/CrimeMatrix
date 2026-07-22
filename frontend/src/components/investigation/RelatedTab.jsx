@@ -1,7 +1,7 @@
 import { ExternalLink } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-export default function RelatedTab({ caseId, relatedCases }) {
+export default function RelatedTab({ caseId: _caseId, relatedCases }) {
   const navigate = useNavigate()
 
   if (!relatedCases || relatedCases.length === 0) {

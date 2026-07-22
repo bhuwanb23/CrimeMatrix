@@ -11,7 +11,7 @@ const typeIcons = {
   Physical: Fingerprint,
 }
 
-export default function EvidenceTab({ caseId, evidence }) {
+export default function EvidenceTab({ caseId: _caseId, evidence }) {
   return (
     <div className="evidence-tab">
       {evidence.length === 0 ? (

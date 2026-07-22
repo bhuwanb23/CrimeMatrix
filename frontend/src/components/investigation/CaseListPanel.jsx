@@ -9,18 +9,17 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
   const [showCreate, setShowCreate] = useState(false)
 
   useEffect(() => {
+    async function loadRecent() {
+      try {
+        const res = await getRecentInvestigations(3)
+        const data = res?.data || res
+        setRecentItems(data?.items || [])
+      } catch {
+        setRecentItems([])
+      }
+    }
     loadRecent()
   }, [investigations])
-
-  async function loadRecent() {
-    try {
-      const res = await getRecentInvestigations(3)
-      const data = res?.data || res
-      setRecentItems(data?.items || [])
-    } catch (e) {
-      setRecentItems([])
-    }
-  }
 
   const filtered = investigations.filter((inv) => {
     const matchesSearch = (inv.case_id?.toString() || '').toLowerCase().includes(searchQuery.toLowerCase()) ||

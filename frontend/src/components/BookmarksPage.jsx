@@ -17,25 +17,24 @@ export default function BookmarksPage() {
   const [activeFilter, setActiveFilter] = useState('all')
 
   useEffect(() => {
+    async function loadBookmarks() {
+      setLoading(true)
+      try {
+        const res = await getGroupedBookmarks()
+        const data = res?.data || res
+        setGrouped(data || {})
+      } catch (e) {
+        console.error('Failed to load bookmarks', e)
+      } finally {
+        setLoading(false)
+      }
+    }
     loadBookmarks()
   }, [])
 
-  async function loadBookmarks() {
-    setLoading(true)
-    try {
-      const res = await getGroupedBookmarks()
-      const data = res?.data || res
-      setGrouped(data || {})
-    } catch (e) {
-      console.error('Failed to load bookmarks', e)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   function getFilteredItems() {
     if (activeFilter === 'all') {
-      return Object.entries(grouped).flatMap(([type, items]) => items)
+      return Object.entries(grouped).flatMap(([, items]) => items)
     }
     return grouped[activeFilter] || []
   }

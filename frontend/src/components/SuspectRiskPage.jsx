@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, Zap, ArrowUpRight, Activity, UserX } from 'lucide-react'
 import { getSuspectRiskStats, getSuspectRiskRankings, batchScoreSuspects, getSuspectRiskScore, getSuspectRiskFactors } from '../services/suspectRisk'
 
@@ -32,9 +32,7 @@ export default function SuspectRiskPage() {
   const [loading, setLoading] = useState(true)
   const [scoring, setScoring] = useState(false)
 
-  useEffect(() => { loadData() }, [loadData])
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true)
     try {
       const [statsRes, rankingsRes] = await Promise.all([getSuspectRiskStats(), getSuspectRiskRankings(10)])
@@ -45,7 +43,7 @@ export default function SuspectRiskPage() {
         handleSelectSuspect(ranks[0].suspect_id)
       }
     } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+  }, [selectedSuspect])
 
   async function handleBatchScore() {
     setScoring(true)

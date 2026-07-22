@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { alertTypes } from './alertsData'
-import { districts, hotspots, karnatakaOutline } from '../map/mapData'
+import { districts, karnatakaOutline } from '../map/mapData'
 
 export default function AlertMap({ alerts, onAlertSelect, selectedAlert }) {
   const [hoveredAlert, setHoveredAlert] = useState(null)

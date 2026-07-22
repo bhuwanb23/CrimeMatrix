@@ -136,8 +136,11 @@ export default function CrimeIntelligencePage() {
             <RepeatOffenderTab />
           </div>
 
-          {/* MO Fingerprinting */}
-          <MOComparisonTab />
+          {/* MO Fingerprinting + Cross-District */}
+          <div className="grid grid-cols-2 gap-4">
+            <MOComparisonTab />
+            <CrossDistrictSection />
+          </div>
         </div>
       ) : (
         <div className="similar-empty">

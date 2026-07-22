@@ -1,6 +1,6 @@
 import {
   ResponsiveContainer, PieChart, Pie, Cell,
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
 } from 'recharts'
 import { reports, reportTypes, weeklyData } from './reportsData'
 
@@ -12,8 +12,6 @@ export default function ReportStats() {
   }))
 
   const totalReports = reports.length
-  const courtPct = Math.round((typeCounts.find((t) => t.name === 'Court Report')?.value || 0) / totalReports * 100)
-  const invPct = 100 - courtPct
 
   return (
     <div className="report-stats-section">

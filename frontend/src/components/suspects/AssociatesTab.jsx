@@ -1,4 +1,4 @@
-import { Users, ExternalLink } from 'lucide-react'
+import { Users } from 'lucide-react'
 
 const statusColors = {
   'Arrested': '#10b981',

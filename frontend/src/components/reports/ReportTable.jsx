@@ -1,5 +1,5 @@
 import { reportTypes, reportStatuses } from './reportsData'
-import { Eye, Download, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Eye, Download, ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function ReportTable({ reports, page, totalPages, onPageChange }) {
   return (

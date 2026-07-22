@@ -40,6 +40,9 @@ from app.models.prediction_source import PredictionSource
 from app.models.model_metric import ModelMetric
 from app.models.prediction_feedback_record import PredictionFeedbackRecord
 from app.models.evaluation_result import EvaluationResult
+from app.models.intelligence_event import IntelligenceEvent
+from app.models.event_queue_record import EventQueueRecord
+from app.models.processed_event import ProcessedEvent
 
 # Core crime data models
 from app.models.crime import Crime

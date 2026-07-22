@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
-  Camera, Phone, MapPin, Bot, CheckCircle2, ExternalLink,
+  Camera, Bot,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'

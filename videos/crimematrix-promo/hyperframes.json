@@ -8,5 +8,15 @@
   },
   "media": {
     "autoProxy": true
+  },
+  "brief": {
+    "angle": "AI Investigation Copilot for Karnataka State Police / Datathon 2026",
+    "length": "2:00",
+    "aspect": "16:9",
+    "format": "1920x1080",
+    "language": "en",
+    "vo_mode": "verbatim",
+    "captions": true,
+    "cta": "Built for Datathon 2026"
   }
 }

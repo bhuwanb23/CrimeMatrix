@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link2, RefreshCw, ArrowRight, FileText, Camera, Search } from 'lucide-react'
+import { Link2, ArrowRight, FileText, Search } from 'lucide-react'
 import { detectEvidenceLinks, listEvidenceLinks, getEvidenceLinkingStats } from '../../services/evidenceLinking'
 
 const linkTypeConfig = {
@@ -9,22 +9,18 @@ const linkTypeConfig = {
 
 export default function EvidenceLinkingSection() {
   const [links, setLinks] = useState([])
-  const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [detecting, setDetecting] = useState(false)
 
   useEffect(() => { loadData() }, [])
 
   async function loadData() {
-    setLoading(true)
     try {
-      const [linksRes, statsRes] = await Promise.all([
+      const [linksRes] = await Promise.all([
         listEvidenceLinks(),
         getEvidenceLinkingStats(),
       ])
       setLinks(linksRes?.data?.items || [])
-      setStats(statsRes?.data || statsRes)
-    } catch (e) { console.error(e) } finally { setLoading(false) }
+    } catch (e) { console.error(e) }
   }
 
   async function handleDetect() {

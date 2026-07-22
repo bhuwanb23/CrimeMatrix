@@ -20,7 +20,7 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
 
   return (
     <aside
-      className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-70"
+      className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px]"
       aria-label="District details"
     >
       <div className="flex items-center justify-between gap-2 border-b border-slate-200 px-3.5 py-3">

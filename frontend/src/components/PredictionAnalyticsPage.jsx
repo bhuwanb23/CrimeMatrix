@@ -79,39 +79,42 @@ export default function PredictionAnalyticsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
-            <LineChart size={20} className="text-white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">Predictive Crime Analytics</h1>
-            <p className="text-xs text-slate-500">Forecast crime patterns with confidence indicators</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <select className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-700 focus:outline-none focus:border-amber-500"
-            value={selectedDistrict} onChange={e => setSelectedDistrict(e.target.value)}>
-            <option value="">All Districts</option>
-            {districts.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
-          </select>
-          <div className="flex bg-white border border-slate-200 rounded-lg p-0.5">
-            {[30, 60, 90].map(d => (
-              <button key={d} onClick={() => setTimeHorizon(d)}
-                className={`px-3 py-1 rounded text-xs font-medium transition-all ${timeHorizon === d ? 'bg-amber-500 text-white' : 'text-slate-500 hover:text-slate-700'}`}>
-                {d}D
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+      <div className="max-w-7xl mx-auto space-y-5">
+        {/* Hero Header */}
+        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-6 text-white shadow-lg shadow-orange-500/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+                <LineChart size={28} />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">Predictive Crime Analytics</h1>
+                <p className="text-white/80 text-sm mt-0.5">Forecast crime patterns with confidence indicators</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <select className="bg-white/20 backdrop-blur border border-white/30 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-white/60"
+                value={selectedDistrict} onChange={e => setSelectedDistrict(e.target.value)}>
+                <option value="" className="text-slate-900">All Districts</option>
+                {districts.map(d => <option key={d.id} value={d.id} className="text-slate-900">{d.name}</option>)}
+              </select>
+              <div className="flex bg-white/20 backdrop-blur rounded-lg p-0.5">
+                {[30, 60, 90].map(d => (
+                  <button key={d} onClick={() => setTimeHorizon(d)}
+                    className={`px-3 py-1 rounded text-xs font-medium transition-all ${timeHorizon === d ? 'bg-white text-orange-600' : 'text-white/80 hover:text-white'}`}>
+                    {d}D
+                  </button>
+                ))}
+              </div>
+              <button onClick={handleForecast} disabled={forecasting}
+                className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
+                {forecasting ? <RefreshCw size={14} className="animate-spin" /> : <TrendingUp size={14} />}
+                {forecasting ? 'Forecasting...' : 'Generate Forecast'}
               </button>
-            ))}
+            </div>
           </div>
-          <button onClick={handleForecast} disabled={forecasting}
-            className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg text-sm font-semibold hover:opacity-90 disabled:opacity-50 shadow-sm">
-            {forecasting ? <RefreshCw size={14} className="animate-spin" /> : <TrendingUp size={14} />}
-            {forecasting ? 'Forecasting...' : 'Generate Forecast'}
-          </button>
         </div>
-      </div>
 
       {/* Row 1: Summary Cards */}
       <PredictionSummaryCards stats={stats} />

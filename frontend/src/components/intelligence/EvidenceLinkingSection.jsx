@@ -1,0 +1,82 @@
+import { useState, useEffect } from 'react'
+import { Link2, RefreshCw, ArrowRight, FileText, Camera, Search } from 'lucide-react'
+import { detectEvidenceLinks, listEvidenceLinks, getEvidenceLinkingStats } from '../../services/evidenceLinking'
+
+const linkTypeConfig = {
+  same_type: { icon: FileText, label: 'Same Type', color: '#3b82f6' },
+  description_match: { icon: Search, label: 'Description Match', color: '#f59e0b' },
+}
+
+export default function EvidenceLinkingSection() {
+  const [links, setLinks] = useState([])
+  const [stats, setStats] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [detecting, setDetecting] = useState(false)
+
+  useEffect(() => { loadData() }, [])
+
+  async function loadData() {
+    setLoading(true)
+    try {
+      const [linksRes, statsRes] = await Promise.all([
+        listEvidenceLinks(),
+        getEvidenceLinkingStats(),
+      ])
+      setLinks(linksRes?.data?.items || [])
+      setStats(statsRes?.data || statsRes)
+    } catch (e) { console.error(e) } finally { setLoading(false) }
+  }
+
+  async function handleDetect() {
+    setDetecting(true)
+    try { await detectEvidenceLinks(); await loadData() } catch (e) { console.error(e) } finally { setDetecting(false) }
+  }
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl p-4">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <Link2 size={14} className="text-amber-500" />
+          <h3 className="text-sm font-semibold text-slate-900">Evidence Linking</h3>
+          <span className="text-[10px] text-slate-400">{links.length} links</span>
+        </div>
+        <button onClick={handleDetect} disabled={detecting}
+          className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
+          {detecting ? 'Detecting...' : 'Detect Links'}
+        </button>
+      </div>
+
+      {links.length === 0 ? (
+        <div className="py-6 text-center text-xs text-slate-400">
+          <Link2 size={24} className="mx-auto mb-2 text-slate-200" />
+          <p>No evidence links found</p>
+          <p className="text-[10px] text-slate-300">Click "Detect Links" to find correlations</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {links.slice(0, 5).map((l, i) => {
+            const config = linkTypeConfig[l.link_type] || { icon: Link2, label: 'Link', color: '#64748b' }
+            const Icon = config.icon
+            return (
+              <div key={l.id || i} className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: `${config.color}15` }}>
+                  <Icon size={12} style={{ color: config.color }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-slate-900">{l.link_reason}</p>
+                  <div className="flex items-center gap-2 text-[10px] text-slate-400">
+                    <span>Evidence #{l.evidence_id_1}</span>
+                    <ArrowRight size={10} />
+                    <span>Evidence #{l.evidence_id_2}</span>
+                    <span>• {l.confidence}%</span>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}

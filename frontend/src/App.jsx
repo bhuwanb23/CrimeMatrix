@@ -25,6 +25,7 @@ import ProactiveIntelligencePage from './components/ProactiveIntelligencePage'
 import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
 import UnifiedSearchPage from './components/UnifiedSearchPage'
 import IntelligenceTimelinePage from './components/IntelligenceTimelinePage'
+import PrioritizationIntelligencePage from './components/PrioritizationIntelligencePage'
 
 function App() {
   return (
@@ -47,8 +48,8 @@ function App() {
           <Route path="/predictions" element={<PredictionAnalyticsPage />} />
           <Route path="/early-warning" element={<UnifiedAlertsPage />} />
           <Route path="/suspect-risk" element={<SuspectRiskPage />} />
-          <Route path="/prioritizations" element={<PrioritizationDashboard />} />
-          <Route path="/proactive" element={<ProactiveIntelligencePage />} />
+          <Route path="/prioritizations" element={<PrioritizationIntelligencePage />} />
+          <Route path="/proactive" element={<PrioritizationIntelligencePage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

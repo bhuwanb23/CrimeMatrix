@@ -3,11 +3,11 @@ import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis,
   CartesianGrid, Tooltip, PieChart, Pie, Cell,
 } from 'recharts'
-import { listAlerts as fetchAlerts, acknowledgeAlert as apiAcknowledge } from '../services/earlyWarning'
+import { listAlerts as fetchAlerts } from '../services/earlyWarning'
 import { alertTypes } from './alerts/alertsData'
 import {
-  AlertTriangle, Clock, CheckCircle2, Activity,
-  TrendingUp, TrendingDown, ChevronRight, ExternalLink,
+  AlertTriangle, Clock, CheckCircle2,
+  TrendingUp, TrendingDown, ChevronRight,
 } from 'lucide-react'
 
 const filters = [
@@ -18,39 +18,23 @@ const filters = [
   { id: 'escalation', label: 'Escalation' },
 ]
 
-const donutColors = ['#ef4444', '#f59e0b', '#8b5cf6', '#3b82f6', '#10b981']
-
 export default function AlertsPage() {
   const [alerts, setAlerts] = useState([])
   const [activeFilter, setActiveFilter] = useState('all')
   const [selectedAlert, setSelectedAlert] = useState(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    async function loadAlerts() {
+      try {
+        const res = await fetchAlerts()
+        const data = res?.data || res
+        setAlerts(data?.items || [])
+      } catch (e) {
+        console.error('Failed to load alerts', e)
+      }
+    }
     loadAlerts()
   }, [])
-
-  async function loadAlerts() {
-    setLoading(true)
-    try {
-      const res = await fetchAlerts()
-      const data = res?.data || res
-      setAlerts(data?.items || [])
-    } catch (e) {
-      console.error('Failed to load alerts', e)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function handleAcknowledge(alertId) {
-    try {
-      await apiAcknowledge(alertId)
-      setAlerts(alerts.map(a => a.id === alertId ? { ...a, status: 'acknowledged' } : a))
-    } catch (e) {
-      console.error('Failed to acknowledge', e)
-    }
-  }
 
   const filteredAlerts = useMemo(() => {
     if (activeFilter === 'all') return alerts

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, ChevronRight, Zap, Search, ArrowUpRight, Activity, UserX } from 'lucide-react'
+import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, Zap, ArrowUpRight, Activity, UserX } from 'lucide-react'
 import { getSuspectRiskStats, getSuspectRiskRankings, batchScoreSuspects, getSuspectRiskScore, getSuspectRiskFactors } from '../services/suspectRisk'
 
 const riskColors = { very_high: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
@@ -32,7 +32,7 @@ export default function SuspectRiskPage() {
   const [loading, setLoading] = useState(true)
   const [scoring, setScoring] = useState(false)
 
-  useEffect(() => { loadData() }, [])
+  useEffect(() => { loadData() }, [loadData])
 
   async function loadData() {
     setLoading(true)
@@ -60,8 +60,6 @@ export default function SuspectRiskPage() {
       setSelectedFactors(factorsRes?.data?.items || [])
     } catch (e) { console.error(e) }
   }
-
-  const selectedRiskColor = riskColors[selectedScore?.risk_level] || '#64748b'
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">

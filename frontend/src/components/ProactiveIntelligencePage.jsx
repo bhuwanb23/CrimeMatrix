@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Radar, RefreshCw, Search, Zap, Activity, Bell, AlertTriangle, TrendingUp } from 'lucide-react'
+import { Radar, RefreshCw, Search, Zap, Activity, Bell, AlertTriangle, TrendingUp, Brain, CheckCircle } from 'lucide-react'
 import { getProactiveStats, scanData, processEvents, getActivity } from '../services/proactive'
 import IntelligenceSummaryCards from './proactive/IntelligenceSummaryCards'
 import ActivityFeed from './proactive/ActivityFeed'

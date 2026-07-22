@@ -1,10 +1,10 @@
 import { useState, useCallback, useEffect } from 'react'
-import { Volume2, VolumeX } from 'lucide-react'
+import { Volume2 } from 'lucide-react'
 import ChatArea from './copilot/ChatArea'
 import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
-import { chat, chatStream, listSessions, getSession, deleteSession, deleteAllSessions, togglePin, searchSessions, exportSession } from '../services/copilot'
-import { speak, stopSpeaking, isTTSSupported } from '../services/voice'
+import { chatStream, listSessions, getSession, deleteAllSessions, searchSessions } from '../services/copilot'
+import { stopSpeaking } from '../services/voice'
 
 export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
@@ -42,32 +42,24 @@ export default function CopilotPage() {
     }
   }, [])
 
-  const handleSend = useCallback(async (content, source) => {
-    const userMsg = {
-      role: 'user',
-      content,
-      time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-    }
-    setMessages(prev => [...prev, userMsg])
+  const handleSend = useCallback(async (content, _source) => {
+    const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    const userMsg = { role: 'user', content, time }
+    const streamMsg = { role: 'assistant', content: '', time, streaming: true }
+    let assistantIdx
+    setMessages(prev => {
+      assistantIdx = prev.length + 1
+      return [...prev, userMsg, streamMsg]
+    })
     setIsTyping(true)
-
-    // Add empty assistant message for streaming
-    const streamMsg = {
-      role: 'assistant',
-      content: '',
-      time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
-      streaming: true,
-    }
-    setMessages(prev => [...prev, streamMsg])
-    const msgIdx = messages.length + 1
 
     try {
       chatStream(content, sessionId, 'default', language,
         (chunk) => {
           setMessages(prev => {
             const updated = [...prev]
-            if (updated[msgIdx]) {
-              updated[msgIdx] = { ...updated[msgIdx], content: updated[msgIdx].content + chunk }
+            if (updated[assistantIdx]) {
+              updated[assistantIdx] = { ...updated[assistantIdx], content: updated[assistantIdx].content + chunk }
             }
             return updated
           })
@@ -75,19 +67,19 @@ export default function CopilotPage() {
         () => {
           setMessages(prev => {
             const updated = [...prev]
-            if (updated[msgIdx]) {
-              updated[msgIdx] = { ...updated[msgIdx], streaming: false }
+            if (updated[assistantIdx]) {
+              updated[assistantIdx] = { ...updated[assistantIdx], streaming: false }
             }
             return updated
           })
           setIsTyping(false)
         }
       )
-    } catch (e) {
+    } catch {
       setMessages(prev => {
         const updated = [...prev]
-        if (updated[msgIdx]) {
-          updated[msgIdx] = { ...updated[msgIdx], content: 'Sorry, I encountered an error.', streaming: false }
+        if (updated[assistantIdx]) {
+          updated[assistantIdx] = { ...updated[assistantIdx], content: 'Sorry, I encountered an error.', streaming: false }
         }
         return updated
       })
@@ -106,7 +98,7 @@ export default function CopilotPage() {
 
   const handleDeleteAll = async () => {
     if (!confirm('Delete all conversations? This cannot be undone.')) return
-    try { await deleteAllSessions() } catch (e) {}
+    try { await deleteAllSessions() } catch { /* ignore */ }
     setMessages([])
     setActiveChatId(null)
     setSessionId(null)
@@ -118,16 +110,12 @@ export default function CopilotPage() {
     setVoiceEnabled(!voiceEnabled)
   }
 
-  const handlePin = async (sid) => {
-    try { await togglePin(sid); loadSessions() } catch (e) {}
-  }
-
   const handleSearch = async (query) => {
     if (!query) { loadSessions(); return }
     try {
       const result = await searchSessions(query)
       setSessions(result.data || [])
-    } catch (e) {}
+    } catch { /* ignore */ }
   }
 
   return (

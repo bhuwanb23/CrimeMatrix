@@ -47,6 +47,9 @@ from app.models.fir_suggestion import FIRSuggestion
 from app.models.fir_analysis_history_record import FIRAnalysisHistoryRecord
 from app.models.cross_district_match import CrossDistrictMatch
 from app.models.match_history_record import MatchHistoryRecord
+from app.models.evidence_link import EvidenceLink
+from app.models.evidence_relationship import EvidenceRelationship
+from app.models.link_history_record import LinkHistoryRecord
 
 # Core crime data models
 from app.models.crime import Crime

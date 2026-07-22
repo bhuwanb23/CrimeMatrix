@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { MapPin, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 import MapCanvas from './map/MapCanvas'
 import DistrictPanel from './map/DistrictPanel'
-import StatsBar from './map/StatsBar'
 import MapLayerControls from './map/MapLayerControls'
 import MapTimeSlider from './map/MapTimeSlider'
 import MapFilterPanel from './map/MapFilterPanel'
@@ -19,7 +18,7 @@ export default function MapPage() {
 
   useEffect(() => {
     loadMapData()
-  }, [days])
+  }, [days, filters.crime_type])
 
   async function loadMapData() {
     setLoading(true)
@@ -55,59 +54,74 @@ export default function MapPage() {
     )
   }
 
+  function handleDistrictSelect(district) {
+    setSelectedDistrict((prev) =>
+      prev?.name === district?.name ? null : district
+    )
+  }
+
+  const statItems = [
+    { key: 'total_crimes', label: 'Crimes' },
+    { key: 'total_districts', label: 'Districts' },
+    { key: 'total_stations', label: 'Stations' },
+    { key: 'total_hotspots', label: 'Hotspots' },
+  ]
+
   return (
     <div className="map-page">
-      <div className="map-sidebar">
-        <div className="map-sidebar-header">
-          <MapPin size={18} />
-          <div>
-            <h1>Geo Intelligence</h1>
-            <p>Crime maps & spatial analysis</p>
-          </div>
+      <header className="map-top">
+        <div className="map-top-title">
+          <h1>Stations</h1>
+          <p>Geo intelligence &amp; spatial analysis</p>
         </div>
 
-        <MapLayerControls activeLayers={activeLayers} onToggleLayer={toggleLayer} />
-        <MapTimeSlider days={days} onChange={setDays} />
-        <MapFilterPanel filters={filters} onChange={setFilters} />
-
         {stats && (
-          <div className="map-stats-panel">
-            <div className="map-stat-item">
-              <span className="map-stat-value">{stats.total_crimes || 0}</span>
-              <span className="map-stat-label">Crimes</span>
-            </div>
-            <div className="map-stat-item">
-              <span className="map-stat-value">{stats.total_districts || 0}</span>
-              <span className="map-stat-label">Districts</span>
-            </div>
-            <div className="map-stat-item">
-              <span className="map-stat-value">{stats.total_stations || 0}</span>
-              <span className="map-stat-label">Stations</span>
-            </div>
-            <div className="map-stat-item">
-              <span className="map-stat-value">{stats.total_hotspots || 0}</span>
-              <span className="map-stat-label">Hotspots</span>
-            </div>
-          </div>
+          <dl className="map-top-stats">
+            {statItems.map((item) => (
+              <div key={item.key} className="map-top-stat">
+                <dt>{item.label}</dt>
+                <dd>{stats[item.key] ?? 0}</dd>
+              </div>
+            ))}
+          </dl>
         )}
 
-        <button className="map-refresh-btn" onClick={loadMapData} disabled={loading}>
+        <button
+          type="button"
+          className="map-refresh-btn"
+          onClick={loadMapData}
+          disabled={loading}
+          aria-label="Refresh map data"
+        >
           <RefreshCw size={14} className={loading ? 'similar-spinning' : ''} />
-          Refresh Data
+          <span>Refresh</span>
         </button>
+      </header>
+
+      <div className="map-toolbar" role="toolbar" aria-label="Map controls">
+        <MapLayerControls activeLayers={activeLayers} onToggleLayer={toggleLayer} />
+        <div className="map-toolbar-divider" aria-hidden="true" />
+        <MapTimeSlider days={days} onChange={setDays} />
+        <div className="map-toolbar-divider" aria-hidden="true" />
+        <MapFilterPanel filters={filters} onChange={setFilters} />
       </div>
 
-      <div className="map-main">
-        <MapCanvas
+      <div className="map-stage">
+        <div className="map-main">
+          <MapCanvas
+            selectedDistrict={selectedDistrict}
+            onDistrictSelect={handleDistrictSelect}
+            activeLayers={activeLayers}
+            mapData={mapData}
+            loading={loading}
+          />
+        </div>
+
+        <DistrictPanel
           selectedDistrict={selectedDistrict}
-          onDistrictSelect={setSelectedDistrict}
-          activeLayers={activeLayers}
-          mapData={mapData}
-          loading={loading}
+          onClose={() => setSelectedDistrict(null)}
         />
       </div>
-
-      <DistrictPanel selectedDistrict={selectedDistrict} />
     </div>
   )
 }

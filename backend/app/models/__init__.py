@@ -89,7 +89,7 @@ from app.models.search import SavedSearch, SearchHistory
 from app.models.prediction import Prediction, RiskScore
 
 # Officer intel models
-from app.models.officer_intel import CaseAssignment, Recommendation
+from app.models.officer_intel import CaseAssignment, Recommendation, RecommendationHistory
 
 __all__ = [
     # Core
@@ -123,5 +123,5 @@ __all__ = [
     "GraphNode", "GraphEdge", "IdentityGroup", "IdentityMatch",
     "SavedSearch", "SearchHistory",
     # Officer intel
-    "CaseAssignment", "Recommendation",
+    "CaseAssignment", "Recommendation", "RecommendationHistory",
 ]

@@ -47,6 +47,7 @@ function App() {
           <Route path="/early-warning" element={<UnifiedAlertsPage />} />
           <Route path="/suspect-risk" element={<SuspectRiskPage />} />
           <Route path="/prioritizations" element={<PrioritizationDashboard />} />
+          <Route path="/proactive" element={<ProactiveIntelligencePage />} />
           <Route path="/knowledge-graph" element={<GraphPage />} />
           <Route path="/stations" element={<MapPage />} />
           <Route path="/suspects" element={<SuspectsPage />} />

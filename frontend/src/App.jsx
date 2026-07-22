@@ -21,6 +21,7 @@ import PredictionAnalyticsPage from './components/PredictionAnalyticsPage'
 import UnifiedAlertsPage from './components/UnifiedAlertsPage'
 import SuspectRiskPage from './components/SuspectRiskPage'
 import PrioritizationDashboard from './components/PrioritizationDashboard'
+import ProactiveIntelligencePage from './components/ProactiveIntelligencePage'
 import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
 import UnifiedSearchPage from './components/UnifiedSearchPage'
 

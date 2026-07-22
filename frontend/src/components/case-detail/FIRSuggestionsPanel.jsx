@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Lightbulb, RefreshCw, ExternalLink, Shield, MapPin, Crosshair } from 'lucide-react'
+import { Lightbulb, ExternalLink, Shield, MapPin, Crosshair } from 'lucide-react'
 import { analyzeFIR, getFIRSuggestions } from '../../services/firIntelligence'
 
 const typeConfig = {
@@ -17,7 +17,7 @@ export default function FIRSuggestionsPanel({ firId }) {
 
   useEffect(() => {
     if (firId) loadSuggestions()
-  }, [firId])
+  }, [firId, loadSuggestions])
 
   async function loadSuggestions() {
     setLoading(true)

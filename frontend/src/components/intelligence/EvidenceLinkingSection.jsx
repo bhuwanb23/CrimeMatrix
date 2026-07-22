@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link2, ArrowRight, FileText, Search } from 'lucide-react'
 import { detectEvidenceLinks, listEvidenceLinks, getEvidenceLinkingStats } from '../../services/evidenceLinking'
+import { explainEvidenceLink } from '../../services/proactive'
+import ExplainButton from './ExplainButton'
+import ExplanationPanel from './ExplanationPanel'
 
 const linkTypeConfig = {
   same_type: { icon: FileText, label: 'Same Type', color: '#3b82f6' },
@@ -10,6 +13,8 @@ const linkTypeConfig = {
 export default function EvidenceLinkingSection() {
   const [links, setLinks] = useState([])
   const [detecting, setDetecting] = useState(false)
+  const [explainingId, setExplainingId] = useState(null)
+  const [explanation, setExplanation] = useState(null)
 
   useEffect(() => { loadData() }, [])
 
@@ -26,6 +31,20 @@ export default function EvidenceLinkingSection() {
   async function handleDetect() {
     setDetecting(true)
     try { await detectEvidenceLinks(); await loadData() } catch (e) { console.error(e) } finally { setDetecting(false) }
+  }
+
+  async function handleExplain(linkId) {
+    if (explainingId === linkId) {
+      setExplainingId(null)
+      setExplanation(null)
+      return
+    }
+    setExplainingId(linkId)
+    setExplanation(null)
+    try {
+      const res = await explainEvidenceLink(linkId)
+      setExplanation(res?.data || res)
+    } catch (e) { console.error('Explain failed', e) } finally { setExplainingId(null) }
   }
 
   return (
@@ -54,20 +73,28 @@ export default function EvidenceLinkingSection() {
             const config = linkTypeConfig[l.link_type] || { icon: Link2, label: 'Link', color: '#64748b' }
             const Icon = config.icon
             return (
-              <div key={l.id || i} className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: `${config.color}15` }}>
-                  <Icon size={12} style={{ color: config.color }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-slate-900">{l.link_reason}</p>
-                  <div className="flex items-center gap-2 text-[10px] text-slate-400">
-                    <span>Evidence #{l.evidence_id_1}</span>
-                    <ArrowRight size={10} />
-                    <span>Evidence #{l.evidence_id_2}</span>
-                    <span>• {l.confidence}%</span>
+              <div key={l.id || i}>
+                <div className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ background: `${config.color}15` }}>
+                    <Icon size={12} style={{ color: config.color }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-medium text-slate-900">{l.link_reason}</p>
+                      <ExplainButton onClick={() => handleExplain(l.id)} loading={explainingId === l.id} />
+                    </div>
+                    <div className="flex items-center gap-2 text-[10px] text-slate-400">
+                      <span>Evidence #{l.evidence_id_1}</span>
+                      <ArrowRight size={10} />
+                      <span>Evidence #{l.evidence_id_2}</span>
+                      <span>• {l.confidence}%</span>
+                    </div>
                   </div>
                 </div>
+                {explanation && explainingId === null && explanation.link_id === l.id && (
+                  <ExplanationPanel explanation={explanation} onClose={() => setExplanation(null)} />
+                )}
               </div>
             )
           })}

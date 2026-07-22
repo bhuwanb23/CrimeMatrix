@@ -105,6 +105,7 @@ export default function AIAnalyticsPage() {
           <p>Failed to load analytics dashboard</p>
         </div>
       )}
+      </div>
     </div>
   )
 }

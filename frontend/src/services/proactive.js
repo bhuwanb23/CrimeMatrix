@@ -40,6 +40,22 @@ export async function batchProcess() {
   return post('/proactive/batch-process')
 }
 
+export async function explainEvent(eventId) {
+  return post(`/proactive/explain/event/${eventId}`)
+}
+
+export async function explainRecommendation(recId) {
+  return post(`/proactive/explain/recommendation/${recId}`)
+}
+
+export async function explainEvidenceLink(linkId) {
+  return post(`/proactive/explain/evidence-link/${linkId}`)
+}
+
+export async function explainAlert(alertId) {
+  return post(`/proactive/explain/alert/${alertId}`)
+}
+
 function toQuery(params) {
   const qs = Object.entries(params)
     .filter(([, v]) => v !== undefined && v !== null && v !== '')

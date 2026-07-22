@@ -38,7 +38,7 @@ export default function InvestigationAI({ investigationId, investigation }) {
         type: 'analysis',
         analysisType: action.id,
       }])
-    } catch (e) {
+    } catch {
       setMessages((prev) => [...prev, {
         role: 'assistant',
         content: 'Failed to generate analysis. Please try again.',
@@ -68,7 +68,7 @@ export default function InvestigationAI({ investigationId, investigation }) {
         content: context,
         type: 'analysis',
       }])
-    } catch (e) {
+    } catch {
       setMessages((prev) => [...prev, {
         role: 'assistant',
         content: 'Failed to process your question. Please try again.',

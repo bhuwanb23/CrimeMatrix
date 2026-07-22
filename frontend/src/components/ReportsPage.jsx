@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { FileText } from 'lucide-react'
 import ReportStats from './reports/ReportStats'
 import ReportFilters from './reports/ReportFilters'
 import ReportTable from './reports/ReportTable'

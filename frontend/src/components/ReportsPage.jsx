@@ -76,6 +76,7 @@ export default function ReportsPage() {
         totalPages={totalPages}
         onPageChange={setPage}
       />
+      </div>
     </div>
   )
 }

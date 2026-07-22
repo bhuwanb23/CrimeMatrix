@@ -69,45 +69,35 @@ export default function MapPage() {
 
   return (
     <div className="flex flex-col gap-3 -m-6 p-4 h-[calc(100vh-var(--header-height))] min-h-0 overflow-hidden max-md:-m-4 max-md:p-3 max-md:h-auto max-md:min-h-[calc(100vh-var(--header-height))]">
-      <header className="flex items-center gap-4 min-w-0 shrink-0 flex-wrap md:flex-nowrap">
-        <div className="min-w-0 shrink-0">
-          <h1 className="m-0 text-lg font-bold tracking-tight text-slate-900 [overflow-wrap:anywhere]">
-            Stations
-          </h1>
-          <p className="m-0 mt-0.5 text-xs text-slate-400">
-            Geo intelligence &amp; spatial analysis
-          </p>
+      {/* Hero Header */}
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 text-white shadow-lg shadow-orange-500/20 shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+              <MapPin size={20} />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold">Geo Intelligence</h1>
+              <p className="text-white/80 text-xs">Stations, spatial analysis & crime mapping</p>
+            </div>
+          </div>
+          {stats && (
+            <dl className="flex items-center m-0 min-w-0 overflow-x-auto">
+              {statItems.map((item, i) => (
+                <div key={item.key} className={`flex flex-col gap-0.5 px-3 whitespace-nowrap ${i > 0 ? 'border-l border-white/30' : ''}`}>
+                  <dt className="m-0 text-[10px] font-medium uppercase tracking-wide text-white/60">{item.label}</dt>
+                  <dd className="m-0 text-[15px] font-bold tabular-nums text-white">{stats[item.key] ?? 0}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          <button type="button" onClick={loadMapData} disabled={loading}
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-lg text-xs font-medium text-white whitespace-nowrap shrink-0 transition-colors disabled:opacity-60">
+            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+            Refresh
+          </button>
         </div>
-
-        {stats && (
-          <dl className="flex items-center m-0 ml-auto min-w-0 overflow-x-auto max-md:order-3 max-md:w-full max-md:ml-0 max-md:pt-1">
-            {statItems.map((item, i) => (
-              <div
-                key={item.key}
-                className={`flex flex-col gap-0.5 px-3.5 whitespace-nowrap ${i > 0 ? 'border-l border-slate-200' : 'max-md:pl-0'}`}
-              >
-                <dt className="m-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">
-                  {item.label}
-                </dt>
-                <dd className="m-0 text-[15px] font-bold tabular-nums text-slate-900">
-                  {stats[item.key] ?? 0}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        )}
-
-        <button
-          type="button"
-          onClick={loadMapData}
-          disabled={loading}
-          aria-label="Refresh map data"
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-500 whitespace-nowrap shrink-0 cursor-pointer transition-colors hover:border-amber-500 hover:text-amber-500 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 max-md:ml-auto"
-        >
-          <RefreshCw size={14} className={loading ? 'similar-spinning' : ''} />
-          <span className="max-md:hidden">Refresh</span>
-        </button>
-      </header>
+      </div>
 
       <div
         role="toolbar"

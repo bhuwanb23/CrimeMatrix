@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Radar, RefreshCw, Search, Zap, AlertTriangle, Brain, CheckCircle } from 'lucide-react'
 import { getProactiveStats, scanData, processEvents, getActivity } from '../services/proactive'
+import { batchProcess } from '../services/proactive'
 import IntelligenceSummaryCards from './proactive/IntelligenceSummaryCards'
 import ActivityFeed from './proactive/ActivityFeed'
 import NotificationCenter from './proactive/NotificationCenter'
@@ -12,7 +13,11 @@ export default function ProactiveIntelligencePage() {
   const [scanning, setScanning] = useState(false)
   const [processing, setProcessing] = useState(false)
 
-  useEffect(() => { loadAll() }, [])
+  useEffect(() => { loadAll(); autoProcess() }, [])
+
+  async function autoProcess() {
+    try { await batchProcess() } catch (e) { /* silent */ }
+  }
 
   async function loadAll() {
     setLoading(true)

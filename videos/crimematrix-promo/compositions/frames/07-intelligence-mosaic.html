@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>07-intelligence-mosaic</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap");
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          container-type: size;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .scene {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+        }
+
+        .camera {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          padding: 5cqw 5cqw 0;
+          box-sizing: border-box;
+          max-height: 900px;
+          transform-origin: 50% 42%;
+          will-change: transform;
+        }
+
+        .slide-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1.8cqw;
+          flex-shrink: 0;
+        }
+
+        .eyebrow {
+          font-size: 1.4cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.55cqw 1.4cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.1cqw;
+          font-weight: 600;
+          color: #f59e0b;
+        }
+
+        .phrase-bar {
+          font-size: 2.4cqw;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          margin-bottom: 2.4cqw;
+          min-height: 3.2cqw;
+        }
+
+        .phrase-main {
+          color: #475569;
+        }
+
+        .phrase-accent {
+          color: #f59e0b;
+        }
+
+        .mosaic-stage {
+          position: relative;
+          flex: 1;
+          min-height: 0;
+        }
+
+        .burst-wrap {
+          position: absolute;
+          inset: 0;
+        }
+
+        .cap-tile {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          padding: 0.9cqw 1.6cqw;
+          border-radius: 100px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.15cqw;
+          font-weight: 600;
+          color: #475569;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+
+        .panel-grid {
+          position: absolute;
+          inset: 8% 4% 2%;
+          display: grid;
+          grid-template-columns: 1.2fr 1fr 1fr;
+          gap: 1.6cqw;
+          opacity: 0;
+        }
+
+        .panel {
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          padding: 1.4cqw;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .panel-label {
+          font-size: 1.1cqw;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #f59e0b;
+          margin-bottom: 1cqw;
+        }
+
+        .panel-graph {
+          flex: 1;
+          position: relative;
+        }
+
+        .graph-svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        .graph-node {
+          fill: #ffffff;
+          stroke: rgba(245, 158, 11, 0.45);
+          stroke-width: 2;
+        }
+
+        .graph-line {
+          stroke: rgba(71, 85, 105, 0.35);
+          stroke-width: 2;
+        }
+
+        .graph-hub {
+          fill: #f59e0b;
+        }
+
+        .map-grid {
+          flex: 1;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(3, 1fr);
+          gap: 0.5cqw;
+        }
+
+        .map-cell {
+          border-radius: 6px;
+          background: rgba(15, 23, 42, 0.06);
+        }
+
+        .map-cell.hot {
+          background: rgba(245, 158, 11, 0.35);
+          border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+
+        .timeline-rail {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding-left: 1.2cqw;
+          border-left: 3px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .timeline-event {
+          display: flex;
+          align-items: center;
+          gap: 0.8cqw;
+        }
+
+        .timeline-dot {
+          width: 0.7cqw;
+          height: 0.7cqw;
+          border-radius: 50%;
+          background: #f59e0b;
+          flex-shrink: 0;
+        }
+
+        .timeline-text {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.95cqw;
+          color: #475569;
+        }
+
+        .network-svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          opacity: 0;
+          z-index: 0;
+        }
+
+        .network-line {
+          stroke: rgba(245, 158, 11, 0.2);
+          stroke-width: 1.5;
+          stroke-dasharray: 6 8;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="07-intelligence-mosaic"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          class="scene clip"
+          id="el-07-intelligence-mosaic-scene"
+          data-start="0"
+          data-duration="21.717"
+          data-track-index="0"
+        >
+          <div class="camera" id="el-07-intelligence-mosaic-camera">
+            <div class="slide-header">
+              <div class="eyebrow">Intelligence suite</div>
+              <div class="tag-pill">One platform</div>
+            </div>
+
+            <div class="phrase-bar">
+              <span class="phrase-main" id="el-07-intelligence-mosaic-phrase-main">Semantic </span
+              ><span class="phrase-accent" id="el-07-intelligence-mosaic-phrase-accent">search</span>
+            </div>
+
+            <div class="mosaic-stage">
+              <svg class="network-svg" viewBox="0 0 1920 600" xmlns="http://www.w3.org/2000/svg">
+                <line class="network-line" x1="960" y1="300" x2="320" y2="120" />
+                <line class="network-line" x1="960" y1="300" x2="1600" y2="140" />
+                <line class="network-line" x1="960" y1="300" x2="280" y2="480" />
+                <line class="network-line" x1="960" y1="300" x2="1640" y2="460" />
+                <line class="network-line" x1="960" y1="300" x2="960" y2="80" />
+                <line class="network-line" x1="960" y1="300" x2="960" y2="520" />
+              </svg>
+
+              <div class="burst-wrap" id="el-07-intelligence-mosaic-burst">
+                <div class="cap-tile" data-tx="-420" data-ty="-200">Search</div>
+                <div class="cap-tile" data-tx="420" data-ty="-200">Similar cases</div>
+                <div class="cap-tile" data-tx="-480" data-ty="40">Networks</div>
+                <div class="cap-tile" data-tx="480" data-ty="40">Trends</div>
+                <div class="cap-tile" data-tx="-360" data-ty="220">Hotspots</div>
+                <div class="cap-tile" data-tx="360" data-ty="220">Timelines</div>
+              </div>
+
+              <div class="panel-grid" id="el-07-intelligence-mosaic-panels">
+                <div class="panel" id="el-07-intelligence-mosaic-panel-graph">
+                  <div class="panel-label">Network graph</div>
+                  <div class="panel-graph">
+                    <svg class="graph-svg" viewBox="0 0 400 280">
+                      <line class="graph-line" x1="200" y1="140" x2="80" y2="60" />
+                      <line class="graph-line" x1="200" y1="140" x2="320" y2="70" />
+                      <line class="graph-line" x1="200" y1="140" x2="100" y2="220" />
+                      <line class="graph-line" x1="200" y1="140" x2="310" y2="210" />
+                      <circle class="graph-node" cx="80" cy="60" r="18" />
+                      <circle class="graph-node" cx="320" cy="70" r="18" />
+                      <circle class="graph-node" cx="100" cy="220" r="18" />
+                      <circle class="graph-node" cx="310" cy="210" r="18" />
+                      <circle class="graph-hub" cx="200" cy="140" r="24" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="panel" id="el-07-intelligence-mosaic-panel-map">
+                  <div class="panel-label">Hotspot map</div>
+                  <div class="map-grid">
+                    <div class="map-cell"></div>
+                    <div class="map-cell hot"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell hot"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell hot"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell"></div>
+                    <div class="map-cell"></div>
+                  </div>
+                </div>
+                <div class="panel" id="el-07-intelligence-mosaic-panel-timeline">
+                  <div class="panel-label">Crime timeline</div>
+                  <div class="timeline-rail">
+                    <div class="timeline-event">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-text">FIR-2024-1842</div>
+                    </div>
+                    <div class="timeline-event">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-text">Evidence link</div>
+                    </div>
+                    <div class="timeline-event">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-text">Arrest record</div>
+                    </div>
+                    <div class="timeline-event">
+                      <div class="timeline-dot"></div>
+                      <div class="timeline-text">Court filing</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        (function () {
+          const DURATION = 21.717;
+          const tl = gsap.timeline({ paused: true });
+          const camera = document.getElementById("07-intelligence-mosaic-camera");
+          const phraseMain = document.getElementById("07-intelligence-mosaic-phrase-main");
+          const phraseAccent = document.getElementById("07-intelligence-mosaic-phrase-accent");
+
+          const PHRASES = [
+            { at: 0, main: "Semantic ", accent: "search" },
+            { at: 4.2, main: "Criminal ", accent: "networks" },
+            { at: 8.6, main: "Crime ", accent: "hotspots" },
+            { at: 13.0, main: "Full case ", accent: "timelines" },
+            { at: 17.2, main: "All in ", accent: "one place" },
+          ];
+
+          tl.fromTo(
+            ".slide-header",
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+            0.1,
+          );
+
+          const tiles = document.querySelectorAll("#el-07-intelligence-mosaic-burst .cap-tile");
+          tiles.forEach(function (el, i) {
+            const tx = Number(el.dataset.tx);
+            const ty = Number(el.dataset.ty);
+            tl.fromTo(
+              el,
+              { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.55, opacity: 0 },
+              {
+                x: tx,
+                y: ty,
+                scale: 1,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power3.out",
+              },
+              0.35 + i * 0.06,
+            );
+          });
+
+          const phraseDriver = { t: 0 };
+          tl.to(
+            phraseDriver,
+            {
+              t: DURATION,
+              duration: DURATION,
+              ease: "none",
+              onUpdate: function () {
+                const t = phraseDriver.t;
+                let active = PHRASES[0];
+                for (let i = PHRASES.length - 1; i >= 0; i--) {
+                  if (t >= PHRASES[i].at) {
+                    active = PHRASES[i];
+                    break;
+                  }
+                }
+                if (phraseMain.textContent !== active.main) phraseMain.textContent = active.main;
+                if (phraseAccent.textContent !== active.accent) phraseAccent.textContent = active.accent;
+              },
+            },
+            0,
+          );
+
+          tl.to(
+            "#el-07-intelligence-mosaic-burst",
+            { opacity: 0, scale: 0.95, duration: 0.8, ease: "power2.in" },
+            3.0,
+          );
+          tl.to(
+            "#el-07-intelligence-mosaic-panels",
+            { opacity: 1, duration: 0.9, ease: "power2.out" },
+            3.2,
+          );
+
+          const phase = { scale: 0.94, focusX: 0, focusY: 0 };
+          tl.to(phase, { scale: 1, duration: 1.4, ease: "power2.out" }, 0.2);
+          tl.to(phase, { scale: 1.06, focusX: -80, focusY: 0, duration: 1.6, ease: "power2.inOut" }, 4.0);
+          tl.to(phase, { scale: 1.08, focusX: 60, focusY: -20, duration: 1.6, ease: "power2.inOut" }, 8.4);
+          tl.to(phase, { scale: 1.05, focusX: 120, focusY: 10, duration: 1.6, ease: "power2.inOut" }, 12.8);
+          tl.to(phase, { scale: 1, focusX: 0, focusY: 0, duration: 1.8, ease: "power3.out" }, 17.0);
+
+          const drift = { p: 0 };
+          tl.to(
+            drift,
+            {
+              p: Math.PI * 2 * 2,
+              duration: DURATION,
+              ease: "none",
+              onUpdate: function () {
+                const dx = Math.sin(drift.p) * 4 + phase.focusX;
+                const dy = Math.sin(drift.p * 1.3) * 2 + phase.focusY;
+                camera.style.transform =
+                  "scale(" + phase.scale + ") translate(" + dx + "px, " + dy + "px)";
+              },
+            },
+            0,
+          );
+
+          tl.fromTo(
+            "#el-07-intelligence-mosaic-panel-graph",
+            { scale: 0.92, opacity: 0.6 },
+            { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out" },
+            4.1,
+          );
+          tl.fromTo(
+            "#el-07-intelligence-mosaic-panel-map",
+            { scale: 0.92, opacity: 0.6 },
+            { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out" },
+            8.5,
+          );
+          tl.fromTo(
+            "#el-07-intelligence-mosaic-panel-timeline",
+            { scale: 0.92, opacity: 0.6 },
+            { scale: 1, opacity: 1, duration: 0.7, ease: "power2.out" },
+            12.9,
+          );
+
+          tl.to(".network-svg", { opacity: 1, duration: 1.0, ease: "power2.out" }, 17.4);
+
+          const pulse = { p: 0 };
+          tl.to(
+            pulse,
+            {
+              p: Math.PI * 2 * 1.2,
+              duration: 3.5,
+              ease: "none",
+              onUpdate: function () {
+                const s = 1 + Math.sin(pulse.p) * 0.015;
+                gsap.set(".network-line", { opacity: 0.35 + Math.sin(pulse.p) * 0.15 });
+                gsap.set("#el-07-intelligence-mosaic-panels", { scale: s });
+              },
+            },
+            18.0,
+          );
+
+          window.__timelines["07-intelligence-mosaic"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

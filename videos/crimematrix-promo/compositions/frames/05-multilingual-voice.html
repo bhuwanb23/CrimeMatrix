@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>05-multilingual-voice</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap");
+
+        #root {
+          position: relative;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #ffffff;
+          container-type: size;
+          font-family: "Plus Jakarta Sans", sans-serif;
+          color: #0f172a;
+        }
+
+        .scene {
+          position: absolute;
+          inset: 0;
+          padding: 5cqw 5cqw 0;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          max-height: 900px;
+        }
+
+        .slide-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 2.4cqw;
+        }
+
+        .eyebrow {
+          font-size: 1.4cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.55cqw 1.4cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 1.1cqw;
+          font-weight: 600;
+          color: #f59e0b;
+        }
+
+        .headline {
+          font-size: 4.2cqw;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          line-height: 1.08;
+          margin-bottom: 3.2cqw;
+          max-width: 78cqw;
+        }
+
+        .pill-stage {
+          perspective: 1400px;
+          display: flex;
+          justify-content: center;
+          gap: 2cqw;
+          margin-bottom: 4cqw;
+          transform-style: preserve-3d;
+        }
+
+        .lang-pill {
+          position: relative;
+          min-width: 14cqw;
+          padding: 1.6cqw 3.2cqw;
+          border-radius: 100px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          font-size: 2.2cqw;
+          font-weight: 700;
+          text-align: center;
+          transform-style: preserve-3d;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
+        }
+
+        .lang-pill.active {
+          background: rgba(245, 158, 11, 0.15);
+          border-color: rgba(245, 158, 11, 0.45);
+          color: #0f172a;
+        }
+
+        .pill-left {
+          transform: rotateY(12deg);
+        }
+
+        .pill-right {
+          transform: rotateY(-12deg);
+        }
+
+        .pill-burst {
+          position: absolute;
+          inset: 0;
+          border-radius: 100px;
+          background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, transparent 70%);
+          opacity: 0;
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .lang-pill span {
+          position: relative;
+          z-index: 1;
+        }
+
+        .query-shell {
+          margin: 0 auto;
+          width: min(72cqw, 1200px);
+          padding: 2.4cqw 3.2cqw;
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          display: flex;
+          align-items: center;
+          gap: 1.2cqw;
+        }
+
+        .query-label {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 1.4cqw;
+          font-weight: 700;
+          color: #f59e0b;
+          flex-shrink: 0;
+        }
+
+        .query-text-wrap {
+          display: inline-flex;
+          align-items: baseline;
+          min-width: 42cqw;
+          white-space: nowrap;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 2cqw;
+          font-weight: 500;
+          color: #0f172a;
+        }
+
+        .query-cursor {
+          display: inline-block;
+          width: 0.35cqw;
+          height: 2.2cqw;
+          margin-left: 0.4cqw;
+          background: #f59e0b;
+        }
+
+        .voice-chip {
+          margin-left: auto;
+          padding: 0.8cqw 1.6cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          font-size: 1.2cqw;
+          font-weight: 600;
+          color: #475569;
+        }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <div
+        id="root"
+        data-composition-id="05-multilingual-voice"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div
+          class="scene clip"
+          id="el-05-multilingual-voice-scene"
+          data-start="0"
+          data-duration="10.304"
+          data-track-index="0"
+        >
+          <div class="slide-header">
+            <div class="eyebrow">Multilingual access</div>
+            <div class="tag-pill">Voice + text</div>
+          </div>
+          <h1 class="headline">Ask in your language</h1>
+
+          <div class="pill-stage">
+            <div class="lang-pill pill-left" id="el-05-multilingual-voice-pill-en">
+              <div class="pill-burst" id="el-05-multilingual-voice-burst-en"></div>
+              <span>EN</span>
+            </div>
+            <div class="lang-pill" id="el-05-multilingual-voice-pill-kn">
+              <div class="pill-burst" id="el-05-multilingual-voice-burst-kn"></div>
+              <span>KN</span>
+            </div>
+            <div class="lang-pill pill-right active" id="el-05-multilingual-voice-pill-kg">
+              <div class="pill-burst" id="el-05-multilingual-voice-burst-kg"></div>
+              <span>Kanglish</span>
+            </div>
+          </div>
+
+          <div class="query-shell">
+            <div class="query-label">Query</div>
+            <div class="query-text-wrap">
+              <span class="query-text" id="el-05-multilingual-voice-query-text"></span>
+              <span class="query-cursor" id="el-05-multilingual-voice-query-cursor"></span>
+            </div>
+            <div class="voice-chip">Voice ready</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        (function () {
+          const DURATION = 10.304;
+          const tl = gsap.timeline({ paused: true });
+
+          const queryText = document.getElementById("05-multilingual-voice-query-text");
+          const queryCursor = document.getElementById("05-multilingual-voice-query-cursor");
+          const pillKg = document.getElementById("05-multilingual-voice-pill-kg");
+          const burstKg = document.getElementById("05-multilingual-voice-burst-kg");
+
+          const SEQUENCE = [
+            { t: 0, text: "" },
+            { t: 1.4, text: "yelli" },
+            { t: 1.65, text: "yelli theft" },
+            { t: 1.95, text: "yelli theft cases" },
+            { t: 2.35, text: "yelli theft cases ide?" },
+            { t: 2.75, text: "yelli theft cases ide? ✓" },
+          ];
+
+          function textAt(time) {
+            for (let i = SEQUENCE.length - 1; i >= 0; i--) {
+              if (time >= SEQUENCE[i].t) return SEQUENCE[i].text;
+            }
+            return "";
+          }
+
+          tl.fromTo(
+            ".slide-header, .headline",
+            { opacity: 0, y: 28 },
+            { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.12 },
+            0.15,
+          );
+
+          tl.fromTo(
+            "#el-05-multilingual-voice-pill-en",
+            { x: -280, rotateY: 24, opacity: 0 },
+            { x: 0, rotateY: 12, opacity: 1, duration: 0.85, ease: "power3.out" },
+            0.35,
+          );
+          tl.fromTo(
+            "#el-05-multilingual-voice-pill-kn",
+            { y: -40, scale: 0.85, opacity: 0 },
+            { y: 0, scale: 1, opacity: 1, duration: 0.75, ease: "power3.out" },
+            0.55,
+          );
+          tl.fromTo(
+            "#el-05-multilingual-voice-pill-kg",
+            { x: 280, rotateY: -24, opacity: 0 },
+            { x: 0, rotateY: -12, opacity: 1, duration: 0.85, ease: "power3.out" },
+            0.75,
+          );
+
+          tl.fromTo(
+            ".query-shell",
+            { opacity: 0, y: 36 },
+            { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+            1.1,
+          );
+
+          const driver = { t: 0 };
+          tl.to(
+            driver,
+            {
+              t: DURATION,
+              duration: DURATION,
+              ease: "none",
+              onUpdate: function () {
+                const t = driver.t;
+                const next = textAt(t);
+                if (queryText.textContent !== next) queryText.textContent = next;
+                queryCursor.style.opacity = t % 0.7 < 0.35 ? "1" : "0";
+              },
+            },
+            0,
+          );
+
+          const PRESS_START = 5.2;
+          const PRESS_DUR = 0.18;
+          const RELEASE_START = PRESS_START + PRESS_DUR;
+          tl.to(
+            pillKg,
+            { scale: 0.92, duration: PRESS_DUR, ease: "power1.in" },
+            PRESS_START,
+          );
+          tl.to(
+            pillKg,
+            { scale: 1, duration: 0.55, ease: "back.out(1.8)" },
+            RELEASE_START,
+          );
+          tl.fromTo(
+            burstKg,
+            { scale: 1, opacity: 0 },
+            { scale: 2.8, opacity: 0.55, duration: 0.45, ease: "power2.out" },
+            RELEASE_START,
+          );
+          tl.to(burstKg, { opacity: 0, duration: 0.35, ease: "power2.in" }, RELEASE_START + 0.45);
+
+          const breath = { p: 0 };
+          tl.to(
+            breath,
+            {
+              p: Math.PI * 2 * 1.5,
+              duration: 3.2,
+              ease: "none",
+              onUpdate: function () {
+                const s1 = 1 + Math.sin(breath.p) * 0.025;
+                const s2 = 1 + Math.sin(breath.p + Math.PI) * 0.025;
+                gsap.set("#el-05-multilingual-voice-pill-en", { scale: s1 });
+                gsap.set("#el-05-multilingual-voice-pill-kn", { scale: 1 + Math.sin(breath.p * 0.8) * 0.02 });
+                gsap.set("#el-05-multilingual-voice-pill-kg", { scale: s2 });
+              },
+            },
+            7.0,
+          );
+
+          window.__timelines["05-multilingual-voice"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

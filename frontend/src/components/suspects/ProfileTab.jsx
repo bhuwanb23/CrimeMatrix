@@ -1,4 +1,4 @@
-import { MapPin, Phone, User, Hash, AlertTriangle } from 'lucide-react'
+import { MapPin, Phone, User, Hash } from 'lucide-react'
 
 export default function ProfileTab({ suspect }) {
   return (

@@ -7,7 +7,6 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState([])
   const debounceRef = useRef(null)
-  const suggestRef = useRef(null)
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -16,7 +15,8 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
         try {
           const result = await getSuggestions(value)
           setSuggestions(result.data || [])
-        } catch (e) {}
+        } catch {
+        }
       }, 300)
     } else {
       setSuggestions([])

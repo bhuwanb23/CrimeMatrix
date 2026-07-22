@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link2, BarChart3, ChevronDown, ChevronRight, RefreshCw, ExternalLink } from 'lucide-react'
 import { getSimilarCases, computeSimilarities } from '../../services/similarCases'
@@ -96,30 +96,30 @@ export default function SimilarCasesPanel({ caseId }) {
   const [compareTarget, setCompareTarget] = useState(null)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    if (caseId) loadSimilar()
-  }, [caseId])
-
-  async function loadSimilar() {
+  const loadSimilar = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
       const res = await getSimilarCases(caseId, 10)
       const data = res?.data || res
       setSimilarCases(data?.similar_cases || [])
-    } catch (e) {
+    } catch {
       setError('Failed to load similar cases')
     } finally {
       setLoading(false)
     }
-  }
+  }, [caseId])
+
+  useEffect(() => {
+    if (caseId) loadSimilar()
+  }, [caseId, loadSimilar])
 
   async function handleCompute() {
     setComputing(true)
     try {
       await computeSimilarities(caseId, true)
       await loadSimilar()
-    } catch (e) {
+    } catch {
       setError('Failed to compute similarities')
     } finally {
       setComputing(false)

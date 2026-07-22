@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle, Search, Calendar } from 'lucide-react'
+import { AlertCircle, CheckCircle, Search } from 'lucide-react'
 
 const typeConfig = {
   arrest: { icon: AlertCircle, color: '#ef4444', label: 'Arrest' },

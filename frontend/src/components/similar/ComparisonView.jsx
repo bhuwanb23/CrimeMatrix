@@ -43,27 +43,26 @@ function DimensionDetail({ dim, data }) {
   )
 }
 
-export default function ComparisonView({ caseId1, caseId2, case2Title, onClose }) {
+export default function ComparisonView({ caseId1, caseId2, case2Title: _case2Title, onClose }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    async function loadComparison() {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await compareCases(caseId1, caseId2)
+        setData(res?.data || res)
+      } catch {
+        setError('Failed to load comparison')
+      } finally {
+        setLoading(false)
+      }
+    }
     loadComparison()
   }, [caseId1, caseId2])
-
-  async function loadComparison() {
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await compareCases(caseId1, caseId2)
-      setData(res?.data || res)
-    } catch (e) {
-      setError('Failed to load comparison')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <div className="comparison-overlay" onClick={onClose}>

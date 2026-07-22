@@ -166,3 +166,6 @@ router.include_router(priority_api.router, prefix="/priorities", tags=["Prioriti
 
 # Model Evaluation APIs
 router.include_router(evaluation_api.router, prefix="/evaluation", tags=["Evaluation"])
+
+# Proactive Intelligence APIs
+router.include_router(proactive_api.router, prefix="/proactive", tags=["Proactive Intelligence"])

@@ -94,6 +94,20 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
     }
   }
 
+  async function handleExplain(recId) {
+    if (explainingId === recId) {
+      setExplainingId(null)
+      setExplanation(null)
+      return
+    }
+    setExplainingId(recId)
+    setExplanation(null)
+    try {
+      const res = await explainRecommendation(recId)
+      setExplanation(res?.data || res)
+    } catch (e) { console.error('Explain failed', e) } finally { setExplainingId(null) }
+  }
+
   function handleClick(rec) {
     const config = typeConfig[rec.rec_type || rec.type] || typeConfig.similar_case
     const id = rec.entity_id || rec.case_id || rec.suspect_id

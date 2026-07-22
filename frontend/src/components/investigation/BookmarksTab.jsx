@@ -1,6 +1,6 @@
 import { Clock, User } from 'lucide-react'
 
-export default function BookmarksTab({ investigationId, bookmarks }) {
+export default function BookmarksTab({ investigationId: _investigationId, bookmarks }) {
   if (!bookmarks || bookmarks.length === 0) {
     return (
       <div className="similar-empty">

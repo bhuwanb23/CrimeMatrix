@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { LineChart, RefreshCw, TrendingUp, Zap, Target, Database } from 'lucide-react'
+import { LineChart, RefreshCw, TrendingUp } from 'lucide-react'
 import { generateForecast, getPredictionStats, getPredictionModels, listPredictions } from '../services/predictions'
 import { get } from '../services/api'
 import { listDistricts } from '../services/search'
@@ -10,7 +10,6 @@ import CrimeTypePredictions from './predictions/CrimeTypePredictions'
 import ModelPerformance from './predictions/ModelPerformance'
 import AIPredictionsPanel from './predictions/AIPredictionsPanel'
 import SeasonalPatternsChart from './predictions/SeasonalPatternsChart'
-import ForecastConfidenceDisplay from './predictions/ForecastConfidenceDisplay'
 import PredictionExplanationPanel from './predictions/PredictionExplanationPanel'
 import ConfidenceBreakdown from './predictions/ConfidenceBreakdown'
 import SourceReferences from './predictions/SourceReferences'
@@ -27,33 +26,38 @@ export default function PredictionAnalyticsPage() {
   const [timeHorizon, setTimeHorizon] = useState(30)
   const [seasonal, setSeasonal] = useState(null)
 
-  useEffect(() => { loadAll() }, [])
+  useEffect(() => {
+    let cancelled = false
 
-  async function loadAll() {
-    setLoading(true)
-    try {
-      const [statsRes, modelsRes, predsRes, districtsRes, seasonalRes] = await Promise.all([
-        getPredictionStats(),
-        getPredictionModels(),
-        listPredictions(),
-        listDistricts().catch(() => ({ data: [] })),
-        get(`/predictions/forecast/seasonal?days=365`).catch(() => ({ data: null })),
-      ])
-      setStats(statsRes?.data || statsRes)
-      setModels(modelsRes?.data || [])
-      setPredictions(predsRes?.data?.items || [])
-      setDistricts(districtsRes?.data?.items || districtsRes?.data || [])
-      setSeasonal(seasonalRes?.data || seasonalRes)
+    async function loadAll() {
+      setLoading(true)
+      try {
+        const [statsRes, modelsRes, predsRes, districtsRes, seasonalRes] = await Promise.all([
+          getPredictionStats(),
+          getPredictionModels(),
+          listPredictions(),
+          listDistricts().catch(() => ({ data: [] })),
+          get(`/predictions/forecast/seasonal?days=365`).catch(() => ({ data: null })),
+        ])
+        if (cancelled) return
+        setStats(statsRes?.data || statsRes)
+        setModels(modelsRes?.data || [])
+        setPredictions(predsRes?.data?.items || [])
+        setDistricts(districtsRes?.data?.items || districtsRes?.data || [])
+        setSeasonal(seasonalRes?.data || seasonalRes)
 
-      // Auto-generate forecast if none exists
-      if (!forecast) {
         try {
           const forecastRes = await generateForecast({ periods: timeHorizon })
-          setForecast(forecastRes?.data || forecastRes)
+          if (!cancelled) setForecast(forecastRes?.data || forecastRes)
         } catch (e) { console.error(e) }
+      } catch (e) { console.error(e) } finally {
+        if (!cancelled) setLoading(false)
       }
-    } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+    }
+
+    loadAll()
+    return () => { cancelled = true }
+  }, [timeHorizon])
 
   async function handleForecast() {
     setForecasting(true)

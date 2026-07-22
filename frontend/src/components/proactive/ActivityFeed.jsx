@@ -1,4 +1,8 @@
+import { useState } from 'react'
 import { AlertTriangle, FileText, Camera, Shield, Activity } from 'lucide-react'
+import ExplainButton from '../intelligence/ExplainButton'
+import ExplanationPanel from '../intelligence/ExplanationPanel'
+import { explainEvent } from '../../services/proactive'
 
 const eventIcons = {
   crime_update: FileText,
@@ -15,6 +19,27 @@ const eventColors = {
 }
 
 export default function ActivityFeed({ events }) {
+  const [explainingId, setExplainingId] = useState(null)
+  const [explanation, setExplanation] = useState(null)
+
+  async function handleExplain(eventId) {
+    if (explainingId === eventId) {
+      setExplainingId(null)
+      setExplanation(null)
+      return
+    }
+    setExplainingId(eventId)
+    setExplanation(null)
+    try {
+      const res = await explainEvent(eventId)
+      setExplanation(res?.data || res)
+    } catch (e) {
+      console.error('Explain failed', e)
+    } finally {
+      setExplainingId(null)
+    }
+  }
+
   if (!events || events.length === 0) {
     return (
       <div className="bg-white border border-slate-200 rounded-xl p-4">
@@ -54,7 +79,13 @@ export default function ActivityFeed({ events }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-900 capitalize">{event.event_type?.replace('_', ' ')}</span>
-                    <span className="text-[10px] text-slate-400">{event.created_at ? new Date(event.created_at).toLocaleTimeString() : ''}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-slate-400">{event.created_at ? new Date(event.created_at).toLocaleTimeString() : ''}</span>
+                      <ExplainButton
+                        onClick={() => handleExplain(event.id)}
+                        loading={explainingId === event.id}
+                      />
+                    </div>
                   </div>
                   <p className="text-[10px] text-slate-500">
                     {event.entity_type ? `${event.entity_type} #${event.entity_id}` : 'System event'}
@@ -62,6 +93,9 @@ export default function ActivityFeed({ events }) {
                   </p>
                 </div>
               </div>
+              {explanation && explainingId === null && explanation.event_id === event.id && (
+                <ExplanationPanel explanation={explanation} onClose={() => setExplanation(null)} />
+              )}
             </div>
           )
         })}

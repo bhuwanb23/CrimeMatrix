@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Search, FileText, Users } from 'lucide-react'
+import { FileText, Users } from 'lucide-react'
 import SearchPage from './SearchPage'
 import SuspectsPage from './SuspectsPage'
 

@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          container-type: size;
+          background: #ffffff;
+          overflow: hidden;
+          font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+          color: #0f172a;
+        }
+
+        .header-band {
+          position: absolute;
+          top: 5cqw;
+          left: 5cqw;
+          right: 5cqw;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .eyebrow {
+          font-size: 0.8cqw;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .tag-pill {
+          padding: 0.45cqw 1.1cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.08);
+          color: #f59e0b;
+          font-size: 0.65cqw;
+          font-weight: 500;
+        }
+
+        .chat-shell {
+          position: absolute;
+          left: 50%;
+          top: 18cqh;
+          width: 62cqw;
+          transform: translateX(-50%);
+          will-change: transform, opacity;
+        }
+
+        .chat-header {
+          display: flex;
+          align-items: center;
+          gap: 0.8cqw;
+          margin-bottom: 1.2cqw;
+        }
+
+        .chat-dot {
+          width: 0.55cqw;
+          height: 0.55cqw;
+          border-radius: 50%;
+          background: #f59e0b;
+        }
+
+        .chat-title {
+          font-size: 1.05cqw;
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        .chat-role {
+          font-size: 0.75cqw;
+          color: #475569;
+        }
+
+        .query-card {
+          padding: 1.4cqw 1.6cqw;
+          background: rgba(15, 23, 42, 0.04);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-radius: 14px;
+          margin-bottom: 1.4cqw;
+        }
+
+        .query-label {
+          font-size: 0.7cqw;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #475569;
+          margin-bottom: 0.7cqw;
+        }
+
+        .query-row {
+          display: flex;
+          align-items: baseline;
+          gap: 0.35cqw;
+          font-size: 1.35cqw;
+          font-weight: 600;
+          line-height: 1.35;
+          white-space: pre;
+        }
+
+        .query-text {
+          color: #0f172a;
+        }
+
+        .query-cursor {
+          display: inline-block;
+          width: 0.18cqw;
+          height: 1.45cqw;
+          background: #f59e0b;
+          transform: translateY(0.12cqw);
+          will-change: opacity;
+        }
+
+        .answer-card {
+          padding: 1.6cqw;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1.5px solid rgba(245, 158, 11, 0.2);
+          border-left: 4px solid #f59e0b;
+          border-radius: 12px;
+          will-change: transform, opacity;
+        }
+
+        .answer-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.9cqw;
+        }
+
+        .answer-title {
+          font-size: 0.85cqw;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          color: #f59e0b;
+        }
+
+        .confidence-chip {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.75cqw;
+          font-weight: 600;
+          color: #0f172a;
+          padding: 0.35cqw 0.75cqw;
+          border-radius: 100px;
+          background: rgba(245, 158, 11, 0.15);
+        }
+
+        .answer-body {
+          font-size: 1.05cqw;
+          line-height: 1.55;
+          color: #475569;
+        }
+
+        .answer-stat {
+          margin-top: 0.9cqw;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.78cqw;
+          color: #f59e0b;
+        }
+
+        .pointer-cursor {
+          position: absolute;
+          width: 28px;
+          height: 28px;
+          pointer-events: none;
+          z-index: 5;
+          will-change: transform;
+        }
+
+        .ripple {
+          position: absolute;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: 2px solid rgba(245, 158, 11, 0.45);
+          pointer-events: none;
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0);
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="04-conversational-copilot"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="header-band">
+          <div class="eyebrow">Conversational AI</div>
+          <div class="tag-pill">Copilot</div>
+        </div>
+
+        <div class="chat-shell" id="chat-shell">
+          <div class="chat-header">
+            <div class="chat-dot"></div>
+            <div>
+              <div class="chat-title">Investigation Assistant</div>
+              <div class="chat-role">Officer query · Natural language</div>
+            </div>
+          </div>
+
+          <div class="query-card">
+            <div class="query-label">Ask</div>
+            <div class="query-row">
+              <span class="query-text" id="query-text"></span
+              ><span class="query-cursor" id="query-cursor"></span>
+            </div>
+          </div>
+
+          <div class="answer-card" id="answer-card">
+            <div class="answer-head">
+              <div class="answer-title">AI Answer</div>
+              <div class="confidence-chip" id="confidence">—%</div>
+            </div>
+            <div class="answer-body">3 linked cases across Bengaluru &amp; Mysuru districts</div>
+            <div class="answer-stat">FIR/2024/0892 · FIR/2024/1147 · FIR/2024/0318</div>
+          </div>
+        </div>
+
+        <svg class="pointer-cursor" id="pointer" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M5 3L19 12L12 13L9 20L5 3Z"
+            fill="#el-0f172a"
+            stroke="#ffffff"
+            stroke-width="1.2"
+          />
+        </svg>
+        <div class="ripple" id="ripple-1"></div>
+        <div class="ripple" id="ripple-2"></div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const DURATION = 5.461;
+
+        const QUERY = "Show linked cases in Bengaluru?";
+        const CHAR_SPEED = 0.055;
+        const TYPE_START = 0.85;
+        const TYPE_END = TYPE_START + QUERY.length * CHAR_SPEED;
+        const ANSWER_START = TYPE_END + 0.35;
+        const BLINK_CYCLE = 0.85;
+
+        const shell = document.getElementById("chat-shell");
+        const queryText = document.getElementById("query-text");
+        const queryCursor = document.getElementById("query-cursor");
+        const answerCard = document.getElementById("answer-card");
+        const confidence = document.getElementById("confidence");
+        const pointer = document.getElementById("pointer");
+        const ripple1 = document.getElementById("ripple-1");
+        const ripple2 = document.getElementById("ripple-2");
+
+        gsap.set(answerCard, { opacity: 0, y: 28, scale: 0.96 });
+        gsap.set(pointer, { x: 220, y: 760, opacity: 0 });
+        gsap.set([ripple1, ripple2], { opacity: 0, scale: 0 });
+
+        tl.fromTo(
+          shell,
+          { opacity: 0, y: 80 },
+          { opacity: 1, y: 0, duration: 0.42, ease: "power2.out" },
+          0,
+        );
+
+        tl.to(
+          { clock: 0 },
+          {
+            clock: DURATION,
+            duration: DURATION,
+            ease: "none",
+            onUpdate: function () {
+              const t = tl.time();
+              if (t >= TYPE_START && t < TYPE_END) {
+                const idx = Math.floor((t - TYPE_START) / CHAR_SPEED);
+                const vis = QUERY.slice(0, idx);
+                if (queryText.textContent !== vis) queryText.textContent = vis;
+              } else if (t >= TYPE_END) {
+                queryText.textContent = QUERY;
+              }
+              if (t >= TYPE_START) {
+                queryCursor.style.opacity = (t % BLINK_CYCLE) < BLINK_CYCLE / 2 ? "1" : "0";
+              }
+            },
+          },
+          0,
+        );
+
+        tl.fromTo(
+          answerCard,
+          { opacity: 0, y: 28, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "power2.out" },
+          ANSWER_START,
+        );
+
+        tl.fromTo(
+          { val: 0 },
+          {
+            val: 94,
+            duration: 0.8,
+            ease: "power2.out",
+            onUpdate: function () {
+              confidence.textContent = Math.round(this.targets()[0].val) + "%";
+            },
+          },
+          ANSWER_START + 0.15,
+        );
+
+        tl.fromTo(
+          pointer,
+          { x: 220, y: 760, opacity: 0 },
+          { x: 960, y: 430, opacity: 1, duration: 0.7, ease: "power2.out" },
+          ANSWER_START - 0.2,
+        );
+
+        tl.to(pointer, { scale: 0.82, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.inOut" }, ANSWER_START + 0.05);
+
+        tl.fromTo(
+          ripple1,
+          { opacity: 0.7, scale: 0, x: 960, y: 430 },
+          { opacity: 0, scale: 2.4, duration: 0.55, ease: "power2.out" },
+          ANSWER_START + 0.1,
+        );
+
+        tl.fromTo(
+          ripple2,
+          { opacity: 0.5, scale: 0, x: 960, y: 430 },
+          { opacity: 0, scale: 3.0, duration: 0.7, ease: "power2.out" },
+          ANSWER_START + 0.22,
+        );
+
+        window.__timelines["04-conversational-copilot"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

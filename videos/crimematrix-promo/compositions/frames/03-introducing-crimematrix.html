@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          container-type: size;
+          background: #ffffff;
+          overflow: hidden;
+          font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+          color: #0f172a;
+        }
+
+        .stage {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .zoom-scale {
+          transform-origin: center center;
+          will-change: transform;
+        }
+
+        .zoom-translate {
+          will-change: transform;
+        }
+
+        .recenter-shift {
+          display: flex;
+          align-items: center;
+        }
+
+        .companion {
+          width: 28cqw;
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 1.6cqw;
+          white-space: nowrap;
+          font-size: 3.2cqw;
+          font-weight: 500;
+          color: #475569;
+          line-height: 1;
+        }
+
+        .brand-group {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1.2cqw;
+        }
+
+        .brand-text {
+          font-size: 5.2cqw;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1;
+          white-space: nowrap;
+        }
+
+        .brand-text .matrix {
+          color: #f59e0b;
+        }
+
+        .accent-bar {
+          width: 5.5cqw;
+          height: 4px;
+          border-radius: 2px;
+          background: #f59e0b;
+          transform-origin: left center;
+        }
+
+        .brand-sub {
+          font-size: 1.15cqw;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #475569;
+        }
+
+        .hero-lockup {
+          will-change: transform;
+        }
+
+        .measure-probe {
+          position: absolute;
+          left: -99999px;
+          visibility: hidden;
+          white-space: pre;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="03-introducing-crimematrix"
+        data-width="1920"
+        data-height="1080"
+      >
+        <div class="stage">
+          <div class="zoom-scale">
+            <div class="zoom-translate">
+              <div class="recenter-shift">
+                <div class="companion">
+                  <span class="companion-text"></span>
+                </div>
+                <div class="brand-group">
+                  <div class="hero-lockup">
+                    <div class="brand-text">Crime<span class="matrix">Matrix</span></div>
+                    <div class="accent-bar"></div>
+                  </div>
+                  <div class="brand-sub">Built for Karnataka State Police</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const DURATION = 7.488;
+
+        const COMPANION_WIDTH = 538;
+        const COMPANION_GAP = 31;
+        const BRAND_FONT_SIZE = 100;
+        const FINAL_RECENTER_OFFSET = -165;
+
+        const TIMING = {
+          textEnd: 0.9,
+          popStart: 0.12,
+          popDur: 0.38,
+          slideStart: 1.85,
+          slideDur: 0.75,
+          zoomStart: 2.95,
+          zoomDur: 1.1,
+          holdStart: 4.2,
+        };
+
+        const SEQUENCE = [
+          { t: 0.0, text: "I" },
+          { t: 0.08, text: "In" },
+          { t: 0.16, text: "Int" },
+          { t: 0.24, text: "Intro" },
+          { t: 0.36, text: "Intro" },
+          { t: 0.48, text: "Introduc" },
+          { t: 0.64, text: "Introducin" },
+          { t: 0.8, text: "Introducing" },
+        ];
+
+        const textEl = document.querySelector(".companion-text");
+        const heroLockup = document.querySelector(".hero-lockup");
+        const brandSub = document.querySelector(".brand-sub");
+        const accentBar = document.querySelector(".accent-bar");
+
+        gsap.set(heroLockup, { scale: 0, opacity: 0 });
+        gsap.set(brandSub, { opacity: 0, y: 12 });
+        gsap.set(accentBar, { scaleX: 0, opacity: 0 });
+
+        const probe = document.createElement("span");
+        probe.className = "measure-probe";
+        probe.style.font = `800 ${BRAND_FONT_SIZE}px "Plus Jakarta Sans", system-ui, sans-serif`;
+        probe.textContent = "CrimeMatrix";
+        document.querySelector(".frame-root").appendChild(probe);
+        const brandTextWidth = probe.getBoundingClientRect().width;
+        probe.remove();
+
+        const baseHeroOffset = (COMPANION_WIDTH + COMPANION_GAP + brandTextWidth) / 2;
+        const HERO_FINAL_OFFSET_X = baseHeroOffset + FINAL_RECENTER_OFFSET;
+
+        for (const entry of SEQUENCE) {
+          tl.set(textEl, { textContent: entry.text }, entry.t);
+        }
+
+        tl.fromTo(
+          heroLockup,
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: TIMING.popDur, ease: "back.out(2)" },
+          TIMING.popStart,
+        );
+
+        tl.fromTo(
+          accentBar,
+          { scaleX: 0, opacity: 0 },
+          { scaleX: 1, opacity: 1, duration: 0.45, ease: "power2.out" },
+          TIMING.popStart + 0.2,
+        );
+
+        tl.fromTo(
+          brandSub,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+          TIMING.popStart + 0.35,
+        );
+
+        tl.to(
+          ".companion",
+          { opacity: 0, x: -70, duration: TIMING.slideDur, ease: "power3.out" },
+          TIMING.slideStart,
+        );
+
+        tl.to(
+          ".recenter-shift",
+          { x: FINAL_RECENTER_OFFSET, duration: TIMING.slideDur, ease: "power3.out" },
+          TIMING.slideStart,
+        );
+
+        tl.to(
+          ".zoom-scale",
+          { scale: 4.2, duration: TIMING.zoomDur, ease: "power2.out" },
+          TIMING.zoomStart,
+        );
+
+        tl.to(
+          ".zoom-translate",
+          { x: -HERO_FINAL_OFFSET_X, duration: TIMING.zoomDur, ease: "power2.out" },
+          TIMING.zoomStart,
+        );
+
+        tl.to(
+          brandSub,
+          { opacity: 0, y: -20, duration: TIMING.zoomDur * 0.35, ease: "power2.out" },
+          TIMING.zoomStart,
+        );
+
+        window.__timelines["03-introducing-crimematrix"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

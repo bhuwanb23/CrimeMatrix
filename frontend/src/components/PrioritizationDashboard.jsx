@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Zap, RefreshCw, AlertTriangle, Users, Clock, BarChart3, ChevronRight, TrendingUp } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Zap, RefreshCw, AlertTriangle, Users, BarChart3, TrendingUp } from 'lucide-react'
 import { getPriorityStats, getPriorityRankings, batchScorePriorities, getWorkload } from '../services/priorities'
 
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
@@ -11,9 +11,7 @@ export default function PrioritizationDashboard() {
   const [loading, setLoading] = useState(true)
   const [scoring, setScoring] = useState(false)
 
-  useEffect(() => { loadData() }, [])
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true)
     try {
       const [statsRes, rankRes, workloadRes] = await Promise.all([
@@ -23,7 +21,9 @@ export default function PrioritizationDashboard() {
       setRankings(rankRes?.data || [])
       setWorkload(workloadRes?.data || [])
     } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+  }, [])
+
+  useEffect(() => { loadData() }, [loadData])
 
   async function handleBatchScore() {
     setScoring(true)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, ChevronRight, Zap, Search, ArrowUpRight, Activity } from 'lucide-react'
+import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, ChevronRight, Zap, Search, ArrowUpRight, Activity, UserX } from 'lucide-react'
 import { getSuspectRiskStats, getSuspectRiskRankings, batchScoreSuspects, getSuspectRiskScore, getSuspectRiskFactors } from '../services/suspectRisk'
 
 const riskColors = { very_high: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }

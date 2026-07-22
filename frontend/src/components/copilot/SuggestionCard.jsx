@@ -1,4 +1,4 @@
-import { Bot, CheckSquare, Sparkles } from 'lucide-react'
+import { Bot, CheckSquare } from 'lucide-react'
 
 export function AssistantCard() {
   return (
@@ -40,7 +40,7 @@ export function TasksCard({ onSend }) {
   )
 }
 
-export function PromptCard({ onSend }) {
+export function PromptCard({ onSend: _onSend }) {
   const prompt = 'What are the common MO patterns in theft cases across Bengaluru district this month?'
 
   return (

@@ -1,4 +1,4 @@
-import { X, AlertTriangle, FileText, Phone, Car, Users } from 'lucide-react'
+import { X, FileText, Phone, Car, Users } from 'lucide-react'
 import { edgeColors } from './graphData'
 
 const typeIcons = {

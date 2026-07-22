@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Send, Paperclip, Mic, MicOff, ChevronDown, Volume2, VolumeX } from 'lucide-react'
+import { useState, useCallback } from 'react'
+import { Send, Paperclip, Mic, MicOff, ChevronDown } from 'lucide-react'
 import { startListening, stopListening, isSTTSupported } from '../../services/voice'
 
-const sources = ['All Sources', 'FIR Database', 'Suspects', 'Evidence', 'Stations']
 const languages = [
   { code: 'en', label: 'English' },
   { code: 'kn', label: 'Kannada' },
@@ -16,10 +15,9 @@ const suggestedQueries = [
   "List open cases with high priority",
 ]
 
-export default function ChatInput({ onSend, voiceEnabled = false, onVoiceToggle, language = 'en', onLanguageChange }) {
+export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false, onVoiceToggle: _onVoiceToggle, language = 'en', onLanguageChange }) {
+  const source = 'All Sources'
   const [value, setValue] = useState('')
-  const [source, setSource] = useState('All Sources')
-  const [sourceOpen, setSourceOpen] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(true)
   const [isRecording, setIsRecording] = useState(false)
   const [langOpen, setLangOpen] = useState(false)

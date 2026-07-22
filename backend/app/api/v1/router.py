@@ -28,7 +28,8 @@ from app.api.v1 import (
     priority_api,
     evaluation_api,
     proactive_api,
-    fir_intelligence_api
+    fir_intelligence_api,
+    cross_district_api
 )
 
 router = APIRouter(prefix="/api/v1")

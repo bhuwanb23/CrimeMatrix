@@ -159,7 +159,7 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
             const props = f.properties
             const riskColor = props.risk_level === 'high' ? '#ef4444' : props.risk_level === 'medium' ? '#f59e0b' : '#10b981'
             return (
-              <g key={`district-${i}`} onClick={() => onDistrictSelect?.(props)} className="map-district-marker">
+              <g key={`district-${i}`} onClick={() => onDistrictSelect?.(props)} className="cursor-pointer">
                 <circle cx={pos.x} cy={pos.y} r={12} fill={riskColor} opacity={0.3} />
                 <circle cx={pos.x} cy={pos.y} r={6} fill={riskColor} stroke="white" strokeWidth={2} />
                 <text x={pos.x} y={pos.y - 16} textAnchor="middle" fontSize={10} fill="var(--text-primary)" fontWeight="600">
@@ -239,7 +239,7 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
 
         {/* Tooltip */}
         {hoveredMarker && (
-          <g className="map-tooltip">
+          <g className="pointer-events-none">
             <rect x="50" y="20" width="180" height="60" rx="6" fill="var(--bg-card)" stroke="var(--border)" />
             <text x="60" y="38" fontSize="11" fontWeight="600" fill="var(--text-primary)">{hoveredMarker.title || hoveredMarker.name}</text>
             <text x="60" y="52" fontSize="9" fill="var(--text-muted)">{hoveredMarker.crime_type || hoveredMarker.district}</text>
@@ -248,12 +248,19 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
         )}
       </svg>
 
-      {/* Legend */}
-      <div className="map-legend">
-        <div className="map-legend-item"><span className="map-legend-dot" style={{ background: '#ef4444' }} /> Open</div>
-        <div className="map-legend-item"><span className="map-legend-dot" style={{ background: '#10b981' }} /> Closed</div>
-        <div className="map-legend-item"><span className="map-legend-dot" style={{ background: '#f59e0b' }} /> Pending</div>
-        <div className="map-legend-item"><span className="map-legend-dot" style={{ background: '#3b82f6' }} /> Station</div>
+      <div className="absolute bottom-4 left-4 z-5 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] text-slate-400 max-md:inset-x-2 max-md:bottom-2 max-md:left-2">
+        <div className="flex items-center gap-1 whitespace-nowrap">
+          <span className="size-2 rounded-full bg-red-500" /> Open
+        </div>
+        <div className="flex items-center gap-1 whitespace-nowrap">
+          <span className="size-2 rounded-full bg-emerald-500" /> Closed
+        </div>
+        <div className="flex items-center gap-1 whitespace-nowrap">
+          <span className="size-2 rounded-full bg-amber-500" /> Pending
+        </div>
+        <div className="flex items-center gap-1 whitespace-nowrap">
+          <span className="size-2 rounded-full bg-blue-500" /> Station
+        </div>
       </div>
     </div>
   )

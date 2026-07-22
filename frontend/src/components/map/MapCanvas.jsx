@@ -76,9 +76,9 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
   const showDensity = activeLayers.includes('density')
 
   return (
-    <div className="map-canvas-container">
+    <div className="relative h-full w-full bg-slate-50">
       {loading && (
-        <div className="map-loading-overlay">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-slate-50/70 text-xs text-slate-900">
           <div className="similar-spinner" />
           <span>Loading map data...</span>
         </div>
@@ -86,7 +86,7 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
 
       <svg
         ref={svgRef}
-        className="map-svg"
+        className="h-full w-full cursor-grab active:cursor-grabbing"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -147,7 +147,7 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
             const color = props.status === 'open' ? '#ef4444' : props.status === 'closed' ? '#10b981' : '#f59e0b'
             return (
               <g key={`crime-${i}`} onMouseEnter={() => setHoveredMarker(props)} onMouseLeave={() => setHoveredMarker(null)}>
-                <circle cx={pos.x} cy={pos.y} r={4} fill={color} stroke="white" strokeWidth={1} className="map-crime-marker" />
+                <circle cx={pos.x} cy={pos.y} r={4} fill={color} stroke="white" strokeWidth={1} className="cursor-pointer" />
               </g>
             )
           })}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Bell, RefreshCw, CheckCircle, AlertTriangle, Shield, MapPin, TrendingUp } from 'lucide-react'
 import { listAlerts, detectAlerts, getEarlyWarningStats, acknowledgeAlert } from '../services/earlyWarning'
 
@@ -22,13 +22,8 @@ export default function EarlyWarningPage() {
   const [loading, setLoading] = useState(true)
   const [detecting, setDetecting] = useState(false)
   const [filter, setFilter] = useState('active')
-  const [expandedId, setExpandedId] = useState(null)
 
-  useEffect(() => {
-    loadAll()
-  }, [filter])
-
-  async function loadAll() {
+  const loadAll = useCallback(async () => {
     setLoading(true)
     try {
       const [alertsRes, statsRes] = await Promise.all([
@@ -42,7 +37,11 @@ export default function EarlyWarningPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filter])
+
+  useEffect(() => {
+    loadAll()
+  }, [loadAll])
 
   async function handleDetect() {
     setDetecting(true)

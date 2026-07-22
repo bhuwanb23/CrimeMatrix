@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Zap, RefreshCw, AlertTriangle, Users, BarChart3, Clock, ChevronRight, ArrowUpRight, TrendingUp } from 'lucide-react'
+import { Zap, RefreshCw, AlertTriangle, Users, BarChart3, ArrowUpRight, TrendingUp } from 'lucide-react'
 import { getPriorityStats, getPriorityRankings, batchScorePriorities, getWorkload } from '../services/priorities'
 
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }

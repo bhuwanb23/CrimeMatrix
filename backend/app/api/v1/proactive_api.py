@@ -106,3 +106,43 @@ async def batch_process(db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     result = await svc.batch_process()
     return success_response(data=result, message="Batch processing complete")
+
+
+def get_explanation_service(db: AsyncSession):
+    return IntelligenceExplanationService(db)
+
+
+@router.post("/explain/event/{event_id}")
+async def explain_event(event_id: int, db: AsyncSession = Depends(get_db)):
+    svc = get_explanation_service(db)
+    result = await svc.explain_event(event_id)
+    if "error" in result:
+        return success_response(data=result, message=result["error"])
+    return success_response(data=result, message="Explanation generated")
+
+
+@router.post("/explain/recommendation/{rec_id}")
+async def explain_recommendation(rec_id: int, db: AsyncSession = Depends(get_db)):
+    svc = get_explanation_service(db)
+    result = await svc.explain_recommendation(rec_id)
+    if "error" in result:
+        return success_response(data=result, message=result["error"])
+    return success_response(data=result, message="Explanation generated")
+
+
+@router.post("/explain/evidence-link/{link_id}")
+async def explain_evidence_link(link_id: int, db: AsyncSession = Depends(get_db)):
+    svc = get_explanation_service(db)
+    result = await svc.explain_evidence_link(link_id)
+    if "error" in result:
+        return success_response(data=result, message=result["error"])
+    return success_response(data=result, message="Explanation generated")
+
+
+@router.post("/explain/alert/{alert_id}")
+async def explain_alert(alert_id: int, db: AsyncSession = Depends(get_db)):
+    svc = get_explanation_service(db)
+    result = await svc.explain_alert(alert_id)
+    if "error" in result:
+        return success_response(data=result, message=result["error"])
+    return success_response(data=result, message="Explanation generated")

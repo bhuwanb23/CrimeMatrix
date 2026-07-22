@@ -45,6 +45,8 @@ export default function SuspectRiskPage() {
     } catch (e) { console.error(e) } finally { setLoading(false) }
   }, [selectedSuspect])
 
+  useEffect(() => { loadData() }, [loadData])
+
   async function handleBatchScore() {
     setScoring(true)
     try { await batchScoreSuspects(); await loadData() } catch (e) { console.error(e) } finally { setScoring(false) }

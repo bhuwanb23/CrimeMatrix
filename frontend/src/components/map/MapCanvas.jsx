@@ -248,7 +248,7 @@ export default function MapCanvas({ selectedDistrict, onDistrictSelect, activeLa
         )}
       </svg>
 
-      <div className="absolute bottom-4 left-4 z-5 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] text-slate-400 max-md:inset-x-2 max-md:bottom-2 max-md:left-2">
+      <div className="absolute bottom-4 left-4 z-10 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] text-slate-400 max-md:inset-x-2 max-md:bottom-2 max-md:left-2">
         <div className="flex items-center gap-1 whitespace-nowrap">
           <span className="size-2 rounded-full bg-red-500" /> Open
         </div>

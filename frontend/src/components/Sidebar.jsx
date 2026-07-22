@@ -3,25 +3,18 @@ import { NavLink } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import {
   LayoutDashboard,
-  FileText,
   BarChart3,
   Building2,
-  Users,
   ClipboardList,
   Settings,
-  LogOut,
-  Bot,
-  Network,
   BookOpen,
   Brain,
   GitBranch,
-  Clock,
   LineChart,
   Shield,
   Zap,
   Search,
 } from 'lucide-react'
-import LogoIcon from './icons/LogoIcon'
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', to: '/', id: 'dashboard' },

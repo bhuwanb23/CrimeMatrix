@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Bell, RefreshCw, CheckCircle, AlertTriangle, Shield, MapPin, TrendingUp, Search, Clock, ChevronDown, ChevronRight } from 'lucide-react'
-import { listAlerts, detectAlerts, acknowledgeAlert, getEarlyWarningStats, getAlertTimeline } from '../services/earlyWarning'
+import { useState, useEffect, useCallback } from 'react'
+import { Bell, RefreshCw, CheckCircle, AlertTriangle, Shield, MapPin, TrendingUp, Search } from 'lucide-react'
+import { listAlerts, detectAlerts, acknowledgeAlert, getEarlyWarningStats } from '../services/earlyWarning'
 import { alerts as legacyAlerts, alertTypes } from './alerts/alertsData'
 
 const severityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
@@ -13,9 +13,7 @@ export default function UnifiedAlertsPage() {
   const [detecting, setDetecting] = useState(false)
   const [filter, setFilter] = useState('active')
 
-  useEffect(() => { loadEarlyWarning() }, [filter])
-
-  async function loadEarlyWarning() {
+  const loadEarlyWarning = useCallback(async () => {
     setEwLoading(true)
     try {
       const [alertsRes, statsRes] = await Promise.all([
@@ -25,7 +23,9 @@ export default function UnifiedAlertsPage() {
       setEwAlerts(alertsRes?.data?.items || [])
       setEwStats(statsRes?.data || statsRes)
     } catch (e) { console.error(e) } finally { setEwLoading(false) }
-  }
+  }, [filter])
+
+  useEffect(() => { loadEarlyWarning() }, [loadEarlyWarning])
 
   async function handleDetect() {
     setDetecting(true)

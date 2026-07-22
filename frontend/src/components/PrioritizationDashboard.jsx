@@ -11,9 +11,7 @@ export default function PrioritizationDashboard() {
   const [loading, setLoading] = useState(true)
   const [scoring, setScoring] = useState(false)
 
-  useEffect(() => { loadData() }, [])
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true)
     try {
       const [statsRes, rankRes, workloadRes] = await Promise.all([
@@ -23,7 +21,9 @@ export default function PrioritizationDashboard() {
       setRankings(rankRes?.data || [])
       setWorkload(workloadRes?.data || [])
     } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+  }, [])
+
+  useEffect(() => { loadData() }, [loadData])
 
   async function handleBatchScore() {
     setScoring(true)

@@ -7,15 +7,6 @@ import { searchCrimes, listAllCrimes, semanticSearch, crossDistrictSearch, listD
 
 const ITEMS_PER_PAGE = 8
 
-const DISTRICT_COLORS = {
-  'Bengaluru Urban': 'bg-blue-100 text-blue-700',
-  'Mysuru': 'bg-purple-100 text-purple-700',
-  'Mangaluru': 'bg-green-100 text-green-700',
-  'Hubballi-Dharwad': 'bg-amber-100 text-amber-700',
-  'Kalaburagi': 'bg-rose-100 text-rose-700',
-  'default': 'bg-gray-100 text-gray-700',
-}
-
 export default function SearchPage() {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
@@ -29,25 +20,30 @@ export default function SearchPage() {
   const [showDistrictPicker, setShowDistrictPicker] = useState(false)
   const [districts, setDistricts] = useState([])
 
-  useEffect(() => { loadAllCrimes(); loadDistricts() }, [])
-
-  const loadDistricts = async () => {
+  const loadDistricts = useCallback(async () => {
     try {
       const result = await listDistricts()
       setDistricts(result.data || [])
-    } catch (e) {}
-  }
+    } catch {
+    }
+  }, [])
 
-  const loadAllCrimes = async () => {
+  const loadAllCrimes = useCallback(async () => {
     setIsLoading(true)
     try {
       const result = await listAllCrimes(1, 50)
       const data = result.data || {}
       setResults(data.items || data.results || [])
       setTotalResults(data.total || 0)
-    } catch (e) {}
+    } catch {
+    }
     setIsLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    loadAllCrimes()
+    loadDistricts()
+  }, [loadAllCrimes, loadDistricts])
 
   const handleSearch = useCallback(async (searchQuery) => {
     setQuery(searchQuery)
@@ -71,12 +67,12 @@ export default function SearchPage() {
         setResults(data.results || [])
         setTotalResults(data.total || 0)
       }
-    } catch (e) {
+    } catch {
       setResults([])
       setTotalResults(0)
     }
     setIsLoading(false)
-  }, [selectedDistricts, semanticMode])
+  }, [selectedDistricts, semanticMode, loadAllCrimes])
 
   const handleToggleDistrict = useCallback((district) => {
     setSelectedDistricts(prev => {

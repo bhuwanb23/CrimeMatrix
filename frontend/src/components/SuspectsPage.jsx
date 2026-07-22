@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Eye, RefreshCw, AlertTriangle, Filter } from 'lucide-react'
+import { Search, Eye, RefreshCw, Filter } from 'lucide-react'
 import { listSuspects } from '../services/search'
 
 const statusFilters = [
@@ -20,9 +20,7 @@ export default function SuspectsPage() {
   const [sortBy, setSortBy] = useState('name')
   const navigate = useNavigate()
 
-  useEffect(() => { loadSuspects() }, [page, searchQuery, activeFilter])
-
-  async function loadSuspects() {
+  const loadSuspects = useCallback(async () => {
     setLoading(true)
     try {
       const res = await listSuspects(page, 20, searchQuery)
@@ -30,7 +28,9 @@ export default function SuspectsPage() {
       setSuspects(data?.items || [])
       setTotal(data?.total || 0)
     } catch (e) { console.error(e) } finally { setLoading(false) }
-  }
+  }, [page, searchQuery])
+
+  useEffect(() => { loadSuspects() }, [loadSuspects])
 
   const filtered = suspects.filter(s => {
     if (activeFilter === 'all') return true

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Sparkles, FileText, User, MapPin, AlertTriangle, ChevronRight, RefreshCw } from 'lucide-react'
 import { getDashboardRecommendations, getCaseRecommendations } from '../../services/recommendations'
@@ -10,16 +10,12 @@ const typeConfig = {
   mo_pattern: { icon: AlertTriangle, label: 'MO Pattern', color: '#8b5cf6', route: '/cases' },
 }
 
-export default function RecommendationsPanel({ caseId = null, compact = false }) {
+export default function RecommendationsPanel({ caseId = null, compact: _compact = false }) {
   const [recommendations, setRecommendations] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    loadRecommendations()
-  }, [caseId])
-
-  async function loadRecommendations() {
+  const loadRecommendations = useCallback(async () => {
     setLoading(true)
     try {
       const res = caseId
@@ -32,7 +28,11 @@ export default function RecommendationsPanel({ caseId = null, compact = false })
     } finally {
       setLoading(false)
     }
-  }
+  }, [caseId])
+
+  useEffect(() => {
+    loadRecommendations()
+  }, [loadRecommendations])
 
   function handleClick(rec) {
     const config = typeConfig[rec.type] || typeConfig.similar_case

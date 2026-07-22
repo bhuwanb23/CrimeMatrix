@@ -173,6 +173,11 @@ export default function CaseDetailPage() {
         <div className="case-card full-width">
           <SimilarCasesPanel caseId={caseData.id} />
         </div>
+
+        {/* FIR Intelligence Suggestions */}
+        <div className="case-card full-width">
+          <FIRSuggestionsPanel firId={caseData.id} />
+        </div>
       </div>
     </div>
   )

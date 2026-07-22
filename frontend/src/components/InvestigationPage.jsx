@@ -84,6 +84,7 @@ export default function InvestigationPage() {
       />
       <WorkspacePanel investigation={selectedInvestigation} loading={detailLoading} />
       <ToolsPanel investigation={selectedInvestigation} onRefresh={loadInvestigationDetail} />
+      </div>
     </div>
   )
 }

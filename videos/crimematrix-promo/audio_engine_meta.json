@@ -11,6 +11,61 @@
   "bgm_seed_duration_s": null,
   "bgm_loop_count": null,
   "voices": [],
-  "sfx": [],
+  "sfx": [
+    {
+      "id": "01",
+      "name": "riser",
+      "file": "assets/sfx/riser.mp3",
+      "source": "local",
+      "offset_s": 0,
+      "duration_s": 10.03,
+      "volume": 0.35
+    },
+    {
+      "id": "04",
+      "name": "whoosh",
+      "file": "assets/sfx/whoosh.mp3",
+      "source": "local",
+      "offset_s": 0,
+      "duration_s": 0.57,
+      "volume": 0.35
+    },
+    {
+      "id": "05",
+      "name": "whoosh",
+      "file": "assets/sfx/whoosh.mp3",
+      "source": "local",
+      "offset_s": 0,
+      "duration_s": 0.57,
+      "volume": 0.35
+    },
+    {
+      "id": "07",
+      "name": "riser",
+      "file": "assets/sfx/riser.mp3",
+      "source": "local",
+      "offset_s": 0,
+      "duration_s": 10.03,
+      "volume": 0.35
+    },
+    {
+      "id": "09",
+      "name": "riser",
+      "file": "assets/sfx/riser.mp3",
+      "source": "local",
+      "offset_s": 0,
+      "duration_s": 10.03,
+      "volume": 0.35
+    },
+    {
+      "id": "11",
+      "name": "whoosh",
+      "file": "assets/sfx/whoosh.mp3",
+      "source": "local",
+      "offset_s": 0,
+      "duration_s": 0.57,
+      "volume": 0.35
+    }
+  ],
   "total_duration_s": 0
 }

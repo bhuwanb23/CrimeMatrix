@@ -24,7 +24,7 @@ vo_mode: verbatim
 - duration: 16.661s
 - poster: 3s
 - transition_in: cut
-- status: outline
+- status: animated
 - voiceover: Every day, thousands of crime records are generated across Karnataka. Yet investigators still spend countless hours searching through fragmented databases, connecting evidence manually, and trying to uncover hidden relationships between cases.
 - asset_candidates: design-led — HTML FIR card grid from brand tokens
 - effects: center-outward-expansion, counting-dynamic-scale, sine-wave-loop
@@ -47,7 +47,7 @@ Entrance: FIR cards scatter from center into a messy grid. Development: a count-
 - duration: 4.715s
 - poster: 2s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: What if an AI could become every investigator's intelligent partner?
 - asset_candidates: design-led — kinetic typography only
 - effects: kinetic-beat-slam, discrete-text-sequence, sine-wave-loop
@@ -71,7 +71,7 @@ Entrance: question phrase slams in on beat. Development: Base messaging-multi-ph
 - duration: 7.488s
 - poster: 1.5s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: Introducing CrimeMatrix — an AI-powered Crime Intelligence Platform built for the Karnataka State Police.
 - asset_candidates: design-led — brand wordmark + subtitle
 - effects: brand-reveal-assemble-zoom, discrete-text-sequence, sine-wave-loop
@@ -95,7 +95,7 @@ Entrance: companion “Introducing” assembles beside CrimeMatrix. Development:
 - duration: 5.461s
 - poster: 4s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: CrimeMatrix transforms investigations through a conversational AI assistant.
 - asset_candidates: design-led — chat UI mock
 - effects: discrete-text-sequence, context-sensitive-cursor, cursor-click-ripple
@@ -118,7 +118,7 @@ Entrance: chat shell rises. Development: officer question types in; AI answer ca
 - duration: 10.304s
 - poster: 3s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: Instead of navigating multiple systems, officers simply ask questions in natural language—or even by voice—in English, Kannada, or Kanglish.
 - asset_candidates: design-led — language pills + query bar
 - effects: split-tilt-cards, discrete-text-sequence, press-release-spring
@@ -141,7 +141,7 @@ Entrance: three language pills slide in. Development: Kanglish sample query type
 - duration: 12.544s
 - poster: 3s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: The AI understands context, remembers ongoing investigations, and provides instant, explainable answers, making complex investigations faster and more intuitive.
 - asset_candidates: design-led — reasoning steps UI
 - effects: svg-path-draw, counting-dynamic-scale, scale-swap-transition
@@ -164,7 +164,7 @@ Entrance: chain nodes draw in via SVG path. Development: steps reveal sequential
 - duration: 21.717s
 - poster: 6s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: Beyond search, CrimeMatrix uncovers intelligence hidden within millions of records. Investigators can perform semantic crime searches, discover similar cases across districts, visualize criminal networks, explore relationship graphs, analyze crime trends, detect hotspots, and trace complete criminal timelines.
 - asset_candidates: design-led — graph / map / timeline mosaic panels
 - effects: center-outward-expansion, avatar-cloud-network, multi-phase-camera
@@ -188,7 +188,7 @@ Entrance: capability tiles expand from center. Development: Base messaging-multi
 - duration: 13.312s
 - poster: 6s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: Our Indian Identity Resolution Engine intelligently links duplicate identities despite spelling variations and multilingual records, ensuring investigators never miss critical connections.
 - asset_candidates: design-led — identity merge animation
 - effects: scale-swap-transition, avatar-cloud-network, card-morph-anchor
@@ -211,7 +211,7 @@ Entrance: three name chips enter from edges. Development: chips orbit then colla
 - duration: 15.211s
 - poster: 6s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: CrimeMatrix doesn't just analyze the past—it helps prevent future crime. AI predicts emerging crime patterns, identifies high-risk suspects, prioritizes investigations, and forecasts crime trends.
 - asset_candidates: design-led — forecast chart + risk cards
 - effects: stat-bars-and-fills, counting-dynamic-scale, svg-path-draw
@@ -235,7 +235,7 @@ Entrance: chart axis draws. Development: Base metric-video-text-pivot — Keep m
 - duration: 20.523s
 - poster: 6s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: Most importantly, our proactive intelligence engine continuously monitors new FIRs and evidence, automatically generating Whisper Alerts, detecting cross-district links, recommending investigative leads, and connecting evidence in real time—often before investigators even know to ask.
 - asset_candidates: design-led — alert toast + district link
 - effects: press-release-spring, svg-path-draw, ai-tracking-box
@@ -258,7 +258,7 @@ Entrance: monitoring pulse. Development: Whisper Alert toast springs in; SVG lin
 - duration: 17.771s
 - poster: 5s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: CrimeMatrix is more than a dashboard. It is an AI Investigation Copilot, a Crime Intelligence Platform, and a proactive decision-support system built to empower law enforcement with faster investigations, smarter insights, and safer communities.
 - asset_candidates: design-led — typographic stack
 - effects: kinetic-beat-slam, discrete-text-sequence, 3d-text-depth-layers
@@ -282,7 +282,7 @@ Entrance: “more than a dashboard” strikes. Development: Base messaging-multi
 - duration: 4.757s
 - poster: 3s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: CrimeMatrix — Transforming Crime Data into Actionable Intelligence.
 - asset_candidates: design-led — final lockup
 - effects: brand-reveal-assemble-zoom, kinetic-beat-slam, sine-wave-loop

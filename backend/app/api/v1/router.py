@@ -170,3 +170,6 @@ router.include_router(evaluation_api.router, prefix="/evaluation", tags=["Evalua
 
 # Proactive Intelligence APIs
 router.include_router(proactive_api.router, prefix="/proactive", tags=["Proactive Intelligence"])
+
+# FIR Intelligence APIs
+router.include_router(fir_intelligence_api.router, prefix="/fir-intelligence", tags=["FIR Intelligence"])

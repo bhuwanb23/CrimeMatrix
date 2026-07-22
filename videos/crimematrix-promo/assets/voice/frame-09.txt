@@ -1,0 +1,1 @@
+﻿CrimeMatrix doesn't just analyze the past—it helps prevent future crime. AI predicts emerging crime patterns, identifies high-risk suspects, prioritizes investigations, and forecasts crime trends.

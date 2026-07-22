@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Zap, RefreshCw, AlertTriangle, Users, BarChart3, Clock, ChevronRight, ArrowUpRight, TrendingUp } from 'lucide-react'
 import { getPriorityStats, getPriorityRankings, batchScorePriorities, getWorkload } from '../services/priorities'
 

@@ -1,0 +1,12 @@
+﻿{
+  "ok": false,
+  "error": "Network.enable timed out. Increase the 'protocolTimeout' setting in launch/connect calls for a higher timeout if needed.",
+  "errors": [],
+  "warnings": [],
+  "_meta": {
+    "version": "0.7.68",
+    "latestVersion": "0.7.68",
+    "updateAvailable": false,
+    "deprecated": true
+  }
+}

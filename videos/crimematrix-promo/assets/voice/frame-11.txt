@@ -1,0 +1,1 @@
+﻿CrimeMatrix is more than a dashboard. It is an AI Investigation Copilot, a Crime Intelligence Platform, and a proactive decision-support system built to empower law enforcement with faster investigations, smarter insights, and safer communities.

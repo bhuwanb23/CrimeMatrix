@@ -1,0 +1,1 @@
+﻿Beyond search, CrimeMatrix uncovers intelligence hidden within millions of records. Investigators can perform semantic crime searches, discover similar cases across districts, visualize criminal networks, explore relationship graphs, analyze crime trends, detect hotspots, and trace complete criminal timelines.

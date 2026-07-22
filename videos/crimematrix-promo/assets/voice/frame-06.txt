@@ -1,0 +1,1 @@
+﻿The AI understands context, remembers ongoing investigations, and provides instant, explainable answers, making complex investigations faster and more intuitive.

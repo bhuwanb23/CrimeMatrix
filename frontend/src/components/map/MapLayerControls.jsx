@@ -1,35 +1,42 @@
-import { Layers, MapPin, Shield, Radio, Route, BarChart3 } from 'lucide-react'
+import { Layers } from 'lucide-react'
 
 const layers = [
-  { id: 'crimes', label: 'Crimes', icon: MapPin, color: '#f59e0b' },
-  { id: 'hotspots', label: 'Hotspots', icon: Shield, color: '#ef4444' },
-  { id: 'stations', label: 'Stations', icon: Radio, color: '#3b82f6' },
-  { id: 'routes', label: 'Routes', icon: Route, color: '#8b5cf6' },
-  { id: 'density', label: 'Density', icon: BarChart3, color: '#10b981' },
+  { id: 'crimes', label: 'Crimes', color: 'var(--color-accent)' },
+  { id: 'hotspots', label: 'Hotspots', color: '#ef4444' },
+  { id: 'stations', label: 'Stations', color: '#3b82f6' },
+  { id: 'routes', label: 'Routes', color: '#8b5cf6' },
+  { id: 'density', label: 'Density', color: '#10b981' },
 ]
 
 export default function MapLayerControls({ activeLayers, onToggleLayer }) {
   return (
     <div className="map-layer-controls">
-      <div className="map-layer-header">
-        <Layers size={14} />
-        <span>Layers</span>
+      <span className="map-control-label">
+        <Layers size={13} aria-hidden="true" />
+        Layers
+      </span>
+      <div className="map-chip-row" role="group" aria-label="Map layers">
+        {layers.map((layer) => {
+          const isActive = activeLayers.includes(layer.id)
+          return (
+            <button
+              key={layer.id}
+              type="button"
+              className={`map-chip ${isActive ? 'active' : ''}`}
+              onClick={() => onToggleLayer(layer.id)}
+              aria-pressed={isActive}
+              style={isActive ? { '--chip-accent': layer.color } : undefined}
+            >
+              <span
+                className="map-chip-dot"
+                style={{ background: layer.color }}
+                aria-hidden="true"
+              />
+              {layer.label}
+            </button>
+          )
+        })}
       </div>
-      {layers.map((layer) => {
-        const Icon = layer.icon
-        const isActive = activeLayers.includes(layer.id)
-        return (
-          <button
-            key={layer.id}
-            className={`map-layer-btn ${isActive ? 'active' : ''}`}
-            onClick={() => onToggleLayer(layer.id)}
-            style={isActive ? { borderColor: layer.color, color: layer.color } : {}}
-          >
-            <Icon size={14} />
-            <span>{layer.label}</span>
-          </button>
-        )
-      })}
     </div>
   )
 }

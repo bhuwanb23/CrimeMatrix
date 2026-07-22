@@ -5,6 +5,7 @@ import {
   Camera, Bot,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
+import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'
 
 const timelineIcons = {

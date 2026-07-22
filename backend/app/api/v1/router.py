@@ -33,6 +33,8 @@ from app.api.v1 import (
     evidence_linking_api
 )
 
+from app.api.v1 import intelligence_timeline_api
+
 router = APIRouter(prefix="/api/v1")
 
 # Core APIs
@@ -181,3 +183,6 @@ router.include_router(cross_district_api.router, prefix="/cross-district", tags=
 
 # Evidence Linking APIs
 router.include_router(evidence_linking_api.router, prefix="/evidence-linking", tags=["Evidence Linking"])
+
+# Intelligence Timeline APIs
+router.include_router(intelligence_timeline_api.router, prefix="/intelligence-timeline", tags=["Intelligence Timeline"])

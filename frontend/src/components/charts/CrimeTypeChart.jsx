@@ -6,8 +6,6 @@ const categories = [
   { label: 'Other', value: 18000, pct: 14, color: '#f5f5f5' },
 ]
 
-const total = categories.reduce((s, c) => s + c.value, 0)
-
 export default function CrimeTypeChart() {
   return (
     <div className="chart-card">

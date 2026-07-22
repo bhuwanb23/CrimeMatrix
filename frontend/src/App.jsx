@@ -24,6 +24,7 @@ import PrioritizationDashboard from './components/PrioritizationDashboard'
 import ProactiveIntelligencePage from './components/ProactiveIntelligencePage'
 import CrimePatternTimelinePage from './components/CrimePatternTimelinePage'
 import UnifiedSearchPage from './components/UnifiedSearchPage'
+import IntelligenceTimelinePage from './components/IntelligenceTimelinePage'
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           <Route path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/intelligence-timeline" element={<IntelligenceTimelinePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

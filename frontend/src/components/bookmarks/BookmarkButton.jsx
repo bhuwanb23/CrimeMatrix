@@ -7,18 +7,17 @@ export default function BookmarkButton({ entityType, entityId, onToggle, size = 
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    async function checkStatus() {
+      try {
+        const res = await checkBookmark(entityType, entityId)
+        const data = res?.data || res
+        setBookmarked(data?.bookmarked || false)
+      } catch {
+        setBookmarked(false)
+      }
+    }
     checkStatus()
   }, [entityType, entityId])
-
-  async function checkStatus() {
-    try {
-      const res = await checkBookmark(entityType, entityId)
-      const data = res?.data || res
-      setBookmarked(data?.bookmarked || false)
-    } catch {
-      setBookmarked(false)
-    }
-  }
 
   async function handleToggle(e) {
     e.stopPropagation()

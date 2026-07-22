@@ -29,7 +29,8 @@ from app.api.v1 import (
     evaluation_api,
     proactive_api,
     fir_intelligence_api,
-    cross_district_api
+    cross_district_api,
+    evidence_linking_api
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -177,3 +178,6 @@ router.include_router(fir_intelligence_api.router, prefix="/fir-intelligence", t
 
 # Cross-District Intelligence APIs
 router.include_router(cross_district_api.router, prefix="/cross-district", tags=["Cross-District"])
+
+# Evidence Linking APIs
+router.include_router(evidence_linking_api.router, prefix="/evidence-linking", tags=["Evidence Linking"])

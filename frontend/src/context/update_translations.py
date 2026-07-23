@@ -50,7 +50,7 @@ translations = {
     'Activity': {
         'Kannada': 'ಚಟುವಟಿಕೆ', 'Hindi': 'गतिविधि', 'Tamil': 'செயல்பாடு', 'Telugu': 'కార్యకలాపం'
     },
-    'Today\\'s Overview': {
+    "Today's Overview": {
         'Kannada': 'ಇಂದಿನ ಅವಲೋಕನ', 'Hindi': 'आज का अवलोकन', 'Tamil': 'இன்றைய கண்ணோட்டம்', 'Telugu': 'నేటి అవలోకనం'
     },
     'Recent Activity': {

@@ -3,6 +3,7 @@ import { LineChart, RefreshCw, TrendingUp, Map, BarChart3, Bot } from 'lucide-re
 import { generateForecast, getPredictionStats, getPredictionModels, listPredictions } from '../services/predictions'
 import { get } from '../services/api'
 import { listDistricts } from '../services/search'
+import { useLanguage } from '../context/LanguageContext'
 import PredictionSummaryCards from './predictions/PredictionSummaryCards'
 import PredictionForecastChart from './predictions/PredictionForecastChart'
 import DistrictPredictionMap from './predictions/DistrictPredictionMap'
@@ -21,6 +22,7 @@ const tabs = [
 ]
 
 export default function PredictionAnalyticsPage() {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('district')
   const [stats, setStats] = useState(null)
   const [forecast, setForecast] = useState(null)

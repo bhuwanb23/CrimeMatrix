@@ -5,7 +5,14 @@ from app.db.session import get_db
 from app.repositories.case_repo import CaseRepository
 from app.services.case_service import CaseService
 from app.schemas.case import CaseCreate, CaseUpdate, CaseResponse
+from app.schemas.complainant import ComplainantCreate, ComplainantUpdate, ComplainantResponse
 from app.core.response import success_response
+from sqlalchemy import select
+from app.models.complainant import Complainant
+from app.models.occupation import Occupation
+from app.models.religion import Religion
+from app.models.caste_master import CasteMaster
+from app.models.gender import Gender
 
 router = APIRouter()
 
@@ -112,3 +119,72 @@ async def search_cases(query: str, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     results = await svc.search_cases(query)
     return success_response(data=[CaseResponse.model_validate(r).model_dump() for r in results])
+
+
+# --- Complainant Endpoints ---
+
+async def _enrich_complainant(c, db):
+    data = ComplainantResponse.model_validate(c).model_dump()
+    if c.occupation_id:
+        occ = (await db.execute(select(Occupation).where(Occupation.id == c.occupation_id))).scalar()
+        data["occupation_name"] = occ.name if occ else None
+    if c.religion_id:
+        rel = (await db.execute(select(Religion).where(Religion.id == c.religion_id))).scalar()
+        data["religion_name"] = rel.name if rel else None
+    if c.caste_id:
+        caste = (await db.execute(select(CasteMaster).where(CasteMaster.id == c.caste_id))).scalar()
+        data["caste_name"] = caste.name if caste else None
+    if c.gender_id:
+        gen = (await db.execute(select(Gender).where(Gender.id == c.gender_id))).scalar()
+        data["gender_name"] = gen.name if gen else None
+    return data
+
+
+@router.get("/{case_id}/complainant")
+async def get_complainant(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Complainant).where(Complainant.case_id == case_id))
+    c = result.scalar()
+    if not c:
+        return success_response(message="No complainant found for this case")
+    data = await _enrich_complainant(c, db)
+    return success_response(data=data)
+
+
+@router.post("/{case_id}/complainant")
+async def create_complainant(case_id: int, data: ComplainantCreate, db: AsyncSession = Depends(get_db)):
+    existing = (await db.execute(select(Complainant).where(Complainant.case_id == case_id))).scalar()
+    if existing:
+        return success_response(message="Complainant already exists for this case. Use PUT to update.")
+    c = Complainant(case_id=case_id, name=data.name, age_year=data.age_year,
+                    occupation_id=data.occupation_id, religion_id=data.religion_id,
+                    caste_id=data.caste_id, gender_id=data.gender_id)
+    db.add(c)
+    await db.commit()
+    await db.refresh(c)
+    enriched = await _enrich_complainant(c, db)
+    return success_response(data=enriched, message="Complainant created")
+
+
+@router.put("/{case_id}/complainant")
+async def update_complainant(case_id: int, data: ComplainantUpdate, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Complainant).where(Complainant.case_id == case_id))
+    c = result.scalar()
+    if not c:
+        return success_response(message="No complainant found for this case")
+    for key, value in data.model_dump(exclude_unset=True).items():
+        setattr(c, key, value)
+    await db.commit()
+    await db.refresh(c)
+    enriched = await _enrich_complainant(c, db)
+    return success_response(data=enriched, message="Complainant updated")
+
+
+@router.delete("/{case_id}/complainant")
+async def delete_complainant(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Complainant).where(Complainant.case_id == case_id))
+    c = result.scalar()
+    if not c:
+        return success_response(message="No complainant found")
+    await db.delete(c)
+    await db.commit()
+    return success_response(message="Complainant deleted")

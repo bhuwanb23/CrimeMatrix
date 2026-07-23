@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import {
   AlertTriangle, Clock, FileText, CheckCircle2, Activity, TrendingUp,
   Send, Bot,
+} from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import { useLanguage } from '../context/LanguageContext'
 

@@ -15,6 +15,8 @@ from app.models.caste_master import CasteMaster
 from app.models.gender import Gender
 from app.models.act import Act
 from app.models.section import Section
+from app.models.state import State
+from app.models.arrest_surrender_type import ArrestSurrenderType
 
 router = APIRouter()
 

@@ -1,5 +1,5 @@
 import { MapPin, X, TrendingUp, AlertTriangle } from 'lucide-react'
-import { hotspots, crime{t('Density')} } from './mapData'
+import { hotspots, crimeDensity } from './mapData'
 import { useLanguage } from '../../context/LanguageContext'
 
 const riskBadgeClass = {
@@ -84,7 +84,7 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
             {t('Density')}
           </h3>
           <div className="flex flex-col gap-2">
-            {crime{t('Density')}.map((d, i) => (
+            {crimeDensity.map((d, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
                 <span className="size-2 shrink-0 rounded-full" style={{ background: d.color }} />
                 <span className="min-w-0 flex-1 text-slate-900">{t(d.label)}</span>

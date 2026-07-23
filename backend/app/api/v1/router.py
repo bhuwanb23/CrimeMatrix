@@ -33,7 +33,7 @@ from app.api.v1 import (
     evidence_linking_api
 )
 
-from app.api.v1 import intelligence_timeline_api
+from app.api.v1 import intelligence_timeline_api, lookup_api
 
 router = APIRouter(prefix="/api/v1")
 

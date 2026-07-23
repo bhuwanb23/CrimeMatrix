@@ -8,12 +8,15 @@ const headerNav = [
   { icon: Bell, label: 'Alerts', to: '/alerts', id: 'alerts' },
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+
 export default function Header({ rightPanelOpen, onToggleRightPanel }) {
+  const { t } = useLanguage()
   return (
     <header className="header">
       <div className="header-left">
         <div className="header-breadcrumb">
-          <span className="header-breadcrumb-brand">CrimeMatrix</span>
+          <span className="header-breadcrumb-brand">{t('CrimeMatrix')}</span>
         </div>
       </div>
 
@@ -27,7 +30,7 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
             }
           >
             <item.icon size={16} strokeWidth={1.8} />
-            <span>{item.label}</span>
+            <span>{t(item.label)}</span>
           </NavLink>
         ))}
       </nav>

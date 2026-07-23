@@ -39,7 +39,10 @@ const bottomItems = [
   { icon: Settings, label: 'Settings', id: 'settings', to: '/settings' },
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+
 export default function Sidebar() {
+  const { t } = useLanguage()
   const [hoveredItem, setHoveredItem] = useState(null)
   const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 })
 
@@ -99,11 +102,12 @@ export default function Sidebar() {
                     className={({ isActive }) =>
                       `sidebar-nav-item ${isActive ? 'active' : ''}`
                     }
+                    title={t(item.label)}
                   >
                     <item.icon size={18} strokeWidth={1.8} />
                   </NavLink>
                 ) : (
-                  <button className="sidebar-nav-item" aria-label={item.label}>
+                  <button className="sidebar-nav-item" aria-label={t(item.label)}>
                     <item.icon size={18} strokeWidth={1.8} />
                   </button>
                 )}
@@ -119,7 +123,7 @@ export default function Sidebar() {
           className="sidebar-tooltip visible"
           style={{ top: tooltipPos.top, left: tooltipPos.left }}
         >
-          {hoveredItem}
+          {t(hoveredItem)}
         </span>,
         document.body
       )}

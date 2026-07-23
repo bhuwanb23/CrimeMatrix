@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { LineChart, RefreshCw, TrendingUp } from 'lucide-react'
+import { LineChart, RefreshCw, TrendingUp, Map, BarChart3, Bot } from 'lucide-react'
 import { generateForecast, getPredictionStats, getPredictionModels, listPredictions } from '../services/predictions'
 import { get } from '../services/api'
 import { listDistricts } from '../services/search'
@@ -14,7 +14,14 @@ import PredictionExplanationPanel from './predictions/PredictionExplanationPanel
 import ConfidenceBreakdown from './predictions/ConfidenceBreakdown'
 import SourceReferences from './predictions/SourceReferences'
 
+const tabs = [
+  { id: 'district', label: 'District Predictions', icon: Map },
+  { id: 'forecast', label: 'Crime Forecast', icon: BarChart3 },
+  { id: 'ai', label: 'AI Predictions', icon: Bot },
+]
+
 export default function PredictionAnalyticsPage() {
+  const [activeTab, setActiveTab] = useState('district')
   const [stats, setStats] = useState(null)
   const [forecast, setForecast] = useState(null)
   const [models, setModels] = useState([])
@@ -116,35 +123,77 @@ export default function PredictionAnalyticsPage() {
           </div>
         </div>
 
-      {/* Row 1: Summary Cards */}
-      <PredictionSummaryCards stats={stats} />
+        {/* Tab Bar */}
+        <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 w-fit">
+          {tabs.map((tab) => {
+            const Icon = tab.icon
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-orange-500 text-white shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                <Icon size={16} />
+                {tab.label}
+              </button>
+            )
+          })}
+        </div>
 
-      {/* Row 2: Forecast + District Map (balanced 50/50) */}
-      <div className="grid grid-cols-2 gap-4">
-        <PredictionForecastChart forecast={forecast} />
-        <DistrictPredictionMap districts={districts} />
+        {/* Tab Content */}
+        {activeTab === 'district' && (
+          <DistrictPredictionsTab districts={districts} />
+        )}
+        {activeTab === 'forecast' && (
+          <CrimeForecastTab forecast={forecast} seasonal={seasonal} predictions={predictions} />
+        )}
+        {activeTab === 'ai' && (
+          <AIPredictionsTab stats={stats} models={models} predictions={predictions}
+            forecast={forecast} districts={districts} />
+        )}
       </div>
+    </div>
+  )
+}
 
-      {/* Row 3: Seasonal + Confidence + Crime Types */}
-      <div className="grid grid-cols-3 gap-4">
+function DistrictPredictionsTab({ districts }) {
+  return (
+    <div className="space-y-5">
+      <DistrictPredictionMap districts={districts} />
+    </div>
+  )
+}
+
+function CrimeForecastTab({ forecast, seasonal, predictions }) {
+  return (
+    <div className="space-y-5">
+      <PredictionForecastChart forecast={forecast} />
+      <div className="grid grid-cols-2 gap-5">
         <SeasonalPatternsChart patterns={seasonal} />
-        <ConfidenceBreakdown forecast={forecast} />
         <CrimeTypePredictions predictions={predictions} />
       </div>
+    </div>
+  )
+}
 
-      {/* Row 4: AI Predictions + Model Performance */}
-      <div className="grid grid-cols-3 gap-4">
+function AIPredictionsTab({ stats, models, predictions, forecast, districts }) {
+  return (
+    <div className="space-y-5">
+      <PredictionSummaryCards stats={stats} />
+      <div className="grid grid-cols-3 gap-5">
         <div className="col-span-2">
           <AIPredictionsPanel forecast={forecast} predictions={predictions} districts={districts} />
         </div>
         <ModelPerformance models={models} />
       </div>
-
-      {/* Row 5: Explanation + Sources */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-5">
+        <ConfidenceBreakdown forecast={forecast} />
         <PredictionExplanationPanel predictionId={predictions[0]?.id} />
         <SourceReferences predictionId={predictions[0]?.id} />
-      </div>
       </div>
     </div>
   )

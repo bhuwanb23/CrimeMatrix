@@ -111,12 +111,12 @@ export default function SearchPage() {
         <div className="flex items-center gap-3 mt-3 mb-4 flex-wrap">
           <button onClick={() => setSemanticMode(!semanticMode)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${semanticMode ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'}`}>
-            {semanticMode ? \🧠 \ : \🧠 \}
+            {semanticMode ? '🧠 ' + t('Semantic ON') : '🧠 ' + t('Semantic')}
           </button>
 
           <button onClick={() => setShowDistrictPicker(!showDistrictPicker)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${selectedDistricts.length > 0 ? 'bg-blue-100 text-blue-700 border border-blue-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'}`}>
-            🗺️ {selectedDistricts.length > 0 ? `${selectedDistricts.length} ${t('Districts')}` : t('Districts')}
+            🗺️ {selectedDistricts.length > 0 ? selectedDistricts.length + ' ' + t('Districts') : t('Districts')}
           </button>
 
           {selectedDistricts.length > 0 && (

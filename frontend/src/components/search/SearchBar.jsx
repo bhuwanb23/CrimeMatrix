@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Search, X, BookmarkPlus } from 'lucide-react'
-import { get{t('Suggestions')} } from '../../services/search'
+import { getSuggestions } from '../../services/search'
 import { useLanguage } from '../../context/LanguageContext'
 
 
@@ -16,7 +16,7 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
     if (value && value.length >= 2) {
       debounceRef.current = setTimeout(async () => {
         try {
-          const result = await get{t('Suggestions')}(value)
+          const result = await getSuggestions(value)
           set{t('Suggestions')}(result.data || [])
         } catch {
         }

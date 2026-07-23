@@ -217,15 +217,15 @@
           const tl = gsap.timeline({ paused: true });
 
           const chips = [
-            document.getElementById("08-identity-resolution-chip-1"),
-            document.getElementById("08-identity-resolution-chip-2"),
-            document.getElementById("08-identity-resolution-chip-3"),
+            document.getElementById("el-08-identity-resolution-chip-1"),
+            document.getElementById("el-08-identity-resolution-chip-2"),
+            document.getElementById("el-08-identity-resolution-chip-3"),
           ];
-          const card = document.getElementById("08-identity-resolution-card");
+          const card = document.getElementById("el-08-identity-resolution-card");
           const lines = [
-            document.getElementById("08-identity-resolution-line-1"),
-            document.getElementById("08-identity-resolution-line-2"),
-            document.getElementById("08-identity-resolution-line-3"),
+            document.getElementById("el-08-identity-resolution-line-1"),
+            document.getElementById("el-08-identity-resolution-line-2"),
+            document.getElementById("el-08-identity-resolution-line-3"),
           ];
 
           lines.forEach(function (line) {
@@ -305,7 +305,7 @@
             6.4,
           );
 
-          const confEl = document.getElementById("08-identity-resolution-conf");
+          const confEl = document.getElementById("el-08-identity-resolution-conf");
           const confState = { v: 0 };
           tl.to(
             confState,

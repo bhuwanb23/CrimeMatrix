@@ -52,10 +52,10 @@
           flex-wrap: wrap;
           align-items: baseline;
           justify-content: center;
-          max-width: 78cqw;
-          font-size: 4.2cqw;
+          max-width: 86cqw;
+          font-size: 3.4cqw;
           font-weight: 700;
-          line-height: 1.12;
+          line-height: 1.18;
           letter-spacing: -0.02em;
           white-space: pre-wrap;
           text-align: center;
@@ -116,9 +116,9 @@
         const tl = gsap.timeline({ paused: true });
         const DURATION = 4.715;
 
-        const TEXT_MAIN = "What if · ";
-        const TEXT_ACCENT = "intelligent partner";
-        const CHAR_SPEED = 0.05;
+        const TEXT_MAIN = "What if an AI could become every investigator's ";
+        const TEXT_ACCENT = "intelligent partner?";
+        const CHAR_SPEED = 0.032;
         const TYPE_START = 0.55;
         const TYPE_END = TYPE_START + (TEXT_MAIN.length + TEXT_ACCENT.length) * CHAR_SPEED;
         const UNDERLINE_START = TYPE_END + 0.15;
@@ -157,7 +157,7 @@
                 if (mainEl.textContent !== visMain) mainEl.textContent = visMain;
                 if (accentEl.textContent !== visAccent) accentEl.textContent = visAccent;
                 const inAccent = visMain.length === mainLen && visAccent.length > 0;
-                cursorEl.style.background = inAccent ? "#f59e0b" : "#el-0f172a";
+                cursorEl.style.background = inAccent ? "#f59e0b" : "#0f172a";
               } else {
                 mainEl.textContent = TEXT_MAIN;
                 accentEl.textContent = TEXT_ACCENT;

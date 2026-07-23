@@ -123,15 +123,27 @@
           <div class="role-stack">
             <div class="role-line" id="el-11-role-1">
               <div class="role-marker"></div>
-              <div class="depth-stack" id="el-11-depth-1"></div>
+              <div class="depth-stack" id="el-11-depth-1">
+                <div class="depth-layer is-front">
+                  <span class="depth-main">AI Investigation </span><span class="role-accent">Copilot</span>
+                </div>
+              </div>
             </div>
             <div class="role-line" id="el-11-role-2">
               <div class="role-marker"></div>
-              <div class="depth-stack" id="el-11-depth-2"></div>
+              <div class="depth-stack" id="el-11-depth-2">
+                <div class="depth-layer is-front">
+                  <span class="depth-main">Crime Intelligence </span><span class="role-accent">Platform</span>
+                </div>
+              </div>
             </div>
             <div class="role-line" id="el-11-role-3">
               <div class="role-marker"></div>
-              <div class="depth-stack" id="el-11-depth-3"></div>
+              <div class="depth-stack" id="el-11-depth-3">
+                <div class="depth-layer is-front">
+                  <span class="depth-main">Decision-support </span><span class="role-accent">system</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -148,9 +160,9 @@
         const tl = gsap.timeline({ paused: true });
 
         const ROLES = [
-          { id: "11-depth-1", text: "AI Investigation Copilot", accentFrom: 17 },
-          { id: "11-depth-2", text: "Crime Intelligence Platform", accentFrom: 20 },
-          { id: "11-depth-3", text: "Decision-support system", accentFrom: 18 },
+          { id: "el-11-depth-1", text: "AI Investigation Copilot", accentFrom: 17 },
+          { id: "el-11-depth-2", text: "Crime Intelligence Platform", accentFrom: 20 },
+          { id: "el-11-depth-3", text: "Decision-support system", accentFrom: 18 },
         ];
 
         const LAYER_COUNT = 5;
@@ -159,6 +171,8 @@
 
         function buildDepthStack(containerId, text, accentFrom) {
           const stack = document.getElementById(containerId);
+          if (!stack) return;
+          stack.innerHTML = "";
           const main = text.slice(0, accentFrom);
           const accent = text.slice(accentFrom);
           const html =
@@ -205,7 +219,7 @@
           { t: 2.05, text: "More than a dashboard" },
         ];
 
-        const openerEl = document.getElementById("11-three-roles-opener");
+        const openerEl = document.getElementById("el-11-three-roles-opener");
         tl.to(
           {},
           {

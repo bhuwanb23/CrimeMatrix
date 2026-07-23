@@ -247,18 +247,18 @@
         const DURATION = 15.211;
         const tl = gsap.timeline({ paused: true });
 
-        const drawPaths = ["09-pi-grid-1", "09-pi-grid-2", "09-pi-grid-3", "09-pi-axis-x", "09-pi-axis-y"];
+        const drawPaths = ["el-09-pi-grid-1", "el-09-pi-grid-2", "el-09-pi-grid-3", "el-09-pi-axis-x", "el-09-pi-axis-y"];
         drawPaths.forEach((id) => {
           const path = document.getElementById(id);
           const len = path.getTotalLength();
           gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
         });
 
-        const forecast = document.getElementById("09-pi-forecast");
+        const forecast = document.getElementById("el-09-pi-forecast");
         const forecastLen = forecast.getTotalLength();
         gsap.set(forecast, { strokeDasharray: forecastLen, strokeDashoffset: forecastLen });
 
-        const area = document.getElementById("09-pi-area");
+        const area = document.getElementById("el-09-pi-area");
         gsap.set(area, { opacity: 0 });
 
         gsap.set(
@@ -315,10 +315,12 @@
           CARDS_AT + 0.7
         );
 
-        const counterProxy = { v1: 0, v2: 0, v3: 0, s1: 48, s2: 48, s3: 48 };
-        const val1 = document.getElementById("09-pi-val-1");
-        const val2 = document.getElementById("09-pi-val-2");
-        const val3 = document.getElementById("09-pi-val-3");
+        const counterProxy = { v1: 0, v2: 0, v3: 0 };
+        const val1 = document.getElementById("el-09-pi-val-1");
+        const val2 = document.getElementById("el-09-pi-val-2");
+        const val3 = document.getElementById("el-09-pi-val-3");
+
+        gsap.set([val1, val2, val3], { scale: 1, transformOrigin: "left center" });
 
         tl.to(
           counterProxy,
@@ -326,22 +328,20 @@
             v1: 87,
             v2: 72,
             v3: 14,
-            s1: 72,
-            s2: 64,
-            s3: 58,
             duration: 2.4,
             ease: "power3.out",
             onUpdate: () => {
               val1.textContent = Math.round(counterProxy.v1) + "%";
               val2.textContent = Math.round(counterProxy.v2) + "%";
               val3.textContent = "+" + Math.round(counterProxy.v3) + "%";
-              val1.style.fontSize = counterProxy.s1 + "px";
-              val2.style.fontSize = counterProxy.s2 + "px";
-              val3.style.fontSize = counterProxy.s3 + "px";
             },
           },
           CARDS_AT + 0.2
         );
+
+        tl.fromTo(val1, { scale: 1 }, { scale: 1.35, duration: 1.2, ease: "power2.out" }, CARDS_AT + 0.2);
+        tl.fromTo(val2, { scale: 1 }, { scale: 1.25, duration: 1.2, ease: "power2.out" }, CARDS_AT + 0.35);
+        tl.fromTo(val3, { scale: 1 }, { scale: 1.15, duration: 1.2, ease: "power2.out" }, CARDS_AT + 0.5);
 
         tl.to("#el-09-pi-bar-1", { scaleX: 0.87, duration: 1.4, ease: "power2.out" }, CARDS_AT + 0.5);
         tl.to("#el-09-pi-bar-2", { scaleX: 0.72, duration: 1.2, ease: "power2.out" }, CARDS_AT + 0.85);

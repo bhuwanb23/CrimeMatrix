@@ -97,6 +97,15 @@
           color: #475569;
         }
 
+        .brand-platform {
+          font-size: 1.35cqw;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          color: #64748b;
+          max-width: 28cqw;
+          line-height: 1.3;
+        }
+
         .hero-lockup {
           will-change: transform;
         }
@@ -128,6 +137,7 @@
                     <div class="accent-bar"></div>
                   </div>
                   <div class="brand-sub">Built for Karnataka State Police</div>
+                  <div class="brand-platform">AI-powered Crime Intelligence Platform</div>
                 </div>
               </div>
             </div>
@@ -170,17 +180,19 @@
         const textEl = document.querySelector(".companion-text");
         const heroLockup = document.querySelector(".hero-lockup");
         const brandSub = document.querySelector(".brand-sub");
+        const brandPlatform = document.querySelector(".brand-platform");
         const accentBar = document.querySelector(".accent-bar");
 
         gsap.set(heroLockup, { scale: 0, opacity: 0 });
         gsap.set(brandSub, { opacity: 0, y: 12 });
+        gsap.set(brandPlatform, { opacity: 0, y: 10 });
         gsap.set(accentBar, { scaleX: 0, opacity: 0 });
 
         const probe = document.createElement("span");
         probe.className = "measure-probe";
         probe.style.font = `800 ${BRAND_FONT_SIZE}px "Plus Jakarta Sans", system-ui, sans-serif`;
         probe.textContent = "CrimeMatrix";
-        document.querySelector(".frame-root").appendChild(probe);
+        document.querySelector("#root").appendChild(probe);
         const brandTextWidth = probe.getBoundingClientRect().width;
         probe.remove();
 
@@ -210,6 +222,13 @@
           { opacity: 0, y: 12 },
           { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
           TIMING.popStart + 0.35,
+        );
+
+        tl.fromTo(
+          brandPlatform,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+          TIMING.popStart + 0.55,
         );
 
         tl.to(

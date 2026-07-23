@@ -259,13 +259,13 @@
             </svg>
 
             <div class="district district-a" id="el-10-whisper-district-a">
-              <div class="district-label">District A</div>
+              <div class="district-label">Source district</div>
               <div class="district-name">Bengaluru Rural</div>
               <div class="district-code">FIR/BR/2026/1847</div>
             </div>
 
             <div class="district district-b" id="el-10-whisper-district-b">
-              <div class="district-label">District B</div>
+              <div class="district-label">Linked district</div>
               <div class="district-name">Mysuru</div>
               <div class="district-code">FIR/MY/2026/0921</div>
             </div>
@@ -295,7 +295,7 @@
         const DURATION = 20.523;
         const tl = gsap.timeline({ paused: true });
 
-        const link = document.getElementById("10-whisper-link");
+        const link = document.getElementById("el-10-whisper-link");
         const linkLen = link.getTotalLength();
         gsap.set(link, { strokeDasharray: linkLen, strokeDashoffset: linkLen });
 

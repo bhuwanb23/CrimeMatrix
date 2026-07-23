@@ -337,16 +337,19 @@
         (function () {
           const DURATION = 21.717;
           const tl = gsap.timeline({ paused: true });
-          const camera = document.getElementById("07-intelligence-mosaic-camera");
-          const phraseMain = document.getElementById("07-intelligence-mosaic-phrase-main");
-          const phraseAccent = document.getElementById("07-intelligence-mosaic-phrase-accent");
+          const camera = document.getElementById("el-07-intelligence-mosaic-camera");
+          const phraseMain = document.getElementById("el-07-intelligence-mosaic-phrase-main");
+          const phraseAccent = document.getElementById("el-07-intelligence-mosaic-phrase-accent");
 
           const PHRASES = [
             { at: 0, main: "Semantic ", accent: "search" },
-            { at: 4.2, main: "Criminal ", accent: "networks" },
-            { at: 8.6, main: "Crime ", accent: "hotspots" },
-            { at: 13.0, main: "Full case ", accent: "timelines" },
-            { at: 17.2, main: "All in ", accent: "one place" },
+            { at: 3.2, main: "Similar ", accent: "cases" },
+            { at: 6.0, main: "Criminal ", accent: "networks" },
+            { at: 9.2, main: "Crime ", accent: "graphs" },
+            { at: 12.0, main: "Trend ", accent: "signals" },
+            { at: 14.6, main: "Crime ", accent: "hotspots" },
+            { at: 17.4, main: "Full case ", accent: "timelines" },
+            { at: 19.8, main: "All in ", accent: "one place" },
           ];
 
           tl.fromTo(
@@ -383,6 +386,7 @@
               duration: DURATION,
               ease: "none",
               onUpdate: function () {
+                if (!phraseMain || !phraseAccent) return;
                 const t = phraseDriver.t;
                 let active = PHRASES[0];
                 for (let i = PHRASES.length - 1; i >= 0; i--) {
@@ -424,6 +428,7 @@
               duration: DURATION,
               ease: "none",
               onUpdate: function () {
+                if (!camera) return;
                 const dx = Math.sin(drift.p) * 4 + phase.focusX;
                 const dy = Math.sin(drift.p * 1.3) * 2 + phase.focusY;
                 camera.style.transform =

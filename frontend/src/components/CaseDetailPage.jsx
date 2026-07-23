@@ -210,6 +210,58 @@ export default function CaseDetailPage() {
           )}
         </div>
 
+        {/* Victims */}
+        <div className="case-card">
+          <h3 className="case-card-title">
+            <Users size={16} /> Victims
+          </h3>
+          {victims.length > 0 ? (
+            <div className="space-y-2">
+              {victims.map((v, i) => (
+                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-semibold text-slate-900">{v.name}</span>
+                    {v.is_police && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">Police</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                    {v.age_year && <span>Age: {v.age_year}</span>}
+                    {v.gender_name && <span>Gender: {v.gender_name}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="case-empty-text">No victims recorded</p>
+          )}
+        </div>
+
+        {/* Legal Sections */}
+        <div className="case-card">
+          <h3 className="case-card-title">
+            <Scale size={16} /> Legal Sections
+          </h3>
+          {actSections.length > 0 ? (
+            <div className="space-y-2">
+              {actSections.map((a, i) => (
+                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="flex items-center gap-2 mb-1">
+                    <BookOpen size={12} className="text-slate-400" />
+                    <span className="text-sm font-semibold text-slate-900">{a.act_name || `Act #${a.act_id}`}</span>
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    <span className="font-medium">Section {a.section_code || `#${a.section_id}`}</span>
+                    {a.section_name && <span className="text-slate-400 ml-1">— {a.section_name}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="case-empty-text">No legal sections recorded</p>
+          )}
+        </div>
+
         {/* Timeline */}
         <div className="case-card">
           <h3 className="case-card-title">

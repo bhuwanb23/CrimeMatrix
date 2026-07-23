@@ -131,12 +131,12 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
             <div className="similar-spinner" />
             <span>{t('Loading...')}</span>
           </div>
-        {t(') : filtered.length === 0 ? (')}
+        ) : filtered.length === 0 ? (
           <div className="similar-empty">
             <p>{t('No investigations found')}</p>
           </div>
-        {t(') : (
-          filtered.map((inv) => (')}
+        ) : (
+          filtered.map((inv) => (
             <button
               key={inv.id}
               className={`case-list-item ${selectedId === inv.id ? 'selected' : ''}`}

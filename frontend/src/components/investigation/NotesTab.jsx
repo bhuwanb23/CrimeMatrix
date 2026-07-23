@@ -81,8 +81,8 @@ export default function NotesTab({ investigationId, notes: initialNotes }) {
       <div className="notes-list">
         {notes.length === 0 ? (
           <div className="similar-empty"><p>{t('No notes yet')}</p></div>
-        {t(') : (
-          notes.map((note) => (')}
+        ) : (
+          notes.map((note) => (
             <div key={note.id} className="note-card">
               <div className="note-header">
                 <div className="note-author">

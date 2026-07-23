@@ -85,11 +85,11 @@ export default function InvestigationAI({ investigationId, investigation }) {
     if (!text) return null
     return text.split('\n').map((line, i) => {
       if (line.startsWith('## ')) return <h4 key={i} className="ai-msg-heading">{line.replace('## ', '')}</h4>
-      {t('if (line.startsWith(\'### \')) return')} <h5 key={i} className="ai-msg-subheading">{line.replace('### ', '')}</h5>
-      {t('if (line.startsWith(\'- \')) return')} <li key={i} className="ai-msg-list-item">{line.replace('- ', '')}</li>
-      {t('if (line.startsWith(\'#### \')) return')} <h6 key={i} className="ai-msg-subheading">{line.replace('#### ', '')}</h6>
-      {t('if (line.trim() === \'\') return')} <br key={i} />
-      {t('return')} <p key={i} className="ai-msg-text">{line}</p>
+      if (line.startsWith('### ')) return <h5 key={i} className="ai-msg-subheading">{line.replace('### ', '')}</h5>
+      if (line.startsWith('- ')) return <li key={i} className="ai-msg-list-item">{line.replace('- ', '')}</li>
+      if (line.startsWith('#### ')) return <h6 key={i} className="ai-msg-subheading">{line.replace('#### ', '')}</h6>
+      if (line.trim() === '') return <br key={i} />
+      return <p key={i} className="ai-msg-text">{line}</p>
     })
   }
 

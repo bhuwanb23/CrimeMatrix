@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 import SearchBar from './search/SearchBar'
 import FilterChips from './search/FilterChips'
@@ -8,6 +9,7 @@ import { searchCrimes, listAllCrimes, semanticSearch, crossDistrictSearch, listD
 const ITEMS_PER_PAGE = 8
 
 export default function SearchPage() {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [activeFilters, setActiveFilters] = useState(['all'])
@@ -99,8 +101,8 @@ export default function SearchPage() {
     <div className="flex flex-col h-full p-6">
       <div className="max-w-6xl mx-auto w-full">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Crime Search</h1>
-          <p className="text-sm text-gray-500">Search across Karnataka — statewide intelligence</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('Crime Search')}</h1>
+          <p className="text-sm text-gray-500">{t('Search across Karnataka — statewide intelligence')}</p>
         </div>
 
         <SearchBar value={query} onChange={setQuery} onSearch={handleSearch} />
@@ -109,12 +111,12 @@ export default function SearchPage() {
         <div className="flex items-center gap-3 mt-3 mb-4 flex-wrap">
           <button onClick={() => setSemanticMode(!semanticMode)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${semanticMode ? 'bg-purple-100 text-purple-700 border border-purple-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'}`}>
-            {semanticMode ? '🧠 Semantic ON' : '🧠 Semantic'}
+            {semanticMode ? '🧠 {t('Semantic ON')}' : '🧠 {t('Semantic')}'}
           </button>
 
           <button onClick={() => setShowDistrictPicker(!showDistrictPicker)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${selectedDistricts.length > 0 ? 'bg-blue-100 text-blue-700 border border-blue-300' : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'}`}>
-            🗺️ {selectedDistricts.length > 0 ? `${selectedDistricts.length} Districts` : 'Districts'}
+            🗺️ {selectedDistricts.length > 0 ? `${selectedDistricts.length} ${t('Districts')}` : t('Districts')}
           </button>
 
           {selectedDistricts.length > 0 && (
@@ -132,7 +134,7 @@ export default function SearchPage() {
         {/* District Picker */}
         {showDistrictPicker && (
           <div className="mb-4 p-3 bg-white border border-gray-200 rounded-xl shadow-sm">
-            <p className="text-xs text-gray-500 mb-2">Select districts for cross-district search:</p>
+            <p className="text-xs text-gray-500 mb-2">{t('Select districts for cross-district search:')}</p>
             <div className="flex flex-wrap gap-2">
               {districts.map(d => (
                 <button key={d.id} onClick={() => handleToggleDistrict(d.name)}
@@ -144,7 +146,7 @@ export default function SearchPage() {
               ))}
             </div>
             {selectedDistricts.length > 0 && (
-              <button onClick={() => setSelectedDistricts([])} className="mt-2 text-xs text-red-500 hover:text-red-700">Clear all</button>
+              <button onClick={() => setSelectedDistricts([])} className="mt-2 text-xs text-red-500 hover:text-red-700">{t('Clear all')}</button>
             )}
           </div>
         )}

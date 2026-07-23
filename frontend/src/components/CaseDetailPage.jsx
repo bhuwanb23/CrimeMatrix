@@ -9,7 +9,7 @@ import {
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'
-import { getComplainant, getVictims, getActSections, getAccused, getArrestSurrender } from '../services/lookups'
+import { getComplainant, getVictims, getActSections, getAccused, getArrestSurrender, getChargesheetDetails } from '../services/lookups'
 
 const timelineIcons = {
   filing: FileText,
@@ -26,6 +26,7 @@ export default function CaseDetailPage() {
   const [actSections, setActSections] = useState([])
   const [accused, setAccused] = useState([])
   const [arrests, setArrests] = useState([])
+  const [chargesheets, setChargesheets] = useState([])
   const caseData = getCaseById(id)
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function CaseDetailPage() {
         getActSections(numericId).then(res => setActSections(res?.data?.items || [])).catch(() => {})
         getAccused(numericId).then(res => setAccused(res?.data?.items || [])).catch(() => {})
         getArrestSurrender(numericId).then(res => setArrests(res?.data?.items || [])).catch(() => {})
+        getChargesheetDetails(numericId).then(res => setChargesheets(res?.data?.items || [])).catch(() => {})
       }
     }
   }, [id])
@@ -351,6 +353,34 @@ export default function CaseDetailPage() {
               <p className="case-empty-text">No timeline events</p>
             )}
           </div>
+        </div>
+
+        {/* Chargesheet Details */}
+        <div className="case-card">
+          <h3 className="case-card-title">
+            <FileText size={16} /> Chargesheet Details
+          </h3>
+          {chargesheets.length > 0 ? (
+            <div className="space-y-2">
+              {chargesheets.map((cs, i) => (
+                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-semibold text-slate-900">
+                      {cs.cs_type === 'A' ? 'Chargesheet' : cs.cs_type === 'B' ? 'False Case' : cs.cs_type === 'C' ? 'Undetected' : cs.cs_type || 'Type not set'}
+                    </span>
+                    {cs.cs_date && (
+                      <span className="text-[10px] text-slate-400">{new Date(cs.cs_date).toLocaleDateString()}</span>
+                    )}
+                  </div>
+                  {cs.officer_name && (
+                    <div className="text-[11px] text-slate-500">IO: {cs.officer_name}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="case-empty-text">No chargesheet filed</p>
+          )}
         </div>
 
         {/* Description / Brief Facts */}

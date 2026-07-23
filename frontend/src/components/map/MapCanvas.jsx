@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { karnatakaOutline } from './mapData'
+import { useLanguage } from '../../context/LanguageContext'
 
 const routeColors = {
   'suspect-movement': '#ef4444',

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 import { RefreshCw, MapPin } from 'lucide-react'
 import MapCanvas from './map/MapCanvas'
 import DistrictPanel from './map/DistrictPanel'
@@ -8,6 +9,7 @@ import MapFilterPanel from './map/MapFilterPanel'
 import { getCrimeMarkers, getDistrictGeoJSON, getHeatmapData, getHotspotMarkers, getStationMarkers, getRouteData, getMapStats } from '../services/maps'
 
 export default function MapPage() {
+  const { t } = useLanguage()
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [activeLayers, setActiveLayers] = useState(['crimes', 'hotspots', 'stations'])
   const [days, setDays] = useState(30)
@@ -77,15 +79,15 @@ export default function MapPage() {
               <MapPin size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold">Geo Intelligence</h1>
-              <p className="text-white/80 text-xs">Stations, spatial analysis & crime mapping</p>
+              <h1 className="text-lg font-bold">{t('Geo Intelligence')}</h1>
+              <p className="text-white/80 text-xs">{t('Stations, spatial analysis & crime mapping')}</p>
             </div>
           </div>
           {stats && (
             <dl className="flex items-center m-0 min-w-0 overflow-x-auto">
               {statItems.map((item, i) => (
                 <div key={item.key} className={`flex flex-col gap-0.5 px-3 whitespace-nowrap ${i > 0 ? 'border-l border-white/30' : ''}`}>
-                  <dt className="m-0 text-[10px] font-medium uppercase tracking-wide text-white/60">{item.label}</dt>
+                  <dt className="m-0 text-[10px] font-medium uppercase tracking-wide text-white/60">{t(item.label)}</dt>
                   <dd className="m-0 text-[15px] font-bold tabular-nums text-white">{stats[item.key] ?? 0}</dd>
                 </div>
               ))}

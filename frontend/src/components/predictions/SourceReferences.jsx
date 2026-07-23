@@ -31,11 +31,11 @@ export default function SourceReferences({ predictionId }) {
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Database size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t(t('Data Sources'))}</h3>
+        <h3 className="text-sm font-semibold text-slate-900">{t('Data Sources')}</h3>
       </div>
 
       {loading ? (
-        <p className="text-[10px] text-slate-400">{t(t('Loading sources...'))}</p>
+        <p className="text-[10px] text-slate-400">{t('Loading sources...')}</p>
       ) : (
         <div className="space-y-1.5">
           {sources.map((s, i) => {

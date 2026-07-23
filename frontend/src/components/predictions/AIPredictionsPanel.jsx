@@ -66,7 +66,7 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <Lightbulb size={14} />
-        <h3>{t(t('AI Predictions & Recommendations'))}</h3>
+        <h3>{t('AI Predictions & Recommendations')}</h3>
       </div>
       <div className="analytics-recommendations-list">
         {insights.map((insight, i) => {

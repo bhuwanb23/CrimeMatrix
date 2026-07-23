@@ -23,7 +23,7 @@ export default function SeasonalPatternsChart({ patterns }) {
               </div>
               <span className="text-[7px] text-slate-400 mt-0.5">{d[labelKey]}</span>
             </div>
-          ))}
+          )}
         </div>
       </div>
     )

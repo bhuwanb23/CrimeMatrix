@@ -14,7 +14,7 @@ export default function ForecastConfidenceDisplay({ forecast }) {
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Info size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t(t('Forecast Confidence'))}</h3>
+        <h3 className="text-sm font-semibold text-slate-900">{t('Forecast Confidence')}</h3>
       </div>
 
       <div className="flex items-center gap-3 mb-3">
@@ -33,15 +33,15 @@ export default function ForecastConfidenceDisplay({ forecast }) {
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-slate-500">{t(t('Data points'))}</span>
+          <span className="text-slate-500">{t('Data points')}</span>
           <span className="font-semibold text-slate-700">{forecast.data_points || 0}</span>
         </div>
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-slate-500">{t(t('Trend'))}</span>
+          <span className="text-slate-500">{t('Trend')}</span>
           <span className="font-semibold text-slate-700">{forecast.trend || 'stable'}</span>
         </div>
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-slate-500">{t(t('Predictions'))}</span>
+          <span className="text-slate-500">{t('Predictions')}</span>
           <span className="font-semibold text-slate-700">{forecast.forecast?.length || 0}</span>
         </div>
       </div>

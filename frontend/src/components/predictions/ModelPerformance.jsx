@@ -1,7 +1,6 @@
 import { Activity } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function ModelPerformance({ models }) {
   const { t } = useLanguage()
   if (!models || models.length === 0) {
@@ -9,9 +8,9 @@ export default function ModelPerformance({ models }) {
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <Activity size={14} />
-          <h3>{t(t('Model Performance'))}</h3>
+          <h3>{t('Model Performance')}</h3>
         </div>
-        <div className="similar-empty"><p>{t(t('No models registered'))}</p></div>
+        <div className="similar-empty"><p>{t('No models registered')}</p></div>
       </div>
     )
   }
@@ -20,7 +19,7 @@ export default function ModelPerformance({ models }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <Activity size={14} />
-        <h3>{t(t('Model Performance'))}</h3>
+        <h3>{t('Model Performance')}</h3>
       </div>
       <div className="analytics-model-list">
         {models.map((m, i) => (
@@ -33,8 +32,8 @@ export default function ModelPerformance({ models }) {
               <div className="analytics-model-fill" style={{ width: `${m.accuracy || 0}%` }} />
             </div>
             <div className="analytics-model-meta">
-              <span>Accuracy: {m.accuracy || 0}%</span>
-              <span className={`analytics-model-status ${m.status}`}>{m.status}</span>
+              <span>{t('Accuracy:')} {m.accuracy || 0}%</span>
+              <span className={`analytics-model-status ${m.status}`}>{t(m.status)}</span>
             </div>
           </div>
         ))}

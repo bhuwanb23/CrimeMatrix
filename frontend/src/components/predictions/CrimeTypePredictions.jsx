@@ -9,9 +9,9 @@ export default function CrimeTypePredictions({ predictions }) {
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <BarChart3 size={14} />
-          <h3>{t(t('Crime Type Predictions'))}</h3>
+          <h3>{t('Crime Type Predictions')}</h3>
         </div>
-        <div className="similar-empty"><p>{t(t('No predictions yet'))}</p></div>
+        <div className="similar-empty"><p>{t('No predictions yet')}</p></div>
       </div>
     )
   }
@@ -32,20 +32,20 @@ export default function CrimeTypePredictions({ predictions }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <BarChart3 size={14} />
-        <h3>{t(t('Crime Type Predictions'))}</h3>
+        <h3>{t('Crime Type Predictions')}</h3>
       </div>
       <div className="analytics-type-list">
         {types.map((t, i) => (
           <div key={i} className="analytics-type-item">
             <div className="analytics-type-header">
-              <span className="analytics-type-name">Type #{t.type_id}</span>
+              <span className="analytics-type-name">{t('Type')} #{t.type_id}</span>
               <span className="analytics-type-count">{Math.round(t.total)}</span>
             </div>
             <div className="analytics-type-bar">
               <div className="analytics-type-fill" style={{ width: `${(t.total / maxTotal) * 100}%` }} />
             </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   )

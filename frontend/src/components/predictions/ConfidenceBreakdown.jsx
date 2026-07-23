@@ -29,7 +29,7 @@ export default function ConfidenceBreakdown({ forecast }) {
             </div>
             <span className="text-[10px] font-semibold text-slate-700">{f.value}%</span>
           </div>
-        ))}
+        )}
       </div>
 
       <div className="mt-3 pt-2 border-t border-slate-100">

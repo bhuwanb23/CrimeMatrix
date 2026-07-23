@@ -508,7 +508,9 @@ class RecommendationService:
         case = result.scalar()
         if not case:
             return None
-        return {"id": case.id, "title": case.title, "crime_type": case.crime_type, "district": case.district, "status": case.status}
+        return {"id": case.id, "title": case.title, "crime_type": case.crime_type, "district": case.district, "status": case.status,
+                "crime_no": case.crime_no, "case_category_id": case.case_category_id, "gravity_offence_id": case.gravity_offence_id,
+                "police_station_id": case.police_station_id}
 
     def _parse_reasons(self, reasons_json: str) -> List[str]:
         if not reasons_json:

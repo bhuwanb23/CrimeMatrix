@@ -45,130 +45,129 @@ export default function PrioritizationDashboard() {
         </button>
       </div>
 
-        {/* Stats Cards */}
-        {stats && (
-          <div className="grid grid-cols-4 gap-4">
-            {[
-              { label: 'Total Scored', value: stats.total_scored || 0, icon: BarChart3, gradient: 'from-violet-500 to-purple-500' },
-              { label: 'Critical Priority', value: stats.critical || 0, icon: AlertTriangle, gradient: 'from-red-500 to-rose-500' },
-              { label: 'High Priority', value: stats.high || 0, icon: AlertTriangle, gradient: 'from-amber-500 to-orange-500' },
-              { label: 'Average Score', value: `${stats.avg_score || 0}%`, icon: TrendingUp, gradient: 'from-emerald-500 to-teal-500' },
-            ].map((card, i) => (
-              <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white shadow-lg`}>
-                    <card.icon size={18} />
-                  </div>
-                  <ArrowUpRight size={14} className="text-slate-300" />
+      {/* Stats Cards */}
+      {stats && (
+        <div className="grid grid-cols-4 gap-4">
+          {[
+            { label: 'Total Scored', value: stats.total_scored || 0, icon: BarChart3, gradient: 'from-violet-500 to-purple-500' },
+            { label: 'Critical Priority', value: stats.critical || 0, icon: AlertTriangle, gradient: 'from-red-500 to-rose-500' },
+            { label: 'High Priority', value: stats.high || 0, icon: AlertTriangle, gradient: 'from-amber-500 to-orange-500' },
+            { label: 'Average Score', value: `${stats.avg_score || 0}%`, icon: TrendingUp, gradient: 'from-emerald-500 to-teal-500' },
+          ].map((card, i) => (
+            <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-3">
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white shadow-lg`}>
+                  <card.icon size={18} />
                 </div>
-                <span className="block text-2xl font-bold text-slate-900">{card.value}</span>
-                <span className="text-xs text-slate-400 font-medium">{card.label}</span>
+                <ArrowUpRight size={14} className="text-slate-300" />
               </div>
-            ))}
-          </div>
-        )}
+              <span className="block text-2xl font-bold text-slate-900">{card.value}</span>
+              <span className="text-xs text-slate-400 font-medium">{card.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
-        {/* Main Content */}
-        <div className="grid grid-cols-12 gap-5">
-          {/* Priority Queue (7 cols) */}
-          <div className="col-span-7 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
-                  <Zap size={16} className="text-violet-500" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">Priority Queue</h3>
-                  <p className="text-[10px] text-slate-400">Investigations ranked by urgency</p>
-                </div>
+      {/* Main Content */}
+      <div className="grid grid-cols-12 gap-5">
+        {/* Priority Queue (7 cols) */}
+        <div className="col-span-7 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+                <Zap size={16} className="text-violet-500" />
               </div>
-              <span className="text-[10px] text-slate-400">{rankings.length} items</span>
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Priority Queue</h3>
+                <p className="text-[10px] text-slate-400">Investigations ranked by urgency</p>
+              </div>
             </div>
-            <div className="divide-y divide-slate-50">
-              {rankings.length === 0 ? (
-                <div className="py-12 text-center">
-                  <Zap size={32} className="text-slate-200 mx-auto mb-2" />
-                  <p className="text-xs text-slate-400">No priorities scored yet</p>
-                  <button onClick={handleBatchScore} className="mt-2 text-xs text-violet-500 font-medium hover:underline">
-                    Click "Score All" to begin
-                  </button>
-                </div>
-              ) : (
-                rankings.map((r, i) => {
-                  const color = priorityColors[r.priority_level] || '#64748b'
-                  return (
-                    <div key={r.investigation_id || i}
-                      className="px-5 py-3.5 hover:bg-slate-50 transition-all cursor-pointer">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                          <span className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
-                            {i + 1}
-                          </span>
-                          <div>
-                            <span className="text-sm font-semibold text-slate-900 block">{r.title}</span>
-                            <span className="text-[10px] text-slate-400">{r.district} • {r.progress || 0}% progress</span>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-lg font-bold" style={{ color }}>{r.overall_score}%</span>
-                          <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{r.priority_level}</span>
-                        </div>
-                      </div>
-                      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${r.overall_score}%`, background: `linear-gradient(90deg, ${color}, ${color}aa)` }} />
-                      </div>
-                    </div>
-                  )
-                })
-              )}
-            </div>
+            <span className="text-[10px] text-slate-400">{rankings.length} items</span>
           </div>
-
-          {/* Officer Workload (5 cols) */}
-          <div className="col-span-5 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                  <Users size={16} className="text-blue-500" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">Officer Workload</h3>
-                  <p className="text-[10px] text-slate-400">Case distribution across officers</p>
-                </div>
+          <div className="divide-y divide-slate-50">
+            {rankings.length === 0 ? (
+              <div className="py-12 text-center">
+                <Zap size={32} className="text-slate-200 mx-auto mb-2" />
+                <p className="text-xs text-slate-400">No priorities scored yet</p>
+                <button onClick={handleBatchScore} className="mt-2 text-xs text-violet-500 font-medium hover:underline">
+                  Click "Score All" to begin
+                </button>
               </div>
-            </div>
-            <div className="divide-y divide-slate-50">
-              {workload.length === 0 ? (
-                <div className="py-12 text-center">
-                  <Users size={32} className="text-slate-200 mx-auto mb-2" />
-                  <p className="text-xs text-slate-400">No workload data available</p>
-                </div>
-              ) : (
-                workload.map((w, i) => (
-                  <div key={i} className="px-5 py-3.5 hover:bg-slate-50 transition-all">
+            ) : (
+              rankings.map((r, i) => {
+                const color = priorityColors[r.priority_level] || '#64748b'
+                return (
+                  <div key={r.investigation_id || i}
+                    className="px-5 py-3.5 hover:bg-slate-50 transition-all cursor-pointer">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                          <Users size={14} className="text-blue-500" />
-                        </div>
-                        <span className="text-sm font-semibold text-slate-900">Officer #{w.officer_id}</span>
-                      </div>
-                      <span className="text-xs text-slate-400">{w.count} cases</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full rounded-full bg-blue-500" style={{ width: `${Math.min(100, w.count * 10)}%` }} />
-                      </div>
-                      {w.high_priority > 0 && (
-                        <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
-                          {w.high_priority} high
+                        <span className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
+                          {i + 1}
                         </span>
-                      )}
+                        <div>
+                          <span className="text-sm font-semibold text-slate-900 block">{r.title}</span>
+                          <span className="text-[10px] text-slate-400">{r.district} • {r.progress || 0}% progress</span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-lg font-bold" style={{ color }}>{r.overall_score}%</span>
+                        <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{r.priority_level}</span>
+                      </div>
+                    </div>
+                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full rounded-full transition-all duration-700" style={{ width: `${r.overall_score}%`, background: `linear-gradient(90deg, ${color}, ${color}aa)` }} />
                     </div>
                   </div>
-                ))
-              )}
+                )
+              })
+            )}
+          </div>
+        </div>
+
+        {/* Officer Workload (5 cols) */}
+        <div className="col-span-5 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                <Users size={16} className="text-blue-500" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-slate-900">Officer Workload</h3>
+                <p className="text-[10px] text-slate-400">Case distribution across officers</p>
+              </div>
             </div>
+          </div>
+          <div className="divide-y divide-slate-50">
+            {workload.length === 0 ? (
+              <div className="py-12 text-center">
+                <Users size={32} className="text-slate-200 mx-auto mb-2" />
+                <p className="text-xs text-slate-400">No workload data available</p>
+              </div>
+            ) : (
+              workload.map((w, i) => (
+                <div key={i} className="px-5 py-3.5 hover:bg-slate-50 transition-all">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                        <Users size={14} className="text-blue-500" />
+                      </div>
+                      <span className="text-sm font-semibold text-slate-900">Officer #{w.officer_id}</span>
+                    </div>
+                    <span className="text-xs text-slate-400">{w.count} cases</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full rounded-full bg-blue-500" style={{ width: `${Math.min(100, w.count * 10)}%` }} />
+                    </div>
+                    {w.high_priority > 0 && (
+                      <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
+                        {w.high_priority} high
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

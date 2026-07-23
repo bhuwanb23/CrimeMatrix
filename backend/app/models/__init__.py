@@ -22,6 +22,9 @@ from app.models.rank import Rank
 from app.models.arrest_surrender_type import ArrestSurrenderType
 from app.models.accused import Accused
 from app.models.arrest_surrender import ArrestSurrender
+from app.models.designation import Designation
+from app.models.blood_group import BloodGroup
+from app.models.chargesheet_detail import ChargesheetDetail
 from app.models.fir import FIR
 from app.models.suspect import Suspect
 from app.models.evidence import Evidence
@@ -121,6 +124,8 @@ __all__ = [
     "Occupation", "Religion", "CasteMaster", "Gender", "Complainant",
     # Accused & Arrest tables
     "State", "ArrestSurrenderType", "Accused", "ArrestSurrender",
+    # Designation & Employee
+    "Designation", "BloodGroup", "ChargesheetDetail",
     # CrimeHead Act-Section mapping
     "CrimeHeadActSection",
     # Crime data

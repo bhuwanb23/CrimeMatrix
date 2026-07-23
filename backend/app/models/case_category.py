@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
 from sqlalchemy.sql import func
 from app.db.base import Base
 
@@ -10,4 +10,5 @@ class CaseCategory(Base):
     name = Column(String(100), nullable=False)
     code = Column(String(20), unique=True, nullable=False)
     description = Column(Text, nullable=True)
+    active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

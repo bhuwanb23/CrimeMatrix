@@ -44,7 +44,8 @@ export const translations = {
     'This Device': 'This Device',
     'Active': 'Active',
     'Sync Now': 'Sync Now',
-    'Manage Devices': 'Manage Devices'
+    'Manage Devices': 'Manage Devices',
+    'Alerts by Type': 'Alerts by Type'
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ',
@@ -91,7 +92,8 @@ export const translations = {
     'This Device': 'ಈ ಸಾಧನ',
     'Active': 'ಸಕ್ರಿಯ',
     'Sync Now': 'ಈಗ ಸಿಂಕ್ ಮಾಡಿ',
-    'Manage Devices': 'ಸಾಧನಗಳನ್ನು ನಿರ್ವಹಿಸಿ'
+    'Manage Devices': 'ಸಾಧನಗಳನ್ನು ನಿರ್ವಹಿಸಿ',
+    'Alerts by Type': 'ಪ್ರಕಾರದ ಪ್ರಕಾರ ಎಚ್ಚರಿಕೆಗಳು'
   },
   Hindi: {
     'Accept': 'स्वीकार करें',
@@ -138,7 +140,8 @@ export const translations = {
     'This Device': 'यह डिवाइस',
     'Active': 'सक्रिय',
     'Sync Now': 'अभी सिंक करें',
-    'Manage Devices': 'डिवाइस प्रबंधित करें'
+    'Manage Devices': 'डिवाइस प्रबंधित करें',
+    'Alerts by Type': 'प्रकार के अनुसार अलर्ट'
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்',
@@ -185,7 +188,8 @@ export const translations = {
     'This Device': 'இந்த சாதனம்',
     'Active': 'செயலில்',
     'Sync Now': 'இப்போது ஒத்திசை',
-    'Manage Devices': 'சாதனங்களை நிர்வகி'
+    'Manage Devices': 'சாதனங்களை நிர்வகி',
+    'Alerts by Type': 'வகை வாரியாக எச்சரிக்கைகள்'
   },
   Telugu: {
     'Accept': 'అంగీకరించు',
@@ -232,6 +236,7 @@ export const translations = {
     'This Device': 'ఈ పరికరం',
     'Active': 'సక్రియంగా ఉంది',
     'Sync Now': 'ఇప్పుడే సమకాలీకరించు',
-    'Manage Devices': 'పరికరాలను నిర్వహించండి'
+    'Manage Devices': 'పరికరాలను నిర్వహించండి',
+    'Alerts by Type': 'రకం ద్వారా అలర్ట్‌లు'
   }
 }

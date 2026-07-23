@@ -4,7 +4,7 @@ import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
   Camera, Bot, MapPin, Calendar, Hash, Users, Scale, BookOpen,
-  Fingerprint, Handcuffs,
+  Fingerprint, ShieldCheck,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
@@ -297,7 +297,7 @@ export default function CaseDetailPage() {
         {/* Arrest / Surrender */}
         <div className="case-card">
           <h3 className="case-card-title">
-            <Handcuffs size={16} /> Arrest / Surrender
+            <ShieldCheck size={16} /> Arrest / Surrender
           </h3>
           {arrests.length > 0 ? (
             <div className="space-y-2">

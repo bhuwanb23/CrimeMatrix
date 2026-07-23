@@ -1,7 +1,6 @@
 import { BarChart3 } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function CrimeTypePredictions({ predictions }) {
   const { t } = useLanguage()
   if (!predictions || predictions.length === 0) {
@@ -45,7 +44,7 @@ export default function CrimeTypePredictions({ predictions }) {
               <div className="analytics-type-fill" style={{ width: `${(t.total / maxTotal) * 100}%` }} />
             </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   )

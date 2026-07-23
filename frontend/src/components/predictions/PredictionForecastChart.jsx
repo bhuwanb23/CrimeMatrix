@@ -35,7 +35,7 @@ export default function PredictionForecastChart({ forecast }) {
                   />
                 </div>
               </div>
-            )}
+            ))}
           </div>
         )}
       </div>

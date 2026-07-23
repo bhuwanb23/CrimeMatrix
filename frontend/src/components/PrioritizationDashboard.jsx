@@ -31,33 +31,19 @@ export default function PrioritizationDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Hero Header */}
-        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-6 text-white shadow-lg shadow-orange-500/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
-                <Zap size={28} />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold">Case Prioritization</h1>
-                <p className="text-white/80 text-sm mt-0.5">Dynamic investigation prioritization engine</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <button onClick={handleBatchScore} disabled={scoring}
-                className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
-                {scoring ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
-                {scoring ? 'Scoring...' : 'Score All Investigations'}
-              </button>
-              <button onClick={loadData} disabled={loading}
-                className="p-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
-                <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-6">
+      {/* Actions Bar */}
+      <div className="flex items-center justify-end gap-3">
+        <button onClick={handleBatchScore} disabled={scoring}
+          className="flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white hover:bg-orange-600 rounded-xl text-sm font-semibold transition-all shadow-sm disabled:opacity-50">
+          {scoring ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
+          {scoring ? 'Scoring...' : 'Score All Investigations'}
+        </button>
+        <button onClick={loadData} disabled={loading}
+          className="p-2.5 bg-white border border-slate-200 hover:border-orange-400 rounded-xl transition-all">
+          <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+        </button>
+      </div>
 
         {/* Stats Cards */}
         {stats && (

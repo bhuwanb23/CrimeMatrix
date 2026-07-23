@@ -186,3 +186,6 @@ router.include_router(evidence_linking_api.router, prefix="/evidence-linking", t
 
 # Intelligence Timeline APIs
 router.include_router(intelligence_timeline_api.router, prefix="/intelligence-timeline", tags=["Intelligence Timeline"])
+
+# Lookup Table APIs
+router.include_router(lookup_api.router, prefix="/lookups", tags=["Lookup Tables"])

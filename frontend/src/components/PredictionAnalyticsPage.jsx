@@ -100,7 +100,7 @@ export default function PredictionAnalyticsPage() {
               <select className="bg-white/20 backdrop-blur border border-white/30 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-white/60"
                 value={selectedDistrict} onChange={e => setSelectedDistrict(e.target.value)}>
                 <option value="" className="text-slate-900">{t('All Districts')}</option>
-                {districts.map(d => <option key={d.id} value={d.id} className="text-slate-900">{d.name}</option>)}
+                {districts.map(d => <option key={d.id} value={d.id} className="text-slate-900">{t(d.name)}</option>)}
               </select>
               <div className="flex bg-white/20 backdrop-blur rounded-lg p-0.5">
                 {[30, 60, 90].map(d => (
@@ -113,7 +113,7 @@ export default function PredictionAnalyticsPage() {
               <button onClick={handleForecast} disabled={forecasting}
                 className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
                 {forecasting ? <RefreshCw size={14} className="animate-spin" /> : <TrendingUp size={14} />}
-                {forecasting ? 'Forecasting...' : t('Generate Forecast')}
+                {forecasting ? t('Forecasting...') : t('Generate Forecast')}
               </button>
             </div>
           </div>

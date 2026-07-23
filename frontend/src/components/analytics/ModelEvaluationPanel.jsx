@@ -32,11 +32,11 @@ export default function ModelEvaluationPanel() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Activity size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">{t(t('Model Evaluation'))}</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('Model Evaluation')}</h3>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={handleRun} disabled={running} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
-            {running ? 'Running...' : t('Run Evaluation')}
+            {running ? t('Running...') : t('Run Evaluation')}
           </button>
           <button onClick={loadData} disabled={loading} className="p-1 hover:bg-slate-100 rounded">
             <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
@@ -47,9 +47,9 @@ export default function ModelEvaluationPanel() {
       {stats && (
         <div className="grid grid-cols-4 gap-2 mb-3">
           {[
-            { label: 'Metrics', value: stats.total_metrics || 0 },
-            { label: 'Feedback', value: stats.total_feedback || 0 },
-            { label: 'Evaluations', value: stats.total_evaluations || 0 },
+            { label: t('Metrics'), value: stats.total_metrics || 0 },
+            { label: t('Feedback'), value: stats.total_feedback || 0 },
+            { label: t('Evaluations'), value: stats.total_evaluations || 0 },
             { label: t('Avg Rating'), value: `${stats.avg_rating || 0}/5` },
           ].map((s, i) => (
             <div key={i} className="text-center p-2 bg-slate-50 rounded-lg">
@@ -64,10 +64,10 @@ export default function ModelEvaluationPanel() {
         <div className="space-y-1.5">
           {results.slice(0, 5).map((r, i) => (
             <div key={i} className="flex items-center justify-between p-1.5 bg-slate-50 rounded text-[10px]">
-              <span className="text-slate-600">{r.model_name} — {r.evaluation_type}</span>
+              <span className="text-slate-600">{r.model_name} — {t(r.evaluation_type)}</span>
               <div className="flex items-center gap-2">
-                <span className="text-slate-500">Acc: {r.accuracy}%</span>
-                <span className="text-slate-500">F1: {r.f1_score}%</span>
+                <span className="text-slate-500">{t('Acc:')} {r.accuracy}%</span>
+                <span className="text-slate-500">{t('F1:')} {r.f1_score}%</span>
               </div>
             </div>
           ))}

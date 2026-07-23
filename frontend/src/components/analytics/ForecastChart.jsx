@@ -8,14 +8,14 @@ export default function ForecastChart({ forecasts }) {
 
   const historical = forecasts.historical || []
   const forecast = forecasts.forecast || []
-  const maxCount = Math.max(...historical.map(d => {t('d.count || 0), 1)
+  const maxCount = Math.max(...historical.map(d => d.count || 0), 1)
 
-  return (')}
+  return (
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <TrendingUp size={14} />
-        <h3>{t(t('Crime Forecast'))}</h3>
-        <span className="similar-count">{forecasts.data_points || 0} data points</span>
+        <h3>{t('Crime Forecast')}</h3>
+        <span className="similar-count">{forecasts.data_points || 0} {t('data points')}</span>
       </div>
 
       <div className="analytics-forecast-chart">
@@ -51,8 +51,8 @@ export default function ForecastChart({ forecasts }) {
 
       {forecast.length > 0 && (
         <div className="analytics-forecast-info">
-          <span>Predicted: {forecast[0].count} crimes</span>
-          <span>Confidence: {forecast[0].confidence}%</span>
+          <span>{t('Predicted:')} {forecast[0].count} {t('crimes')}</span>
+          <span>{t('Confidence:')} {forecast[0].confidence}%</span>
         </div>
       )}
     </div>

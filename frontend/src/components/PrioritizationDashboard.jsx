@@ -145,8 +145,8 @@ export default function PrioritizationDashboard() {
                 <Users size={32} className="text-slate-200 mx-auto mb-2" />
                 <p className="text-xs text-slate-400">{t('No workload data available')}</p>
               </div>
-            {t(') : (
-              workload.map((w, i) => (')}
+            ) : (
+              workload.map((w, i) => (
                 <div key={i} className="px-5 py-3.5 hover:bg-slate-50 transition-all">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3">

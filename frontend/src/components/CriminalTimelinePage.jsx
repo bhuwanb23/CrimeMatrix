@@ -153,7 +153,7 @@ export default function CriminalTimelinePage() {
           <div className="similar-spinner" />
           <span>{t('Loading timeline...')}</span>
         </div>
-      {t(') : groups.length === 0 ? (')}
+      ) : groups.length === 0 ? (
         <div className="similar-empty">
           <Clock size={32} className="similar-empty-icon" />
           <p>{t('No timeline events found')}</p>

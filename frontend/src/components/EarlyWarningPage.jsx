@@ -147,7 +147,7 @@ export default function EarlyWarningPage() {
           <div className="similar-spinner" />
           <span>{t('Loading alerts...')}</span>
         </div>
-      {t(') : alerts.length === 0 ? (')}
+      ) : alerts.length === 0 ? (
         <div className="similar-empty">
           <Bell size={32} className="similar-empty-icon" />
           <p>{t('No alerts found')}</p>

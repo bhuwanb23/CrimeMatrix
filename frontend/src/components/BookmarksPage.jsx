@@ -80,7 +80,7 @@ export default function BookmarksPage() {
             <div className="similar-spinner" />
             <span>{t('Loading bookmarks...')}</span>
           </div>
-        {t(') : items.length === 0 ? (')}
+        ) : items.length === 0 ? (
           <div className="similar-empty">
             <Bookmark size={32} className="similar-empty-icon" />
             <p>{t('No bookmarks yet')}</p>

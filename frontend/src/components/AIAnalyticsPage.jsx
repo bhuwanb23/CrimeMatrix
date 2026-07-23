@@ -76,7 +76,7 @@ export default function AIAnalyticsPage() {
           <div className="similar-spinner" />
           <span>{t(t('Loading analytics dashboard...'))}</span>
         </div>
-      {t(') : summary ? (')}
+      ) : summary ? (
         <div className="intel-grid">
           {/* Prediction Summary Cards */}
           <PredictionSummaryCards predictions={summary.predictions} />

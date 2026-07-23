@@ -4,7 +4,6 @@ import { useLanguage } from '../context/LanguageContext'
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']
 
 export default function SettingsPage() {
-  const { t } = useLanguage()
   const { language, setLanguage, t } = useLanguage()
   const [profile] = useState({
     name: 'SI Karthik',
@@ -50,9 +49,9 @@ export default function SettingsPage() {
         <option key={opt} value={opt}>{opt}</option>
       ))}
     </select>
-  {t(')
+  )
 
-  return (')}
+  return (
     <div className="max-w-[900px]">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div>

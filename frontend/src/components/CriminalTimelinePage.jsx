@@ -98,7 +98,7 @@ export default function CriminalTimelinePage() {
               className={`intel-time-btn ${days === tr.value ? 'active' : ''}`}
               onClick={() => setDays(tr.value)}
             >
-              {tr.label}
+              {t(tr.label)}
             </button>
           ))}
         </div>
@@ -109,14 +109,14 @@ export default function CriminalTimelinePage() {
           onChange={(e) => setEventType(e.target.value)}
         >
           {eventTypes.map((et) => (
-            <option key={et.value} value={et.value}>{et.label}</option>
+            <option key={et.value} value={et.value}>{t(et.label)}</option>
           ))}
         </select>
 
         <div className="timeline-suspect-search">
           <User size={14} />
           <input
-            placeholder="Search suspect..."
+            placeholder={t('Search suspect...')}
             value={suspectSearch}
             onChange={(e) => setSuspectSearch(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSuspectSearch()}
@@ -141,7 +141,7 @@ export default function CriminalTimelinePage() {
           {stats.by_type && Object.entries(stats.by_type).map(([type, count]) => (
             <div key={type} className="timeline-stat">
               <span className="timeline-stat-value">{count}</span>
-              <span className="timeline-stat-label">{type}</span>
+              <span className="timeline-stat-label">{t(type)}</span>
             </div>
           ))}
         </div>
@@ -167,8 +167,8 @@ export default function CriminalTimelinePage() {
                 className="timeline-group-header"
                 onClick={() => setExpandedGroup(expandedGroup === date ? null : date)}
               >
-                <span className="timeline-group-date">{formatGroupDate(date)}</span>
-                <span className="timeline-group-count">{events.length} events</span>
+                <span className="timeline-group-date">{formatGroupDate(date, t)}</span>
+                <span className="timeline-group-count">{events.length} {t('events')}</span>
               </button>
 
               {(expandedGroup === date || expandedGroup === null) && (
@@ -206,7 +206,7 @@ export default function CriminalTimelinePage() {
 }
 
 function formatGroupDate(dateStr) {
-  if (!dateStr) return 'Unknown Date'
+  if (!dateStr) return t('Unknown Date')
   try {
     const d = new Date(dateStr)
     return d.toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })

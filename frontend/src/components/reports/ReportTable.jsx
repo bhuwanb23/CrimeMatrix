@@ -21,24 +21,6 @@ export default function ReportTable({ reports, page, totalPages, onPageChange })
               <th>{t('Status')}</th>
               <th>{t('Actions')}</th>
             </tr>
-          </thead>
-          <tbody>
-            {reports.map((report) => {
-              const typeInfo = reportTypes[report.type]
-              const statusInfo = reportStatuses[report.status]
-              return (
-                <tr key={report.id} className="report-row">
-                      <button className="report-action-btn" aria-label={t('Download')}>
-                        <Download size={14} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
 
       {totalPages > 1 && (
         <div className="report-pagination">

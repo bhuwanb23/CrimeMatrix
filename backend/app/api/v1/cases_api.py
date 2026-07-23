@@ -21,6 +21,7 @@ from app.models.accused import Accused
 from app.models.arrest_surrender import ArrestSurrender
 from app.models.arrest_surrender_type import ArrestSurrenderType
 from app.models.state import State
+from app.models.chargesheet_detail import ChargesheetDetail
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -498,3 +499,82 @@ async def delete_arrest_surrender(case_id: int, record_id: int, db: AsyncSession
     await db.delete(a)
     await db.commit()
     return success_response(message="Record deleted")
+
+
+# --- Chargesheet Schemas ---
+class ChargesheetCreate(BaseModel):
+    cs_date: Optional[str] = None
+    cs_type: Optional[str] = None
+    police_person_id: Optional[int] = None
+
+
+class ChargesheetUpdate(BaseModel):
+    cs_date: Optional[str] = None
+    cs_type: Optional[str] = None
+    police_person_id: Optional[int] = None
+
+
+# --- Chargesheet Endpoints ---
+
+@router.get("/{case_id}/chargesheet")
+async def get_chargesheet(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ChargesheetDetail).where(ChargesheetDetail.case_id == case_id))
+    items = []
+    for cs in result.scalars().all():
+        officer = (await db.execute(select(Officer).where(Officer.id == cs.police_person_id))).scalar() if cs.police_person_id else None
+        items.append({
+            "id": cs.id, "case_id": cs.case_id,
+            "cs_date": str(cs.cs_date) if cs.cs_date else None,
+            "cs_type": cs.cs_type,
+            "police_person_id": cs.police_person_id,
+            "officer_name": f"{officer.first_name or ''} {officer.rank or ''}".strip() if officer else None,
+        })
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.post("/{case_id}/chargesheet")
+async def create_chargesheet(case_id: int, data: ChargesheetCreate, db: AsyncSession = Depends(get_db)):
+    from datetime import datetime
+    cs_date = None
+    if data.cs_date:
+        try:
+            cs_date = datetime.fromisoformat(data.cs_date)
+        except Exception:
+            pass
+    cs = ChargesheetDetail(case_id=case_id, cs_date=cs_date, cs_type=data.cs_type,
+                           police_person_id=data.police_person_id)
+    db.add(cs)
+    await db.commit()
+    await db.refresh(cs)
+    return success_response(data={"id": cs.id, "case_id": cs.case_id}, message="Chargesheet created")
+
+
+@router.put("/{case_id}/chargesheet/{cs_id}")
+async def update_chargesheet(case_id: int, cs_id: int, data: ChargesheetUpdate, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ChargesheetDetail).where(ChargesheetDetail.id == cs_id, ChargesheetDetail.case_id == case_id))
+    cs = result.scalar()
+    if not cs:
+        return success_response(message="Chargesheet not found")
+    update_data = data.model_dump(exclude_unset=True)
+    if "cs_date" in update_data and update_data["cs_date"]:
+        from datetime import datetime
+        try:
+            update_data["cs_date"] = datetime.fromisoformat(update_data["cs_date"])
+        except Exception:
+            del update_data["cs_date"]
+    for key, value in update_data.items():
+        setattr(cs, key, value)
+    await db.commit()
+    await db.refresh(cs)
+    return success_response(data={"id": cs.id, "case_id": cs.case_id}, message="Chargesheet updated")
+
+
+@router.delete("/{case_id}/chargesheet/{cs_id}")
+async def delete_chargesheet(case_id: int, cs_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ChargesheetDetail).where(ChargesheetDetail.id == cs_id, ChargesheetDetail.case_id == case_id))
+    cs = result.scalar()
+    if not cs:
+        return success_response(message="Chargesheet not found")
+    await db.delete(cs)
+    await db.commit()
+    return success_response(message="Chargesheet deleted")

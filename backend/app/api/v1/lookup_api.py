@@ -126,6 +126,25 @@ async def list_arrest_surrender_types(db: AsyncSession = Depends(get_db)):
     return success_response(data={"items": items, "total": len(items)})
 
 
+@router.get("/crime-head-act-sections")
+async def list_crime_head_act_sections(crime_head_id: int = None, db: AsyncSession = Depends(get_db)):
+    stmt = select(CrimeHeadActSection)
+    if crime_head_id:
+        stmt = stmt.where(CrimeHeadActSection.crime_head_id == crime_head_id)
+    result = await db.execute(stmt)
+    items = []
+    for r in result.scalars().all():
+        head = (await db.execute(select(CrimeHead).where(CrimeHead.id == r.crime_head_id))).scalar()
+        act = (await db.execute(select(Act).where(Act.act_code == r.act_code))).scalar()
+        items.append({
+            "id": r.id, "crime_head_id": r.crime_head_id,
+            "crime_head_name": head.name if head else None,
+            "act_code": r.act_code, "act_name": act.name if act else None,
+            "section_code": r.section_code,
+        })
+    return success_response(data={"items": items, "total": len(items)})
+
+
 @router.post("/seed")
 async def seed_lookups(db: AsyncSession = Depends(get_db)):
     seeded = 0

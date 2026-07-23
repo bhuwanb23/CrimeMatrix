@@ -17,7 +17,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
   return (
     <div className="search-results">
       <div className="results-header">
-        <span className="results-count">{results.length} results found</span>
+        <span className="results-count">{results.length} {t('results found')}</span>
       </div>
 
       <div className="results-table-wrapper">
@@ -47,7 +47,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                   <span className="case-title-text">{row.title}</span>
                 </td>
                 <td>
-                  <span className="case-type-tag">{row.crime_type || row.type}</span>
+                  <span className="case-type-tag">{t(row.crime_type || row.type)}</span>
                 </td>
                 <td>{row.district}</td>
                 <td>

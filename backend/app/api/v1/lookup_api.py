@@ -348,7 +348,7 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
     for name, code, act_code, desc in acts_data:
         exists = await db.execute(select(Act).where(Act.act_code == act_code))
         if not exists.scalar():
-            db.add(Act(name=name, code=code, act_code=act_code, description=desc))
+            db.add(Act(name=name, code=code, act_code=act_code, short_name=code, description=desc, active=True))
             seeded += 1
 
     # Sections (key IPC sections)

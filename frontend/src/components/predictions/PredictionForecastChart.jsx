@@ -23,7 +23,7 @@ export default function PredictionForecastChart({ forecast }) {
 
       <div className="analytics-forecast-chart">
         {allData.length === 0 ? (
-          <div className="similar-empty"><p>No forecast data</p></div>
+          <div className="similar-empty"><p>{t(t('No forecast data'))}</p></div>
         ) : (
           <div className="analytics-forecast-bars">
             {allData.slice(-20).map((d, i) => (

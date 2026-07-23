@@ -11,7 +11,7 @@ export default function DistrictPredictionMap({ districts }) {
           <MapPin size={14} />
           <h3>{t(t('District Predictions'))}</h3>
         </div>
-        <div className="similar-empty"><p>No district predictions</p></div>
+        <div className="similar-empty"><p>{t(t('No district predictions'))}</p></div>
       </div>
     )
   }

@@ -1,6 +1,9 @@
 import { Lightbulb, TrendingUp, AlertTriangle } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function AIPredictionsPanel({ forecast, predictions, districts }) {
+  const { t } = useLanguage()
   const insights = []
 
   if (forecast) {
@@ -9,7 +12,7 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
         type: 'trend',
         icon: TrendingUp,
         color: '#ef4444',
-        title: 'Crime rate trending upward',
+        title: t('Crime rate trending upward'),
         description: `Forecast shows increasing crime with ${forecast.confidence}% confidence. Consider increasing patrols.`,
         confidence: forecast.confidence,
       })
@@ -18,7 +21,7 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
         type: 'trend',
         icon: TrendingUp,
         color: '#10b981',
-        title: 'Crime rate trending downward',
+        title: t('Crime rate trending downward'),
         description: `Current strategies appear effective. Confidence: ${forecast.confidence}%.`,
         confidence: forecast.confidence,
       })
@@ -54,7 +57,7 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
     type: 'recommendation',
     icon: Lightbulb,
     color: '#8b5cf6',
-    title: 'Cross-district coordination recommended',
+    title: t('Cross-district coordination recommended'),
     description: 'Pattern analysis suggests similar criminal activity across multiple districts. Joint operations may improve resolution rates.',
     confidence: 68,
   })
@@ -63,7 +66,7 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <Lightbulb size={14} />
-        <h3>AI Predictions & Recommendations</h3>
+        <h3>{t(t('AI Predictions & Recommendations'))}</h3>
       </div>
       <div className="analytics-recommendations-list">
         {insights.map((insight, i) => {

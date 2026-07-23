@@ -23,7 +23,7 @@ export default function PredictionExplanationPanel({ predictionId }) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <HelpCircle size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Why This Prediction?</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t(t('Why This Prediction?'))}</h3>
         </div>
         <button onClick={handleExplain} disabled={loading} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
           {loading ? 'Loading...' : explanation ? t('Refresh') : 'Explain'}
@@ -34,7 +34,7 @@ export default function PredictionExplanationPanel({ predictionId }) {
         <div className="space-y-3">
           {/* Contributing Factors */}
           <div>
-            <h4 className="text-[11px] font-semibold text-slate-600 mb-1.5">Contributing Factors</h4>
+            <h4 className="text-[11px] font-semibold text-slate-600 mb-1.5">{t(t('Contributing Factors'))}</h4>
             {explanation.factors?.map((f, i) => (
               <div key={i} className="flex items-center gap-2 mb-1">
                 <span className="text-[10px] text-slate-500 w-28">{f.name}</span>
@@ -56,7 +56,7 @@ export default function PredictionExplanationPanel({ predictionId }) {
           {/* Evidence */}
           {explanation.evidence?.length > 0 && (
             <div>
-              <h4 className="text-[11px] font-semibold text-slate-600 mb-1.5">Evidence Sources</h4>
+              <h4 className="text-[11px] font-semibold text-slate-600 mb-1.5">{t(t('Evidence Sources'))}</h4>
               {explanation.evidence.map((e, i) => (
                 <div key={i} className="flex items-center gap-2 text-[10px] text-slate-500">
                   <AlertTriangle size={8} className="text-amber-500" />
@@ -69,7 +69,7 @@ export default function PredictionExplanationPanel({ predictionId }) {
       )}
 
       {!explanation && !loading && (
-        <p className="text-[10px] text-slate-400">Click Explain to see why this prediction was made</p>
+        <p className="text-[10px] text-slate-400">{t(t('Click Explain to see why this prediction was made'))}</p>
       )}
     </div>
   )

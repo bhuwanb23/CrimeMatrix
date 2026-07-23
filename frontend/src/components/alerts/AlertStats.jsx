@@ -1,6 +1,9 @@
 import { AlertTriangle, Clock, CheckCircle2, Activity } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function AlertStats({ alerts }) {
+  const { t } = useLanguage()
+
   const newCount = alerts.filter((a) => a.status === 'new').length
   const pendingCount = alerts.filter((a) => a.status === 'pending').length
   const resolvedCount = alerts.filter((a) => a.status === 'resolved').length
@@ -13,7 +16,7 @@ export default function AlertStats({ alerts }) {
         </div>
         <div className="alert-stat-content">
           <span className="alert-stat-value">{newCount}</span>
-          <span className="alert-stat-label">New Alerts</span>
+          <span className="alert-stat-label">{t('New Alerts')}</span>
         </div>
       </div>
 
@@ -23,7 +26,7 @@ export default function AlertStats({ alerts }) {
         </div>
         <div className="alert-stat-content">
           <span className="alert-stat-value">{pendingCount}</span>
-          <span className="alert-stat-label">Pending</span>
+          <span className="alert-stat-label">{t('Pending')}</span>
         </div>
       </div>
 
@@ -33,7 +36,7 @@ export default function AlertStats({ alerts }) {
         </div>
         <div className="alert-stat-content">
           <span className="alert-stat-value">{resolvedCount}</span>
-          <span className="alert-stat-label">Resolved</span>
+          <span className="alert-stat-label">{t('Resolved')}</span>
         </div>
       </div>
 
@@ -43,9 +46,10 @@ export default function AlertStats({ alerts }) {
         </div>
         <div className="alert-stat-content">
           <span className="alert-stat-value">{alerts.length}</span>
-          <span className="alert-stat-label">Total Alerts</span>
+          <span className="alert-stat-label">{t('Total Alerts')}</span>
         </div>
       </div>
     </div>
   )
 }
+

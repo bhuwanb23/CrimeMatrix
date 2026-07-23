@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { alertTypes } from './alertsData'
 import { districts, karnatakaOutline } from '../map/mapData'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function AlertMap({ alerts, onAlertSelect, selectedAlert }) {
   const [hoveredAlert, setHoveredAlert] = useState(null)
+  const { t } = useLanguage()
 
   return (
     <div className="alert-map-card">
       <div className="alert-map-header">
-        <h3>Crime Heatmap</h3>
+        <h3>{t('Crime Heatmap')}</h3>
         <div className="alert-map-legend">
           {Object.entries(alertTypes).map(([id, info]) => (
             <div key={id} className="alert-legend-item">
               <span className="alert-legend-dot" style={{ background: info.color }} />
-              <span className="alert-legend-label">{info.label}</span>
+              <span className="alert-legend-label">{t(info.label)}</span>
             </div>
           ))}
         </div>
@@ -77,7 +79,7 @@ export default function AlertMap({ alerts, onAlertSelect, selectedAlert }) {
           <div className="alert-map-tooltip">
             <div className="alert-tooltip-header">
               <span className="alert-tooltip-type" style={{ background: alertTypes[selectedAlert.type].color + '20', color: alertTypes[selectedAlert.type].color }}>
-                {alertTypes[selectedAlert.type].label}
+                {t(alertTypes[selectedAlert.type].label)}
               </span>
               <span className={`alert-tooltip-priority ${selectedAlert.priority}`}>{selectedAlert.priority}</span>
             </div>
@@ -89,3 +91,4 @@ export default function AlertMap({ alerts, onAlertSelect, selectedAlert }) {
     </div>
   )
 }
+

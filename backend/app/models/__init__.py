@@ -71,7 +71,6 @@ from app.models.crime import Crime
 from app.models.crimetype import CrimeType
 from app.models.criminal import Criminal
 from app.models.person import Person
-from app.models.victim import Victim
 from app.models.witness import Witness
 from app.models.officer import Officer
 from app.models.station import Station

@@ -116,6 +116,8 @@ __all__ = [
     "CaseCategory", "GravityOffence", "CrimeHead", "CrimeSubHead", "CaseStatusMaster", "Court",
     # Complainant lookup tables
     "Occupation", "Religion", "CasteMaster", "Gender", "Complainant",
+    # Accused & Arrest tables
+    "State", "ArrestSurrenderType", "Accused", "ArrestSurrender",
     # Crime data
     "Crime", "CrimeType", "Criminal", "Person", "Victim", "Witness",
     "Officer", "Station", "District", "Vehicle", "Phone", "Location",

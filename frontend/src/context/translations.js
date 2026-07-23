@@ -101,7 +101,7 @@ export const translations = {
     'Try adjusting your search or filters': 'Try adjusting your search or filters',
     'Type': 'Type',
     'Useful': 'Useful',
-    'results found': 'results found'
+    'results found': 'results found,'
   
     'Reports & Documentation': 'Reports & Documentation',
     'Investigation reports, court documents, and exports': 'Investigation reports, court documents, and exports',

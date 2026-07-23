@@ -28,31 +28,6 @@ export default function ReportTable({ reports, page, totalPages, onPageChange })
               const statusInfo = reportStatuses[report.status]
               return (
                 <tr key={report.id} className="report-row">
-                  <td>
-                    <span className="report-id">{report.id}</span>
-                  </td>
-                  <td>
-                    <span className="report-title">{report.title}</span>
-                  </td>
-                  <td>
-                    <span className="report-type-badge" style={{ background: typeInfo.color + '12', color: typeInfo.color }}>
-                      {typeInfo.label}
-                    </span>
-                  </td>
-                  <td className="report-case">{report.caseId}</td>
-                  <td className="report-officer">{report.officer}</td>
-                  <td className="report-date">{report.date}</td>
-                  <td className="report-pages">{report.pages}</td>
-                  <td>
-                    <span className="report-status-badge" style={{ background: statusInfo.color + '12', color: statusInfo.color }}>
-                      {statusInfo.label}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="report-actions">
-                      <button className="report-action-btn" aria-label={t('View')}>
-                        <Eye size={14} />
-                      </button>
                       <button className="report-action-btn" aria-label={t('Download')}>
                         <Download size={14} />
                       </button>

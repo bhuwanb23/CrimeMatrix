@@ -38,7 +38,8 @@ export const translations = {
     'Investigation Calendar': 'Investigation Calendar', 'Hearings': 'Hearings', 'Shifts': 'Shifts',
     'Court Hearing — FIR #4489': 'Court Hearing — FIR #4489', 'Bail Review — Case #4512': 'Bail Review — Case #4512',
     'Shift Handover — Morning': 'Shift Handover — Morning', 'Night Patrol Briefing': 'Night Patrol Briefing',
-    'Cases by Status': 'Cases by Status', 'Pending Review': 'Pending Review', 'Under Investigation': 'Under Investigation', 'Closed': 'Closed'
+    'Cases by Status': 'Cases by Status', 'Pending Review': 'Pending Review', 'Under Investigation': 'Under Investigation', 'Closed': 'Closed',
+    'Risk Map': 'Risk Map', 'Crime Hotspots': 'Crime Hotspots', 'Behavioral Profiling': 'Behavioral Profiling', 'Cross-District Intelligence': 'Cross-District Intelligence', 'Evidence Linking': 'Evidence Linking', 'AI Intelligence': 'AI Intelligence', 'Criminal Activity': 'Criminal Activity', 'Crime Trends': 'Crime Trends', 'MO Fingerprinting': 'MO Fingerprinting', 'Repeat Offender Tracking': 'Repeat Offender Tracking', 'Graph controls': 'Graph controls'
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -78,7 +79,8 @@ export const translations = {
     'Investigation Calendar': 'ತನಿಖಾ ಕ್ಯಾಲೆಂಡರ್', 'Hearings': 'ವಿಚಾರಣೆಗಳು', 'Shifts': 'ಪಾಳಿಗಳು',
     'Court Hearing — FIR #4489': 'ನ್ಯಾಯಾಲಯದ ವಿಚಾರಣೆ — FIR #4489', 'Bail Review — Case #4512': 'ಜಾಮೀನು ವಿಮರ್ಶೆ — ಪ್ರಕರಣ #4512',
     'Shift Handover — Morning': 'ಪಾಳಿ ಹಸ್ತಾಂತರ — ಬೆಳಿಗ್ಗೆ', 'Night Patrol Briefing': 'ರಾತ್ರಿ ಗಸ್ತು ವಿವರಿಸುವಿಕೆ',
-    'Cases by Status': 'ಸ್ಥಿತಿಯ ಪ್ರಕಾರ ಪ್ರಕರಣಗಳು', 'Pending Review': 'ವಿಮರ್ಶೆ ಬಾಕಿ ಇದೆ', 'Under Investigation': 'ತನಿಖೆಯಲ್ಲಿದೆ', 'Closed': 'ಮುಚ್ಚಲಾಗಿದೆ'
+    'Cases by Status': 'స్థಿತಿಯ ಪ್ರಕಾರ ಪ್ರಕರಣಗಳು', 'Pending Review': 'ವಿಮರ್ಶೆ ಬಾಕಿ ಇದೆ', 'Under Investigation': 'ತನಿಖೆಯಲ್ಲಿದೆ', 'Closed': 'ಮುಚ್ಚಲಾಗಿದೆ',
+    'Risk Map': 'ಅಪಾಯದ ನಕ್ಷೆ', 'Crime Hotspots': 'ಅಪರಾಧದ ಹಾಟ್‌ಸ್ಪಾಟ್‌ಗಳು', 'Behavioral Profiling': 'ವರ್ತನೆಯ ಪ್ರೊಫೈಲಿಂಗ್', 'Cross-District Intelligence': 'ಅಂತರ್-ಜಿಲ್ಲಾ ಗುಪ್ತಚರ', 'Evidence Linking': 'ಸಾಕ್ಷ್ಯದ ಲಿಂಕಿಂಗ್', 'AI Intelligence': 'AI ಗುಪ್ತಚರ', 'Criminal Activity': 'ಅಪರಾಧ ಚಟುವಟಿಕೆ', 'Crime Trends': 'ಅಪರಾಧದ ಪ್ರವೃತ್ತಿಗಳು', 'MO Fingerprinting': 'MO ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್', 'Repeat Offender Tracking': 'ಪುನರಾವರ್ತಿತ ಅಪರಾಧಿ ಟ್ರ್ಯಾಕಿಂಗ್', 'Graph controls': 'ಗ್ರಾಫ್ ನಿಯಂತ್ರಣಗಳು'
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -118,7 +120,8 @@ export const translations = {
     'Investigation Calendar': 'जांच कैलेंडर', 'Hearings': 'सुनवाई', 'Shifts': 'शिफ्ट',
     'Court Hearing — FIR #4489': 'अदालत की सुनवाई — FIR #4489', 'Bail Review — Case #4512': 'जमानत समीक्षा — मामला #4512',
     'Shift Handover — Morning': 'शिफ्ट हैंडओवर — सुबह', 'Night Patrol Briefing': 'रात्रि गश्त ब्रीफिंग',
-    'Cases by Status': 'स्थिति के अनुसार मामले', 'Pending Review': 'लंबित समीक्षा', 'Under Investigation': 'जांच के अधीन', 'Closed': 'बंद'
+    'Cases by Status': 'स्थिति के अनुसार मामले', 'Pending Review': 'लंबित समीक्षा', 'Under Investigation': 'जांच के अधीन', 'Closed': 'बंद',
+    'Risk Map': 'जोखिम मानचित्र', 'Crime Hotspots': 'अपराध हॉटस्पॉट', 'Behavioral Profiling': 'व्यवहार प्रोफाइलिंग', 'Cross-District Intelligence': 'अंतर-जिला खुफिया', 'Evidence Linking': 'साक्ष्य लिंकिंग', 'AI Intelligence': 'एआई खुफिया', 'Criminal Activity': 'आपराधिक गतिविधि', 'Crime Trends': 'अपराध प्रवृत्तियां', 'MO Fingerprinting': 'एमओ फिंगरप्रिंटिंग', 'Repeat Offender Tracking': 'बार-बार अपराध करने वाले की ट्रैकिंग', 'Graph controls': 'ग्राफ़ नियंत्रण'
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -158,7 +161,8 @@ export const translations = {
     'Investigation Calendar': 'விசாரணை நாட்காட்டி', 'Hearings': 'விசாரணைகள்', 'Shifts': 'பணிகள்',
     'Court Hearing — FIR #4489': 'நீதிமன்ற விசாரணை — FIR #4489', 'Bail Review — Case #4512': 'ஜாமீன் ஆய்வு — வழக்கு #4512',
     'Shift Handover — Morning': 'பணி ஒப்படைப்பு — காலை', 'Night Patrol Briefing': 'இரவு ரோந்து சுருக்கம்',
-    'Cases by Status': 'நிலை வாரியாக வழக்குகள்', 'Pending Review': 'ஆய்வு நிலுவையில் உள்ளது', 'Under Investigation': 'விசாரணையில் உள்ளது', 'Closed': 'மூடப்பட்டது'
+    'Cases by Status': 'நிலை வாரியாக வழக்குகள்', 'Pending Review': 'ஆய்வு நிலுவையில் உள்ளது', 'Under Investigation': 'விசாரணையில் உள்ளது', 'Closed': 'மூடப்பட்டது',
+    'Risk Map': 'ஆபத்து வரைபடம்', 'Crime Hotspots': 'குற்ற ஹாட்ஸ்பாட்கள்', 'Behavioral Profiling': 'நடத்தை விவரக்குறிப்பு', 'Cross-District Intelligence': 'மாவட்டங்களுக்கு இடையேயான நுண்ணறிவு', 'Evidence Linking': 'ஆதார இணைப்பு', 'AI Intelligence': 'AI நுண்ணறிவு', 'Criminal Activity': 'குற்றச் செயல்பாடு', 'Crime Trends': 'குற்றப் போக்குகள்', 'MO Fingerprinting': 'MO கைரேகை', 'Repeat Offender Tracking': 'மீண்டும் குற்றவாளி கண்காணிப்பு', 'Graph controls': 'வரைபடக் கட்டுப்பாடுகள்'
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -198,6 +202,7 @@ export const translations = {
     'Investigation Calendar': 'దర్యాప్తు క్యాలెండర్', 'Hearings': 'విచారణలు', 'Shifts': 'షిఫ్టులు',
     'Court Hearing — FIR #4489': 'కోర్టు విచారణ — FIR #4489', 'Bail Review — Case #4512': 'బెయిల్ సమీక్ష — కేసు #4512',
     'Shift Handover — Morning': 'షిఫ్ట్ హ్యాండోవర్ — ఉదయం', 'Night Patrol Briefing': 'నైట్ పెట్రోల్ బ్రీఫింగ్',
-    'Cases by Status': 'స్థితి వారీగా కేసులు', 'Pending Review': 'సమీక్ష పెండింగ్‌లో ఉంది', 'Under Investigation': 'దర్యాప్తులో ఉంది', 'Closed': 'మూసివేయబడింది'
+    'Cases by Status': 'స్థితి వారీగా కేసులు', 'Pending Review': 'సమీక్ష పెండింగ్‌లో ఉంది', 'Under Investigation': 'దర్యాప్తులో ఉంది', 'Closed': 'మూసివేయబడింది',
+    'Risk Map': 'ప్రమాద మ్యాప్', 'Crime Hotspots': 'క్రైమ్ హాట్‌స్పాట్‌లు', 'Behavioral Profiling': 'ప్రవర్తనా ప్రొఫైలింగ్', 'Cross-District Intelligence': 'క్రాస్-డిస్ట్రిక్ట్ ఇంటెలిజెన్స్', 'Evidence Linking': 'సాక్ష్యం లింకింగ్', 'AI Intelligence': 'AI ఇంటెలిజెన్స్', 'Criminal Activity': 'నేర కార్యకలాపాలు', 'Crime Trends': 'క్రైమ్ ట్రెండ్స్', 'MO Fingerprinting': 'MO ఫింగర్‌ప్రింటింగ్', 'Repeat Offender Tracking': 'రిపీట్ అఫెండర్ ట్రాకింగ్', 'Graph controls': 'గ్రాఫ్ నియంత్రణలు'
   }
 }

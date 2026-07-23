@@ -193,3 +193,127 @@ async def delete_complainant(case_id: int, db: AsyncSession = Depends(get_db)):
     await db.delete(c)
     await db.commit()
     return success_response(message="Complainant deleted")
+
+
+# --- ActSection Schemas ---
+class ActSectionCreate(BaseModel):
+    act_id: int
+    section_id: int
+    act_order: int = 1
+    section_order: int = 1
+
+
+# --- ActSection Endpoints ---
+
+@router.get("/{case_id}/act-sections")
+async def get_act_sections(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ActSectionAssociation).where(ActSectionAssociation.case_id == case_id).order_by(ActSectionAssociation.act_order))
+    items = []
+    for a in result.scalars().all():
+        act = (await db.execute(select(Act).where(Act.id == a.act_id))).scalar()
+        sec = (await db.execute(select(Section).where(Section.id == a.section_id))).scalar()
+        items.append({
+            "id": a.id, "case_id": a.case_id,
+            "act_id": a.act_id, "act_name": act.name if act else None, "act_code": act.act_code if act else None,
+            "section_id": a.section_id, "section_name": sec.name if sec else None, "section_code": sec.section_code if sec else None,
+            "act_order": a.act_order, "section_order": a.section_order,
+        })
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.post("/{case_id}/act-sections")
+async def add_act_section(case_id: int, data: ActSectionCreate, db: AsyncSession = Depends(get_db)):
+    a = ActSectionAssociation(case_id=case_id, act_id=data.act_id, section_id=data.section_id,
+                               act_order=data.act_order, section_order=data.section_order)
+    db.add(a)
+    await db.commit()
+    await db.refresh(a)
+    return success_response(data={"id": a.id, "case_id": a.case_id}, message="Act-Section added")
+
+
+@router.delete("/{case_id}/act-sections/{assoc_id}")
+async def delete_act_section(case_id: int, assoc_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ActSectionAssociation).where(ActSectionAssociation.id == assoc_id, ActSectionAssociation.case_id == case_id))
+    a = result.scalar()
+    if not a:
+        return success_response(message="Not found")
+    await db.delete(a)
+    await db.commit()
+    return success_response(message="Deleted")
+
+
+# --- Victim Schemas ---
+class VictimCreate(BaseModel):
+    name: str
+    age_year: Optional[int] = None
+    gender_id: Optional[int] = None
+    is_police: bool = False
+
+
+class VictimUpdate(BaseModel):
+    name: Optional[str] = None
+    age_year: Optional[int] = None
+    gender_id: Optional[int] = None
+    is_police: Optional[bool] = None
+
+
+# --- Victim Endpoints ---
+
+@router.get("/{case_id}/victims")
+async def get_victims(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Victim).where(Victim.case_id == case_id))
+    items = []
+    for v in result.scalars().all():
+        gen = (await db.execute(select(Gender).where(Gender.id == v.gender_id))).scalar() if v.gender_id else None
+        items.append({
+            "id": v.id, "case_id": v.case_id, "name": v.name,
+            "age_year": v.age_year, "gender_id": v.gender_id,
+            "gender_name": gen.name if gen else None,
+            "is_police": v.is_police,
+            "created_at": str(v.created_at) if v.created_at else None,
+        })
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.post("/{case_id}/victims")
+async def create_victim(case_id: int, data: VictimCreate, db: AsyncSession = Depends(get_db)):
+    v = Victim(case_id=case_id, name=data.name, age_year=data.age_year,
+               gender_id=data.gender_id, is_police=data.is_police)
+    db.add(v)
+    await db.commit()
+    await db.refresh(v)
+    gen = (await db.execute(select(Gender).where(Gender.id == v.gender_id))).scalar() if v.gender_id else None
+    return success_response(data={
+        "id": v.id, "case_id": v.case_id, "name": v.name,
+        "age_year": v.age_year, "gender_id": v.gender_id,
+        "gender_name": gen.name if gen else None, "is_police": v.is_police,
+    }, message="Victim created")
+
+
+@router.put("/{case_id}/victims/{victim_id}")
+async def update_victim(case_id: int, victim_id: int, data: VictimUpdate, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Victim).where(Victim.id == victim_id, Victim.case_id == case_id))
+    v = result.scalar()
+    if not v:
+        return success_response(message="Victim not found")
+    for key, value in data.model_dump(exclude_unset=True).items():
+        setattr(v, key, value)
+    await db.commit()
+    await db.refresh(v)
+    gen = (await db.execute(select(Gender).where(Gender.id == v.gender_id))).scalar() if v.gender_id else None
+    return success_response(data={
+        "id": v.id, "case_id": v.case_id, "name": v.name,
+        "age_year": v.age_year, "gender_id": v.gender_id,
+        "gender_name": gen.name if gen else None, "is_police": v.is_police,
+    }, message="Victim updated")
+
+
+@router.delete("/{case_id}/victims/{victim_id}")
+async def delete_victim(case_id: int, victim_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Victim).where(Victim.id == victim_id, Victim.case_id == case_id))
+    v = result.scalar()
+    if not v:
+        return success_response(message="Victim not found")
+    await db.delete(v)
+    await db.commit()
+    return success_response(message="Victim deleted")

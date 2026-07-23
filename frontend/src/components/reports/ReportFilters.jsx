@@ -1,13 +1,16 @@
 import { Search, Download, ChevronDown } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function ReportFilters({ filters, onFilterChange, onExport }) {
+  const { t } = useLanguage()
   return (
     <div className="report-filters">
       <div className="report-search">
         <Search size={14} />
         <input
           type="text"
-          placeholder="Search by report ID, title, case..."
+          placeholder={t('Search by report ID, title, case...')}
           value={filters.search}
           onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
         />

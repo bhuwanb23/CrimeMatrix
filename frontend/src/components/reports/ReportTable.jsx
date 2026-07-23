@@ -1,22 +1,25 @@
 import { reportTypes, reportStatuses } from './reportsData'
 import { Eye, Download, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function ReportTable({ reports, page, totalPages, onPageChange }) {
+  const { t } = useLanguage()
   return (
     <div className="report-table-card">
       <div className="report-table-wrapper">
         <table className="report-table">
           <thead>
             <tr>
-              <th>Report ID</th>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Case</th>
-              <th>Officer</th>
-              <th>Date</th>
-              <th>Pages</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>{t('Report ID')}</th>
+              <th>{t('Title')}</th>
+              <th>{t('Type')}</th>
+              <th>{t('Case')}</th>
+              <th>{t('Officer')}</th>
+              <th>{t('Date')}</th>
+              <th>{t('Pages')}</th>
+              <th>{t('Status')}</th>
+              <th>{t('Actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -47,10 +50,10 @@ export default function ReportTable({ reports, page, totalPages, onPageChange })
                   </td>
                   <td>
                     <div className="report-actions">
-                      <button className="report-action-btn" aria-label="View">
+                      <button className="report-action-btn" aria-label={t('View')}>
                         <Eye size={14} />
                       </button>
-                      <button className="report-action-btn" aria-label="Download">
+                      <button className="report-action-btn" aria-label={t('Download')}>
                         <Download size={14} />
                       </button>
                     </div>

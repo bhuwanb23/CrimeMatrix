@@ -14,24 +14,24 @@ import ExplanationPanel from '../intelligence/ExplanationPanel'
 import { useLanguage } from '../../context/LanguageContext'
 
 const typeConfig = {
-  similar_case: { icon: FileText, label: 'Similar Case', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', route: '/cases' },
-  suspect_alert: { icon: User, label: 'Suspect Alert', color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', route: '/search/suspects' },
-  cross_district: { icon: MapPin, label: 'Cross-District', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', route: '/cases' },
-  mo_pattern: { icon: AlertTriangle, label: 'MO Pattern', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30', route: '/cases' },
-  evidence_review: { icon: Search, label: 'Evidence Review', color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30', route: '/cases' },
-  officer_assignment: { icon: UserCheck, label: 'Officer Assignment', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', route: '/cases' },
-  priority_escalation: { icon: AlertTriangle, label: 'Priority Escalation', color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30', route: '/cases' },
-  related_investigation: { icon: Link, label: 'Related Investigation', color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30', route: '/cases' },
+  similar_case: { icon: FileText, label: t('Similar Case'), color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', route: '/cases' },
+  suspect_alert: { icon: User, label: t('Suspect Alert'), color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', route: '/search/suspects' },
+  cross_district: { icon: MapPin, label: t('Cross-District'), color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', route: '/cases' },
+  mo_pattern: { icon: AlertTriangle, label: t('MO Pattern'), color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30', route: '/cases' },
+  evidence_review: { icon: Search, label: t('Evidence Review'), color: 'text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/30', route: '/cases' },
+  officer_assignment: { icon: UserCheck, label: t('Officer Assignment'), color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', route: '/cases' },
+  priority_escalation: { icon: AlertTriangle, label: t('Priority Escalation'), color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30', route: '/cases' },
+  related_investigation: { icon: Link, label: t('Related Investigation'), color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30', route: '/cases' },
 }
 
 const tabs = [
-  { key: null, label: 'All', icon: Sparkles },
-  { key: 'similar_case', label: 'Cases', icon: FileText },
-  { key: 'suspect_alert', label: 'Suspects', icon: User },
-  { key: 'evidence_review', label: 'Evidence', icon: Search },
-  { key: 'officer_assignment', label: 'Assign', icon: UserCheck },
-  { key: 'priority_escalation', label: 'Escalation', icon: AlertTriangle },
-  { key: 'related_investigation', label: 'Related', icon: Link },
+  { key: null, label: t('All'), icon: Sparkles },
+  { key: 'similar_case', label: t('Cases'), icon: FileText },
+  { key: 'suspect_alert', label: t('Suspects'), icon: User },
+  { key: 'evidence_review', label: t('Evidence'), icon: Search },
+  { key: 'officer_assignment', label: t('Assign'), icon: UserCheck },
+  { key: 'priority_escalation', label: t('Escalation'), icon: AlertTriangle },
+  { key: 'related_investigation', label: t('Related'), icon: Link },
 ]
 
 export default function RecommendationsPanel({ caseId = null, investigationId = null, compact = false, maxItems }) {
@@ -271,7 +271,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                           ? 'bg-red-500/20 text-red-400'
                           : 'text-white/30 hover:text-red-400 hover:bg-red-500/10'
                       }`}
-                      title="Dismiss"
+                      title={t('Dismiss')}
                     >
                       <XCircle size={10} />
                       <span>{t('Dismiss')}</span>
@@ -283,7 +283,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                           ? 'bg-amber-500/20 text-amber-400'
                           : 'text-white/30 hover:text-amber-400 hover:bg-amber-500/10'
                       }`}
-                      title="Useful"
+                      title={t('Useful')}
                     >
                       <ThumbsUp size={10} />
                     </button>
@@ -294,7 +294,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                           ? 'bg-slate-500/20 text-slate-400'
                           : 'text-white/30 hover:text-slate-400 hover:bg-slate-500/10'
                       }`}
-                      title="Not useful"
+                      title={t('Not useful')}
                     >
                       <ThumbsDown size={10} />
                     </button>

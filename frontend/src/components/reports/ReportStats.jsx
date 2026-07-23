@@ -3,8 +3,11 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
 } from 'recharts'
 import { reports, reportTypes, weeklyData } from './reportsData'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function ReportStats() {
+  const { t } = useLanguage()
   const typeCounts = Object.entries(reportTypes).map(([id, info]) => ({
     name: info.label,
     value: reports.filter((r) => r.type === id).length,
@@ -18,8 +21,8 @@ export default function ReportStats() {
       {/* Donut Chart */}
       <div className="report-stats-card">
         <div className="report-stats-header">
-          <h3>Report Statistics</h3>
-          <span className="report-stats-subtitle">Today</span>
+          <h3>{t('Report Statistics')}</h3>
+          <span className="report-stats-subtitle">{t('Today')}</span>
         </div>
         <div className="report-donut-area">
           <div className="report-donut-wrapper">
@@ -43,7 +46,7 @@ export default function ReportStats() {
             </ResponsiveContainer>
             <div className="report-donut-center">
               <span className="report-donut-value">{totalReports}</span>
-              <span className="report-donut-label">Reports</span>
+              <span className="report-donut-label">{t('Reports')}</span>
             </div>
           </div>
           <div className="report-donut-legend">
@@ -61,7 +64,7 @@ export default function ReportStats() {
       {/* Bar Chart */}
       <div className="report-stats-card bar-card">
         <div className="report-stats-header">
-          <h3>Current Week</h3>
+          <h3>{t('Current Week')}</h3>
           <div className="report-bar-tags">
             {Object.entries(reportTypes).map(([id, info]) => (
               <span key={id} className="report-bar-tag" style={{ background: info.color + '15', color: info.color }}>

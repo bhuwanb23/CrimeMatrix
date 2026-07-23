@@ -33,7 +33,7 @@ from app.api.v1 import (
     evidence_linking_api
 )
 
-from app.api.v1 import intelligence_timeline_api, lookup_api
+from app.api.v1 import intelligence_timeline_api, lookup_api, cases_api
 
 router = APIRouter(prefix="/api/v1")
 
@@ -189,3 +189,6 @@ router.include_router(intelligence_timeline_api.router, prefix="/intelligence-ti
 
 # Lookup Table APIs
 router.include_router(lookup_api.router, prefix="/lookups", tags=["Lookup Tables"])
+
+# Case CRUD APIs (CaseMaster)
+router.include_router(cases_api.router, prefix="/cases", tags=["Cases"])

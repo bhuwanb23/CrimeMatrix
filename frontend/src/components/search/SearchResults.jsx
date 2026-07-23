@@ -8,7 +8,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
     return (
       <div className="search-empty">
         <Search size={48} strokeWidth={1} className="search-empty-icon" />
-        <h3>{t('No results found')}</h3>
+        <h3>{t('{t('No results found')}')}</h3>
         <p>{t('Try adjusting your search or filters')}</p>
       </div>
     )

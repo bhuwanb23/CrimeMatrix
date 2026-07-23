@@ -20,6 +20,8 @@ from app.models.arrest_surrender_type import ArrestSurrenderType
 from app.models.crime_head_act_section import CrimeHeadActSection
 from app.models.unit_type import UnitType
 from app.models.rank import Rank
+from app.models.designation import Designation
+from app.models.blood_group import BloodGroup
 
 router = APIRouter()
 
@@ -158,6 +160,20 @@ async def list_unit_types(db: AsyncSession = Depends(get_db)):
 async def list_ranks(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Rank).order_by(Rank.hierarchy))
     items = [{"id": r.id, "name": r.name, "code": r.code, "hierarchy": r.hierarchy, "active": r.active} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/designations")
+async def list_designations(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Designation).order_by(Designation.sort_order))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "active": r.active, "sort_order": r.sort_order} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/blood-groups")
+async def list_blood_groups(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(BloodGroup).order_by(BloodGroup.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code} for r in result.scalars().all()]
     return success_response(data={"items": items, "total": len(items)})
 
 
@@ -462,6 +478,32 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
         exists = await db.execute(select(Rank).where(Rank.code == code))
         if not exists.scalar():
             db.add(Rank(name=name, code=code, hierarchy=hierarchy, description=desc, active=True))
+            seeded += 1
+
+    # Designations
+    designations_data = [
+        ("Investigating Officer", "IO", 1),
+        ("Station House Officer", "SHO", 2),
+        ("Outgoing Officer", "OO", 3),
+        ("Case Officer", "CO", 4),
+        ("Supporting Officer", "SO", 5),
+        ("Supervising Officer", "SUPO", 6),
+    ]
+    for name, code, sort_order in designations_data:
+        exists = await db.execute(select(Designation).where(Designation.code == code))
+        if not exists.scalar():
+            db.add(Designation(name=name, code=code, sort_order=sort_order, active=True))
+            seeded += 1
+
+    # Blood Groups
+    blood_groups_data = [
+        ("A+", "A+"), ("A-", "A-"), ("B+", "B+"), ("B-", "B-"),
+        ("AB+", "AB+"), ("AB-", "AB-"), ("O+", "O+"), ("O-", "O-"),
+    ]
+    for name, code in blood_groups_data:
+        exists = await db.execute(select(BloodGroup).where(BloodGroup.code == code))
+        if not exists.scalar():
+            db.add(BloodGroup(name=name, code=code))
             seeded += 1
 
     await db.commit()

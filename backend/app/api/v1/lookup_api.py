@@ -17,6 +17,7 @@ from app.models.act import Act
 from app.models.section import Section
 from app.models.state import State
 from app.models.arrest_surrender_type import ArrestSurrenderType
+from app.models.crime_head_act_section import CrimeHeadActSection
 
 router = APIRouter()
 

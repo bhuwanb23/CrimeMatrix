@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, Zap, ArrowUpRight, Activity, UserX } from 'lucide-react'
 import { getSuspectRiskStats, getSuspectRiskRankings, batchScoreSuspects, getSuspectRiskScore, getSuspectRiskFactors } from '../services/suspectRisk'
@@ -24,6 +25,7 @@ const factorConfig = [
 ]
 
 export default function SuspectRiskPage() {
+  const { t } = useLanguage()
   const [stats, setStats] = useState(null)
   const [rankings, setRankings] = useState([])
   const [selectedSuspect, setSelectedSuspect] = useState(null)
@@ -72,8 +74,8 @@ export default function SuspectRiskPage() {
                 <Shield size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Suspect Risk Scoring</h1>
-                <p className="text-white/80 text-sm mt-0.5">Transparent, evidence-backed risk assessment engine</p>
+                <h1 className="text-2xl font-bold">{t('Suspect Risk Scoring')}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t('Transparent, evidence-backed risk assessment engine')}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -123,7 +125,7 @@ export default function SuspectRiskPage() {
                   <Shield size={16} className="text-amber-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Suspect Rankings</h3>
+                  <h3 className="text-sm font-bold text-slate-900">{t('Suspect Rankings')}</h3>
                   <p className="text-[10px] text-slate-400">{rankings.length} analyzed</p>
                 </div>
               </div>
@@ -132,9 +134,9 @@ export default function SuspectRiskPage() {
               {rankings.length === 0 ? (
                 <div className="py-12 text-center">
                   <UserX size={32} className="text-slate-200 mx-auto mb-2" />
-                  <p className="text-xs text-slate-400">No suspects scored yet</p>
+                  <p className="text-xs text-slate-400">{t('No suspects scored yet')}</p>
                   <button onClick={handleBatchScore} className="mt-2 text-xs text-amber-500 font-medium hover:underline">
-                    Click "Score All" to begin
+                    {t('Click "Score All" to begin')}
                   </button>
                 </div>
               ) : (
@@ -178,7 +180,7 @@ export default function SuspectRiskPage() {
                   <Activity size={16} className="text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Risk Analysis</h3>
+                  <h3 className="text-sm font-bold text-slate-900">{t('Risk Analysis')}</h3>
                   <p className="text-[10px] text-slate-400">
                     {selectedScore ? `Analyzing ${rankings.find(r => r.suspect_id === selectedSuspect)?.name || 'suspect'}` : 'Select a suspect to analyze'}
                   </p>
@@ -206,7 +208,7 @@ export default function SuspectRiskPage() {
 
                 {/* Factor Analysis */}
                 <div>
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Contributing Factors</h4>
+                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t('Contributing Factors')}</h4>
                   <div className="space-y-3">
                     {factorConfig.map((factor) => {
                       const value = selectedFactors.find(f => f.name === factor.key)?.value || 0
@@ -232,8 +234,8 @@ export default function SuspectRiskPage() {
                 <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
                   <AlertTriangle size={24} className="text-slate-300" />
                 </div>
-                <p className="text-sm font-medium text-slate-500 mb-1">No suspect selected</p>
-                <p className="text-xs text-slate-400">Click on a suspect from the rankings to view their detailed risk analysis</p>
+                <p className="text-sm font-medium text-slate-500 mb-1">{t('No suspect selected')}</p>
+                <p className="text-xs text-slate-400">{t('Click on a suspect from the rankings to view their detailed risk analysis')}</p>
               </div>
             )}
           </div>

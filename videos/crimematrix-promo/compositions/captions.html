@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+<style data-brand-tokens>
+  :root {
+    --cap-ink: #0f172a;
+    --cap-canvas: #ffffff;
+    --cap-accent: #f59e0b;
+    --cap-accent-2: #b45309;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+    --cap-band-top: 900px;
+    --cap-band-height: 180px;
+  }
+</style>
+<style>
+  #captions-root {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .caption-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .caption-stage {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--cap-band-top, 900px);
+    height: var(--cap-band-height, 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .caption-group {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
+  .caption-pill {
+    max-width: 78%;
+    padding: 16px 36px 18px;
+    background: color-mix(in srgb, var(--cap-accent, #f59e0b) 6%, var(--cap-canvas, #ffffff));
+    border: 1.5px solid color-mix(in srgb, var(--cap-accent, #f59e0b) 28%, transparent);
+    border-radius: 14px;
+  }
+  .caption-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.1em 0.28em;
+    font-family: var(--font-display, "Plus Jakarta Sans"), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 2.6vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .caption-word {
+    display: inline-block;
+    padding: 0 0.14em;
+    border-radius: 0.28em;
+    color: color-mix(in srgb, var(--cap-ink, #0f172a) 55%, var(--cap-canvas, #ffffff));
+  }
+  .caption-word.is-active {
+    color: #0f172a;
+    background: var(--cap-accent, #f59e0b);
+  }
+  .caption-word.is-spoken {
+    color: var(--cap-ink, #0f172a);
+    background: transparent;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<div
+  id="captions-root"
+  data-composition-id="captions"
+  data-timeline-locked
+  data-start="0"
+  data-duration="150.464"
+  data-fps="30"
+  data-width="1920"
+  data-height="1080"
+>
+  <div class="caption-layer" aria-hidden="true">
+    <div id="caption-stage" class="caption-stage"></div>
+  </div>
+</div>
+<script>
+  var GROUPS = [{"start": 0.15, "end": 5.412, "words": [{"text": "Every", "start": 0.15, "end": 0.676}, {"text": "day,", "start": 0.676, "end": 1.202}, {"text": "thousands", "start": 1.202, "end": 1.728}, {"text": "of", "start": 1.728, "end": 2.255}, {"text": "crime", "start": 2.255, "end": 2.781}, {"text": "records", "start": 2.781, "end": 3.307}, {"text": "are", "start": 3.307, "end": 3.833}, {"text": "generated", "start": 3.833, "end": 4.359}, {"text": "across", "start": 4.359, "end": 4.885}, {"text": "Karnataka.", "start": 4.885, "end": 5.412}]}, {"start": 5.412, "end": 10.673, "words": [{"text": "Yet", "start": 5.412, "end": 5.938}, {"text": "investigators", "start": 5.938, "end": 6.464}, {"text": "still", "start": 6.464, "end": 6.99}, {"text": "spend", "start": 6.99, "end": 7.516}, {"text": "countless", "start": 7.516, "end": 8.042}, {"text": "hours", "start": 8.042, "end": 8.569}, {"text": "searching", "start": 8.569, "end": 9.095}, {"text": "through", "start": 9.095, "end": 9.621}, {"text": "fragmented", "start": 9.621, "end": 10.147}, {"text": "databases,", "start": 10.147, "end": 10.673}]}, {"start": 10.673, "end": 16.461, "words": [{"text": "connecting", "start": 10.673, "end": 11.199}, {"text": "evidence", "start": 11.199, "end": 11.726}, {"text": "manually,", "start": 11.726, "end": 12.252}, {"text": "and", "start": 12.252, "end": 12.778}, {"text": "trying", "start": 12.778, "end": 13.304}, {"text": "to", "start": 13.304, "end": 13.83}, {"text": "uncover", "start": 13.83, "end": 14.356}, {"text": "hidden", "start": 14.356, "end": 14.883}, {"text": "relationships", "start": 14.883, "end": 15.409}, {"text": "between", "start": 15.409, "end": 15.935}, {"text": "cases.", "start": 15.935, "end": 16.461}]}, {"start": 16.811, "end": 21.176, "words": [{"text": "What", "start": 16.811, "end": 17.247}, {"text": "if", "start": 17.247, "end": 17.684}, {"text": "an", "start": 17.684, "end": 18.12}, {"text": "AI", "start": 18.12, "end": 18.557}, {"text": "could", "start": 18.557, "end": 18.993}, {"text": "become", "start": 18.994, "end": 19.43}, {"text": "every", "start": 19.43, "end": 19.866}, {"text": "investigator's", "start": 19.866, "end": 20.303}, {"text": "intelligent", "start": 20.303, "end": 20.739}, {"text": "partner?", "start": 20.739, "end": 21.176}]}, {"start": 21.526, "end": 27.644, "words": [{"text": "Introducing", "start": 21.526, "end": 22.036}, {"text": "CrimeMatrix", "start": 22.036, "end": 22.546}, {"text": "—", "start": 22.546, "end": 23.056}, {"text": "an", "start": 23.056, "end": 23.565}, {"text": "AI-powered", "start": 23.565, "end": 24.075}, {"text": "Crime", "start": 24.075, "end": 24.585}, {"text": "Intelligence", "start": 24.585, "end": 25.095}, {"text": "Platform", "start": 25.095, "end": 25.605}, {"text": "built", "start": 25.605, "end": 26.115}, {"text": "for", "start": 26.115, "end": 26.625}, {"text": "the", "start": 26.625, "end": 27.134}, {"text": "Karnataka", "start": 27.134, "end": 27.644}]}, {"start": 27.644, "end": 28.664, "words": [{"text": "State", "start": 27.644, "end": 28.154}, {"text": "Police.", "start": 28.154, "end": 28.664}]}, {"start": 29.014, "end": 34.125, "words": [{"text": "CrimeMatrix", "start": 29.014, "end": 29.653}, {"text": "transforms", "start": 29.653, "end": 30.292}, {"text": "investigations", "start": 30.292, "end": 30.931}, {"text": "through", "start": 30.931, "end": 31.569}, {"text": "a", "start": 31.569, "end": 32.208}, {"text": "conversational", "start": 32.208, "end": 32.847}, {"text": "AI", "start": 32.847, "end": 33.486}, {"text": "assistant.", "start": 33.486, "end": 34.125}]}, {"start": 34.475, "end": 39.668, "words": [{"text": "Instead", "start": 34.475, "end": 34.908}, {"text": "of", "start": 34.908, "end": 35.341}, {"text": "navigating", "start": 35.341, "end": 35.773}, {"text": "multiple", "start": 35.773, "end": 36.206}, {"text": "systems,", "start": 36.206, "end": 36.639}, {"text": "officers", "start": 36.639, "end": 37.072}, {"text": "simply", "start": 37.072, "end": 37.504}, {"text": "ask", "start": 37.504, "end": 37.937}, {"text": "questions", "start": 37.937, "end": 38.37}, {"text": "in", "start": 38.37, "end": 38.803}, {"text": "natural", "start": 38.803, "end": 39.236}, {"text": "language", "start": 39.236, "end": 39.668}]}, {"start": 39.668, "end": 42.265, "words": [{"text": "—", "start": 39.668, "end": 40.101}, {"text": "or", "start": 40.101, "end": 40.534}, {"text": "even", "start": 40.534, "end": 40.967}, {"text": "by", "start": 40.967, "end": 41.4}, {"text": "voice", "start": 41.4, "end": 41.832}, {"text": "—", "start": 41.832, "end": 42.265}]}, {"start": 42.265, "end": 44.429, "words": [{"text": "in", "start": 42.265, "end": 42.698}, {"text": "English,", "start": 42.698, "end": 43.131}, {"text": "Kannada,", "start": 43.131, "end": 43.563}, {"text": "or", "start": 43.563, "end": 43.996}, {"text": "Kanglish.", "start": 43.996, "end": 44.429}]}, {"start": 44.779, "end": 49.272, "words": [{"text": "The", "start": 44.779, "end": 45.421}, {"text": "AI", "start": 45.421, "end": 46.063}, {"text": "understands", "start": 46.063, "end": 46.704}, {"text": "context,", "start": 46.704, "end": 47.346}, {"text": "remembers", "start": 47.346, "end": 47.988}, {"text": "ongoing", "start": 47.988, "end": 48.63}, {"text": "investigations,", "start": 48.63, "end": 49.272}]}, {"start": 49.272, "end": 56.973, "words": [{"text": "and", "start": 49.272, "end": 49.913}, {"text": "provides", "start": 49.913, "end": 50.555}, {"text": "instant,", "start": 50.555, "end": 51.197}, {"text": "explainable", "start": 51.197, "end": 51.839}, {"text": "answers,", "start": 51.839, "end": 52.48}, {"text": "making", "start": 52.48, "end": 53.122}, {"text": "complex", "start": 53.122, "end": 53.764}, {"text": "investigations", "start": 53.764, "end": 54.406}, {"text": "faster", "start": 54.406, "end": 55.048}, {"text": "and", "start": 55.048, "end": 55.689}, {"text": "more", "start": 55.689, "end": 56.331}, {"text": "intuitive.", "start": 56.331, "end": 56.973}]}, {"start": 57.323, "end": 63.098, "words": [{"text": "Beyond", "start": 57.323, "end": 57.9}, {"text": "search,", "start": 57.9, "end": 58.478}, {"text": "CrimeMatrix", "start": 58.478, "end": 59.055}, {"text": "uncovers", "start": 59.055, "end": 59.633}, {"text": "intelligence", "start": 59.633, "end": 60.21}, {"text": "hidden", "start": 60.21, "end": 60.788}, {"text": "within", "start": 60.788, "end": 61.365}, {"text": "millions", "start": 61.365, "end": 61.943}, {"text": "of", "start": 61.943, "end": 62.52}, {"text": "records.", "start": 62.52, "end": 63.098}]}, {"start": 63.098, "end": 66.563, "words": [{"text": "Investigators", "start": 63.098, "end": 63.675}, {"text": "can", "start": 63.675, "end": 64.253}, {"text": "perform", "start": 64.253, "end": 64.83}, {"text": "semantic", "start": 64.83, "end": 65.408}, {"text": "crime", "start": 65.408, "end": 65.985}, {"text": "searches,", "start": 65.985, "end": 66.563}]}, {"start": 66.563, "end": 71.183, "words": [{"text": "discover", "start": 66.563, "end": 67.14}, {"text": "similar", "start": 67.14, "end": 67.718}, {"text": "cases", "start": 67.718, "end": 68.295}, {"text": "across", "start": 68.295, "end": 68.873}, {"text": "districts,", "start": 68.873, "end": 69.45}, {"text": "visualize", "start": 69.45, "end": 70.028}, {"text": "criminal", "start": 70.028, "end": 70.605}, {"text": "networks,", "start": 70.605, "end": 71.183}]}, {"start": 71.183, "end": 74.648, "words": [{"text": "explore", "start": 71.183, "end": 71.76}, {"text": "relationship", "start": 71.76, "end": 72.338}, {"text": "graphs,", "start": 72.338, "end": 72.915}, {"text": "analyze", "start": 72.915, "end": 73.493}, {"text": "crime", "start": 73.493, "end": 74.07}, {"text": "trends,", "start": 74.07, "end": 74.648}]}, {"start": 74.648, "end": 78.69, "words": [{"text": "detect", "start": 74.648, "end": 75.225}, {"text": "hotspots,", "start": 75.225, "end": 75.803}, {"text": "and", "start": 75.803, "end": 76.38}, {"text": "trace", "start": 76.38, "end": 76.958}, {"text": "complete", "start": 76.958, "end": 77.535}, {"text": "criminal", "start": 77.535, "end": 78.113}, {"text": "timelines.", "start": 78.113, "end": 78.69}]}, {"start": 79.04, "end": 86.447, "words": [{"text": "Our", "start": 79.04, "end": 79.657}, {"text": "Indian", "start": 79.657, "end": 80.274}, {"text": "Identity", "start": 80.274, "end": 80.892}, {"text": "Resolution", "start": 80.892, "end": 81.509}, {"text": "Engine", "start": 81.509, "end": 82.126}, {"text": "intelligently", "start": 82.126, "end": 82.743}, {"text": "links", "start": 82.743, "end": 83.361}, {"text": "duplicate", "start": 83.361, "end": 83.978}, {"text": "identities", "start": 83.978, "end": 84.595}, {"text": "despite", "start": 84.595, "end": 85.212}, {"text": "spelling", "start": 85.212, "end": 85.83}, {"text": "variations", "start": 85.83, "end": 86.447}]}, {"start": 86.447, "end": 92.002, "words": [{"text": "and", "start": 86.447, "end": 87.064}, {"text": "multilingual", "start": 87.064, "end": 87.681}, {"text": "records,", "start": 87.681, "end": 88.299}, {"text": "ensuring", "start": 88.299, "end": 88.916}, {"text": "investigators", "start": 88.916, "end": 89.533}, {"text": "never", "start": 89.533, "end": 90.15}, {"text": "miss", "start": 90.15, "end": 90.768}, {"text": "critical", "start": 90.768, "end": 91.385}, {"text": "connections.", "start": 91.385, "end": 92.002}]}, {"start": 92.352, "end": 96.353, "words": [{"text": "CrimeMatrix", "start": 92.352, "end": 92.924}, {"text": "doesn't", "start": 92.924, "end": 93.495}, {"text": "just", "start": 93.495, "end": 94.067}, {"text": "analyze", "start": 94.067, "end": 94.638}, {"text": "the", "start": 94.638, "end": 95.21}, {"text": "past", "start": 95.21, "end": 95.781}, {"text": "—", "start": 95.781, "end": 96.353}]}, {"start": 96.353, "end": 102.069, "words": [{"text": "it", "start": 96.353, "end": 96.925}, {"text": "helps", "start": 96.925, "end": 97.496}, {"text": "prevent", "start": 97.496, "end": 98.068}, {"text": "future", "start": 98.068, "end": 98.639}, {"text": "crime.", "start": 98.639, "end": 99.211}, {"text": "AI", "start": 99.211, "end": 99.782}, {"text": "predicts", "start": 99.782, "end": 100.354}, {"text": "emerging", "start": 100.354, "end": 100.926}, {"text": "crime", "start": 100.926, "end": 101.497}, {"text": "patterns,", "start": 101.497, "end": 102.069}]}, {"start": 102.069, "end": 107.213, "words": [{"text": "identifies", "start": 102.069, "end": 102.64}, {"text": "high-risk", "start": 102.64, "end": 103.212}, {"text": "suspects,", "start": 103.212, "end": 103.784}, {"text": "prioritizes", "start": 103.784, "end": 104.355}, {"text": "investigations,", "start": 104.355, "end": 104.927}, {"text": "and", "start": 104.927, "end": 105.498}, {"text": "forecasts", "start": 105.498, "end": 106.07}, {"text": "crime", "start": 106.07, "end": 106.641}, {"text": "trends.", "start": 106.641, "end": 107.213}]}, {"start": 107.563, "end": 114.287, "words": [{"text": "Most", "start": 107.563, "end": 108.123}, {"text": "importantly,", "start": 108.123, "end": 108.684}, {"text": "our", "start": 108.684, "end": 109.244}, {"text": "proactive", "start": 109.244, "end": 109.804}, {"text": "intelligence", "start": 109.804, "end": 110.365}, {"text": "engine", "start": 110.365, "end": 110.925}, {"text": "continuously", "start": 110.925, "end": 111.486}, {"text": "monitors", "start": 111.486, "end": 112.046}, {"text": "new", "start": 112.046, "end": 112.606}, {"text": "FIRs", "start": 112.606, "end": 113.167}, {"text": "and", "start": 113.167, "end": 113.727}, {"text": "evidence,", "start": 113.727, "end": 114.287}]}, {"start": 114.287, "end": 118.21, "words": [{"text": "automatically", "start": 114.287, "end": 114.848}, {"text": "generating", "start": 114.848, "end": 115.408}, {"text": "Whisper", "start": 115.408, "end": 115.968}, {"text": "Alerts,", "start": 115.968, "end": 116.529}, {"text": "detecting", "start": 116.529, "end": 117.089}, {"text": "cross-district", "start": 117.089, "end": 117.65}, {"text": "links,", "start": 117.65, "end": 118.21}]}, {"start": 118.21, "end": 123.813, "words": [{"text": "recommending", "start": 118.21, "end": 118.77}, {"text": "investigative", "start": 118.77, "end": 119.331}, {"text": "leads,", "start": 119.331, "end": 119.891}, {"text": "and", "start": 119.891, "end": 120.451}, {"text": "connecting", "start": 120.451, "end": 121.012}, {"text": "evidence", "start": 121.012, "end": 121.572}, {"text": "in", "start": 121.572, "end": 122.132}, {"text": "real", "start": 122.132, "end": 122.693}, {"text": "time", "start": 122.693, "end": 123.253}, {"text": "—", "start": 123.253, "end": 123.813}]}, {"start": 123.813, "end": 127.736, "words": [{"text": "often", "start": 123.813, "end": 124.374}, {"text": "before", "start": 124.374, "end": 124.934}, {"text": "investigators", "start": 124.934, "end": 125.495}, {"text": "even", "start": 125.495, "end": 126.055}, {"text": "know", "start": 126.055, "end": 126.615}, {"text": "to", "start": 126.615, "end": 127.176}, {"text": "ask.", "start": 127.176, "end": 127.736}]}, {"start": 128.086, "end": 131.16, "words": [{"text": "CrimeMatrix", "start": 128.086, "end": 128.598}, {"text": "is", "start": 128.598, "end": 129.111}, {"text": "more", "start": 129.111, "end": 129.623}, {"text": "than", "start": 129.623, "end": 130.136}, {"text": "a", "start": 130.136, "end": 130.648}, {"text": "dashboard.", "start": 130.648, "end": 131.16}]}, {"start": 131.16, "end": 134.235, "words": [{"text": "It", "start": 131.16, "end": 131.673}, {"text": "is", "start": 131.673, "end": 132.185}, {"text": "an", "start": 132.185, "end": 132.697}, {"text": "AI", "start": 132.697, "end": 133.21}, {"text": "Investigation", "start": 133.21, "end": 133.722}, {"text": "Copilot,", "start": 133.722, "end": 134.235}]}, {"start": 134.235, "end": 140.383, "words": [{"text": "a", "start": 134.235, "end": 134.747}, {"text": "Crime", "start": 134.747, "end": 135.259}, {"text": "Intelligence", "start": 135.259, "end": 135.772}, {"text": "Platform,", "start": 135.772, "end": 136.284}, {"text": "and", "start": 136.284, "end": 136.797}, {"text": "a", "start": 136.797, "end": 137.309}, {"text": "proactive", "start": 137.309, "end": 137.821}, {"text": "decision-support", "start": 137.821, "end": 138.334}, {"text": "system", "start": 138.334, "end": 138.846}, {"text": "built", "start": 138.846, "end": 139.358}, {"text": "to", "start": 139.358, "end": 139.871}, {"text": "empower", "start": 139.871, "end": 140.383}]}, {"start": 140.383, "end": 143.97, "words": [{"text": "law", "start": 140.383, "end": 140.896}, {"text": "enforcement", "start": 140.896, "end": 141.408}, {"text": "with", "start": 141.408, "end": 141.92}, {"text": "faster", "start": 141.92, "end": 142.433}, {"text": "investigations,", "start": 142.433, "end": 142.945}, {"text": "smarter", "start": 142.945, "end": 143.457}, {"text": "insights,", "start": 143.457, "end": 143.97}]}, {"start": 143.97, "end": 145.507, "words": [{"text": "and", "start": 143.97, "end": 144.482}, {"text": "safer", "start": 144.482, "end": 144.995}, {"text": "communities.", "start": 144.995, "end": 145.507}]}, {"start": 145.857, "end": 150.264, "words": [{"text": "CrimeMatrix", "start": 145.857, "end": 146.408}, {"text": "—", "start": 146.408, "end": 146.959}, {"text": "Transforming", "start": 146.959, "end": 147.51}, {"text": "Crime", "start": 147.51, "end": 148.06}, {"text": "Data", "start": 148.06, "end": 148.611}, {"text": "into", "start": 148.611, "end": 149.162}, {"text": "Actionable", "start": 149.162, "end": 149.713}, {"text": "Intelligence.", "start": 149.713, "end": 150.264}]}];
+  var DURATION = 150.464;
+
+  (function () {
+    var stage = document.getElementById("caption-stage");
+    GROUPS.forEach(function (group, g) {
+      var groupEl = document.createElement("div");
+      groupEl.className = "caption-group";
+      groupEl.id = "caption-group-" + g;
+      var pill = document.createElement("div");
+      pill.className = "caption-pill";
+      var line = document.createElement("div");
+      line.className = "caption-line";
+      (group.words || []).forEach(function (w, i) {
+        var span = document.createElement("span");
+        span.className = "caption-word";
+        span.id = "caption-word-" + g + "-" + i;
+        span.textContent = String(w.text);
+        line.appendChild(span);
+      });
+      pill.appendChild(line);
+      groupEl.appendChild(pill);
+      stage.appendChild(groupEl);
+    });
+
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+
+    GROUPS.forEach(function (group, g) {
+      var groupEl = document.getElementById("caption-group-" + g);
+      var words = group.words || [];
+      var next = GROUPS[g + 1];
+      var isLast = g === GROUPS.length - 1;
+      var start = Math.max(0, Number(group.start));
+      var end = isLast ? DURATION : Math.min(Number(next.start), Number(group.end) + 0.3);
+      if (end <= start) end = start + 0.01;
+
+      tl.set(groupEl, { opacity: 1 }, start);
+      tl.set(groupEl, { opacity: 0 }, end);
+
+      words.forEach(function (w, i) {
+        var el = document.getElementById("caption-word-" + g + "-" + i);
+        var at = Math.max(start, Number(w.start));
+        tl.set(el, { className: "caption-word" }, start);
+        tl.set(el, { className: "caption-word is-active" }, at);
+        tl.fromTo(el, { scale: 0.985 }, { scale: 1, duration: 0.18, ease: "power1.out" }, at);
+        if (i + 1 < words.length) {
+          var nextAt = Math.max(start, Number(words[i + 1].start));
+          tl.set(el, { className: "caption-word is-spoken" }, nextAt);
+        }
+      });
+      if (words.length) {
+        var lastEl = document.getElementById("caption-word-" + g + "-" + (words.length - 1));
+        var lastSpoken = Math.min(end, Number(words[words.length - 1].end) + 0.1);
+        tl.set(lastEl, { className: "caption-word is-spoken" }, lastSpoken);
+      }
+    });
+
+    tl.to({}, { duration: DURATION }, 0);
+    window.__timelines["captions"] = tl;
+  })();
+</script>
+    </template>
+  </body>
+</html>

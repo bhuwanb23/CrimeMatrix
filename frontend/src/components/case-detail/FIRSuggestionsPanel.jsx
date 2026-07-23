@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Lightbulb, ExternalLink, Shield, MapPin, Crosshair } from 'lucide-react'
 import { analyzeFIR, getFIRSuggestions } from '../../services/firIntelligence'
+import { useLanguage } from '../../context/LanguageContext'
 
 const typeConfig = {
   similar_case: { icon: ExternalLink, label: 'Similar Case', color: '#3b82f6' },
@@ -11,6 +12,7 @@ const typeConfig = {
 }
 
 export default function FIRSuggestionsPanel({ firId }) {
+  const { t } = useLanguage()
   const [suggestions, setSuggestions] = useState([])
   const [loading, setLoading] = useState(false)
   const [analyzed, setAnalyzed] = useState(false)
@@ -42,12 +44,12 @@ export default function FIRSuggestionsPanel({ firId }) {
       <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Lightbulb size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">FIR Intelligence</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('FIR Intelligence')}</h3>
         </div>
         {!analyzed && (
           <button onClick={handleAnalyze} disabled={loading}
             className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
-            {loading ? 'Analyzing...' : 'Analyze FIR'}
+            {loading ? t('Analyzing...') : t('Analyze FIR')}
           </button>
         )}
       </div>
@@ -55,13 +57,13 @@ export default function FIRSuggestionsPanel({ firId }) {
       {loading && suggestions.length === 0 ? (
         <div className="py-8 text-center">
           <div className="w-5 h-5 border-2 border-slate-200 border-t-amber-500 rounded-full animate-spin mx-auto mb-2" />
-          <p className="text-xs text-slate-400">Analyzing FIR...</p>
+          <p className="text-xs text-slate-400">{t('Analyzing FIR...')}</p>
         </div>
       ) : suggestions.length === 0 ? (
         <div className="py-8 text-center">
           <Lightbulb size={24} className="text-slate-200 mx-auto mb-2" />
-          <p className="text-xs text-slate-400">No suggestions yet</p>
-          <p className="text-[10px] text-slate-300">Click "Analyze FIR" to generate intelligence</p>
+          <p className="text-xs text-slate-400">{t('No suggestions yet')}</p>
+          <p className="text-[10px] text-slate-300">{t('Click "Analyze FIR" to generate intelligence')}</p>
         </div>
       ) : (
         <div className="divide-y divide-slate-50">
@@ -77,7 +79,7 @@ export default function FIRSuggestionsPanel({ firId }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-[10px] font-semibold uppercase" style={{ color: config.color }}>{config.label}</span>
+                      <span className="text-[10px] font-semibold uppercase" style={{ color: config.color }}>{t(config.label)}</span>
                       <span className="text-[10px] text-slate-400">{s.confidence}%</span>
                     </div>
                     <p className="text-xs text-slate-600">{s.suggestion_text}</p>
@@ -91,3 +93,4 @@ export default function FIRSuggestionsPanel({ firId }) {
     </div>
   )
 }
+

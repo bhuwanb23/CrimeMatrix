@@ -28,7 +28,17 @@ export const translations = {
     'Case': 'Case', 'Evidence': 'Evidence', 'Criminal': 'Criminal', 'Investigation': 'Investigation', 'Search Result': 'Search Result',
     'Bengaluru Urban': 'Bengaluru Urban', 'Mysuru': 'Mysuru', 'Mangaluru': 'Mangaluru', 'Hubballi': 'Hubballi', 'Other': 'Other',
     '0-30 days': '0-30 days', '31-60 days': '31-60 days', '61-90 days': '61-90 days', '91-180 days': '91-180 days', '180+ days': '180+ days',
-    'Cybercrime': 'Cybercrime', 'Assault': 'Assault'
+    'Cybercrime': 'Cybercrime', 'Assault': 'Assault',
+    'FIR Intelligence': 'FIR Intelligence', 'Analyzing...': 'Analyzing...', 'Analyze FIR': 'Analyze FIR', 'Analyzing FIR...': 'Analyzing FIR...',
+    'No suggestions yet': 'No suggestions yet', 'Click "Analyze FIR" to generate intelligence': 'Click "Analyze FIR" to generate intelligence',
+    'Suggestion': 'Suggestion', 'Similar Case': 'Similar Case', 'MO Match': 'MO Match', 'Suspect': 'Suspect', 'Vehicle': 'Vehicle', 'Phone': 'Phone',
+    'Sun': 'Sun', 'Mon': 'Mon', 'Tue': 'Tue', 'Wed': 'Wed', 'Thu': 'Thu', 'Fri': 'Fri', 'Sat': 'Sat',
+    'Case Trend': 'Case Trend', 'Time Interval:': 'Time Interval:', 'Yearly': 'Yearly', 'Cases by Crime Type': 'Cases by Crime Type',
+    'vs 30 Days': 'vs 30 Days', 'Cases by District': 'Cases by District', 'Bengaluru Rural': 'Bengaluru Rural',
+    'Investigation Calendar': 'Investigation Calendar', 'Hearings': 'Hearings', 'Shifts': 'Shifts',
+    'Court Hearing — FIR #4489': 'Court Hearing — FIR #4489', 'Bail Review — Case #4512': 'Bail Review — Case #4512',
+    'Shift Handover — Morning': 'Shift Handover — Morning', 'Night Patrol Briefing': 'Night Patrol Briefing',
+    'Cases by Status': 'Cases by Status', 'Pending Review': 'Pending Review', 'Under Investigation': 'Under Investigation', 'Closed': 'Closed'
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -58,7 +68,17 @@ export const translations = {
     'Case': 'ಪ್ರಕರಣ', 'Evidence': 'ಸಾಕ್ಷ್ಯ', 'Criminal': 'ಅಪರಾಧಿ', 'Investigation': 'ತನಿಖೆ', 'Search Result': 'ಹುಡುಕಾಟ ಫಲಿತಾಂಶ',
     'Bengaluru Urban': 'ಬೆಂಗಳೂರು ನಗರ', 'Mysuru': 'ಮೈಸೂರು', 'Mangaluru': 'ಮಂಗಳೂರು', 'Hubballi': 'ಹುಬ್ಬಳ್ಳಿ', 'Other': 'ಇತರೆ',
     '0-30 days': '0-30 ದಿನಗಳು', '31-60 days': '31-60 ದಿನಗಳು', '61-90 days': '61-90 ದಿನಗಳು', '91-180 days': '91-180 ದಿನಗಳು', '180+ days': '180+ ದಿನಗಳು',
-    'Cybercrime': 'ಸೈಬರ್ ಅಪರಾಧ', 'Assault': 'ಹಲ್ಲೆ'
+    'Cybercrime': 'ಸೈಬರ್ ಅಪರಾಧ', 'Assault': 'ಹಲ್ಲೆ',
+    'FIR Intelligence': 'FIR ಗುಪ್ತಚರ', 'Analyzing...': 'ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...', 'Analyze FIR': 'FIR ವಿಶ್ಲೇಷಿಸಿ', 'Analyzing FIR...': 'FIR ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...',
+    'No suggestions yet': 'ಇನ್ನೂ ಯಾವುದೇ ಸಲಹೆಗಳಿಲ್ಲ', 'Click "Analyze FIR" to generate intelligence': 'ಗುಪ್ತಚರವನ್ನು ರಚಿಸಲು "FIR ವಿಶ್ಲೇಷಿಸಿ" ಕ್ಲಿಕ್ ಮಾಡಿ',
+    'Suggestion': 'ಸಲಹೆ', 'Similar Case': 'ಒಂದೇ ರೀತಿಯ ಪ್ರಕರಣ', 'MO Match': 'MO ಹೊಂದಾಣಿಕೆ', 'Suspect': 'ಶಂಕಿತ', 'Vehicle': 'ವಾಹನ', 'Phone': 'ಫೋನ್',
+    'Sun': 'ಭಾನು', 'Mon': 'ಸೋಮ', 'Tue': 'ಮಂಗಳ', 'Wed': 'ಬುಧ', 'Thu': 'ಗುರು', 'Fri': 'ಶುಕ್ರ', 'Sat': 'ಶನಿ',
+    'Case Trend': 'ಪ್ರಕರಣದ ಪ್ರವೃತ್ತಿ', 'Time Interval:': 'ಸಮಯದ ಮಧ್ಯಂತರ:', 'Yearly': 'ವಾರ್ಷಿಕ', 'Cases by Crime Type': 'ಅಪರಾಧ ಪ್ರಕಾರದ ಪ್ರಕರಣಗಳು',
+    'vs 30 Days': '30 ದಿನಗಳ ವಿರುದ್ಧ', 'Cases by District': 'ಜಿಲ್ಲಾವಾರು ಪ್ರಕರಣಗಳು', 'Bengaluru Rural': 'ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ',
+    'Investigation Calendar': 'ತನಿಖಾ ಕ್ಯಾಲೆಂಡರ್', 'Hearings': 'ವಿಚಾರಣೆಗಳು', 'Shifts': 'ಪಾಳಿಗಳು',
+    'Court Hearing — FIR #4489': 'ನ್ಯಾಯಾಲಯದ ವಿಚಾರಣೆ — FIR #4489', 'Bail Review — Case #4512': 'ಜಾಮೀನು ವಿಮರ್ಶೆ — ಪ್ರಕರಣ #4512',
+    'Shift Handover — Morning': 'ಪಾಳಿ ಹಸ್ತಾಂತರ — ಬೆಳಿಗ್ಗೆ', 'Night Patrol Briefing': 'ರಾತ್ರಿ ಗಸ್ತು ವಿವರಿಸುವಿಕೆ',
+    'Cases by Status': 'ಸ್ಥಿತಿಯ ಪ್ರಕಾರ ಪ್ರಕರಣಗಳು', 'Pending Review': 'ವಿಮರ್ಶೆ ಬಾಕಿ ಇದೆ', 'Under Investigation': 'ತನಿಖೆಯಲ್ಲಿದೆ', 'Closed': 'ಮುಚ್ಚಲಾಗಿದೆ'
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -88,7 +108,17 @@ export const translations = {
     'Case': 'मामला', 'Evidence': 'साक्ष्य', 'Criminal': 'अपराधी', 'Investigation': 'जांच', 'Search Result': 'खोज परिणाम',
     'Bengaluru Urban': 'बेंगलुरु शहरी', 'Mysuru': 'मैसूर', 'Mangaluru': 'मंगलुरु', 'Hubballi': 'हुबली', 'Other': 'अन्य',
     '0-30 days': '0-30 दिन', '31-60 days': '31-60 दिन', '61-90 days': '61-90 दिन', '91-180 days': '91-180 दिन', '180+ days': '180+ दिन',
-    'Cybercrime': 'साइबर अपराध', 'Assault': 'हमला'
+    'Cybercrime': 'साइबर अपराध', 'Assault': 'हमला',
+    'FIR Intelligence': 'FIR इंटेलिजेंस', 'Analyzing...': 'विश्लेषण किया जा रहा है...', 'Analyze FIR': 'FIR का विश्लेषण करें', 'Analyzing FIR...': 'FIR का विश्लेषण किया जा रहा है...',
+    'No suggestions yet': 'अभी कोई सुझाव नहीं', 'Click "Analyze FIR" to generate intelligence': 'इंटेलिजेंस उत्पन्न करने के लिए "FIR का विश्लेषण करें" पर क्लिक करें',
+    'Suggestion': 'सुझाव', 'Similar Case': 'समान मामला', 'MO Match': 'MO मिलान', 'Suspect': 'संदिग्ध', 'Vehicle': 'वाहन', 'Phone': 'फ़ोन',
+    'Sun': 'रवि', 'Mon': 'सोम', 'Tue': 'मंगल', 'Wed': 'बुध', 'Thu': 'गुरु', 'Fri': 'शुक्र', 'Sat': 'शनि',
+    'Case Trend': 'मामले की प्रवृत्ति', 'Time Interval:': 'समय अंतराल:', 'Yearly': 'वार्षिक', 'Cases by Crime Type': 'अपराध के प्रकार से मामले',
+    'vs 30 Days': 'बनाम 30 दिन', 'Cases by District': 'जिलेवार मामले', 'Bengaluru Rural': 'बेंगलुरु ग्रामीण',
+    'Investigation Calendar': 'जांच कैलेंडर', 'Hearings': 'सुनवाई', 'Shifts': 'शिफ्ट',
+    'Court Hearing — FIR #4489': 'अदालत की सुनवाई — FIR #4489', 'Bail Review — Case #4512': 'जमानत समीक्षा — मामला #4512',
+    'Shift Handover — Morning': 'शिफ्ट हैंडओवर — सुबह', 'Night Patrol Briefing': 'रात्रि गश्त ब्रीफिंग',
+    'Cases by Status': 'स्थिति के अनुसार मामले', 'Pending Review': 'लंबित समीक्षा', 'Under Investigation': 'जांच के अधीन', 'Closed': 'बंद'
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -118,7 +148,17 @@ export const translations = {
     'Case': 'வழக்கு', 'Evidence': 'ஆதாரம்', 'Criminal': 'குற்றவாளி', 'Investigation': 'விசாரணை', 'Search Result': 'தேடல் முடிவு',
     'Bengaluru Urban': 'பெங்களூரு நகர்ப்புறம்', 'Mysuru': 'மைசூர்', 'Mangaluru': 'மங்களூரு', 'Hubballi': 'ஹுப்பள்ளி', 'Other': 'மற்றவை',
     '0-30 days': '0-30 நாட்கள்', '31-60 days': '31-60 நாட்கள்', '61-90 days': '61-90 நாட்கள்', '91-180 days': '91-180 நாட்கள்', '180+ days': '180+ நாட்கள்',
-    'Cybercrime': 'சைபர் குற்றம்', 'Assault': 'தாக்குதல்'
+    'Cybercrime': 'சைபர் குற்றம்', 'Assault': 'தாக்குதல்',
+    'FIR Intelligence': 'FIR நுண்ணறிவு', 'Analyzing...': 'பகுப்பாய்வு செய்யப்படுகிறது...', 'Analyze FIR': 'FIR ஐ பகுப்பாய்வு செய்', 'Analyzing FIR...': 'FIR பகுப்பாய்வு செய்யப்படுகிறது...',
+    'No suggestions yet': 'இன்னும் பரிந்துரைகள் இல்லை', 'Click "Analyze FIR" to generate intelligence': 'நுண்ணறிவை உருவாக்க "FIR ஐ பகுப்பாய்வு செய்" என்பதைக் கிளிக் செய்யவும்',
+    'Suggestion': 'பரிந்துரை', 'Similar Case': 'ஒத்த வழக்கு', 'MO Match': 'MO பொருத்தம்', 'Suspect': 'சந்தேக நபர்', 'Vehicle': 'வாகனம்', 'Phone': 'தொலைபேசி',
+    'Sun': 'ஞாயிறு', 'Mon': 'திங்கள்', 'Tue': 'செவ்வாய்', 'Wed': 'புதன்', 'Thu': 'வியாழன்', 'Fri': 'வெள்ளி', 'Sat': 'சனி',
+    'Case Trend': 'வழக்கு போக்கு', 'Time Interval:': 'நேர இடைவெளி:', 'Yearly': 'வருடாந்திர', 'Cases by Crime Type': 'குற்ற வகை வாரியாக வழக்குகள்',
+    'vs 30 Days': 'vs 30 நாட்கள்', 'Cases by District': 'மாவட்ட வாரியாக வழக்குகள்', 'Bengaluru Rural': 'பெங்களூரு ஊரகம்',
+    'Investigation Calendar': 'விசாரணை நாட்காட்டி', 'Hearings': 'விசாரணைகள்', 'Shifts': 'பணிகள்',
+    'Court Hearing — FIR #4489': 'நீதிமன்ற விசாரணை — FIR #4489', 'Bail Review — Case #4512': 'ஜாமீன் ஆய்வு — வழக்கு #4512',
+    'Shift Handover — Morning': 'பணி ஒப்படைப்பு — காலை', 'Night Patrol Briefing': 'இரவு ரோந்து சுருக்கம்',
+    'Cases by Status': 'நிலை வாரியாக வழக்குகள்', 'Pending Review': 'ஆய்வு நிலுவையில் உள்ளது', 'Under Investigation': 'விசாரணையில் உள்ளது', 'Closed': 'மூடப்பட்டது'
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -148,6 +188,16 @@ export const translations = {
     'Case': 'కేసు', 'Evidence': 'సాక్ష్యం', 'Criminal': 'నేరస్థుడు', 'Investigation': 'దర్యాప్తు', 'Search Result': 'శోధన ఫలితం',
     'Bengaluru Urban': 'బెంగళూరు అర్బన్', 'Mysuru': 'మైసూర్', 'Mangaluru': 'మంగళూరు', 'Hubballi': 'హుబ్బళ్లి', 'Other': 'ఇతర',
     '0-30 days': '0-30 రోజులు', '31-60 days': '31-60 రోజులు', '61-90 days': '61-90 రోజులు', '91-180 days': '91-180 రోజులు', '180+ days': '180+ రోజులు',
-    'Cybercrime': 'సైబర్ నేరం', 'Assault': 'దాడి'
+    'Cybercrime': 'సైబర్ నేరం', 'Assault': 'దాడి',
+    'FIR Intelligence': 'FIR ఇంటెలిజెన్స్', 'Analyzing...': 'విశ్లేషించబడుతోంది...', 'Analyze FIR': 'FIR ని విశ్లేషించండి', 'Analyzing FIR...': 'FIR విశ్లేషించబడుతోంది...',
+    'No suggestions yet': 'ఇంకా సూచనలు లేవు', 'Click "Analyze FIR" to generate intelligence': 'ఇంటెలిజెన్స్‌ని రూపొందించడానికి "FIR ని విశ్లేషించండి" క్లిక్ చేయండి',
+    'Suggestion': 'సూచన', 'Similar Case': 'సారూప్య కేసు', 'MO Match': 'MO సరిపోలిక', 'Suspect': 'అనుమానితుడు', 'Vehicle': 'వాహనం', 'Phone': 'ఫోన్',
+    'Sun': 'ఆది', 'Mon': 'సోమ', 'Tue': 'మంగళ', 'Wed': 'బుధ', 'Thu': 'గురు', 'Fri': 'శుక్ర', 'Sat': 'శని',
+    'Case Trend': 'కేసు ట్రెండ్', 'Time Interval:': 'సమయ వ్యవధి:', 'Yearly': 'వార్షిక', 'Cases by Crime Type': 'నేర రకం వారీగా కేసులు',
+    'vs 30 Days': 'vs 30 రోజులు', 'Cases by District': 'జిల్లా వారీగా కేసులు', 'Bengaluru Rural': 'బెంగళూరు రూరల్',
+    'Investigation Calendar': 'దర్యాప్తు క్యాలెండర్', 'Hearings': 'విచారణలు', 'Shifts': 'షిఫ్టులు',
+    'Court Hearing — FIR #4489': 'కోర్టు విచారణ — FIR #4489', 'Bail Review — Case #4512': 'బెయిల్ సమీక్ష — కేసు #4512',
+    'Shift Handover — Morning': 'షిఫ్ట్ హ్యాండోవర్ — ఉదయం', 'Night Patrol Briefing': 'నైట్ పెట్రోల్ బ్రీఫింగ్',
+    'Cases by Status': 'స్థితి వారీగా కేసులు', 'Pending Review': 'సమీక్ష పెండింగ్‌లో ఉంది', 'Under Investigation': 'దర్యాప్తులో ఉంది', 'Closed': 'మూసివేయబడింది'
   }
 }

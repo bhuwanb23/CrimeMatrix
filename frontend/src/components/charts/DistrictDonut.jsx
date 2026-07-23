@@ -1,4 +1,5 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { useLanguage } from '../../context/LanguageContext'
 
 const districts = [
   { name: 'Bengaluru Urban', value: 420, color: '#e57373' },
@@ -12,10 +13,12 @@ const districts = [
 const total = districts.reduce((s, d) => s + d.value, 0)
 
 export default function DistrictDonut() {
+  const { t } = useLanguage()
+
   return (
     <div className="chart-card">
       <div className="chart-card-header">
-        <h3 className="chart-card-title">Cases by District</h3>
+        <h3 className="chart-card-title">{t('Cases by District')}</h3>
         <button className="chart-card-menu" aria-label="More options">⋯</button>
       </div>
       <div className="chart-card-body donut-body">
@@ -40,7 +43,7 @@ export default function DistrictDonut() {
           </ResponsiveContainer>
           <div className="donut-center">
             <span className="donut-center-value">{total.toLocaleString()}</span>
-            <span className="donut-center-label">Total</span>
+            <span className="donut-center-label">{t('Total')}</span>
           </div>
         </div>
 
@@ -48,7 +51,7 @@ export default function DistrictDonut() {
           {districts.map((d, i) => (
             <div key={i} className="donut-legend-item">
               <span className="donut-legend-dot" style={{ background: d.color }} />
-              <span className="donut-legend-name">{d.name}</span>
+              <span className="donut-legend-name">{t(d.name)}</span>
               <span className="donut-legend-value">{d.value}</span>
             </div>
           ))}
@@ -57,3 +60,4 @@ export default function DistrictDonut() {
     </div>
   )
 }
+

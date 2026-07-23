@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 import { Radar, RefreshCw, Search, Zap, AlertTriangle, Brain, CheckCircle } from 'lucide-react'
 import { getProactiveStats, scanData, processEvents, getActivity } from '../services/proactive'
 import { batchProcess } from '../services/proactive'
@@ -7,6 +8,7 @@ import ActivityFeed from './proactive/ActivityFeed'
 import NotificationCenter from './proactive/NotificationCenter'
 
 export default function ProactiveIntelligencePage() {
+  const { t } = useLanguage()
   const [stats, setStats] = useState(null)
   const [activity, setActivity] = useState([])
   const [loading, setLoading] = useState(true)
@@ -48,12 +50,12 @@ export default function ProactiveIntelligencePage() {
         <button onClick={handleScan} disabled={scanning}
           className="flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white hover:bg-orange-600 rounded-xl text-sm font-semibold transition-all shadow-sm disabled:opacity-50">
           {scanning ? <RefreshCw size={14} className="animate-spin" /> : <Search size={14} />}
-          {scanning ? 'Scanning...' : 'Scan Now'}
+          {scanning ? t('Scanning...') : t('Scan Now')}
         </button>
         <button onClick={handleProcess} disabled={processing}
           className="flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white hover:bg-orange-600 rounded-xl text-sm font-semibold transition-all shadow-sm disabled:opacity-50">
           {processing ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
-          {processing ? 'Processing...' : 'Process Queue'}
+          {processing ? t('Processing...') : t('Process Queue')}
         </button>
         <button onClick={loadAll} disabled={loading}
           className="p-2.5 bg-white border border-slate-200 hover:border-orange-400 rounded-xl transition-all">
@@ -79,21 +81,21 @@ export default function ProactiveIntelligencePage() {
           <div className="bg-white border border-slate-200 rounded-xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <Brain size={14} className="text-amber-500" />
-              <h3 className="text-sm font-semibold text-slate-900">AI Intelligence Summary</h3>
+              <h3 className="text-sm font-semibold text-slate-900">{t('AI Intelligence Summary')}</h3>
             </div>
             <div className="space-y-2">
               <div className="p-2 bg-blue-50 rounded-lg">
                 <p className="text-xs text-blue-700">
-                  The AI Intelligence Engine continuously monitors incoming FIRs, evidence updates, and case changes to detect hidden relationships and recommend immediate actions.
+                  {t('The AI Intelligence Engine continuously monitors incoming FIRs, evidence updates, and case changes to detect hidden relationships and recommend immediate actions.')}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-[10px] text-slate-500">
                 <AlertTriangle size={10} className="text-amber-500" />
-                <span>{stats?.pending || 0} events waiting for processing</span>
+                <span>{stats?.pending || 0} {t('events waiting for processing')}</span>
               </div>
               <div className="flex items-center gap-2 text-[10px] text-slate-500">
                 <CheckCircle size={10} className="text-green-500" />
-                <span>{stats?.processed || 0} events processed automatically</span>
+                <span>{stats?.processed || 0} {t('events processed automatically')}</span>
               </div>
             </div>
           </div>

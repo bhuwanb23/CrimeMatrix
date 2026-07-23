@@ -139,6 +139,22 @@ export async function getRanks() {
   return get('/lookups/ranks')
 }
 
+export async function getDesignations() {
+  return get('/lookups/designations')
+}
+
+export async function getBloodGroups() {
+  return get('/lookups/blood-groups')
+}
+
+export async function getChargesheetDetails(caseId) {
+  return get(`/cases/${caseId}/chargesheet`)
+}
+
+export async function createChargesheet(caseId, data) {
+  return post(`/cases/${caseId}/chargesheet`, data)
+}
+
 export async function seedLookups() {
   return post('/lookups/seed')
 }

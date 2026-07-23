@@ -11,6 +11,10 @@ from app.models.religion import Religion
 from app.models.caste_master import CasteMaster
 from app.models.gender import Gender
 from app.models.complainant import Complainant
+from app.models.act import Act
+from app.models.section import Section
+from app.models.act_section_association import ActSectionAssociation
+from app.models.victim import Victim
 from app.models.fir import FIR
 from app.models.suspect import Suspect
 from app.models.evidence import Evidence

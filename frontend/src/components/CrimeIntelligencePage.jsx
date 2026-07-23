@@ -86,25 +86,25 @@ export default function CrimeIntelligencePage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
       <div className="max-w-7xl mx-auto space-y-5">
         {/* Hero Header */}
-        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-6 text-white shadow-lg shadow-orange-500/20">
+        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
-                <Brain size={28} />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                <Brain size={20} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">{t('Crime Intelligence Workspace')}</h1>
-                <p className="text-white/80 text-sm mt-0.5">{t('Unified intelligence — trends, patterns, hotspots, recommendations')}</p>
+                <h1 className="text-lg font-bold">{t('Crime Intelligence Workspace')}</h1>
+                <p className="text-white/80 text-xs">{t('Unified intelligence — trends, patterns, hotspots, recommendations')}</p>
               </div>
             </div>
             {activeTab === 'workspace' && (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <button onClick={handleDetectHotspots} disabled={loading}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
+                  className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-xs font-semibold transition-all disabled:opacity-50">
                   {t('Detect Hotspots')}
                 </button>
                 <button onClick={loadAll} disabled={loading}
-                  className="p-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
+                  className="p-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
                   <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
                 </button>
               </div>

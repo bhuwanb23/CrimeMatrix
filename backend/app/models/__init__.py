@@ -100,6 +100,8 @@ from app.models.officer_intel import CaseAssignment, Recommendation, Recommendat
 __all__ = [
     # Core
     "User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert",
+    # CaseMaster lookup tables
+    "CaseCategory", "GravityOffence", "CrimeHead", "CrimeSubHead", "CaseStatusMaster", "Court",
     # Crime data
     "Crime", "CrimeType", "Criminal", "Person", "Victim", "Witness",
     "Officer", "Station", "District", "Vehicle", "Phone", "Location",

@@ -1,7 +1,6 @@
 import { MapPin } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function DistrictPredictionMap({ districts }) {
   const { t } = useLanguage()
   if (!districts || districts.length === 0) {
@@ -9,9 +8,9 @@ export default function DistrictPredictionMap({ districts }) {
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <MapPin size={14} />
-          <h3>{t(t('District Predictions'))}</h3>
+          <h3>{t('District Predictions')}</h3>
         </div>
-        <div className="similar-empty"><p>{t(t('No district predictions'))}</p></div>
+        <div className="similar-empty"><p>{t('No district predictions')}</p></div>
       </div>
     )
   }
@@ -22,7 +21,7 @@ export default function DistrictPredictionMap({ districts }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <MapPin size={14} />
-        <h3>{t(t('District Predictions'))}</h3>
+        <h3>{t('District Predictions')}</h3>
       </div>
       <div className="analytics-district-list">
         {districts.map((d, i) => {
@@ -30,7 +29,7 @@ export default function DistrictPredictionMap({ districts }) {
           return (
             <div key={i} className="analytics-district-item">
               <div className="analytics-district-header">
-                <span className="analytics-district-name">{d.name}</span>
+                <span className="analytics-district-name">{t(d.name)}</span>
                 <span className="analytics-district-count">{d.crime_count || 0}</span>
               </div>
               <div className="analytics-district-bar">

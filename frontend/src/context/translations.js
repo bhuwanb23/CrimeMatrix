@@ -322,6 +322,8 @@ export const translations = {
     'Clear search': 'Clear search',
     'Crime ID': 'Crime ID',
     'Try adjusting your search or filters.': 'Try adjusting your search or filters.',
+  
+    'Search cases, suspects, and investigate connections': 'Search cases, suspects, and investigate connections',
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -619,6 +621,9 @@ export const translations = {
     'Crime ID': 'ಅಪರಾಧ ಐಡಿ',
     'No results found': 'ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ',
     'Try adjusting your search or filters.': 'ನಿಮ್ಮ ಹುಡುಕಾಟ ಅಥವಾ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಹೊಂದಿಸಲು ಪ್ರಯತ್ನಿಸಿ.',
+  
+    'Search cases, suspects, and investigate connections': 'ಪ್ರಕರಣಗಳು, ಶಂಕಿತರು ಮತ್ತು ತನಿಖಾ ಸಂಪರ್ಕಗಳನ್ನು ಹುಡುಕಿ',
+    'Open': 'ತೆರೆದ',
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -916,6 +921,9 @@ export const translations = {
     'Crime ID': 'अपराध आईडी',
     'No results found': 'कोई परिणाम नहीं मिला',
     'Try adjusting your search or filters.': 'अपनी खोज या फ़िल्टर समायोजित करने का प्रयास करें।',
+  
+    'Search cases, suspects, and investigate connections': 'मामले, संदिग्ध खोजें, और कनेक्शन की जांच करें',
+    'Open': 'खुला',
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -1213,6 +1221,9 @@ export const translations = {
     'Crime ID': 'குற்ற எண்',
     'No results found': 'எந்த முடிவுகளும் கிடைக்கவில்லை',
     'Try adjusting your search or filters.': 'உங்கள் தேடல் அல்லது வடிப்பான்களைச் சரிசெய்ய முயற்சிக்கவும்.',
+  
+    'Search cases, suspects, and investigate connections': 'வழக்குகள், சந்தேக நபர்களைத் தேடுங்கள் மற்றும் தொடர்புகளை விசாரிக்கவும்',
+    'Open': 'திறந்த',
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -1511,4 +1522,7 @@ export const translations = {
     'Crime ID': 'క్రైమ్ ID',
     'No results found': 'ఫలితాలు ఏవీ కనుగొనబడలేదు',
     'Try adjusting your search or filters.': 'మీ శోధన లేదా ఫిల్టర్‌లను సర్దుబాటు చేయడానికి ప్రయత్నించండి.',
+  
+    'Search cases, suspects, and investigate connections': 'కేసులు, అనుమానితులను శోధించండి మరియు కనెక్షన్‌లను దర్యాప్తు చేయండి',
+    'Open': 'తెరవండి',
   }

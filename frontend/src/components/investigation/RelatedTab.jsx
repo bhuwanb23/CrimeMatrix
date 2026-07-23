@@ -1,13 +1,15 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { ExternalLink } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export default function RelatedTab({ caseId: _caseId, relatedCases }) {
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   if (!relatedCases || relatedCases.length === 0) {
     return (
       <div className="related-empty">
-        <p>No related cases found</p>
+        <p>{t('No related cases found')}</p>
       </div>
     )
   }
@@ -38,7 +40,7 @@ export default function RelatedTab({ caseId: _caseId, relatedCases }) {
                 </div>
                 <button className="related-view-btn" onClick={() => navigate(`/cases/${item.case_id}`)}>
                   <ExternalLink size={12} />
-                  View
+                  {t('View')}
                 </button>
               </div>
             </div>

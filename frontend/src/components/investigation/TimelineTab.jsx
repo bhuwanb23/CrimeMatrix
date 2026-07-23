@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState } from 'react'
 import { FileText, Shield, Camera, AlertTriangle, Plus, Trash2 } from 'lucide-react'
 import { createTimelineEvent, deleteTimelineEvent } from '../../services/investigations'
@@ -17,6 +18,7 @@ const typeColors = {
 }
 
 export default function TimelineTab({ investigationId, timeline }) {
+  const { t } = useLanguage()
   const [events, setEvents] = useState(timeline)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ title: '', description: '', event_type: 'investigation', event_date: '' })
@@ -67,7 +69,7 @@ export default function TimelineTab({ investigationId, timeline }) {
     <div className="timeline-tab">
       <div className="timeline-visual">
         {events.length === 0 ? (
-          <div className="similar-empty"><p>No timeline events yet</p></div>
+          <div className="similar-empty"><p>{t('No timeline events yet')}</p></div>
         ) : (
           events.map((item, i) => {
             const Icon = typeIcons[item.event_type] || typeIcons[item.type] || FileText
@@ -98,13 +100,13 @@ export default function TimelineTab({ investigationId, timeline }) {
         <div className="timeline-form">
           <input
             className="timeline-form-input"
-            placeholder="Event title"
+            placeholder={t('Event title')}
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
           />
           <textarea
             className="timeline-form-input"
-            placeholder="Description (optional)"
+            placeholder={t('Description (optional)')}
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             rows={2}
@@ -115,10 +117,10 @@ export default function TimelineTab({ investigationId, timeline }) {
               value={form.event_type}
               onChange={(e) => setForm({ ...form, event_type: e.target.value })}
             >
-              <option value="filing">Filing</option>
-              <option value="investigation">Investigation</option>
-              <option value="evidence">Evidence</option>
-              <option value="suspect">Suspect</option>
+              <option value="filing">{t('Filing')}</option>
+              <option value="investigation">{t('Investigation')}</option>
+              <option value="evidence">{t('Evidence')}</option>
+              <option value="suspect">{t('Suspect')}</option>
             </select>
             <input
               className="timeline-form-input"
@@ -139,7 +141,7 @@ export default function TimelineTab({ investigationId, timeline }) {
       ) : (
         <button className="timeline-add-btn" onClick={() => setShowForm(true)}>
           <Plus size={14} />
-          Add Event
+          {t('Add Event')}
         </button>
       )}
     </div>

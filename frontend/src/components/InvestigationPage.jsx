@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { ClipboardList } from 'lucide-react'
 import CaseListPanel from './investigation/CaseListPanel'
@@ -6,6 +7,7 @@ import ToolsPanel from './investigation/ToolsPanel'
 import { listInvestigations, getInvestigation } from '../services/investigations'
 
 export default function InvestigationPage() {
+  const { t } = useLanguage()
   const [investigations, setInvestigations] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [selectedInvestigation, setSelectedInvestigation] = useState(null)
@@ -64,8 +66,8 @@ export default function InvestigationPage() {
             <ClipboardList size={20} />
           </div>
           <div>
-            <h1 className="text-lg font-bold">Investigation Workspace</h1>
-            <p className="text-white/80 text-xs">Command center for active investigations</p>
+            <h1 className="text-lg font-bold">{t('Investigation Workspace')}</h1>
+            <p className="text-white/80 text-xs">{t('Command center for active investigations')}</p>
           </div>
           <div className="ml-auto flex items-center gap-2 text-white/80 text-xs">
             <span>{investigations.length} investigations</span>

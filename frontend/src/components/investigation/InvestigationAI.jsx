@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState } from 'react'
 import { Bot, Send, FileText, Search, Link2, BarChart3, ClipboardList, Loader2 } from 'lucide-react'
 import { analyzeInvestigation } from '../../services/investigationAI'
@@ -11,6 +12,7 @@ const quickActions = [
 ]
 
 export default function InvestigationAI({ investigationId, investigation }) {
+  const { t } = useLanguage()
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -83,11 +85,11 @@ export default function InvestigationAI({ investigationId, investigation }) {
     if (!text) return null
     return text.split('\n').map((line, i) => {
       if (line.startsWith('## ')) return <h4 key={i} className="ai-msg-heading">{line.replace('## ', '')}</h4>
-      if (line.startsWith('### ')) return <h5 key={i} className="ai-msg-subheading">{line.replace('### ', '')}</h5>
-      if (line.startsWith('- ')) return <li key={i} className="ai-msg-list-item">{line.replace('- ', '')}</li>
-      if (line.startsWith('#### ')) return <h6 key={i} className="ai-msg-subheading">{line.replace('#### ', '')}</h6>
-      if (line.trim() === '') return <br key={i} />
-      return <p key={i} className="ai-msg-text">{line}</p>
+      {t('if (line.startsWith(\'### \')) return')} <h5 key={i} className="ai-msg-subheading">{line.replace('### ', '')}</h5>
+      {t('if (line.startsWith(\'- \')) return')} <li key={i} className="ai-msg-list-item">{line.replace('- ', '')}</li>
+      {t('if (line.startsWith(\'#### \')) return')} <h6 key={i} className="ai-msg-subheading">{line.replace('#### ', '')}</h6>
+      {t('if (line.trim() === \'\') return')} <br key={i} />
+      {t('return')} <p key={i} className="ai-msg-text">{line}</p>
     })
   }
 
@@ -96,7 +98,7 @@ export default function InvestigationAI({ investigationId, investigation }) {
       <div className="ai-header">
         <Bot size={18} />
         <div>
-          <h4>AI Investigation Assistant</h4>
+          <h4>{t('AI Investigation Assistant')}</h4>
           <span className="ai-header-sub">
             INV-{String(investigationId).padStart(3, '0')}
             {investigation && ` — ${investigation.status || 'Active'}`}
@@ -107,8 +109,8 @@ export default function InvestigationAI({ investigationId, investigation }) {
       {messages.length === 0 && !loading && (
         <div className="ai-empty">
           <div className="ai-empty-icon">🤖</div>
-          <p>Ask me anything about this investigation</p>
-          <span>I can summarize evidence, suggest leads, find similar cases, and more.</span>
+          <p>{t('Ask me anything about this investigation')}</p>
+          <span>{t('I can summarize evidence, suggest leads, find similar cases, and more.')}</span>
         </div>
       )}
 
@@ -130,7 +132,7 @@ export default function InvestigationAI({ investigationId, investigation }) {
             <div className="ai-avatar"><Bot size={14} /></div>
             <div className="ai-msg-content ai-msg-thinking">
               <Loader2 size={14} className="similar-spinning" />
-              <span>Analyzing investigation data...</span>
+              <span>{t('Analyzing investigation data...')}</span>
             </div>
           </div>
         )}
@@ -154,7 +156,7 @@ export default function InvestigationAI({ investigationId, investigation }) {
       <div className="ai-input-area">
         <input
           className="ai-input"
-          placeholder="Ask about this investigation..."
+          placeholder={t('Ask about this investigation...')}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}

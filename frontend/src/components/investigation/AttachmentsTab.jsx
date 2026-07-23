@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState, useRef } from 'react'
 import { Paperclip, Upload, Trash2, FileText, Image, Film, File } from 'lucide-react'
 import { uploadAttachment, deleteAttachment } from '../../services/investigations'
@@ -24,6 +25,7 @@ function formatSize(bytes) {
 }
 
 export default function AttachmentsTab({ investigationId, attachments: initialAttachments }) {
+  const { t } = useLanguage()
   const [attachments, setAttachments] = useState(initialAttachments)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef(null)
@@ -80,7 +82,7 @@ export default function AttachmentsTab({ investigationId, attachments: initialAt
       {attachments.length === 0 ? (
         <div className="similar-empty">
           <Paperclip size={24} className="similar-empty-icon" />
-          <p>No attachments yet</p>
+          <p>{t('No attachments yet')}</p>
           <button
             className="similar-btn similar-btn-primary"
             onClick={() => fileInputRef.current?.click()}

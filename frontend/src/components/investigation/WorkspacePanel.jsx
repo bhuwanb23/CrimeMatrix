@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { FileText, Camera, Clock, GitBranch, Link, Bot, Paperclip, Bookmark } from 'lucide-react'
 import NotesTab from './NotesTab'
@@ -22,6 +23,7 @@ const tabs = [
 ]
 
 export default function WorkspacePanel({ investigation, loading }) {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('notes')
   const [relatedCases, setRelatedCases] = useState([])
 
@@ -50,7 +52,7 @@ export default function WorkspacePanel({ investigation, loading }) {
     return (
       <div className="workspace-empty">
         <div className="similar-spinner" />
-        <p>Loading investigation...</p>
+        <p>{t('Loading investigation...')}</p>
       </div>
     )
   }
@@ -59,8 +61,8 @@ export default function WorkspacePanel({ investigation, loading }) {
     return (
       <div className="workspace-empty">
         <div className="workspace-empty-icon">🔍</div>
-        <h3>Select an Investigation</h3>
-        <p>Choose a case from the list to start working</p>
+        <h3>{t('Select an Investigation')}</h3>
+        <p>{t('Choose a case from the list to start working')}</p>
       </div>
     )
   }

@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { FileText, Download, Printer, BarChart3, Clock, StickyNote, Save, Play, Zap, AlertTriangle } from 'lucide-react'
 import { toggleSaveInvestigation } from '../../services/investigations'
@@ -6,6 +7,7 @@ import { scoreInvestigation, getPriorityExplain } from '../../services/prioritie
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
 export default function ToolsPanel({ investigation, onRefresh }) {
+  const { t } = useLanguage()
   const [toggling, setToggling] = useState(false)
   const [priority, setPriority] = useState(null)
   const [explanations, setExplanations] = useState([])
@@ -57,7 +59,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
       {/* Priority Score */}
       <div className="tools-section">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="tools-section-title"><Zap size={14} /> Priority Score</h3>
+          <h3 className="tools-section-title"><Zap size={14} /> {t('Priority Score')}</h3>
           <button onClick={handleScorePriority} disabled={scoringPriority} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
             {scoringPriority ? 'Scoring...' : 'Score'}
           </button>
@@ -80,28 +82,28 @@ export default function ToolsPanel({ investigation, onRefresh }) {
             )}
           </div>
         ) : (
-          <p className="text-[10px] text-slate-400">Click Score to analyze priority</p>
+          <p className="text-[10px] text-slate-400">{t('Click Score to analyze priority')}</p>
         )}
       </div>
 
       {/* Reports */}
       <div className="tools-section">
-        <h3 className="tools-section-title"><FileText size={14} /> Reports</h3>
+        <h3 className="tools-section-title"><FileText size={14} /> {t('Reports')}</h3>
         <div className="tools-reports">
-          <button className="tools-report-btn"><FileText size={14} /><span>Generate Report</span></button>
-          <button className="tools-report-btn"><Download size={14} /><span>Export PDF</span></button>
-          <button className="tools-report-btn"><Printer size={14} /><span>Print</span></button>
+          <button className="tools-report-btn"><FileText size={14} /><span>{t('Generate Report')}</span></button>
+          <button className="tools-report-btn"><Download size={14} /><span>{t('Export PDF')}</span></button>
+          <button className="tools-report-btn"><Printer size={14} /><span>{t('Print')}</span></button>
         </div>
       </div>
 
       {/* Stats */}
       <div className="tools-section">
-        <h3 className="tools-section-title"><BarChart3 size={14} /> Investigation Stats</h3>
+        <h3 className="tools-section-title"><BarChart3 size={14} /> {t('Investigation Stats')}</h3>
         <div className="tools-stats">
-          <div className="tools-stat"><StickyNote size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.notes?.length || 0}</span><span className="tools-stat-label">Notes</span></div></div>
-          <div className="tools-stat"><FileText size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.evidence?.length || 0}</span><span className="tools-stat-label">Evidence</span></div></div>
-          <div className="tools-stat"><Clock size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.timeline?.length || 0}</span><span className="tools-stat-label">Events</span></div></div>
-          <div className="tools-stat"><BarChart3 size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.progress || 0}%</span><span className="tools-stat-label">Progress</span></div></div>
+          <div className="tools-stat"><StickyNote size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.notes?.length || 0}</span><span className="tools-stat-label">{t('Notes')}</span></div></div>
+          <div className="tools-stat"><FileText size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.evidence?.length || 0}</span><span className="tools-stat-label">{t('Evidence')}</span></div></div>
+          <div className="tools-stat"><Clock size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.timeline?.length || 0}</span><span className="tools-stat-label">{t('Events')}</span></div></div>
+          <div className="tools-stat"><BarChart3 size={14} /><div className="tools-stat-info"><span className="tools-stat-value">{investigation.progress || 0}%</span><span className="tools-stat-label">{t('Progress')}</span></div></div>
         </div>
       </div>
     </div>

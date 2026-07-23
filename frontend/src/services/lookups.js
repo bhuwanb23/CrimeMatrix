@@ -1,4 +1,4 @@
-import { get, post } from './api'
+import { get, post, del } from './api'
 
 export async function getCategories() {
   return get('/lookups/categories')
@@ -47,6 +47,43 @@ export async function getComplainant(caseId) {
 
 export async function createComplainant(caseId, data) {
   return post(`/cases/${caseId}/complainant`, data)
+}
+
+export async function getActs() {
+  return get('/lookups/acts')
+}
+
+export async function getSections(actId = null) {
+  const params = actId ? `?act_id=${actId}` : ''
+  return get('/lookups/sections' + params)
+}
+
+export async function getActSections(caseId) {
+  return get(`/cases/${caseId}/act-sections`)
+}
+
+export async function addActSection(caseId, data) {
+  return post(`/cases/${caseId}/act-sections`, data)
+}
+
+export async function deleteActSection(caseId, assocId) {
+  return del(`/cases/${caseId}/act-sections/${assocId}`)
+}
+
+export async function getVictims(caseId) {
+  return get(`/cases/${caseId}/victims`)
+}
+
+export async function createVictim(caseId, data) {
+  return post(`/cases/${caseId}/victims`, data)
+}
+
+export async function updateVictim(caseId, victimId, data) {
+  return post(`/cases/${caseId}/victims/${victimId}`, data)
+}
+
+export async function deleteVictim(caseId, victimId) {
+  return del(`/cases/${caseId}/victims/${victimId}`)
 }
 
 export async function seedLookups() {

@@ -28,7 +28,7 @@ export default function SuspectDetailPage() {
     return (
       <div className="case-detail-empty">
         <h2>{t('Suspect not found')}</h2>
-        <p>No suspect found with ID: {id}</p>
+        <p>{t('No suspect found with ID:')} {id}</p>
         <button className="case-back-btn" onClick={() => navigate('/suspects')}>
           <ArrowLeft size={16} /> {t('Back to Suspects')}
         </button>
@@ -52,11 +52,11 @@ export default function SuspectDetailPage() {
             <div className="suspect-detail-name-row">
               <h1 className="suspect-detail-name">{suspect.name}</h1>
               <span className={`status-badge ${suspect.status.toLowerCase().replace(' ', '-')}`}>
-                {suspect.status}
+                {t(suspect.status)}
               </span>
             </div>
             <p className="suspect-detail-meta">
-              {suspect.age} years • {suspect.district} • ID: {suspect.id}
+              {suspect.age} {t('years')} • {t(suspect.district)} • ID: {suspect.id}
             </p>
           </div>
           <div className="suspect-risk-display">
@@ -99,7 +99,7 @@ export default function SuspectDetailPage() {
             onClick={() => setActiveTab(tab.id)}
           >
             <tab.icon size={14} />
-            {tab.label}
+            {t(tab.label)}
           </button>
         ))}
       </div>

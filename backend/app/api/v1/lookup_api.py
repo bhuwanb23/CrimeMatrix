@@ -365,5 +365,34 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
             db.add(Section(name=name, code=section_code, section_code=section_code, act_id=act_id, description=f"Section {section_code}"))
             seeded += 1
 
+    # States
+    states_data = [
+        ("Karnataka", "KA"),
+        ("Maharashtra", "MH"),
+        ("Tamil Nadu", "TN"),
+        ("Kerala", "KL"),
+        ("Andhra Pradesh", "AP"),
+        ("Telangana", "TS"),
+        ("Goa", "GA"),
+        ("Puducherry", "PY"),
+    ]
+    for name, code in states_data:
+        exists = await db.execute(select(State).where(State.code == code))
+        if not exists.scalar():
+            db.add(State(name=name, code=code))
+            seeded += 1
+
+    # Arrest/Surrender Types
+    arrest_types = [
+        ("Arrest", "ARR", "Person arrested by police"),
+        ("Voluntary Surrender", "SUR", "Voluntary surrender before police or court"),
+        ("Surrender in Court", "SCT", "Surrender before court"),
+    ]
+    for name, code, desc in arrest_types:
+        exists = await db.execute(select(ArrestSurrenderType).where(ArrestSurrenderType.code == code))
+        if not exists.scalar():
+            db.add(ArrestSurrenderType(name=name, code=code, description=desc))
+            seeded += 1
+
     await db.commit()
     return success_response(data={"seeded": seeded}, message=f"Seeded {seeded} lookup records")

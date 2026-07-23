@@ -14,6 +14,7 @@ from app.models.complainant import Complainant
 from app.models.act import Act
 from app.models.section import Section
 from app.models.act_section_association import ActSectionAssociation
+from app.models.crime_head_act_section import CrimeHeadActSection
 from app.models.victim import Victim
 from app.models.state import State
 from app.models.arrest_surrender_type import ArrestSurrenderType
@@ -118,6 +119,8 @@ __all__ = [
     "Occupation", "Religion", "CasteMaster", "Gender", "Complainant",
     # Accused & Arrest tables
     "State", "ArrestSurrenderType", "Accused", "ArrestSurrender",
+    # CrimeHead Act-Section mapping
+    "CrimeHeadActSection",
     # Crime data
     "Crime", "CrimeType", "Criminal", "Person", "Victim", "Witness",
     "Officer", "Station", "District", "Vehicle", "Phone", "Location",

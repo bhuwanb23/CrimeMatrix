@@ -13,6 +13,8 @@ from app.models.occupation import Occupation
 from app.models.religion import Religion
 from app.models.caste_master import CasteMaster
 from app.models.gender import Gender
+from app.models.act import Act
+from app.models.section import Section
 
 router = APIRouter()
 
@@ -87,6 +89,23 @@ async def list_caste(db: AsyncSession = Depends(get_db)):
 async def list_genders(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Gender).order_by(Gender.name))
     items = [{"id": r.id, "name": r.name, "code": r.code, "description": r.description} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/acts")
+async def list_acts(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Act).order_by(Act.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "act_code": r.act_code, "description": r.description} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/sections")
+async def list_sections(act_id: int = None, db: AsyncSession = Depends(get_db)):
+    stmt = select(Section)
+    if act_id:
+        stmt = stmt.where(Section.act_id == act_id)
+    result = await db.execute(stmt.order_by(Section.section_code))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "section_code": r.section_code, "act_id": r.act_id, "description": r.description} for r in result.scalars().all()]
     return success_response(data={"items": items, "total": len(items)})
 
 
@@ -273,6 +292,61 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
         exists = await db.execute(select(Gender).where(Gender.code == code))
         if not exists.scalar():
             db.add(Gender(name=name, code=code, description=desc))
+            seeded += 1
+
+    # Acts
+    acts_data = [
+        ("Indian Penal Code", "IPC", "IPC", "Indian Penal Code, 1860"),
+        ("Bharatiya Nyaya Sanhita", "BNS", "BNS", "Bharatiya Nyaya Sanhita, 2023"),
+        ("Code of Criminal Procedure", "CrPC", "CrPC", "Code of Criminal Procedure, 1973"),
+        ("Indian Evidence Act", "IEA", "IEA", "Indian Evidence Act, 1872"),
+        ("Narcotic Drugs and Psychotropic Substances Act", "NDPS", "NDPS", "NDPS Act, 1985"),
+        ("Information Technology Act", "ITA", "ITA", "Information Technology Act, 2000"),
+        ("Arms Act", "ARM", "ARM", "Arms Act, 1959"),
+        ("Protection of Children from Sexual Offences Act", "POCSO", "POCSO", "POCSO Act, 2012"),
+        ("Dowry Prohibition Act", "DPA", "DPA", "Dowry Prohibition Act, 1961"),
+        ("Motor Vehicles Act", "MVA", "MVA", "Motor Vehicles Act, 1988"),
+        ("Excise Act", "EXC", "EXC", "Karnataka Excise Act"),
+        ("Prevention of Corruption Act", "PCA", "PCA", "Prevention of Corruption Act, 1988"),
+    ]
+    for name, code, act_code, desc in acts_data:
+        exists = await db.execute(select(Act).where(Act.act_code == act_code))
+        if not exists.scalar():
+            db.add(Act(name=name, code=code, act_code=act_code, description=desc))
+            seeded += 1
+
+    # Sections (key IPC sections)
+    sections_data = [
+        ("Murder", "302", "IPC", 1),
+        ("Attempt to Murder", "307", "IPC", 1),
+        ("Culpable Homicide", "304", "IPC", 1),
+        ("Robbery", "392", "IPC", 1),
+        ("Dacoity", "395", "IPC", 1),
+        ("Theft", "379", "IPC", 1),
+        ("Burglary", "454", "IPC", 1),
+        ("Cheating", "420", "IPC", 1),
+        ("Criminal Intimidation", "506", "IPC", 1),
+        ("Assault", "323", "IPC", 1),
+        ("Kidnapping", "363", "IPC", 1),
+        ("Rape", "376", "IPC", 1),
+        ("Dowry Death", "304B", "IPC", 1),
+        ("Cruelty by Husband", "498A", "IPC", 1),
+        ("Arson", "435", "IPC", 1),
+        ("Criminal Breach of Trust", "406", "IPC", 1),
+        ("Forging Documents", "465", "IPC", 1),
+        ("Hacking", "66", "ITA", 6),
+        ("Drug Trafficking", "20", "NDPS", 5),
+        ("Drug Possession", "8", "NDPS", 5),
+        ("Arms Possession", "25", "ARM", 7),
+        ("POCSO Offence", "4", "POCSO", 8),
+        ("Dowry Harassment", "498A", "IPC", 1),
+        ("Stalking", "354D", "IPC", 1),
+        ("Outraging Modesty", "354", "IPC", 1),
+    ]
+    for name, section_code, act_code, act_id in sections_data:
+        exists = await db.execute(select(Section).where(Section.section_code == section_code).where(Section.act_id == act_id))
+        if not exists.scalar():
+            db.add(Section(name=name, code=section_code, section_code=section_code, act_id=act_id, description=f"Section {section_code}"))
             seeded += 1
 
     await db.commit()

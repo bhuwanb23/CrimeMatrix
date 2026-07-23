@@ -344,6 +344,10 @@ export const translations = {
     'High (>100 cases)': 'High (>100 cases)',
     'Medium (50-100)': 'Medium (50-100)',
     'Low (<50)': 'Low (<50)',
+  
+    'Hotspot': 'Hotspot',
+    'Range': 'Range',
+    'Filters': 'Filters',
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -664,6 +668,10 @@ export const translations = {
     'High (>100 cases)': 'ಹೆಚ್ಚು (>100 ಪ್ರಕರಣಗಳು)',
     'Medium (50-100)': 'ಮಧ್ಯಮ (50-100)',
     'Low (<50)': 'ಕಡಿಮೆ (<50)',
+  
+    'Hotspot': 'ಹಾಟ್‌ಸ್ಪಾಟ್',
+    'Range': 'ವ್ಯಾಪ್ತಿ',
+    'Filters': 'ಫಿಲ್ಟರ್‌ಗಳು',
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -984,6 +992,10 @@ export const translations = {
     'High (>100 cases)': 'उच्च (>100 मामले)',
     'Medium (50-100)': 'मध्यम (50-100)',
     'Low (<50)': 'कम (<50)',
+  
+    'Hotspot': 'हॉटस्पॉट',
+    'Range': 'सीमा',
+    'Filters': 'फ़िल्टर',
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -1304,6 +1316,10 @@ export const translations = {
     'High (>100 cases)': 'உயர் (>100 வழக்குகள்)',
     'Medium (50-100)': 'நடுத்தர (50-100)',
     'Low (<50)': 'குறைந்த (<50)',
+  
+    'Hotspot': 'ஹாட்ஸ்பாட்',
+    'Range': 'வரம்பு',
+    'Filters': 'வடிகட்டிகள்',
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -1625,4 +1641,8 @@ export const translations = {
     'High (>100 cases)': 'అధిక (>100 కేసులు)',
     'Medium (50-100)': 'మధ్యస్థం (50-100)',
     'Low (<50)': 'తక్కువ (<50)',
+  
+    'Hotspot': 'హాట్‌స్పాట్',
+    'Range': 'పరిధి',
+    'Filters': 'ఫిల్టర్లు',
   }

@@ -162,10 +162,10 @@ export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistr
                 <circle cx={pos.x} cy={pos.y} r={12} fill={riskColor} opacity={0.3} />
                 <circle cx={pos.x} cy={pos.y} r={6} fill={riskColor} stroke="white" strokeWidth={2} />
                 <text x={pos.x} y={pos.y - 16} textAnchor="middle" fontSize={10} fill="var(--text-primary)" fontWeight="600">
-                  {props.name}
+                  {typeof props.name === 'string' ? props.name.replace('Hotspot:', t('Hotspot') + ':') : props.name}
                 </text>
                 <text x={pos.x} y={pos.y + 20} textAnchor="middle" fontSize={9} fill="var(--text-muted)">
-                  {props.crime_count} crimes
+                  {props.crime_count} {t('crimes')}
                 </text>
               </g>
             )
@@ -183,7 +183,7 @@ export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistr
                 <circle cx={pos.x} cy={pos.y} r={8} fill={riskColor} opacity={0.4} />
                 <circle cx={pos.x} cy={pos.y} r={4} fill={riskColor} stroke="white" strokeWidth={1.5} />
                 <text x={pos.x} y={pos.y - 22} textAnchor="middle" fontSize={9} fill={riskColor} fontWeight="600">
-                  {props.name}
+                  {typeof props.name === 'string' ? props.name.replace('Hotspot:', t('Hotspot') + ':') : props.name}
                 </text>
               </g>
             )
@@ -198,7 +198,7 @@ export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistr
               <g key={`station-${i}`} className="map-station-marker">
                 <rect x={pos.x - 5} y={pos.y - 5} width={10} height={10} fill="#3b82f6" stroke="white" strokeWidth={1.5} rx={2} />
                 <text x={pos.x} y={pos.y - 10} textAnchor="middle" fontSize={8} fill="#3b82f6">
-                  {props.name}
+                  {typeof props.name === 'string' ? props.name.replace('Hotspot:', t('Hotspot') + ':') : props.name}
                 </text>
               </g>
             )
@@ -249,16 +249,16 @@ export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistr
 
       <div className="absolute bottom-4 left-4 z-10 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] text-slate-400 max-md:inset-x-2 max-md:bottom-2 max-md:left-2">
         <div className="flex items-center gap-1 whitespace-nowrap">
-          <span className="size-2 rounded-full bg-red-500" /> Open
+          <span className="size-2 rounded-full bg-red-500" /> {t('Open')}
         </div>
         <div className="flex items-center gap-1 whitespace-nowrap">
-          <span className="size-2 rounded-full bg-emerald-500" /> Closed
+          <span className="size-2 rounded-full bg-emerald-500" /> {t('Closed')}
         </div>
         <div className="flex items-center gap-1 whitespace-nowrap">
-          <span className="size-2 rounded-full bg-amber-500" /> Pending
+          <span className="size-2 rounded-full bg-amber-500" /> {t('Pending')}
         </div>
         <div className="flex items-center gap-1 whitespace-nowrap">
-          <span className="size-2 rounded-full bg-blue-500" /> Station
+          <span className="size-2 rounded-full bg-blue-500" /> {t('Station')}
         </div>
       </div>
     </div>

@@ -389,6 +389,9 @@ export const translations = {
     'AI Analysis': 'AI Analysis',
     'Pattern Analysis': 'Pattern Analysis',
     'Based on historical data, cases with similar MO patterns have a 73% resolution rate when cross-district coordination is initiated within 48 hours.': 'Based on historical data, cases with similar MO patterns have a 73% resolution rate when cross-district coordination is initiated within 48 hours.',
+  
+    'investigations': 'investigations',
+    'Viewing': 'Viewing',
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -754,6 +757,9 @@ export const translations = {
     'AI Analysis': 'ಎಐ ವಿಶ್ಲೇಷಣೆ',
     'Pattern Analysis': 'ಮಾದರಿ ವಿಶ್ಲೇಷಣೆ',
     'Based on historical data, cases with similar MO patterns have a 73% resolution rate when cross-district coordination is initiated within 48 hours.': 'ಐತಿಹಾಸಿಕ ಡೇಟಾವನ್ನು ಆಧರಿಸಿ, ಇದೇ ರೀತಿಯ MO ಮಾದರಿಗಳನ್ನು ಹೊಂದಿರುವ ಪ್ರಕರಣಗಳು 48 ಗಂಟೆಗಳ ಒಳಗೆ ಅಡ್ಡ-ಜಿಲ್ಲಾ ಸಮನ್ವಯವನ್ನು ಪ್ರಾರಂಭಿಸಿದಾಗ 73% ಪರಿಹಾರ ದರವನ್ನು ಹೊಂದಿರುತ್ತವೆ.',
+  
+    'investigations': 'ತನಿಖೆಗಳು',
+    'Viewing': 'ವೀಕ್ಷಿಸುತ್ತಿರುವ',
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -1119,6 +1125,9 @@ export const translations = {
     'AI Analysis': 'एआई विश्लेषण',
     'Pattern Analysis': 'पैटर्न विश्लेषण',
     'Based on historical data, cases with similar MO patterns have a 73% resolution rate when cross-district coordination is initiated within 48 hours.': 'ऐतिहासिक डेटा के आधार पर, 48 घंटों के भीतर क्रॉस-डिस्ट्रिक्ट समन्वय शुरू होने पर समान MO पैटर्न वाले मामलों में 73% समाधान दर होती है।',
+  
+    'investigations': 'जांचें',
+    'Viewing': 'देख रहे हैं',
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -1484,6 +1493,9 @@ export const translations = {
     'AI Analysis': 'AI பகுப்பாய்வு',
     'Pattern Analysis': 'முறை பகுப்பாய்வு',
     'Based on historical data, cases with similar MO patterns have a 73% resolution rate when cross-district coordination is initiated within 48 hours.': 'வரலாற்றுத் தரவுகளின் அடிப்படையில், 48 மணி நேரத்திற்குள் குறுக்கு-மாவட்ட ஒருங்கிணைப்பு தொடங்கப்படும்போது இதேபோன்ற MO முறைகளைக் கொண்ட வழக்குகள் 73% தீர்வு விகிதத்தைக் கொண்டுள்ளன.',
+  
+    'investigations': 'விசாரணைகள்',
+    'Viewing': 'பார்க்கிறது',
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -1850,4 +1862,7 @@ export const translations = {
     'AI Analysis': 'AI విశ్లేషణ',
     'Pattern Analysis': 'నమూనా విశ్లేషణ',
     'Based on historical data, cases with similar MO patterns have a 73% resolution rate when cross-district coordination is initiated within 48 hours.': 'చారిత్రక డేటా ఆధారంగా, 48 గంటల్లోగా క్రాస్-డిస్ట్రిక్ట్ కోఆర్డినేషన్ ప్రారంభించినప్పుడు ఇలాంటి MO నమూనాలను కలిగి ఉన్న కేసులు 73% రిజల్యూషన్ రేటును కలిగి ఉంటాయి.',
+  
+    'investigations': 'దర్యాప్తులు',
+    'Viewing': 'చూస్తున్నారు',
   }

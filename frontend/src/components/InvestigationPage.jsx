@@ -70,8 +70,8 @@ export default function InvestigationPage() {
             <p className="text-white/80 text-xs">{t('Command center for active investigations')}</p>
           </div>
           <div className="ml-auto flex items-center gap-2 text-white/80 text-xs">
-            <span>{investigations.length} investigations</span>
-            {selectedId && <span className="text-white/60">• Viewing #{selectedId}</span>}
+            <span>{investigations.length} {t('investigations')}</span>
+            {selectedId && <span className="text-white/60">• {t('Viewing')} #{selectedId}</span>}
           </div>
         </div>
       </div>

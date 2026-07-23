@@ -83,10 +83,10 @@ export default function GraphPage() {
   })
 
   return (
-    <div className="flex flex-col" style={{ height: 'calc(100vh - var(--header-height))' }}>
+    <div className="flex flex-col gap-3 p-4" style={{ height: 'calc(100vh - var(--header-height))' }}>
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 p-4 px-6 text-white shrink-0">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
               <Network size={20} />
@@ -113,7 +113,7 @@ export default function GraphPage() {
       </div>
 
       {/* Graph Area */}
-      <div className="graph-page flex-1 min-h-0">
+      <div className="graph-page flex-1 min-h-0" style={{ height: 'auto' }}>
         <div className="graph-main">
           <GraphControls
             activeView={activeView}

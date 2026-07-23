@@ -4,11 +4,12 @@ import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
   Camera, Bot, MapPin, Calendar, Hash, Users, Scale, BookOpen,
+  Fingerprint, Handcuffs,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'
-import { getComplainant, getVictims, getActSections } from '../services/lookups'
+import { getComplainant, getVictims, getActSections, getAccused, getArrestSurrender } from '../services/lookups'
 
 const timelineIcons = {
   filing: FileText,
@@ -23,6 +24,8 @@ export default function CaseDetailPage() {
   const [complainant, setComplainant] = useState(null)
   const [victims, setVictims] = useState([])
   const [actSections, setActSections] = useState([])
+  const [accused, setAccused] = useState([])
+  const [arrests, setArrests] = useState([])
   const caseData = getCaseById(id)
 
   useEffect(() => {
@@ -32,6 +35,8 @@ export default function CaseDetailPage() {
         getComplainant(numericId).then(res => setComplainant(res?.data || null)).catch(() => {})
         getVictims(numericId).then(res => setVictims(res?.data?.items || [])).catch(() => {})
         getActSections(numericId).then(res => setActSections(res?.data?.items || [])).catch(() => {})
+        getAccused(numericId).then(res => setAccused(res?.data?.items || [])).catch(() => {})
+        getArrestSurrender(numericId).then(res => setArrests(res?.data?.items || [])).catch(() => {})
       }
     }
   }, [id])

@@ -55,7 +55,7 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <Lightbulb size={14} />
-        <h3>{t(t('AI Recommendations'))}</h3>
+        <h3>{t('AI Recommendations')}</h3>
       </div>
       <div className="analytics-recommendations-list">
         {recommendations.map((rec, i) => {
@@ -72,7 +72,7 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
                   <div className="analytics-confidence-bar">
                     <div className="analytics-confidence-fill" style={{ width: `${rec.confidence}%`, background: rec.color }} />
                   </div>
-                  <span>{rec.confidence}% confidence</span>
+                  <span>{rec.confidence}% {t('confidence')}</span>
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean, ForeignKey
 from sqlalchemy.sql import func
 from app.db.base import Base
 
@@ -12,4 +12,5 @@ class Section(Base):
     section_code = Column(String(50), nullable=False)
     act_id = Column(Integer, ForeignKey("acts.id"), nullable=True)
     description = Column(Text, nullable=True)
+    active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

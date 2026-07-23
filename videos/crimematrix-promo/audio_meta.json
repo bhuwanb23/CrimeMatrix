@@ -1,5 +1,9 @@
 {
-  "bgm": null,
+  "bgm": {
+    "path": "assets/bgm/underscore.mp3",
+    "duration_s": 150.464,
+    "volume": 0.12
+  },
   "voices": [
     {
       "frame": 1,
@@ -116,6 +120,48 @@
       "offset_s": 0,
       "duration_s": 0.57,
       "volume": 0.35
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/impact-soft.mp3",
+      "start_s": 17.561,
+      "duration_s": 0.45,
+      "volume": 0.4
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/impact-soft.mp3",
+      "start_s": 22.376,
+      "duration_s": 0.45,
+      "volume": 0.4
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/impact-soft.mp3",
+      "start_s": 47.129,
+      "duration_s": 0.45,
+      "volume": 0.4
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/impact-soft.mp3",
+      "start_s": 82.89,
+      "duration_s": 0.45,
+      "volume": 0.4
+    },
+    {
+      "frame": 10,
+      "file": "assets/sfx/impact-soft.mp3",
+      "start_s": 110.913,
+      "duration_s": 0.45,
+      "volume": 0.4
+    },
+    {
+      "frame": 12,
+      "file": "assets/sfx/impact-soft.mp3",
+      "start_s": 148.107,
+      "duration_s": 0.45,
+      "volume": 0.4
     }
   ]
 }

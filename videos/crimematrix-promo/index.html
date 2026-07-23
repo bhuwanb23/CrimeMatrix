@@ -257,7 +257,74 @@
         data-volume="1"
       ></audio>
 
+      <audio
+        id="el-bgm-underscore"
+        src="assets/bgm/underscore.mp3"
+        data-start="0"
+        data-duration="150.464"
+        data-track-index="15"
+        data-volume="0.12"
+      ></audio>
+
+      <div
+        id="el-captions"
+        class="scene"
+        data-composition-id="captions"
+        data-composition-src="compositions/captions.html"
+        data-start="0"
+        data-duration="150.464"
+        data-track-index="50"
+      ></div>
+
       <!-- SFX -->
+      <audio
+        id="el-sfx-impact-0"
+        src="assets/sfx/impact-soft.mp3"
+        data-start="17.561"
+        data-duration="0.45"
+        data-track-index="30"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-impact-1"
+        src="assets/sfx/impact-soft.mp3"
+        data-start="22.376"
+        data-duration="0.45"
+        data-track-index="31"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-impact-2"
+        src="assets/sfx/impact-soft.mp3"
+        data-start="47.129"
+        data-duration="0.45"
+        data-track-index="32"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-impact-3"
+        src="assets/sfx/impact-soft.mp3"
+        data-start="82.89"
+        data-duration="0.45"
+        data-track-index="33"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-impact-4"
+        src="assets/sfx/impact-soft.mp3"
+        data-start="110.913"
+        data-duration="0.45"
+        data-track-index="34"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-impact-5"
+        src="assets/sfx/impact-soft.mp3"
+        data-start="148.107"
+        data-duration="0.45"
+        data-track-index="35"
+        data-volume="0.4"
+      ></audio>
       <audio
         id="el-sfx-0"
         src="assets/sfx/riser.mp3"
@@ -311,6 +378,24 @@
     <script>
       window.__timelines = window.__timelines || {};
       window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var hide = [
+          "#el-02-intelligent-partner",
+          "#el-03-introducing-crimematrix",
+          "#el-04-conversational-copilot",
+          "#el-05-multilingual-voice",
+          "#el-06-explainable-answers",
+          "#el-07-intelligence-mosaic",
+          "#el-08-identity-resolution",
+          "#el-09-predictive-intelligence",
+          "#el-10-whisper-alerts",
+          "#el-11-three-roles",
+          "#el-12-tagline-cta"
+        ];
+        gsap.set(hide, { opacity: 0 });
+        gsap.set("#el-01-fragmented-records", { opacity: 1 });
+      })();
+
       // ── frame transitions (injected by transitions.mjs) ──
       (function () { var tl = window.__timelines["main"];
         tl.to("#el-01-fragmented-records", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 16.661);

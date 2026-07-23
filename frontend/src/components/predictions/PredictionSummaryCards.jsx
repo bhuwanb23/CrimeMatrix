@@ -1,6 +1,8 @@
 import { Brain, Target, TrendingUp, Activity } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function PredictionSummaryCards({ stats }) {
+  const { t } = useLanguage()
   if (!stats) return null
 
   const cards = [
@@ -21,7 +23,7 @@ export default function PredictionSummaryCards({ stats }) {
               <Icon size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">{card.label}</span>
+              <span className="analytics-pred-label">{t(card.label)}</span>
               <span className="analytics-pred-value">{Math.round(value)}{card.suffix || ''}</span>
             </div>
           </div>

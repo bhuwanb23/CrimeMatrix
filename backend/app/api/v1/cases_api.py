@@ -321,3 +321,180 @@ async def delete_victim(case_id: int, victim_id: int, db: AsyncSession = Depends
     await db.delete(v)
     await db.commit()
     return success_response(message="Victim deleted")
+
+
+# --- Accused Schemas ---
+class AccusedCreate(BaseModel):
+    name: str
+    age_year: Optional[int] = None
+    gender_id: Optional[int] = None
+    person_id: Optional[str] = None
+
+
+class AccusedUpdate(BaseModel):
+    name: Optional[str] = None
+    age_year: Optional[int] = None
+    gender_id: Optional[int] = None
+    person_id: Optional[str] = None
+
+
+# --- Accused Endpoints ---
+
+@router.get("/{case_id}/accused")
+async def get_accused(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Accused).where(Accused.case_id == case_id))
+    items = []
+    for a in result.scalars().all():
+        gen = (await db.execute(select(Gender).where(Gender.id == a.gender_id))).scalar() if a.gender_id else None
+        items.append({
+            "id": a.id, "case_id": a.case_id, "name": a.name,
+            "age_year": a.age_year, "gender_id": a.gender_id,
+            "gender_name": gen.name if gen else None,
+            "person_id": a.person_id,
+        })
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.post("/{case_id}/accused")
+async def create_accused(case_id: int, data: AccusedCreate, db: AsyncSession = Depends(get_db)):
+    a = Accused(case_id=case_id, name=data.name, age_year=data.age_year,
+                gender_id=data.gender_id, person_id=data.person_id)
+    db.add(a)
+    await db.commit()
+    await db.refresh(a)
+    gen = (await db.execute(select(Gender).where(Gender.id == a.gender_id))).scalar() if a.gender_id else None
+    return success_response(data={
+        "id": a.id, "case_id": a.case_id, "name": a.name,
+        "age_year": a.age_year, "gender_id": a.gender_id,
+        "gender_name": gen.name if gen else None, "person_id": a.person_id,
+    }, message="Accused created")
+
+
+@router.put("/{case_id}/accused/{accused_id}")
+async def update_accused(case_id: int, accused_id: int, data: AccusedUpdate, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Accused).where(Accused.id == accused_id, Accused.case_id == case_id))
+    a = result.scalar()
+    if not a:
+        return success_response(message="Accused not found")
+    for key, value in data.model_dump(exclude_unset=True).items():
+        setattr(a, key, value)
+    await db.commit()
+    await db.refresh(a)
+    gen = (await db.execute(select(Gender).where(Gender.id == a.gender_id))).scalar() if a.gender_id else None
+    return success_response(data={
+        "id": a.id, "case_id": a.case_id, "name": a.name,
+        "age_year": a.age_year, "gender_id": a.gender_id,
+        "gender_name": gen.name if gen else None, "person_id": a.person_id,
+    }, message="Accused updated")
+
+
+@router.delete("/{case_id}/accused/{accused_id}")
+async def delete_accused(case_id: int, accused_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Accused).where(Accused.id == accused_id, Accused.case_id == case_id))
+    a = result.scalar()
+    if not a:
+        return success_response(message="Accused not found")
+    await db.delete(a)
+    await db.commit()
+    return success_response(message="Accused deleted")
+
+
+# --- ArrestSurrender Schemas ---
+class ArrestSurrenderCreate(BaseModel):
+    type_id: Optional[int] = None
+    date: Optional[str] = None
+    state_id: Optional[int] = None
+    district_id: Optional[int] = None
+    police_station_id: Optional[int] = None
+    io_id: Optional[int] = None
+    court_id: Optional[int] = None
+    accused_id: Optional[int] = None
+    is_accused: bool = False
+    is_complainant_accused: bool = False
+
+
+class ArrestSurrenderUpdate(BaseModel):
+    type_id: Optional[int] = None
+    date: Optional[str] = None
+    state_id: Optional[int] = None
+    district_id: Optional[int] = None
+    police_station_id: Optional[int] = None
+    io_id: Optional[int] = None
+    court_id: Optional[int] = None
+    accused_id: Optional[int] = None
+    is_accused: Optional[bool] = None
+    is_complainant_accused: Optional[bool] = None
+
+
+# --- ArrestSurrender Endpoints ---
+
+@router.get("/{case_id}/arrest-surrender")
+async def get_arrest_surrender(case_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ArrestSurrender).where(ArrestSurrender.case_id == case_id))
+    items = []
+    for a in result.scalars().all():
+        art = (await db.execute(select(ArrestSurrenderType).where(ArrestSurrenderType.id == a.type_id))).scalar() if a.type_id else None
+        state = (await db.execute(select(State).where(State.id == a.state_id))).scalar() if a.state_id else None
+        accused = (await db.execute(select(Accused).where(Accused.id == a.accused_id))).scalar() if a.accused_id else None
+        items.append({
+            "id": a.id, "case_id": a.case_id,
+            "type_id": a.type_id, "type_name": art.name if art else None,
+            "date": str(a.date) if a.date else None,
+            "state_id": a.state_id, "state_name": state.name if state else None,
+            "district_id": a.district_id, "police_station_id": a.police_station_id,
+            "io_id": a.io_id, "court_id": a.court_id,
+            "accused_id": a.accused_id, "accused_name": accused.name if accused else None,
+            "is_accused": a.is_accused, "is_complainant_accused": a.is_complainant_accused,
+        })
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.post("/{case_id}/arrest-surrender")
+async def create_arrest_surrender(case_id: int, data: ArrestSurrenderCreate, db: AsyncSession = Depends(get_db)):
+    from datetime import datetime
+    arrest_date = None
+    if data.date:
+        try:
+            arrest_date = datetime.fromisoformat(data.date)
+        except Exception:
+            pass
+    a = ArrestSurrender(case_id=case_id, type_id=data.type_id, date=arrest_date,
+                        state_id=data.state_id, district_id=data.district_id,
+                        police_station_id=data.police_station_id, io_id=data.io_id,
+                        court_id=data.court_id, accused_id=data.accused_id,
+                        is_accused=data.is_accused, is_complainant_accused=data.is_complainant_accused)
+    db.add(a)
+    await db.commit()
+    await db.refresh(a)
+    return success_response(data={"id": a.id, "case_id": a.case_id}, message="Arrest/Surrender record created")
+
+
+@router.put("/{case_id}/arrest-surrender/{record_id}")
+async def update_arrest_surrender(case_id: int, record_id: int, data: ArrestSurrenderUpdate, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ArrestSurrender).where(ArrestSurrender.id == record_id, ArrestSurrender.case_id == case_id))
+    a = result.scalar()
+    if not a:
+        return success_response(message="Record not found")
+    update_data = data.model_dump(exclude_unset=True)
+    if "date" in update_data and update_data["date"]:
+        from datetime import datetime
+        try:
+            update_data["date"] = datetime.fromisoformat(update_data["date"])
+        except Exception:
+            del update_data["date"]
+    for key, value in update_data.items():
+        setattr(a, key, value)
+    await db.commit()
+    await db.refresh(a)
+    return success_response(data={"id": a.id, "case_id": a.case_id}, message="Record updated")
+
+
+@router.delete("/{case_id}/arrest-surrender/{record_id}")
+async def delete_arrest_surrender(case_id: int, record_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ArrestSurrender).where(ArrestSurrender.id == record_id, ArrestSurrender.case_id == case_id))
+    a = result.scalar()
+    if not a:
+        return success_response(message="Record not found")
+    await db.delete(a)
+    await db.commit()
+    return success_response(message="Record deleted")

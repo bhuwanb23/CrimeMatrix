@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import GraphNode from './GraphNode'
 import GraphEdge from './GraphEdge'
 import { nodes as fallbackNodes, edges as fallbackEdges } from './graphData'
+import { useLanguage } from '../../context/LanguageContext'
 
 // Force-directed layout — memoized to prevent recalculation on zoom/pan/hover
 function forceLayout(nodes, edges, width = 800, height = 500) {
@@ -73,6 +74,7 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
 }
 
 export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _activeView, nodes: realNodes, edges: realEdges }) {
+  const { t } = useLanguage()
   const svgRef = useRef(null)
   const containerRef = useRef(null)
   const [zoom, setZoom] = useState(1)
@@ -204,10 +206,11 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _a
 
         {hoveredNode && !selectedNode && (
           <div className="graph-tooltip" style={{ left: (hoveredNode.x || 0) * zoom + pan.x + 20, top: (hoveredNode.y || 0) * zoom + pan.y - 10 }}>
-            {hoveredNode.label || hoveredNode.name || hoveredNode.node_id}
+            {t(hoveredNode.label || hoveredNode.name || hoveredNode.node_id)}
           </div>
         )}
       </svg>
     </div>
   )
 }
+

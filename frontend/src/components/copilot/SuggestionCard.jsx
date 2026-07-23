@@ -1,26 +1,29 @@
 import { Bot, CheckSquare } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export function AssistantCard() {
+  const { t } = useLanguage()
   return (
     <div className="suggestion-card suggestion-card-dark">
       <div className="suggestion-card-header">
         <div className="suggestion-card-avatar">
           <Bot size={16} strokeWidth={2} />
         </div>
-        <span className="suggestion-card-badge">AI Copilot</span>
+        <span className="suggestion-card-badge">{t('AI Copilot')}</span>
       </div>
       <p className="suggestion-card-text">
-        Your AI Investigation Assistant — trained on Karnataka police protocols, criminal databases, and legal frameworks.
+        {t('Your AI Investigation Assistant — trained on Karnataka police protocols, criminal databases, and legal frameworks.')}
       </p>
     </div>
   )
 }
 
 export function TasksCard({ onSend }) {
+  const { t } = useLanguage()
   const tasks = [
-    'Analyze suspect connections',
-    'Generate investigation report',
-    'Search cross-district cases',
+    t('Analyze suspect connections'),
+    t('Generate investigation report'),
+    t('Search cross-district cases'),
   ]
 
   return (
@@ -34,21 +37,23 @@ export function TasksCard({ onSend }) {
         ))}
       </div>
       <div className="suggestion-card-footer">
-        <span className="suggestion-card-label">Quick Tasks</span>
+        <span className="suggestion-card-label">{t('Quick Tasks')}</span>
       </div>
     </div>
   )
 }
 
 export function PromptCard({ onSend: _onSend }) {
-  const prompt = 'What are the common MO patterns in theft cases across Bengaluru district this month?'
+  const { t } = useLanguage()
+  const prompt = t('What are the common MO patterns in theft cases across Bengaluru district this month?')
 
   return (
     <div className="suggestion-card suggestion-card-light">
       <p className="suggestion-prompt-text">{prompt}</p>
       <div className="suggestion-card-footer">
-        <span className="suggestion-card-label">Suggested prompt</span>
+        <span className="suggestion-card-label">{t('Suggested prompt')}</span>
       </div>
     </div>
   )
 }
+

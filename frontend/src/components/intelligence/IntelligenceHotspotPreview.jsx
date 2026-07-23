@@ -1,6 +1,8 @@
 import { MapPin, AlertTriangle } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function IntelligenceHotspotPreview({ hotspots }) {
+  const { t } = useLanguage()
   if (!hotspots) return null
 
   const districts = hotspots.districts || []
@@ -10,18 +12,18 @@ export default function IntelligenceHotspotPreview({ hotspots }) {
   return (
     <div className="intel-hotspot-widget">
       <div className="intel-widget-header">
-        <h3><MapPin size={14} /> Crime Hotspots</h3>
+        <h3><MapPin size={14} /> {t('Crime Hotspots')}</h3>
       </div>
 
       <div className="intel-hotspot-list">
         {districts.length === 0 ? (
-          <div className="similar-empty"><p>No hotspot data</p></div>
+          <div className="similar-empty"><p>{t('No hotspot data')}</p></div>
         ) : (
           districts.map((d, i) => (
             <div key={i} className="intel-hotspot-item">
               <div className="intel-hotspot-rank">#{i + 1}</div>
               <div className="intel-hotspot-info">
-                <span className="intel-hotspot-name">{d.name}</span>
+                <span className="intel-hotspot-name">{t(d.name)}</span>
                 <div className="intel-hotspot-bar">
                   <div
                     className="intel-hotspot-fill"
@@ -37,11 +39,11 @@ export default function IntelligenceHotspotPreview({ hotspots }) {
 
       {topTypes.length > 0 && (
         <div className="intel-hotspot-types">
-          <h4><AlertTriangle size={12} /> Top Crime Types</h4>
+          <h4><AlertTriangle size={12} /> {t('Top Crime Types')}</h4>
           <div className="intel-type-tags">
-            {topTypes.map((t, i) => (
+            {topTypes.map((tItem, i) => (
               <span key={i} className="intel-type-tag">
-                {t.name} <span className="intel-type-count">{t.count}</span>
+                {t(tItem.name)} <span className="intel-type-count">{tItem.count}</span>
               </span>
             ))}
           </div>
@@ -50,3 +52,4 @@ export default function IntelligenceHotspotPreview({ hotspots }) {
     </div>
   )
 }
+

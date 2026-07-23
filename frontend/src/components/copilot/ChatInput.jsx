@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Send, Paperclip, Mic, MicOff, ChevronDown } from 'lucide-react'
 import { startListening, stopListening, isSTTSupported } from '../../services/voice'
+import { useLanguage } from '../../context/LanguageContext'
 
 const languages = [
   { code: 'en', label: 'English' },
@@ -8,14 +9,16 @@ const languages = [
   { code: 'hi', label: 'Hindi' },
 ]
 
-const suggestedQueries = [
-  "Show all theft cases in Bengaluru",
-  "Find suspects with high risk score",
-  "Recent crimes in the last 7 days",
-  "List open cases with high priority",
-]
-
 export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false, onVoiceToggle: _onVoiceToggle, language = 'en', onLanguageChange }) {
+  const { t } = useLanguage()
+
+  const suggestedQueries = [
+    t("Show all theft cases in Bengaluru"),
+    t("Find suspects with high risk score"),
+    t("Recent crimes in the last 7 days"),
+    t("List open cases with high priority"),
+  ]
+
   const source = 'All Sources'
   const [value, setValue] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(true)
@@ -47,7 +50,7 @@ export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false,
       setIsRecording(false)
     } else {
       if (!isSTTSupported()) {
-        alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.')
+        alert(t('Speech recognition is not supported in this browser. Please use Chrome or Edge.'))
         return
       }
       setIsRecording(true)
@@ -94,7 +97,7 @@ export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false,
       {isRecording && (
         <div className="flex items-center justify-center gap-2 pb-2">
           <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-          <span className="text-xs text-red-500 font-medium">Listening... Speak now</span>
+          <span className="text-xs text-red-500 font-medium">{t('Listening... Speak now')}</span>
           <div className="flex gap-0.5">
             {[1,2,3,4,5].map(i => (
               <div key={i} className="w-0.5 bg-red-400 rounded-full animate-pulse"
@@ -109,7 +112,7 @@ export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false,
         <input
           type="text"
           className="flex-1 bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none"
-          placeholder={isRecording ? "Listening..." : "Ask me anything... (e.g., 'Show theft cases in Bengaluru')"}
+          placeholder={isRecording ? t("Listening...") : t("Ask me anything... (e.g., 'Show theft cases in Bengaluru')")}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -150,13 +153,13 @@ export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false,
               ? 'bg-red-100 text-red-600 animate-pulse'
               : 'text-gray-400 hover:text-gray-600 hover:bg-gray-200'
           }`}
-          aria-label={isRecording ? 'Stop recording' : 'Start voice input'}
-          title={isRecording ? 'Stop recording' : `Voice input (${languages.find(l => l.code === language)?.label})`}
+          aria-label={isRecording ? t('Stop recording') : t('Start voice input')}
+          title={isRecording ? t('Stop recording') : `${t('Voice input')} (${languages.find(l => l.code === language)?.label})`}
         >
           {isRecording ? <MicOff size={16} /> : <Mic size={16} />}
         </button>
 
-        <button className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-md transition-colors" aria-label="Attach file">
+        <button className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-md transition-colors" aria-label={t("Attach file")}>
           <Paperclip size={16} />
         </button>
 
@@ -168,7 +171,7 @@ export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false,
               ? 'bg-blue-500 text-white hover:bg-blue-600 shadow-sm'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}
-          aria-label="Send message"
+          aria-label={t("Send message")}
         >
           <Send size={16} />
         </button>
@@ -176,3 +179,4 @@ export default function ChatInput({ onSend, voiceEnabled: _voiceEnabled = false,
     </div>
   )
 }
+

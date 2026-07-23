@@ -1,21 +1,24 @@
 import { ZoomIn, ZoomOut, Maximize2, Filter } from 'lucide-react'
-
-const views = [
-  { id: 'all', label: 'All Connections' },
-  { id: 'criminal', label: 'Criminal Network' },
-  { id: 'gang', label: 'Gang Network' },
-  { id: 'evidence', label: 'Evidence Links' },
-]
-
-const nodeTypes = [
-  { id: 'suspect', label: 'Suspects', color: '#ef4444' },
-  { id: 'criminal', label: 'Criminals', color: '#f59e0b' },
-  { id: 'evidence', label: 'Evidence', color: '#3b82f6' },
-  { id: 'vehicle', label: 'Vehicles', color: '#8b5cf6' },
-  { id: 'phone', label: 'Phones', color: '#10b981' },
-]
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function GraphControls({ activeView, onViewChange, onZoomIn, onZoomOut, onReset, typeFilter = [], onToggleType }) {
+  const { t } = useLanguage()
+
+  const views = [
+    { id: 'all', label: t('All Connections') },
+    { id: 'criminal', label: t('Criminal Network') },
+    { id: 'gang', label: t('Gang Network') },
+    { id: 'evidence', label: t('Evidence Links') },
+  ]
+
+  const nodeTypes = [
+    { id: 'suspect', label: t('Suspects'), color: '#ef4444' },
+    { id: 'criminal', label: t('Criminals'), color: '#f59e0b' },
+    { id: 'evidence', label: t('Evidence'), color: '#3b82f6' },
+    { id: 'vehicle', label: t('Vehicles'), color: '#8b5cf6' },
+    { id: 'phone', label: t('Phones'), color: '#10b981' },
+  ]
+
   return (
     <div className="graph-controls">
       <div className="graph-view-btns">
@@ -48,16 +51,17 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
       )}
 
       <div className="graph-zoom-btns">
-        <button className="graph-zoom-btn" onClick={onZoomIn} aria-label="Zoom in">
+        <button className="graph-zoom-btn" onClick={onZoomIn} aria-label={t("Zoom in")}>
           <ZoomIn size={16} />
         </button>
-        <button className="graph-zoom-btn" onClick={onZoomOut} aria-label="Zoom out">
+        <button className="graph-zoom-btn" onClick={onZoomOut} aria-label={t("Zoom out")}>
           <ZoomOut size={16} />
         </button>
-        <button className="graph-zoom-btn" onClick={onReset} aria-label="Reset view">
+        <button className="graph-zoom-btn" onClick={onReset} aria-label={t("Reset view")}>
           <Maximize2 size={16} />
         </button>
       </div>
     </div>
   )
 }
+

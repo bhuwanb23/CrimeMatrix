@@ -1,20 +1,23 @@
 import { Shield, AlertTriangle } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function RiskMap({ riskData }) {
+  const { t } = useLanguage()
+
   if (!riskData) return null
 
   const zones = riskData.risk_zones || {}
   const levels = [
-    { key: 'critical', label: 'Critical', color: '#ef4444', icon: AlertTriangle },
-    { key: 'high', label: 'High', color: '#f59e0b', icon: AlertTriangle },
-    { key: 'medium', label: 'Medium', color: '#3b82f6', icon: Shield },
-    { key: 'low', label: 'Low', color: '#10b981', icon: Shield },
+    { key: 'critical', label: t('Critical'), color: '#ef4444', icon: AlertTriangle },
+    { key: 'high', label: t('High'), color: '#f59e0b', icon: AlertTriangle },
+    { key: 'medium', label: t('Medium'), color: '#3b82f6', icon: Shield },
+    { key: 'low', label: t('Low'), color: '#10b981', icon: Shield },
   ]
 
   return (
     <div className="risk-map-widget">
       <div className="intel-widget-header">
-        <h3><Shield size={14} /> Risk Zones</h3>
+        <h3><Shield size={14} /> {t('Risk Zones')}</h3>
       </div>
 
       <div className="risk-zones-grid">
@@ -40,9 +43,9 @@ export default function RiskMap({ riskData }) {
               {items.length > 0 && (
                 <div className="risk-zone-items">
                   {items.slice(0, 2).map((item, i) => (
-                    <span key={i} className="risk-zone-item">{item.name}</span>
+                    <span key={i} className="risk-zone-item">{t(item.name)}</span>
                   ))}
-                  {items.length > 2 && <span className="risk-zone-more">+{items.length - 2} more</span>}
+                  {items.length > 2 && <span className="risk-zone-more">+{items.length - 2} {t('more')}</span>}
                 </div>
               )}
             </div>
@@ -52,3 +55,4 @@ export default function RiskMap({ riskData }) {
     </div>
   )
 }
+

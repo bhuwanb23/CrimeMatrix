@@ -3,6 +3,7 @@ import { GitBranch, RefreshCw, Layers, Search } from 'lucide-react'
 import { detectPatterns, listPatterns, getPatternStats } from '../services/patterns'
 import PatternCard from './patterns/PatternCard'
 import PatternExplorer from './patterns/PatternExplorer'
+import { useLanguage } from '../context/LanguageContext'
 
 const typeFilters = [
   { value: '', label: 'All Types' },
@@ -13,6 +14,7 @@ const typeFilters = [
 ]
 
 export default function PatternDiscoveryPage() {
+  const { t } = useLanguage()
   const [patterns, setPatterns] = useState([])
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -60,13 +62,13 @@ export default function PatternDiscoveryPage() {
         <div className="pattern-header-left">
           <GitBranch size={22} />
           <div>
-            <h1>Crime Pattern Discovery</h1>
-            <p>Automatically identify recurring crime patterns</p>
+            <h1>{t('Crime Pattern Discovery')}</h1>
+            <p>{t('Automatically identify recurring crime patterns')}</p>
           </div>
         </div>
         <button className="intel-refresh" onClick={handleDetect} disabled={detecting}>
           {detecting ? <RefreshCw size={14} className="similar-spinning" /> : <Search size={14} />}
-          {detecting ? 'Detecting...' : 'Detect Patterns'}
+          {detecting ? t('Detecting...') : t('Detect Patterns')}
         </button>
       </div>
 
@@ -74,13 +76,13 @@ export default function PatternDiscoveryPage() {
         <div className="pattern-stats">
           <div className="pattern-stat">
             <Layers size={14} />
-            <span>{stats.total_patterns || 0} patterns</span>
+            <span>{stats.total_patterns || 0} {t('patterns')}</span>
           </div>
           <div className="pattern-stat">
-            <span>{stats.total_occurrences || 0} occurrences</span>
+            <span>{stats.total_occurrences || 0} {t('occurrences')}</span>
           </div>
           <div className="pattern-stat">
-            <span>{stats.total_clusters || 0} clusters</span>
+            <span>{stats.total_clusters || 0} {t('clusters')}</span>
           </div>
         </div>
       )}
@@ -92,7 +94,7 @@ export default function PatternDiscoveryPage() {
             className={`pattern-filter-btn ${typeFilter === f.value ? 'active' : ''}`}
             onClick={() => setTypeFilter(f.value)}
           >
-            {f.label}
+            {t(f.label)}
           </button>
         ))}
       </div>
@@ -105,8 +107,8 @@ export default function PatternDiscoveryPage() {
       ) : patterns.length === 0 ? (
         <div className="similar-empty">
           <GitBranch size={32} className="similar-empty-icon" />
-          <p>No patterns detected yet</p>
-          <span>Click "Detect Patterns" to analyze crime data for recurring patterns.</span>
+          <p>{t('No patterns detected yet')}</p>
+          <span>{t('Click "Detect Patterns" to analyze crime data for recurring patterns.')}</span>
         </div>
       ) : (
         <div className="pattern-grid">

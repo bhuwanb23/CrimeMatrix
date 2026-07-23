@@ -2,8 +2,9 @@ import { useRef, useEffect } from 'react'
 import { Bot, User, Loader2, MessageSquareText, Info, Volume2, VolumeX } from 'lucide-react'
 import Markdown from 'react-markdown'
 import ChatInput from './ChatInput'
+import { useLanguage } from '../../context/LanguageContext'
 
-function TypingIndicator() {
+function TypingIndicator({ t }) {
   return (
     <div className="flex items-start gap-3 mb-4">
       <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
@@ -11,7 +12,7 @@ function TypingIndicator() {
       </div>
       <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
         <Loader2 size={16} className="text-gray-400 animate-spin" />
-        <span className="text-sm text-gray-500">Analyzing...</span>
+        <span className="text-sm text-gray-500">{t('Analyzing...')}</span>
       </div>
     </div>
   )
@@ -49,6 +50,7 @@ function MessageBubble({ msg }) {
 }
 
 export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, onToggleContext, historyOpen, contextOpen, voiceEnabled, onVoiceToggle, isSpeaking }) {
+  const { t } = useLanguage()
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -63,26 +65,26 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-white flex-shrink-0">
         <button
           onClick={onToggleHistory}
-          title="Chat History"
+          title={t('Chat History')}
           className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${historyOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
         >
           <MessageSquareText size={16} />
         </button>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-gray-800">AI Copilot</span>
+          <span className="text-sm font-semibold text-gray-800">{t('AI Copilot')}</span>
           {isSpeaking && <Volume2 size={14} className="text-blue-500 animate-pulse" />}
         </div>
         <div className="flex items-center gap-1">
           <button
             onClick={onVoiceToggle}
-            title={voiceEnabled ? 'Disable voice' : 'Enable voice'}
+            title={voiceEnabled ? t('Disable voice') : t('Enable voice')}
             className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${voiceEnabled ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
           >
             {voiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
           </button>
           <button
             onClick={onToggleContext}
-            title="Context"
+            title={t('Context')}
             className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${contextOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
           >
             <Info size={16} />
@@ -97,9 +99,9 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
               <Bot size={32} className="text-blue-500" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Hi, there 👋</h1>
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">{t('Hi, there 👋')}</h1>
             <p className="text-gray-500 text-sm max-w-md">
-              Ask me anything about cases, suspects, or investigations.
+              {t('Ask me anything about cases, suspects, or investigations.')}
             </p>
           </div>
         ) : (
@@ -107,7 +109,7 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
             {messages.map((msg, i) => (
               <MessageBubble key={i} msg={msg} />
             ))}
-            {isTyping && <TypingIndicator />}
+            {isTyping && <TypingIndicator t={t} />}
             <div ref={messagesEndRef} />
           </div>
         )}
@@ -117,3 +119,4 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
     </div>
   )
 }
+

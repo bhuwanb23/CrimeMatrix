@@ -21,6 +21,7 @@ import RepeatOffenderTab from './intelligence/RepeatOffenderTab'
 import MOComparisonTab from './intelligence/MOComparisonTab'
 import CrossDistrictSection from './intelligence/CrossDistrictSection'
 import EvidenceLinkingSection from './intelligence/EvidenceLinkingSection'
+import { useLanguage } from '../context/LanguageContext'
 
 const tabs = [
   { id: 'workspace', label: 'Workspace', icon: LayoutGrid, path: '/intelligence' },
@@ -42,6 +43,7 @@ export default function CrimeIntelligencePage() {
   const location = useLocation()
   const navigate = useNavigate()
   const activeTab = getActiveTab(location.pathname)
+  const { t } = useLanguage()
 
   const [data, setData] = useState(null)
   const [trendData, setTrendData] = useState(null)
@@ -91,15 +93,15 @@ export default function CrimeIntelligencePage() {
                 <Brain size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Crime Intelligence Workspace</h1>
-                <p className="text-white/80 text-sm mt-0.5">Unified intelligence — trends, patterns, hotspots, recommendations</p>
+                <h1 className="text-2xl font-bold">{t('Crime Intelligence Workspace')}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t('Unified intelligence — trends, patterns, hotspots, recommendations')}</p>
               </div>
             </div>
             {activeTab === 'workspace' && (
               <div className="flex items-center gap-3">
                 <button onClick={handleDetectHotspots} disabled={loading}
                   className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
-                  Detect Hotspots
+                  {t('Detect Hotspots')}
                 </button>
                 <button onClick={loadAll} disabled={loading}
                   className="p-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
@@ -125,7 +127,7 @@ export default function CrimeIntelligencePage() {
                 }`}
               >
                 <Icon size={15} />
-                {tab.label}
+                {t(tab.label)}
               </button>
             )
           })}
@@ -149,18 +151,19 @@ export default function CrimeIntelligencePage() {
 }
 
 function WorkspaceTab({ data, trendData, seasonalData, hotspots, riskData, loading, filters, setFilters }) {
+  const { t } = useLanguage()
   if (loading && !data) {
     return (
       <div className="flex items-center justify-center py-16">
         <div className="w-6 h-6 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
-        <span className="ml-3 text-slate-500 text-sm">Loading intelligence data...</span>
+        <span className="ml-3 text-slate-500 text-sm">{t('Loading intelligence data...')}</span>
       </div>
     )
   }
   if (!data) {
     return (
       <div className="text-center py-16 bg-white border border-slate-200 rounded-2xl">
-        <p className="text-slate-500">Failed to load intelligence data</p>
+        <p className="text-slate-500">{t('Failed to load intelligence data')}</p>
       </div>
     )
   }

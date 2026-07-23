@@ -4,6 +4,7 @@ import {
   Send, Bot,
 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
+import { useLanguage } from '../context/LanguageContext'
 
 const quickStats = [
   { icon: FileText, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)', value: '12', label: 'Cases Today' },
@@ -48,6 +49,7 @@ const initialMessages = [
 ]
 
 export default function RightPanel({ isOpen }) {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('activity')
   const [messages, setMessages] = useState(initialMessages)
   const [inputValue, setInputValue] = useState('')
@@ -79,21 +81,21 @@ export default function RightPanel({ isOpen }) {
           onClick={() => setActiveTab('activity')}
         >
           <Activity size={14} strokeWidth={1.8} />
-          Activity
+          {t('Activity')}
         </button>
         <button
           className={`right-panel-tab ${activeTab === 'chat' ? 'active' : ''}`}
           onClick={() => setActiveTab('chat')}
         >
           <Bot size={14} strokeWidth={1.8} />
-          AI Copilot
+          {t('AI Copilot')}
         </button>
       </div>
 
       {activeTab === 'activity' && (
         <div className="right-panel-content">
           <section className="right-panel-section">
-            <h3 className="right-panel-section-title">Today's Overview</h3>
+            <h3 className="right-panel-section-title">{t("Today's Overview")}</h3>
             <div className="quick-stats-grid">
               {quickStats.map((stat, i) => (
                 <div key={i} className="quick-stat-card">
@@ -101,14 +103,14 @@ export default function RightPanel({ isOpen }) {
                     <stat.icon size={14} strokeWidth={1.8} />
                   </div>
                   <div className="quick-stat-value">{stat.value}</div>
-                  <div className="quick-stat-label">{stat.label}</div>
+                  <div className="quick-stat-label">{t(stat.label)}</div>
                 </div>
               ))}
             </div>
           </section>
 
           <section className="right-panel-section">
-            <h3 className="right-panel-section-title">Recent Activity</h3>
+            <h3 className="right-panel-section-title">{t("Recent Activity")}</h3>
             <div className="right-panel-items">
               {activities.map((item, i) => (
                 <div key={i} className="activity-card">
@@ -116,9 +118,9 @@ export default function RightPanel({ isOpen }) {
                     <item.icon size={14} strokeWidth={1.8} />
                   </div>
                   <div className="activity-content">
-                    <p className="activity-title">{item.title}</p>
-                    <p className="activity-subtitle">{item.subtitle}</p>
-                    <span className="activity-time">{item.time}</span>
+                    <p className="activity-title">{t(item.title)}</p>
+                    <p className="activity-subtitle">{t(item.subtitle)}</p>
+                    <span className="activity-time">{t(item.time)}</span>
                   </div>
                 </div>
               ))}
@@ -139,7 +141,7 @@ export default function RightPanel({ isOpen }) {
             <input
               type="text"
               className="chat-input"
-              placeholder="Ask about cases..."
+              placeholder={t("Ask about cases...")}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}

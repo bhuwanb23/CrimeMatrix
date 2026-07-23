@@ -11,6 +11,7 @@ import {
 import { explainRecommendation } from '../../services/proactive'
 import ExplainButton from '../intelligence/ExplainButton'
 import ExplanationPanel from '../intelligence/ExplanationPanel'
+import { useLanguage } from '../../context/LanguageContext'
 
 const typeConfig = {
   similar_case: { icon: FileText, label: 'Similar Case', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', route: '/cases' },
@@ -34,6 +35,7 @@ const tabs = [
 ]
 
 export default function RecommendationsPanel({ caseId = null, investigationId = null, compact = false, maxItems }) {
+  const { t } = useLanguage()
   const [recommendations, setRecommendations] = useState([])
   const [activeTab, setActiveTab] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -130,11 +132,11 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
       <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles size={16} className="text-cyan-400" />
-          <h3 className="text-white font-semibold text-sm">Recommendations</h3>
+          <h3 className="text-white font-semibold text-sm">{t('Recommendations')}</h3>
         </div>
         <div className="flex items-center justify-center py-8">
           <div className="w-5 h-5 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin" />
-          <span className="ml-3 text-white/50 text-sm">Loading...</span>
+          <span className="ml-3 text-white/50 text-sm">{t('Loading...')}</span>
         </div>
       </div>
     )
@@ -146,7 +148,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Sparkles size={16} className="text-cyan-400" />
-          <h3 className="text-white font-semibold text-sm">Recommendations</h3>
+          <h3 className="text-white font-semibold text-sm">{t('Recommendations')}</h3>
           <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded-full font-medium">
             {recommendations.length}
           </span>
@@ -157,7 +159,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
             disabled={generating}
             className="text-[10px] bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 px-2 py-1 rounded-lg transition-colors disabled:opacity-50"
           >
-            {generating ? 'Generating...' : 'AI Generate'}
+            {generating ? t('Generating...') : t('AI Generate')}
           </button>
           <button onClick={loadRecommendations} className="text-white/40 hover:text-white/70 transition-colors p-1">
             <RefreshCw size={12} />
@@ -182,7 +184,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
               }`}
             >
               <TabIcon size={10} />
-              {tab.label}
+              {t(tab.label)}
               {count > 0 && <span className="text-[9px] opacity-60">{count}</span>}
             </button>
           )
@@ -193,8 +195,8 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
       {displayItems.length === 0 ? (
         <div className="text-center py-8">
           <Sparkles size={28} className="mx-auto text-white/20 mb-2" />
-          <p className="text-white/40 text-sm">No recommendations</p>
-          <p className="text-white/25 text-xs mt-1">Click "AI Generate" to create recommendations</p>
+          <p className="text-white/40 text-sm">{t('No recommendations')}</p>
+          <p className="text-white/25 text-xs mt-1">{t('Click "AI Generate" to create recommendations')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -260,7 +262,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       title="Accept"
                     >
                       <CheckCircle size={10} />
-                      <span>Accept</span>
+                      <span>{t('Accept')}</span>
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'dismissed') }}
@@ -272,7 +274,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       title="Dismiss"
                     >
                       <XCircle size={10} />
-                      <span>Dismiss</span>
+                      <span>{t('Dismiss')}</span>
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'rated_up') }}

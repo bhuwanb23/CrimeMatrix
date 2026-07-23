@@ -1,6 +1,6 @@
 import { get, post, del } from './api';
 
-export async function searchCrimes(query, filters = {}, page = 1, perPage = 20) {
+export async function searchCrimes(query, filters = [], page = 1, perPage = 20) {
     return post('/search/', { query, filters, page, page_size: perPage });
 }
 

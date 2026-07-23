@@ -1,4 +1,5 @@
 import { MapPin, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const riskColors = {
   critical: '#ef4444',
@@ -14,11 +15,13 @@ const trendIcons = {
 }
 
 export default function HotspotRankings({ hotspots, loading }) {
+  const { t } = useLanguage()
+
   if (loading) {
     return (
       <div className="hotspot-rankings">
         <div className="intel-widget-header">
-          <h3><MapPin size={14} /> Hotspot Rankings</h3>
+          <h3><MapPin size={14} /> {t('Hotspot Rankings')}</h3>
         </div>
         <div className="similar-loading"><div className="similar-spinner" /></div>
       </div>
@@ -29,9 +32,9 @@ export default function HotspotRankings({ hotspots, loading }) {
     return (
       <div className="hotspot-rankings">
         <div className="intel-widget-header">
-          <h3><MapPin size={14} /> Hotspot Rankings</h3>
+          <h3><MapPin size={14} /> {t('Hotspot Rankings')}</h3>
         </div>
-        <div className="similar-empty"><p>No hotspots detected</p></div>
+        <div className="similar-empty"><p>{t('No hotspots detected')}</p></div>
       </div>
     )
   }
@@ -41,7 +44,7 @@ export default function HotspotRankings({ hotspots, loading }) {
   return (
     <div className="hotspot-rankings">
       <div className="intel-widget-header">
-        <h3><MapPin size={14} /> Hotspot Rankings</h3>
+        <h3><MapPin size={14} /> {t('Hotspot Rankings')}</h3>
         <span className="similar-count">{hotspots.length}</span>
       </div>
 
@@ -54,9 +57,9 @@ export default function HotspotRankings({ hotspots, loading }) {
               <div className="hotspot-rank">#{i + 1}</div>
               <div className="hotspot-info">
                 <div className="hotspot-info-top">
-                  <span className="hotspot-name">{h.name}</span>
+                  <span className="hotspot-name">{t(h.name)}</span>
                   <span className="hotspot-risk-badge" style={{ color: riskColor, background: `${riskColor}15` }}>
-                    {h.risk_level}
+                    {t(h.risk_level)}
                   </span>
                 </div>
                 <div className="hotspot-bar">
@@ -66,8 +69,8 @@ export default function HotspotRankings({ hotspots, loading }) {
                   />
                 </div>
                 <div className="hotspot-meta">
-                  <span>{h.crime_count} crimes</span>
-                  {h.dominant_crime_type && <span>• {h.dominant_crime_type}</span>}
+                  <span>{h.crime_count} {t('crimes')}</span>
+                  {h.dominant_crime_type && <span>• {t(h.dominant_crime_type)}</span>}
                   {h.trend_direction && (
                     <span className={`hotspot-trend hotspot-trend-${h.trend_direction}`}>
                       <TrendIcon size={10} />
@@ -83,3 +86,4 @@ export default function HotspotRankings({ hotspots, loading }) {
     </div>
   )
 }
+

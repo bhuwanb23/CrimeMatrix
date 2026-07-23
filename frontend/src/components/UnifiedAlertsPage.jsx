@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Bell, RefreshCw, CheckCircle, AlertTriangle, Shield, MapPin, TrendingUp, Search, BarChart3 } from 'lucide-react'
 import { listAlerts, detectAlerts, acknowledgeAlert, getEarlyWarningStats } from '../services/earlyWarning'
 import { alerts as legacyAlerts, alertTypes } from './alerts/alertsData'
+import { useLanguage } from '../context/LanguageContext'
 
 const severityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 const alertTypeIcons = { spike: TrendingUp, hotspot: MapPin, serial: AlertTriangle, escalation: Shield }
@@ -12,6 +13,7 @@ const tabs = [
 ]
 
 export default function UnifiedAlertsPage() {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('early-warning')
   const [ewAlerts, setEwAlerts] = useState([])
   const [ewStats, setEwStats] = useState(null)
@@ -57,14 +59,14 @@ export default function UnifiedAlertsPage() {
                 <Bell size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Alerts & Early Warning</h1>
-                <p className="text-white/80 text-sm mt-0.5">Proactive crime monitoring and risk detection</p>
+                <h1 className="text-2xl font-bold">{t('Alerts & Early Warning')}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t('Proactive crime monitoring and risk detection')}</p>
               </div>
             </div>
             <button onClick={handleDetect} disabled={detecting}
               className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
               {detecting ? <RefreshCw size={14} className="animate-spin" /> : <Search size={14} />}
-              {detecting ? 'Detecting...' : 'Run Detection'}
+              {detecting ? t('Detecting...') : t('Run Detection')}
             </button>
           </div>
         </div>
@@ -84,7 +86,7 @@ export default function UnifiedAlertsPage() {
                 }`}
               >
                 <Icon size={16} />
-                {tab.label}
+                {t(tab.label)}
               </button>
             )
           })}
@@ -95,17 +97,18 @@ export default function UnifiedAlertsPage() {
           <EarlyWarningTab
             alerts={ewAlerts} stats={ewStats} loading={ewLoading}
             filter={filter} setFilter={setFilter} onAcknowledge={handleAcknowledge}
+            t={t}
           />
         )}
         {activeTab === 'analytics' && (
-          <AlertAnalyticsTab typeBreakdown={typeBreakdown} />
+          <AlertAnalyticsTab typeBreakdown={typeBreakdown} t={t} />
         )}
       </div>
     </div>
   )
 }
 
-function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowledge }) {
+function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowledge, t }) {
   return (
     <div className="space-y-5">
       {/* Stats */}
@@ -119,7 +122,7 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
           ].map((card, i) => (
             <div key={i} className={`${card.bg} ${card.border} border rounded-xl p-4`}>
               <span className={`text-2xl font-bold ${card.color}`}>{card.value}</span>
-              <span className="block text-[10px] font-semibold text-slate-500 uppercase mt-1">{card.label}</span>
+              <span className="block text-[10px] font-semibold text-slate-500 uppercase mt-1">{t(card.label)}</span>
             </div>
           ))}
         </div>
@@ -132,7 +135,7 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
               filter === f ? 'bg-orange-500 text-white' : 'bg-white text-slate-500 border border-slate-200 hover:border-orange-300'
             }`}>
-            {f.charAt(0).toUpperCase() + f.slice(1)}
+            {t(f.charAt(0).toUpperCase() + f.slice(1))}
           </button>
         ))}
       </div>
@@ -145,8 +148,8 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
       ) : alerts.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
           <Bell size={32} className="text-slate-300 mx-auto mb-2" />
-          <p className="text-sm text-slate-500">No alerts found</p>
-          <p className="text-xs text-slate-400">Click "Run Detection" to scan for early warning signals</p>
+          <p className="text-sm text-slate-500">{t('No alerts found')}</p>
+          <p className="text-xs text-slate-400">{t('Click "Run Detection" to scan for early warning signals')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -163,19 +166,19 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-semibold text-slate-900">{alert.title}</span>
                     <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase"
-                      style={{ color, background: `${color}15` }}>{alert.severity}</span>
+                      style={{ color, background: `${color}15` }}>{t(alert.severity)}</span>
                   </div>
                   <p className="text-xs text-slate-500 mb-2">{alert.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-400">Confidence: {alert.confidence}%</span>
+                    <span className="text-[10px] text-slate-400">{t('Confidence')}: {alert.confidence}%</span>
                     {alert.status === 'active' && (
                       <button onClick={() => onAcknowledge(alert.id)}
                         className="flex items-center gap-1 text-[10px] font-medium text-orange-600 hover:text-orange-700">
-                        <CheckCircle size={12} /> Acknowledge
+                        <CheckCircle size={12} /> {t('Acknowledge')}
                       </button>
                     )}
                     {alert.status === 'acknowledged' && (
-                      <span className="text-[10px] text-slate-400 italic">Acknowledged</span>
+                      <span className="text-[10px] text-slate-400 italic">{t('Acknowledged')}</span>
                     )}
                   </div>
                 </div>
@@ -188,16 +191,16 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
   )
 }
 
-function AlertAnalyticsTab({ typeBreakdown }) {
+function AlertAnalyticsTab({ typeBreakdown, t }) {
   return (
     <div className="grid grid-cols-3 gap-4">
       {/* Alert Type Breakdown */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Alerts by Type</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Alerts by Type')}</h3>
         <div className="space-y-2">
           {typeBreakdown.map((item, i) => (
             <div key={i} className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 w-20">{item.name}</span>
+              <span className="text-xs text-slate-500 w-20">{t(item.name)}</span>
               <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: `${(item.value / Math.max(...typeBreakdown.map(d => d.value), 1)) * 100}%`, background: item.color }} />
               </div>
@@ -209,7 +212,7 @@ function AlertAnalyticsTab({ typeBreakdown }) {
 
       {/* Alert Status */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Alert Status</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Alert Status')}</h3>
         <div className="space-y-2">
           {[
             { label: 'New', count: legacyAlerts.filter(a => a.status === 'new').length, color: '#ef4444' },
@@ -218,7 +221,7 @@ function AlertAnalyticsTab({ typeBreakdown }) {
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
-              <span className="text-xs text-slate-500 flex-1">{item.label}</span>
+              <span className="text-xs text-slate-500 flex-1">{t(item.label)}</span>
               <span className="text-xs font-semibold text-slate-700">{item.count}</span>
             </div>
           ))}
@@ -227,7 +230,7 @@ function AlertAnalyticsTab({ typeBreakdown }) {
 
       {/* Recent Alerts Feed */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">Recent Alerts</h3>
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Recent Alerts')}</h3>
         <div className="space-y-2">
           {legacyAlerts.slice(0, 4).map((alert, i) => {
             const typeInfo = alertTypes[alert.type] || { color: '#64748b', icon: '⚪' }

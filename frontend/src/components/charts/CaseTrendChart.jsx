@@ -3,6 +3,7 @@ import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip,
 } from 'recharts'
+import { useLanguage } from '../../context/LanguageContext'
 
 const data = [
   { day: 'Sun', cases: 18, resolved: 14 },
@@ -14,39 +15,40 @@ const data = [
   { day: 'Sat', cases: 15, resolved: 12 },
 ]
 
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload, label, t }) {
   if (!active || !payload?.length) return null
   return (
     <div className="chart-tooltip">
-      <p className="chart-tooltip-label">{label}</p>
-      <p className="chart-tooltip-value">{payload[0].value} cases</p>
+      <p className="chart-tooltip-label">{t(label)}</p>
+      <p className="chart-tooltip-value">{payload[0].value} {t('cases')}</p>
     </div>
   )
 }
 
 export default function CaseTrendChart() {
+  const { t } = useLanguage()
   const [interval, setInterval] = useState('Weekly')
 
   return (
     <div className="chart-card">
       <div className="chart-card-header">
         <div className="chart-card-title-group">
-          <h3 className="chart-card-title">Case Trend</h3>
+          <h3 className="chart-card-title">{t('Case Trend')}</h3>
           <span className="chart-legend">
             <span className="chart-legend-dot" style={{ background: '#e57373' }} />
-            Resolved: 130
+            {t('Resolved')}: 130
           </span>
         </div>
         <div className="chart-card-actions">
-          <span className="chart-card-label">Time Interval:</span>
+          <span className="chart-card-label">{t('Time Interval:')}</span>
           <select
             className="chart-select"
             value={interval}
             onChange={(e) => setInterval(e.target.value)}
           >
-            <option>Weekly</option>
-            <option>Monthly</option>
-            <option>Yearly</option>
+            <option value="Weekly">{t('Weekly')}</option>
+            <option value="Monthly">{t('Monthly')}</option>
+            <option value="Yearly">{t('Yearly')}</option>
           </select>
         </div>
       </div>
@@ -59,6 +61,7 @@ export default function CaseTrendChart() {
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
+              tickFormatter={(v) => t(v)}
             />
             <YAxis
               axisLine={false}
@@ -66,7 +69,7 @@ export default function CaseTrendChart() {
               tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
               tickFormatter={(v) => `${v}`}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip t={t} />} />
             <Line
               type="monotone"
               dataKey="cases"
@@ -81,3 +84,4 @@ export default function CaseTrendChart() {
     </div>
   )
 }
+

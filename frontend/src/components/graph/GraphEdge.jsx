@@ -1,6 +1,8 @@
 import { edgeColors } from './graphData'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function GraphEdge({ edge, sourceNode, targetNode, isHighlighted }) {
+  const { t } = useLanguage()
   const color = edgeColors[edge.type] || '#94a3b8'
   const strokeWidth = isHighlighted ? 3 : 1.5
   const opacity = isHighlighted ? 1 : 0.4
@@ -61,9 +63,10 @@ export default function GraphEdge({ edge, sourceNode, targetNode, isHighlighted 
           fontFamily="var(--font-sans)"
           className="edge-label"
         >
-          {edge.label}
+          {t(edge.label)}
         </text>
       )}
     </g>
   )
 }
+

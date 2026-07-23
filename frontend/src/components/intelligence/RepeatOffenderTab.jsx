@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { UserX, RefreshCw, AlertTriangle, Clock, MapPin, Shield, TrendingUp } from 'lucide-react'
 import { listRepeatOffenders, getRepeatOffenderStats, analyzeRepeatOffenders } from '../../services/repeatOffenders'
+import { useLanguage } from '../../context/LanguageContext'
 
 const riskColors = {
   critical: '#ef4444',
@@ -9,14 +10,16 @@ const riskColors = {
   low: '#10b981',
 }
 
-const dimensionConfig = [
-  { key: 'frequency_score', label: 'Frequency', icon: TrendingUp, color: '#f59e0b' },
-  { key: 'recency_score', label: 'Recency', icon: Clock, color: '#ef4444' },
-  { key: 'severity_score', label: 'Severity', icon: Shield, color: '#8b5cf6' },
-  { key: 'geographic_score', label: 'Geographic', icon: MapPin, color: '#3b82f6' },
-]
-
 export default function RepeatOffenderTab() {
+  const { t } = useLanguage()
+
+  const dimensionConfig = [
+    { key: 'frequency_score', label: t('Frequency'), icon: TrendingUp, color: '#f59e0b' },
+    { key: 'recency_score', label: t('Recency'), icon: Clock, color: '#ef4444' },
+    { key: 'severity_score', label: t('Severity'), icon: Shield, color: '#8b5cf6' },
+    { key: 'geographic_score', label: t('Geographic'), icon: MapPin, color: '#3b82f6' },
+  ]
+
   const [offenders, setOffenders] = useState([])
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -60,7 +63,7 @@ export default function RepeatOffenderTab() {
       <div className="repeat-tab">
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading repeat offenders...</span>
+          <span>{t('Loading repeat offenders...')}</span>
         </div>
       </div>
     )
@@ -71,11 +74,11 @@ export default function RepeatOffenderTab() {
       <div className="behavior-header">
         <div className="behavior-header-left">
           <UserX size={16} />
-          <h3>Repeat Offender Tracking</h3>
+          <h3>{t('Repeat Offender Tracking')}</h3>
         </div>
         <div className="behavior-analyze">
           <button className="similar-btn similar-btn-primary" onClick={handleAnalyze} disabled={analyzing}>
-            {analyzing ? 'Analyzing...' : 'Analyze Offenders'}
+            {analyzing ? t('Analyzing...') : t('Analyze Offenders')}
           </button>
           <button className="intel-refresh" onClick={loadData} disabled={loading}>
             <RefreshCw size={12} />
@@ -87,15 +90,15 @@ export default function RepeatOffenderTab() {
         <div className="behavior-stats">
           <div className="behavior-stat">
             <span className="behavior-stat-value">{stats.total_offenders || 0}</span>
-            <span className="behavior-stat-label">Offenders</span>
+            <span className="behavior-stat-label">{t('Offenders')}</span>
           </div>
           <div className="behavior-stat">
             <span className="behavior-stat-value" style={{ color: '#ef4444' }}>{stats.critical || 0}</span>
-            <span className="behavior-stat-label">Critical</span>
+            <span className="behavior-stat-label">{t('Critical')}</span>
           </div>
           <div className="behavior-stat">
             <span className="behavior-stat-value" style={{ color: '#f59e0b' }}>{stats.high || 0}</span>
-            <span className="behavior-stat-label">High Risk</span>
+            <span className="behavior-stat-label">{t('High Risk')}</span>
           </div>
         </div>
       )}
@@ -103,8 +106,8 @@ export default function RepeatOffenderTab() {
       {offenders.length === 0 ? (
         <div className="similar-empty">
           <UserX size={32} className="similar-empty-icon" />
-          <p>No repeat offenders identified</p>
-          <span>Click "Analyze Offenders" to scan crime data for repeat offenders.</span>
+          <p>{t('No repeat offenders identified')}</p>
+          <span>{t('Click "Analyze Offenders" to scan crime data for repeat offenders.')}</span>
         </div>
       ) : (
         <div className="repeat-list">
@@ -118,12 +121,12 @@ export default function RepeatOffenderTab() {
                 <div className="repeat-card-rank">#{i + 1}</div>
                 <div className="repeat-card-info">
                   <span className="repeat-card-name">{o.offender_name}</span>
-                  <span className="repeat-card-offenses">{o.total_offenses} offenses</span>
+                  <span className="repeat-card-offenses">{o.total_offenses} {t('offenses')}</span>
                 </div>
                 <div className="repeat-card-score">
                   <span className="repeat-card-overall">{o.overall_score}%</span>
                   <span className="repeat-risk-badge" style={{ color: riskColors[o.risk_level], background: `${riskColors[o.risk_level]}15` }}>
-                    {o.risk_level}
+                    {t(o.risk_level)}
                   </span>
                 </div>
               </div>
@@ -142,11 +145,11 @@ export default function RepeatOffenderTab() {
 
               {expandedId === o.id && o.risk_factors && o.risk_factors.length > 0 && (
                 <div className="repeat-card-factors">
-                  <h5>Risk Factors</h5>
+                  <h5>{t('Risk Factors')}</h5>
                   {o.risk_factors.map((f, fi) => (
                     <div key={fi} className="repeat-factor-item">
                       <AlertTriangle size={10} />
-                      <span>{f}</span>
+                      <span>{t(f)}</span>
                     </div>
                   ))}
                 </div>
@@ -158,3 +161,4 @@ export default function RepeatOffenderTab() {
     </div>
   )
 }
+

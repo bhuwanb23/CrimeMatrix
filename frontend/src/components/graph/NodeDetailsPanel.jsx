@@ -1,5 +1,6 @@
 import { X, FileText, Phone, Car, Users } from 'lucide-react'
 import { edgeColors } from './graphData'
+import { useLanguage } from '../../context/LanguageContext'
 
 const typeIcons = {
   suspect: Users,
@@ -9,12 +10,14 @@ const typeIcons = {
 }
 
 export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
+  const { t } = useLanguage()
+
   if (!node) {
     return (
       <div className="node-details-empty">
         <div className="node-details-empty-icon">🔍</div>
-        <h3>Select a Node</h3>
-        <p>Click on any node in the graph to view details</p>
+        <h3>{t('Select a Node')}</h3>
+        <p>{t('Click on any node in the graph to view details')}</p>
       </div>
     )
   }
@@ -29,7 +32,7 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
       <div className="node-details-header">
         <div className="node-details-type">
           <Icon size={14} />
-          <span>{node.type}</span>
+          <span>{t(node.type)}</span>
         </div>
         <button className="node-details-close" onClick={onClose}>
           <X size={16} />
@@ -42,28 +45,28 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
             <div className="node-details-avatar" style={{ background: node.gradient }}>
               {node.id}
             </div>
-            <h3 className="node-details-name">{node.label}</h3>
+            <h3 className="node-details-name">{t(node.label)}</h3>
             <div className="node-details-stats">
               <div className="node-detail-stat">
                 <span className="node-detail-stat-value">{node.risk}</span>
-                <span className="node-detail-stat-label">Risk</span>
+                <span className="node-detail-stat-label">{t('Risk')}</span>
               </div>
               <div className="node-detail-stat">
                 <span className="node-detail-stat-value">{node.cases}</span>
-                <span className="node-detail-stat-label">Cases</span>
+                <span className="node-detail-stat-label">{t('Cases')}</span>
               </div>
             </div>
           </>
         ) : (
           <>
             <div className="node-details-evidence-icon">{node.icon}</div>
-            <h3 className="node-details-name">{node.label}</h3>
+            <h3 className="node-details-name">{t(node.label)}</h3>
           </>
         )}
       </div>
 
       <div className="node-details-connections">
-        <h4>Connections ({connections.length})</h4>
+        <h4>{t('Connections')} ({connections.length})</h4>
         <div className="connections-list">
           {connections.map((conn, i) => {
             const otherNodeId = conn.source === node.id ? conn.target : conn.source
@@ -75,8 +78,8 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
                   style={{ background: edgeColors[conn.type] }}
                 />
                 <div className="connection-info">
-                  <span className="connection-name">{otherNode?.label || otherNodeId}</span>
-                  <span className="connection-type">{conn.label || conn.type}</span>
+                  <span className="connection-name">{t(otherNode?.label || otherNodeId)}</span>
+                  <span className="connection-type">{t(conn.label || conn.type)}</span>
                 </div>
               </div>
             )
@@ -86,10 +89,11 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
 
       {node.type === 'suspect' && (
         <div className="node-details-actions">
-          <button className="node-action-btn">View Full Profile</button>
-          <button className="node-action-btn secondary">Add to Investigation</button>
+          <button className="node-action-btn">{t('View Full Profile')}</button>
+          <button className="node-action-btn secondary">{t('Add to Investigation')}</button>
         </div>
       )}
     </div>
   )
 }
+

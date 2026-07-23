@@ -1,6 +1,8 @@
 import { Calendar } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function SeasonalPatterns({ patterns }) {
+  const { t } = useLanguage()
   if (!patterns) return null
 
   const { by_hour = [], by_day_of_week = [], by_month = [] } = patterns
@@ -9,7 +11,7 @@ export default function SeasonalPatterns({ patterns }) {
     const max = Math.max(...data.map(d => d[valueKey] || 0), 1)
     return (
       <div className="seasonal-chart">
-        <h4>{label}</h4>
+        <h4>{t(label)}</h4>
         <div className="seasonal-bars">
           {data.map((d, i) => (
             <div key={i} className="seasonal-bar-col">
@@ -30,7 +32,7 @@ export default function SeasonalPatterns({ patterns }) {
   return (
     <div className="trend-chart-widget">
       <div className="intel-widget-header">
-        <h3><Calendar size={14} /> Seasonal Patterns</h3>
+        <h3><Calendar size={14} /> {t('Seasonal Patterns')}</h3>
       </div>
 
       <div className="seasonal-grid">

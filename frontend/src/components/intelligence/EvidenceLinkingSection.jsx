@@ -4,17 +4,19 @@ import { detectEvidenceLinks, listEvidenceLinks, getEvidenceLinkingStats } from 
 import { explainEvidenceLink } from '../../services/proactive'
 import ExplainButton from './ExplainButton'
 import ExplanationPanel from './ExplanationPanel'
-
-const linkTypeConfig = {
-  same_type: { icon: FileText, label: 'Same Type', color: '#3b82f6' },
-  description_match: { icon: Search, label: 'Description Match', color: '#f59e0b' },
-}
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function EvidenceLinkingSection() {
+  const { t } = useLanguage()
   const [links, setLinks] = useState([])
   const [detecting, setDetecting] = useState(false)
   const [explainingId, setExplainingId] = useState(null)
   const [explanation, setExplanation] = useState(null)
+
+  const linkTypeConfig = {
+    same_type: { icon: FileText, label: t('Same Type'), color: '#3b82f6' },
+    description_match: { icon: Search, label: t('Description Match'), color: '#f59e0b' },
+  }
 
   useEffect(() => { loadData() }, [])
 
@@ -52,25 +54,25 @@ export default function EvidenceLinkingSection() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Link2 size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Evidence Linking</h3>
-          <span className="text-[10px] text-slate-400">{links.length} links</span>
+          <h3 className="text-sm font-semibold text-slate-900">{t('Evidence Linking')}</h3>
+          <span className="text-[10px] text-slate-400">{links.length} {t('links')}</span>
         </div>
         <button onClick={handleDetect} disabled={detecting}
           className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
-          {detecting ? 'Detecting...' : 'Detect Links'}
+          {detecting ? t('Detecting...') : t('Detect Links')}
         </button>
       </div>
 
       {links.length === 0 ? (
         <div className="py-6 text-center text-xs text-slate-400">
           <Link2 size={24} className="mx-auto mb-2 text-slate-200" />
-          <p>No evidence links found</p>
-          <p className="text-[10px] text-slate-300">Click "Detect Links" to find correlations</p>
+          <p>{t('No evidence links found')}</p>
+          <p className="text-[10px] text-slate-300">{t('Click "Detect Links" to find correlations')}</p>
         </div>
       ) : (
         <div className="space-y-2">
           {links.slice(0, 5).map((l, i) => {
-            const config = linkTypeConfig[l.link_type] || { icon: Link2, label: 'Link', color: '#64748b' }
+            const config = linkTypeConfig[l.link_type] || { icon: Link2, label: t('Link'), color: '#64748b' }
             const Icon = config.icon
             return (
               <div key={l.id || i}>
@@ -81,13 +83,13 @@ export default function EvidenceLinkingSection() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-slate-900">{l.link_reason}</p>
+                      <p className="text-xs font-medium text-slate-900">{t(l.link_reason)}</p>
                       <ExplainButton onClick={() => handleExplain(l.id)} loading={explainingId === l.id} />
                     </div>
                     <div className="flex items-center gap-2 text-[10px] text-slate-400">
-                      <span>Evidence #{l.evidence_id_1}</span>
+                      <span>{t('Evidence')} #{l.evidence_id_1}</span>
                       <ArrowRight size={10} />
-                      <span>Evidence #{l.evidence_id_2}</span>
+                      <span>{t('Evidence')} #{l.evidence_id_2}</span>
                       <span>• {l.confidence}%</span>
                     </div>
                   </div>
@@ -103,3 +105,4 @@ export default function EvidenceLinkingSection() {
     </div>
   )
 }
+

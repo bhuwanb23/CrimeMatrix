@@ -1,13 +1,15 @@
 import { ArrowUpRight, ArrowDownRight, Minus } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function TrendMainChart({ data, title = "Crime Trend", height = 200 }) {
+  const { t } = useLanguage()
   if (!data || data.length === 0) {
     return (
       <div className="trend-chart-widget">
         <div className="intel-widget-header">
-          <h3>{title}</h3>
+          <h3>{t(title)}</h3>
         </div>
-        <div className="similar-empty"><p>No trend data</p></div>
+        <div className="similar-empty"><p>{t('No trend data')}</p></div>
       </div>
     )
   }
@@ -28,7 +30,7 @@ export default function TrendMainChart({ data, title = "Crime Trend", height = 2
   return (
     <div className="trend-chart-widget">
       <div className="intel-widget-header">
-        <h3>{title}</h3>
+        <h3>{t(title)}</h3>
         <div className={`intel-trend-badge intel-trend-${direction}`}>
           <DirectionIcon size={14} />
           <span>{Math.abs(Math.round(changePct))}%</span>
@@ -49,7 +51,7 @@ export default function TrendMainChart({ data, title = "Crime Trend", height = 2
           ))}
         </div>
         <div className="trend-chart-avg" style={{ bottom: `${(avg / maxCount) * 100}%` }}>
-          <span className="trend-avg-label">avg: {avg}</span>
+          <span className="trend-avg-label">{t('avg')}: {avg}</span>
         </div>
       </div>
 
@@ -60,8 +62,8 @@ export default function TrendMainChart({ data, title = "Crime Trend", height = 2
       </div>
 
       <div className="trend-chart-footer">
-        <span>Total: {total}</span>
-        <span>{data.length} periods</span>
+        <span>{t('Total')}: {total}</span>
+        <span>{data.length} {t('periods')}</span>
       </div>
     </div>
   )

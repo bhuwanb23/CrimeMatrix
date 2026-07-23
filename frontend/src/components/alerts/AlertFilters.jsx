@@ -1,4 +1,5 @@
 import { alertTypes } from './alertsData'
+import { useLanguage } from '../../context/LanguageContext'
 
 const filters = [
   { id: 'all', label: 'All Alerts' },
@@ -6,6 +7,8 @@ const filters = [
 ]
 
 export default function AlertFilters({ activeFilter, onFilterChange }) {
+  const { t } = useLanguage()
+
   return (
     <div className="alert-filters">
       <div className="alert-filters-scroll">
@@ -21,10 +24,11 @@ export default function AlertFilters({ activeFilter, onFilterChange }) {
                 style={{ background: alertTypes[filter.id]?.color || 'var(--text-muted)' }}
               />
             )}
-            {filter.label}
+            {t(filter.label)}
           </button>
         ))}
       </div>
     </div>
   )
 }
+

@@ -1,13 +1,16 @@
 import { MapPin } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function HotspotHeatmap({ hotspots }) {
+  const { t } = useLanguage()
+  
   if (!hotspots || hotspots.length === 0) {
     return (
       <div className="hotspot-heatmap">
         <div className="intel-widget-header">
-          <h3><MapPin size={14} /> Crime Heatmap</h3>
+          <h3><MapPin size={14} /> {t('Crime Heatmap')}</h3>
         </div>
-        <div className="similar-empty"><p>No heatmap data</p></div>
+        <div className="similar-empty"><p>{t('No heatmap data')}</p></div>
       </div>
     )
   }
@@ -26,7 +29,7 @@ export default function HotspotHeatmap({ hotspots }) {
   return (
     <div className="hotspot-heatmap">
       <div className="intel-widget-header">
-        <h3><MapPin size={14} /> Crime Heatmap</h3>
+        <h3><MapPin size={14} /> {t('Crime Heatmap')}</h3>
       </div>
 
       <div className="heatmap-visual">
@@ -43,7 +46,7 @@ export default function HotspotHeatmap({ hotspots }) {
                 width: size,
                 height: size,
               }}
-              title={`${h.name}: ${h.crime_count} crimes (${h.risk_level})`}
+              title={`${t(h.name)}: ${h.crime_count} ${t('crimes')} (${t(h.risk_level)})`}
             >
               <span className="heatmap-count">{h.crime_count}</span>
             </div>
@@ -52,11 +55,12 @@ export default function HotspotHeatmap({ hotspots }) {
       </div>
 
       <div className="heatmap-legend">
-        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#ef4444' }} /> Critical</span>
-        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#f59e0b' }} /> High</span>
-        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#3b82f6' }} /> Medium</span>
-        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#10b981' }} /> Low</span>
+        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#ef4444' }} /> {t('Critical')}</span>
+        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#f59e0b' }} /> {t('High')}</span>
+        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#3b82f6' }} /> {t('Medium')}</span>
+        <span className="heatmap-legend-item"><span className="heatmap-dot" style={{ background: '#10b981' }} /> {t('Low')}</span>
       </div>
     </div>
   )
 }
+

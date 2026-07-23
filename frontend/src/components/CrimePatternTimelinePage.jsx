@@ -8,7 +8,10 @@ const tabs = [
   { id: 'timeline', label: 'Timeline', icon: Clock },
 ]
 
+import { useLanguage } from '../context/LanguageContext'
+
 export default function CrimePatternTimelinePage() {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('patterns')
 
   return (
@@ -22,8 +25,8 @@ export default function CrimePatternTimelinePage() {
                 <Layers size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Patterns & Timeline</h1>
-                <p className="text-white/80 text-sm mt-0.5">Crime pattern discovery and criminal timeline tracking</p>
+                <h1 className="text-2xl font-bold">{t('Patterns & Timeline')}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t('Crime pattern discovery and criminal timeline tracking')}</p>
               </div>
             </div>
           </div>
@@ -44,7 +47,7 @@ export default function CrimePatternTimelinePage() {
                 }`}
               >
                 <Icon size={16} />
-                {tab.label}
+                {t(tab.label)}
               </button>
             )
           })}

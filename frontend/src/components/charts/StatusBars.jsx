@@ -1,3 +1,5 @@
+import { useLanguage } from '../../context/LanguageContext'
+
 const statuses = [
   { label: 'Active', value: 47, pct: 35, color: '#e57373' },
   { label: 'Pending Review', value: 28, pct: 21, color: '#ef9a9a' },
@@ -6,10 +8,12 @@ const statuses = [
 ]
 
 export default function StatusBars() {
+  const { t } = useLanguage()
+
   return (
     <div className="chart-card">
       <div className="chart-card-header">
-        <h3 className="chart-card-title">Cases by Status</h3>
+        <h3 className="chart-card-title">{t('Cases by Status')}</h3>
         <button className="chart-card-menu" aria-label="More options">⋯</button>
       </div>
       <div className="chart-card-body">
@@ -17,7 +21,7 @@ export default function StatusBars() {
           {statuses.map((s, i) => (
             <div key={i} className="status-bar-item">
               <div className="status-bar-header">
-                <span className="status-bar-label">{s.label}</span>
+                <span className="status-bar-label">{t(s.label)}</span>
                 <span className="status-bar-pct">{s.pct}%</span>
               </div>
               <div className="status-bar-track">
@@ -36,3 +40,4 @@ export default function StatusBars() {
     </div>
   )
 }
+

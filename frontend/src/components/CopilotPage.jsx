@@ -5,12 +5,14 @@ import ChatHistory from './copilot/ChatHistory'
 import ContextPanel from './copilot/ContextPanel'
 import { chatStream, listSessions, getSession, deleteAllSessions, searchSessions } from '../services/copilot'
 import { stopSpeaking } from '../services/voice'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function CopilotPage() {
   const [activeChatId, setActiveChatId] = useState(null)
   const [sessionId, setSessionId] = useState(null)
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
+  const { t } = useLanguage()
   const [historyOpen, setHistoryOpen] = useState(false)
   const [contextOpen, setContextOpen] = useState(false)
   const [sessions, setSessions] = useState([])
@@ -97,7 +99,7 @@ export default function CopilotPage() {
   }
 
   const handleDeleteAll = async () => {
-    if (!confirm('Delete all conversations? This cannot be undone.')) return
+    if (!confirm(t('Delete all conversations? This cannot be undone.'))) return
     try { await deleteAllSessions() } catch { /* ignore */ }
     setMessages([])
     setActiveChatId(null)
@@ -124,7 +126,7 @@ export default function CopilotPage() {
       {voiceEnabled && (
         <div className="flex items-center justify-center gap-2 py-1.5 bg-blue-50 border-b border-blue-100 text-xs text-blue-600">
           <Volume2 size={12} />
-          Voice mode active — Speak to interact
+          {t('Voice mode active — Speak to interact')}
         </div>
       )}
 

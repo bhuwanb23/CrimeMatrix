@@ -1,7 +1,9 @@
 import { alertTypes } from './alertsData'
 import { ChevronRight } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function AlertCard({ alert, onAccept, onReject, onView }) {
+  const { t } = useLanguage()
   const typeInfo = alertTypes[alert.type]
 
   return (
@@ -13,7 +15,7 @@ export default function AlertCard({ alert, onAccept, onReject, onView }) {
       <div className="alert-card-main">
         <div className="alert-card-top">
           <div className="alert-card-type-badge" style={{ background: typeInfo.color + '15', color: typeInfo.color }}>
-            {typeInfo.label}
+            {t(typeInfo.label)}
           </div>
           <span className={`alert-priority-badge ${alert.priority}`}>{alert.priority}</span>
         </div>
@@ -32,13 +34,13 @@ export default function AlertCard({ alert, onAccept, onReject, onView }) {
 
           <div className="alert-card-actions">
             <button className="alert-btn accept" onClick={() => onAccept(alert.id)}>
-              Accept
+              {t('Accept')}
             </button>
             <button className="alert-btn reject" onClick={() => onReject(alert.id)}>
-              Dismiss
+              {t('Dismiss')}
             </button>
             <button className="alert-btn view" onClick={() => onView(alert)}>
-              View <ChevronRight size={14} />
+              {t('View')} <ChevronRight size={14} />
             </button>
           </div>
         </div>
@@ -46,3 +48,4 @@ export default function AlertCard({ alert, onAccept, onReject, onView }) {
     </div>
   )
 }
+

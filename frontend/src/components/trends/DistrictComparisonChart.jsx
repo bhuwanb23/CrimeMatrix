@@ -1,15 +1,18 @@
 import { MapPin } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const COLORS = ['#f59e0b', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16']
 
 export default function DistrictComparisonChart({ districts }) {
+  const { t } = useLanguage()
+
   if (!districts || Object.keys(districts).length === 0) {
     return (
       <div className="trend-chart-widget">
         <div className="intel-widget-header">
-          <h3><MapPin size={14} /> District Comparison</h3>
+          <h3><MapPin size={14} /> {t('District Comparison')}</h3>
         </div>
-        <div className="similar-empty"><p>No district data</p></div>
+        <div className="similar-empty"><p>{t('No district data')}</p></div>
       </div>
     )
   }
@@ -21,7 +24,7 @@ export default function DistrictComparisonChart({ districts }) {
   return (
     <div className="trend-chart-widget">
       <div className="intel-widget-header">
-        <h3><MapPin size={14} /> District Comparison</h3>
+        <h3><MapPin size={14} /> {t('District Comparison')}</h3>
       </div>
 
       <div className="district-compare-list">

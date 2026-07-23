@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { FileText, User, Clock, Camera, ExternalLink, Trash2 } from 'lucide-react'
 import { removeBookmark } from '../../services/bookmarks'
+import { useLanguage } from '../../context/LanguageContext'
 
 const entityConfig = {
   case: { icon: FileText, label: 'Case', color: '#f59e0b', route: '/cases' },
@@ -11,6 +12,7 @@ const entityConfig = {
 }
 
 export default function BookmarkCard({ bookmark, onRemoved }) {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const config = entityConfig[bookmark.entity_type] || entityConfig.case
   const Icon = config.icon
@@ -53,7 +55,7 @@ export default function BookmarkCard({ bookmark, onRemoved }) {
       </div>
       <div className="bookmark-card-info">
         <div className="bookmark-card-header">
-          <span className="bookmark-card-type" style={{ color: config.color }}>{config.label}</span>
+          <span className="bookmark-card-type" style={{ color: config.color }}>{t(config.label)}</span>
           <span className="bookmark-card-id">#{bookmark.entity_id}</span>
         </div>
         {bookmark.bookmark_note && (
@@ -72,3 +74,4 @@ export default function BookmarkCard({ bookmark, onRemoved }) {
     </div>
   )
 }
+

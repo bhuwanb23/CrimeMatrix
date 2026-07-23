@@ -1,7 +1,6 @@
 import { Target } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function ConfidenceBreakdown({ forecast }) {
   const { t } = useLanguage()
   if (!forecast) return null
@@ -18,7 +17,7 @@ export default function ConfidenceBreakdown({ forecast }) {
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Target size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t(t('Confidence Breakdown'))}</h3>
+        <h3 className="text-sm font-semibold text-slate-900">{t('Confidence Breakdown')}</h3>
       </div>
 
       <div className="space-y-2">
@@ -35,7 +34,7 @@ export default function ConfidenceBreakdown({ forecast }) {
 
       <div className="mt-3 pt-2 border-t border-slate-100">
         <p className="text-[10px] text-slate-400">
-          Overall confidence: {confidence}% — {confidence >= 75 ? 'High reliability' : confidence >= 50 ? 'Moderate reliability' : t('Low reliability')}
+          {t('Overall confidence:')} {confidence}% — {confidence >= 75 ? t('High reliability') : confidence >= 50 ? t('Moderate reliability') : t('Low reliability')}
         </p>
       </div>
     </div>

@@ -176,7 +176,8 @@ class IntelligenceExplanationService:
                 case = await self._load_model(Case, entity_id)
                 if case:
                     ctx["case"] = {"id": case.id, "title": case.title, "crime_type": case.crime_type,
-                                   "district": case.district, "status": case.status}
+                                   "district": case.district, "status": case.status,
+                                   "crime_no": case.crime_no, "case_category_id": case.case_category_id}
                     sims = await self._query_similar(case.id)
                     if sims:
                         ctx["similar_cases"] = sims
@@ -201,7 +202,7 @@ class IntelligenceExplanationService:
                 case = await self._load_model(Case, rec.entity_id)
                 if case:
                     ctx["case"] = {"id": case.id, "title": case.title, "crime_type": case.crime_type,
-                                   "district": case.district}
+                                   "district": case.district, "crime_no": case.crime_no}
             elif rec_type == "suspect_alert" and rec.entity_id:
                 suspect = await self._load_model(Suspect, rec.entity_id)
                 if suspect:
@@ -215,7 +216,8 @@ class IntelligenceExplanationService:
                 if rec.entity_id:
                     case = await self._load_model(Case, rec.entity_id)
                     if case:
-                        ctx["case"] = {"id": case.id, "title": case.title, "district": case.district}
+                        ctx["case"] = {"id": case.id, "title": case.title, "district": case.district,
+                                       "crime_no": case.crime_no, "case_category_id": case.case_category_id}
         except Exception as e:
             logger.warning("rec_context_error", error=str(e))
         return ctx

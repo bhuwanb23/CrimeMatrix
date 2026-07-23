@@ -1,6 +1,8 @@
 import { ArrowUpRight, ArrowDownRight, Minus } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function IntelligenceTrendWidget({ trends }) {
+  const { t } = useLanguage()
   if (!trends) return null
 
   const daily = trends.daily || []
@@ -14,7 +16,7 @@ export default function IntelligenceTrendWidget({ trends }) {
   return (
     <div className="intel-trend-widget">
       <div className="intel-widget-header">
-        <h3>Crime Trends</h3>
+        <h3>{t('Crime Trends')}</h3>
         <div className={`intel-trend-badge intel-trend-${direction}`}>
           <DirectionIcon size={14} />
           <span>{Math.abs(changePct)}%</span>
@@ -23,7 +25,7 @@ export default function IntelligenceTrendWidget({ trends }) {
 
       <div className="intel-trend-chart">
         {daily.length === 0 ? (
-          <div className="similar-empty"><p>No trend data</p></div>
+          <div className="similar-empty"><p>{t('No trend data')}</p></div>
         ) : (
           <div className="intel-bar-chart">
             {daily.slice(-14).map((d, i) => (
@@ -44,11 +46,12 @@ export default function IntelligenceTrendWidget({ trends }) {
       </div>
 
       <div className="intel-trend-footer">
-        <span className="intel-trend-period">Last {trends.period || '30d'}</span>
+        <span className="intel-trend-period">{t('Last')} {trends.period || '30d'}</span>
         <span className="intel-trend-summary">
-          {daily.length} days · {daily.reduce((s, d) => s + d.count, 0)} total crimes
+          {daily.length} {t('days')} · {daily.reduce((s, d) => s + d.count, 0)} {t('total crimes')}
         </span>
       </div>
     </div>
   )
 }
+

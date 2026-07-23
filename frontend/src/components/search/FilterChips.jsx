@@ -3,17 +3,17 @@ import { useLanguage } from '../../context/LanguageContext'
 
 
 const filters = [
-  { id: 'all', label: t('All') },
-  { id: 'fir', label: t('FIR') },
-  { id: 'suspects', label: t('Suspects') },
-  { id: 'theft', label: t('Theft') },
-  { id: 'fraud', label: t('Fraud') },
-  { id: 'assault', label: t('Assault') },
-  { id: 'cybercrime', label: t('Cybercrime') },
-  { id: 'bengaluru', label: t('Bengaluru') },
-  { id: 'mysuru', label: t('Mysuru') },
-  { id: 'active', label: t('Active') },
-  { id: 'pending', label: t('Pending') },
+  { id: 'all', label: 'All' },
+  { id: 'fir', label: 'FIR' },
+  { id: 'suspects', label: 'Suspects' },
+  { id: 'theft', label: 'Theft' },
+  { id: 'fraud', label: 'Fraud' },
+  { id: 'assault', label: 'Assault' },
+  { id: 'cybercrime', label: 'Cybercrime' },
+  { id: 'bengaluru', label: 'Bengaluru' },
+  { id: 'mysuru', label: 'Mysuru' },
+  { id: 'active', label: 'Active' },
+  { id: 'pending', label: 'Pending' },
 ]
 
 export default function FilterChips({ activeFilters, onToggleFilter, onClearAll }) {
@@ -27,14 +27,14 @@ export default function FilterChips({ activeFilters, onToggleFilter, onClearAll 
             className={`filter-chip ${activeFilters.includes(filter.id) ? 'active' : ''}`}
             onClick={() => onToggleFilter(filter.id)}
           >
-            {filter.label}
+            {t(filter.label)}
           </button>
         ))}
       </div>
       {activeFilters.length > 0 && (
         <button className="filter-clear" onClick={onClearAll}>
           <X size={14} />
-          Clear all
+          {t('Clear all')}
         </button>
       )}
     </div>

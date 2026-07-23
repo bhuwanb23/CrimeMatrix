@@ -6,6 +6,11 @@ from app.models.crime_head import CrimeHead
 from app.models.crime_sub_head import CrimeSubHead
 from app.models.case_status_master import CaseStatusMaster
 from app.models.court import Court
+from app.models.occupation import Occupation
+from app.models.religion import Religion
+from app.models.caste_master import CasteMaster
+from app.models.gender import Gender
+from app.models.complainant import Complainant
 from app.models.fir import FIR
 from app.models.suspect import Suspect
 from app.models.evidence import Evidence
@@ -102,6 +107,8 @@ __all__ = [
     "User", "Case", "FIR", "Suspect", "Evidence", "Investigation", "Alert",
     # CaseMaster lookup tables
     "CaseCategory", "GravityOffence", "CrimeHead", "CrimeSubHead", "CaseStatusMaster", "Court",
+    # Complainant lookup tables
+    "Occupation", "Religion", "CasteMaster", "Gender", "Complainant",
     # Crime data
     "Crime", "CrimeType", "Criminal", "Person", "Victim", "Witness",
     "Officer", "Station", "District", "Vehicle", "Phone", "Location",

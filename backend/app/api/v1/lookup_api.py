@@ -111,6 +111,20 @@ async def list_sections(act_id: int = None, db: AsyncSession = Depends(get_db)):
     return success_response(data={"items": items, "total": len(items)})
 
 
+@router.get("/states")
+async def list_states(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(State).order_by(State.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/arrest-surrender-types")
+async def list_arrest_surrender_types(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(ArrestSurrenderType).order_by(ArrestSurrenderType.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "description": r.description} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
 @router.post("/seed")
 async def seed_lookups(db: AsyncSession = Depends(get_db)):
     seeded = 0

@@ -4,10 +4,12 @@ import ReportStats from './reports/ReportStats'
 import ReportFilters from './reports/ReportFilters'
 import ReportTable from './reports/ReportTable'
 import { reports as allReports } from './reports/reportsData'
+import { useLanguage } from '../context/LanguageContext'
 
 const ITEMS_PER_PAGE = 8
 
 export default function ReportsPage() {
+  const { t } = useLanguage()
   const [filters, setFilters] = useState({ search: '', date: '', type: '', status: '' })
   const [page, setPage] = useState(1)
 
@@ -56,8 +58,8 @@ export default function ReportsPage() {
               <FileText size={28} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Reports & Documentation</h1>
-              <p className="text-white/80 text-sm mt-0.5">Investigation reports, court documents, and exports</p>
+              <h1 className="text-2xl font-bold">{t('Reports & Documentation')}</h1>
+              <p className="text-white/80 text-sm mt-0.5">{t('Investigation reports, court documents, and exports')}</p>
             </div>
           </div>
         </div>

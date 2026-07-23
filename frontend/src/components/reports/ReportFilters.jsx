@@ -18,22 +18,22 @@ export default function ReportFilters({ filters, onFilterChange, onExport }) {
 
       <div className="report-filter-group">
         <div className="report-filter-select">
-          <span>Date: {filters.date || 'All period'}</span>
+          <span>{t('Date:')} {filters.date ? t(filters.date) : t('All period')}</span>
           <ChevronDown size={12} />
         </div>
         <div className="report-filter-select">
-          <span>Type: {filters.type || 'All types'}</span>
+          <span>{t('Type:')} {filters.type ? t(filters.type) : t('All types')}</span>
           <ChevronDown size={12} />
         </div>
         <div className="report-filter-select">
-          <span>Status: {filters.status || 'All statuses'}</span>
+          <span>{t('Status:')} {filters.status ? t(filters.status) : t('All statuses')}</span>
           <ChevronDown size={12} />
         </div>
       </div>
 
       <button className="report-export-btn" onClick={onExport}>
         <Download size={14} />
-        Export CSV
+        {t('Export CSV')}
       </button>
     </div>
   )

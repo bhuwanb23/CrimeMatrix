@@ -382,7 +382,7 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
     for name, section_code, act_code, act_id in sections_data:
         exists = await db.execute(select(Section).where(Section.section_code == section_code).where(Section.act_id == act_id))
         if not exists.scalar():
-            db.add(Section(name=name, code=section_code, section_code=section_code, act_id=act_id, description=f"Section {section_code}"))
+            db.add(Section(name=name, code=section_code, section_code=section_code, act_id=act_id, description=f"Section {section_code}", active=True))
             seeded += 1
 
     # States

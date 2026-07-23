@@ -20,13 +20,13 @@ function latLngToSvg(lat, lng) {
 }
 
 export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistrictSelect, activeLayers = [], mapData, loading }) {
+  const { t } = useLanguage()
   const svgRef = useRef(null)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [isPanning, setIsPanning] = useState(false)
   const [panStart, setPanStart] = useState({ x: 0, y: 0 })
   const [hoveredMarker, setHoveredMarker] = useState(null)
-
   const handleWheel = useCallback((e) => {
     e.preventDefault()
     const delta = e.deltaY > 0 ? -0.1 : 0.1

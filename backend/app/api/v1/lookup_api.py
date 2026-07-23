@@ -147,6 +147,20 @@ async def list_crime_head_act_sections(crime_head_id: int = None, db: AsyncSessi
     return success_response(data={"items": items, "total": len(items)})
 
 
+@router.get("/unit-types")
+async def list_unit_types(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(UnitType).order_by(UnitType.hierarchy))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "city_dist_state": r.city_dist_state, "hierarchy": r.hierarchy, "active": r.active} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/ranks")
+async def list_ranks(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Rank).order_by(Rank.hierarchy))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "hierarchy": r.hierarchy, "active": r.active} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
 @router.post("/seed")
 async def seed_lookups(db: AsyncSession = Depends(get_db)):
     seeded = 0
@@ -414,6 +428,40 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
         exists = await db.execute(select(ArrestSurrenderType).where(ArrestSurrenderType.code == code))
         if not exists.scalar():
             db.add(ArrestSurrenderType(name=name, code=code, description=desc))
+            seeded += 1
+
+    # Unit Types
+    unit_types_data = [
+        ("Police Station", "PS", "City", 4, "Local police station"),
+        ("Circle Office", "CO", "District", 3, "Circle-level police office"),
+        ("Sub-Division", "SD", "District", 2, "Sub-divisional police office"),
+        ("District Police", "DP", "District", 1, "District police headquarters"),
+        ("Commissionerate", "CMP", "City", 1, "City police commissionerate"),
+        ("State Headquarters", "SHQ", "State", 0, "State police headquarters"),
+    ]
+    for name, code, cds, hierarchy, desc in unit_types_data:
+        exists = await db.execute(select(UnitType).where(UnitType.code == code))
+        if not exists.scalar():
+            db.add(UnitType(name=name, code=code, city_dist_state=cds, hierarchy=hierarchy, description=desc, active=True))
+            seeded += 1
+
+    # Ranks
+    ranks_data = [
+        ("Constable", "CON", 10, "Entry-level police constable"),
+        ("Head Constable", "HC", 9, "Senior constable"),
+        ("Assistant Sub-Inspector", "ASI", 8, "Assistant sub-inspector"),
+        ("Sub-Inspector", "SI", 7, "Sub-inspector"),
+        ("Inspector", "INS", 6, "Police inspector"),
+        ("Deputy Superintendent of Police", "DSP", 5, "Deputy SP"),
+        ("Superintendent of Police", "SP", 4, "District SP"),
+        ("Deputy Inspector General", "DIG", 3, "Deputy Inspector General"),
+        ("Inspector General", "IG", 2, "Inspector General"),
+        ("Director General of Police", "DGP", 1, "State DGP"),
+    ]
+    for name, code, hierarchy, desc in ranks_data:
+        exists = await db.execute(select(Rank).where(Rank.code == code))
+        if not exists.scalar():
+            db.add(Rank(name=name, code=code, hierarchy=hierarchy, description=desc, active=True))
             seeded += 1
 
     await db.commit()

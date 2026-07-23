@@ -184,8 +184,8 @@ export default function CriminalTimelinePage() {
                         <div className="timeline-event-line" style={{ background: config.color + '30' }} />
                         <div className="timeline-event-content">
                           <div className="timeline-event-header">
-                            <span className="timeline-event-type" style={{ color: config.color }}>{config.label}</span>
-                            <span className="timeline-event-source">{event.source}</span>
+                            <span className="timeline-event-type" style={{ color: config.color }}>{t(config.label)}</span>
+                            <span className="timeline-event-source">{t(event.source)}</span>
                           </div>
                           <p className="timeline-event-title">{event.title}</p>
                           {event.description && (
@@ -205,7 +205,7 @@ export default function CriminalTimelinePage() {
   )
 }
 
-function formatGroupDate(dateStr) {
+function formatGroupDate(dateStr, t) {
   if (!dateStr) return t('Unknown Date')
   try {
     const d = new Date(dateStr)

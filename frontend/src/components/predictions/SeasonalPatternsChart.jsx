@@ -1,6 +1,9 @@
 import { Calendar } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function SeasonalPatternsChart({ patterns }) {
+  const { t } = useLanguage()
   if (!patterns) return null
 
   const { by_hour = [], by_day_of_week = [], by_month = [] } = patterns
@@ -31,7 +34,7 @@ export default function SeasonalPatternsChart({ patterns }) {
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Calendar size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">Seasonal Patterns</h3>
+        <h3 className="text-sm font-semibold text-slate-900">{t(t('Seasonal Patterns'))}</h3>
       </div>
 
       <div className="grid grid-cols-3 gap-2">

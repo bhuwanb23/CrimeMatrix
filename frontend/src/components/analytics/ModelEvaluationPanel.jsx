@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Activity, RefreshCw } from 'lucide-react'
 import { getEvaluationStats, runEvaluation, getEvaluationResults } from '../../services/analytics'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function ModelEvaluationPanel() {
+  const { t } = useLanguage()
   const [stats, setStats] = useState(null)
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
@@ -29,11 +32,11 @@ export default function ModelEvaluationPanel() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Activity size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Model Evaluation</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t(t('Model Evaluation'))}</h3>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={handleRun} disabled={running} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
-            {running ? 'Running...' : 'Run Evaluation'}
+            {running ? 'Running...' : t('Run Evaluation')}
           </button>
           <button onClick={loadData} disabled={loading} className="p-1 hover:bg-slate-100 rounded">
             <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
@@ -47,7 +50,7 @@ export default function ModelEvaluationPanel() {
             { label: 'Metrics', value: stats.total_metrics || 0 },
             { label: 'Feedback', value: stats.total_feedback || 0 },
             { label: 'Evaluations', value: stats.total_evaluations || 0 },
-            { label: 'Avg Rating', value: `${stats.avg_rating || 0}/5` },
+            { label: t('Avg Rating'), value: `${stats.avg_rating || 0}/5` },
           ].map((s, i) => (
             <div key={i} className="text-center p-2 bg-slate-50 rounded-lg">
               <span className="block text-lg font-bold text-slate-900">{s.value}</span>

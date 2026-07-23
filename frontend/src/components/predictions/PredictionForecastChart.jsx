@@ -1,6 +1,9 @@
 import { TrendingUp } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function PredictionForecastChart({ forecast }) {
+  const { t } = useLanguage()
   if (!forecast) return null
 
   const historical = forecast.historical || []
@@ -12,7 +15,7 @@ export default function PredictionForecastChart({ forecast }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <TrendingUp size={14} />
-        <h3>Crime Forecast</h3>
+        <h3>{t(t('Crime Forecast'))}</h3>
         <span className={`intel-trend-badge intel-trend-${forecast.trend === 'increasing' ? 'up' : forecast.trend === 'decreasing' ? 'down' : 'stable'}`}>
           {forecast.trend}
         </span>

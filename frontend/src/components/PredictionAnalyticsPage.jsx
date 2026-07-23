@@ -13,8 +13,11 @@ import SeasonalPatternsChart from './predictions/SeasonalPatternsChart'
 import PredictionExplanationPanel from './predictions/PredictionExplanationPanel'
 import ConfidenceBreakdown from './predictions/ConfidenceBreakdown'
 import SourceReferences from './predictions/SourceReferences'
+import { useLanguage } from '../context/LanguageContext'
+
 
 export default function PredictionAnalyticsPage() {
+  const { t } = useLanguage()
   const [stats, setStats] = useState(null)
   const [forecast, setForecast] = useState(null)
   const [models, setModels] = useState([])
@@ -89,8 +92,8 @@ export default function PredictionAnalyticsPage() {
                 <LineChart size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Predictive Crime Analytics</h1>
-                <p className="text-white/80 text-sm mt-0.5">Forecast crime patterns with confidence indicators</p>
+                <h1 className="text-2xl font-bold">{t(t('Predictive Crime Analytics'))}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t(t('Forecast crime patterns with confidence indicators'))}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -110,7 +113,7 @@ export default function PredictionAnalyticsPage() {
               <button onClick={handleForecast} disabled={forecasting}
                 className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
                 {forecasting ? <RefreshCw size={14} className="animate-spin" /> : <TrendingUp size={14} />}
-                {forecasting ? 'Forecasting...' : 'Generate Forecast'}
+                {forecasting ? 'Forecasting...' : t('Generate Forecast')}
               </button>
             </div>
           </div>

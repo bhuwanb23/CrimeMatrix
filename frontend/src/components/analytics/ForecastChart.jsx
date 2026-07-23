@@ -1,6 +1,9 @@
 import { TrendingUp } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function ForecastChart({ forecasts }) {
+  const { t } = useLanguage()
   if (!forecasts) return null
 
   const historical = forecasts.historical || []
@@ -11,7 +14,7 @@ export default function ForecastChart({ forecasts }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <TrendingUp size={14} />
-        <h3>Crime Forecast</h3>
+        <h3>{t(t('Crime Forecast'))}</h3>
         <span className="similar-count">{forecasts.data_points || 0} data points</span>
       </div>
 

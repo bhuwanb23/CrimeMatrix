@@ -1,4 +1,6 @@
 import { ClipboardList } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 const priorityColors = {
   high: '#ef4444',
@@ -7,12 +9,13 @@ const priorityColors = {
 }
 
 export default function PriorityCasesList({ cases }) {
+  const { t } = useLanguage()
   if (!cases || cases.length === 0) {
     return (
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <ClipboardList size={14} />
-          <h3>Priority Cases</h3>
+          <h3>{t(t('Priority Cases'))}</h3>
         </div>
         <div className="similar-empty"><p>No priority cases</p></div>
       </div>
@@ -23,7 +26,7 @@ export default function PriorityCasesList({ cases }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <ClipboardList size={14} />
-        <h3>Priority Cases</h3>
+        <h3>{t(t('Priority Cases'))}</h3>
         <span className="similar-count">{cases.length}</span>
       </div>
       <div className="analytics-priority-list">

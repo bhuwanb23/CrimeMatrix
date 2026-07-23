@@ -1,8 +1,11 @@
 import { TrendingUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { getAccuracyTrend } from '../../services/analytics'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function AccuracyTrendChart() {
+  const { t } = useLanguage()
   const [trend, setTrend] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -22,13 +25,13 @@ export default function AccuracyTrendChart() {
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <TrendingUp size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">Accuracy Trend</h3>
+        <h3 className="text-sm font-semibold text-slate-900">{t(t('Accuracy Trend'))}</h3>
       </div>
 
       {loading ? (
         <p className="text-[10px] text-slate-400 text-center py-4">Loading...</p>
       ) : trend.length === 0 ? (
-        <p className="text-[10px] text-slate-400 text-center py-4">No accuracy data yet</p>
+        <p className="text-[10px] text-slate-400 text-center py-4">{t(t('No accuracy data yet'))}</p>
       ) : (
         <div className="flex items-end gap-0.5 h-20">
           {trend.slice(-14).map((t, i) => (

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { HelpCircle, AlertTriangle } from 'lucide-react'
 import { explainPrediction } from '../../services/predictions'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function PredictionExplanationPanel({ predictionId }) {
+  const { t } = useLanguage()
   const [explanation, setExplanation] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -23,7 +26,7 @@ export default function PredictionExplanationPanel({ predictionId }) {
           <h3 className="text-sm font-semibold text-slate-900">Why This Prediction?</h3>
         </div>
         <button onClick={handleExplain} disabled={loading} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
-          {loading ? 'Loading...' : explanation ? 'Refresh' : 'Explain'}
+          {loading ? 'Loading...' : explanation ? t('Refresh') : 'Explain'}
         </button>
       </div>
 

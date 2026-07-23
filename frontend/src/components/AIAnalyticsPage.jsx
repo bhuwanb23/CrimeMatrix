@@ -10,8 +10,11 @@ import AIRecommendationsPanel from './analytics/AIRecommendationsPanel'
 import ModelEvaluationPanel from './analytics/ModelEvaluationPanel'
 import AccuracyTrendChart from './analytics/AccuracyTrendChart'
 import FeedbackSummary from './analytics/FeedbackSummary'
+import { useLanguage } from '../context/LanguageContext'
+
 
 export default function AIAnalyticsPage() {
+  const { t } = useLanguage()
   const [summary, setSummary] = useState(null)
   const [alerts, setAlerts] = useState([])
   const [forecasts, setForecasts] = useState(null)
@@ -39,7 +42,7 @@ export default function AIAnalyticsPage() {
       setHighRisk(highRiskRes?.data || [])
       setPriority(priorityRes?.data || [])
     } catch (e) {
-      console.error('Failed to load analytics dashboard', e)
+      console.error(t('Failed to load analytics dashboard'), e)
     } finally {
       setLoading(false)
     }
@@ -56,8 +59,8 @@ export default function AIAnalyticsPage() {
                 <BarChart3 size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">AI Analytics Dashboard</h1>
-                <p className="text-white/80 text-sm mt-0.5">Predictive insights, risk assessments, and actionable recommendations</p>
+                <h1 className="text-2xl font-bold">{t(t('AI Analytics Dashboard'))}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t(t('Predictive insights, risk assessments, and actionable recommendations'))}</p>
               </div>
             </div>
             <button onClick={loadAll} disabled={loading}
@@ -71,7 +74,7 @@ export default function AIAnalyticsPage() {
       {loading && !summary ? (
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading analytics dashboard...</span>
+          <span>{t(t('Loading analytics dashboard...'))}</span>
         </div>
       ) : summary ? (
         <div className="intel-grid">
@@ -102,7 +105,7 @@ export default function AIAnalyticsPage() {
         </div>
       ) : (
         <div className="similar-empty">
-          <p>Failed to load analytics dashboard</p>
+          <p>{t(t('Failed to load analytics dashboard'))}</p>
         </div>
       )}
       </div>

@@ -4,6 +4,7 @@ import GraphCanvas from './graph/GraphCanvas'
 import NodeDetailsPanel from './graph/NodeDetailsPanel'
 import GraphControls from './graph/GraphControls'
 import { getGraphNodes, getGraphEdges, getGraphStats, buildGraphFromCrimes } from '../services/graph'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function GraphPage() {
   const [selectedNode, setSelectedNode] = useState(null)
@@ -14,6 +15,7 @@ export default function GraphPage() {
   const [loading, setLoading] = useState(true)
   const [building, setBuilding] = useState(false)
   const [typeFilter, setTypeFilter] = useState([])
+  const { t } = useLanguage()
   const canvasRef = useRef(null)
 
   const loadGraph = useCallback(async () => {
@@ -92,9 +94,9 @@ export default function GraphPage() {
               <Network size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold">Criminal Network Graph</h1>
+              <h1 className="text-lg font-bold">{t('Criminal Network Graph')}</h1>
               <p className="text-white/80 text-xs">
-                {stats ? `${stats.total_nodes || 0} nodes · ${stats.total_edges || 0} edges` : 'Interactive relationship explorer'}
+                {stats ? `${stats.total_nodes || 0} ${t('nodes')} · ${stats.total_edges || 0} ${t('edges')}` : t('Interactive relationship explorer')}
               </p>
             </div>
           </div>
@@ -102,7 +104,7 @@ export default function GraphPage() {
             <button onClick={handleBuildGraph} disabled={building}
               className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
               <Plus size={14} />
-              {building ? 'Building...' : 'Build from Crimes'}
+              {building ? t('Building...') : t('Build from Crimes')}
             </button>
             <button onClick={loadGraph} disabled={loading}
               className="p-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
@@ -129,7 +131,7 @@ export default function GraphPage() {
             {loading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="w-6 h-6 border-2 border-slate-200 border-t-orange-500 rounded-full animate-spin" />
-                <span className="ml-3 text-sm text-slate-500">Loading graph...</span>
+                <span className="ml-3 text-sm text-slate-500">{t('Loading graph...')}</span>
               </div>
             ) : (
               <GraphCanvas
@@ -143,13 +145,13 @@ export default function GraphPage() {
             )}
 
             <div className="graph-legend">
-              <span className="legend-title">Legend</span>
+              <span className="legend-title">{t('Legend')}</span>
               <div className="legend-items">
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#ef4444' }} /> Suspect</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#3b82f6' }} /> Evidence</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#8b5cf6' }} /> Vehicle</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#10b981' }} /> Phone</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#f59e0b' }} /> Criminal</div>
+                <div className="legend-item"><span className="legend-dot" style={{ background: '#ef4444' }} /> {t('Suspect')}</div>
+                <div className="legend-item"><span className="legend-dot" style={{ background: '#3b82f6' }} /> {t('Evidence')}</div>
+                <div className="legend-item"><span className="legend-dot" style={{ background: '#8b5cf6' }} /> {t('Vehicle')}</div>
+                <div className="legend-item"><span className="legend-dot" style={{ background: '#10b981' }} /> {t('Phone')}</div>
+                <div className="legend-item"><span className="legend-dot" style={{ background: '#f59e0b' }} /> {t('Criminal')}</div>
               </div>
             </div>
           </div>

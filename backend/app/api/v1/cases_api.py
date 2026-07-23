@@ -17,6 +17,10 @@ from app.models.act import Act
 from app.models.section import Section
 from app.models.act_section_association import ActSectionAssociation
 from app.models.victim import Victim
+from app.models.accused import Accused
+from app.models.arrest_surrender import ArrestSurrender
+from app.models.arrest_surrender_type import ArrestSurrenderType
+from app.models.state import State
 from pydantic import BaseModel
 
 router = APIRouter()

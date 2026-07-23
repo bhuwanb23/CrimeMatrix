@@ -74,7 +74,7 @@ export default function NotesTab({ investigationId, notes: initialNotes }) {
           disabled={!newNote.trim() || submitting}
         >
           <Send size={14} />
-          {submitting ? 'Adding...' : 'Add Note'}
+          {submitting ? t('Adding...') : t('Add Note')}
         </button>
       </div>
 

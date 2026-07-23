@@ -113,7 +113,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
           onClick={() => setActiveSection('active')}
         >
           {activeSection === 'active' ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          Active ({activeCount})
+          {t('Active')} ({activeCount})
         </button>
         <button
           className={`case-list-section-btn ${activeSection === 'saved' ? 'active' : ''}`}
@@ -121,7 +121,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         >
           {activeSection === 'saved' ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           <Bookmark size={12} />
-          Saved ({savedCount})
+          {t('Saved')} ({savedCount})
         </button>
       </div>
 
@@ -145,7 +145,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
               <div className="case-list-item-top">
                 <span className="case-list-item-id">INV-{String(inv.id).padStart(3, '0')}</span>
                 <span className={`case-list-priority priority-${(inv.priority || 'medium').toLowerCase()}`}>
-                  {inv.priority}
+                  {t(inv.priority)}
                 </span>
               </div>
               <p className="case-list-item-title">{inv.title}</p>

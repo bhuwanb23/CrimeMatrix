@@ -49,10 +49,10 @@ export default function ToolsPanel({ investigation, onRefresh }) {
     <div className="tools-panel">
       {/* Save/Resume */}
       <div className="tools-section">
-        <h3 className="tools-section-title">{isSaved ? <Play size={14} /> : <Save size={14} />} {isSaved ? 'Resume' : 'Save'}</h3>
+        <h3 className="tools-section-title">{isSaved ? <Play size={14} /> : <Save size={14} />} {isSaved ? t('Resume') : t('Save')}</h3>
         <button className={`tools-save-btn ${isSaved ? 'tools-save-resume' : 'tools-save-active'}`} onClick={handleToggleSave} disabled={toggling}>
           {isSaved ? <Play size={14} /> : <Save size={14} />}
-          <span>{toggling ? 'Updating...' : (isSaved ? 'Resume Investigation' : 'Save Investigation')}</span>
+          <span>{toggling ? t('Updating...') : (isSaved ? t('Resume Investigation') : t('Save Investigation'))}</span>
         </button>
       </div>
 
@@ -61,7 +61,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
         <div className="flex items-center justify-between mb-2">
           <h3 className="tools-section-title"><Zap size={14} /> {t('Priority Score')}</h3>
           <button onClick={handleScorePriority} disabled={scoringPriority} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
-            {scoringPriority ? 'Scoring...' : 'Score'}
+            {scoringPriority ? t('Scoring...') : t('Score')}
           </button>
         </div>
         {priority ? (

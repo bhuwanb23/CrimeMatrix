@@ -13,6 +13,11 @@ from app.models.occupation import Occupation
 from app.models.religion import Religion
 from app.models.caste_master import CasteMaster
 from app.models.gender import Gender
+from app.models.act import Act
+from app.models.section import Section
+from app.models.act_section_association import ActSectionAssociation
+from app.models.victim import Victim
+from pydantic import BaseModel
 
 router = APIRouter()
 

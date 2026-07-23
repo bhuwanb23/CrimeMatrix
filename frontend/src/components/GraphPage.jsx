@@ -38,38 +38,21 @@ export default function GraphPage() {
     }
   }, [])
 
-  useEffect(() => {
-    loadGraph()
-  }, [loadGraph])
+  useEffect(() => { loadGraph() }, [loadGraph])
 
   async function handleBuildGraph() {
     setBuilding(true)
-    try {
-      await buildGraphFromCrimes()
-      await loadGraph()
-    } catch (e) {
-      console.error('Failed to build graph', e)
-    } finally {
-      setBuilding(false)
-    }
+    try { await buildGraphFromCrimes(); await loadGraph() } catch (e) { console.error(e) } finally { setBuilding(false) }
   }
 
-  function handleNodeSelect(node) {
-    setSelectedNode((prev) => (prev?.id === node.id ? null : node))
-  }
-
-  function handleCloseDetails() {
-    setSelectedNode(null)
-  }
-
+  function handleNodeSelect(node) { setSelectedNode((prev) => (prev?.id === node.id ? null : node)) }
+  function handleCloseDetails() { setSelectedNode(null) }
   function handleZoomIn() { canvasRef.current?.zoomIn?.() }
   function handleZoomOut() { canvasRef.current?.zoomOut?.() }
   function handleReset() { canvasRef.current?.resetView?.() }
 
   function toggleTypeFilter(type) {
-    setTypeFilter((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+    setTypeFilter((prev) => prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type])
   }
 
   const filteredNodes = typeFilter.length > 0
@@ -84,12 +67,17 @@ export default function GraphPage() {
     return filteredNodeIds.has(src) && filteredNodeIds.has(tgt)
   })
 
+  const statItems = [
+    { key: 'total_nodes', label: 'Nodes' },
+    { key: 'total_edges', label: 'Edges' },
+  ]
+
   return (
-    <div className="flex flex-col gap-3 p-4" style={{ height: 'calc(100vh - var(--header-height))' }}>
-      {/* Hero Header */}
-      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
+    <div className="flex flex-col gap-3 -m-6 p-4 h-[calc(100vh-var(--header-height))] min-h-0 overflow-hidden max-md:-m-4 max-md:p-3 max-md:h-auto max-md:min-h-[calc(100vh-var(--header-height))]">
+      {/* Hero Header — compact like MapPage */}
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 text-white shadow-lg shadow-orange-500/20 shrink-0">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
               <Network size={20} />
             </div>
@@ -100,59 +88,73 @@ export default function GraphPage() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          {stats && (
+            <dl className="flex items-center m-0 min-w-0 overflow-x-auto">
+              {statItems.map((item, i) => (
+                <div key={item.key} className={`flex flex-col gap-0.5 px-3 whitespace-nowrap ${i > 0 ? 'border-l border-white/30' : ''}`}>
+                  <dt className="m-0 text-[10px] font-medium uppercase tracking-wide text-white/60">{item.label}</dt>
+                  <dd className="m-0 text-[15px] font-bold tabular-nums text-white">{stats[item.key] ?? 0}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          <div className="flex items-center gap-2 shrink-0">
             <button onClick={handleBuildGraph} disabled={building}
-              className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
+              className="flex items-center gap-1.5 px-3 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-lg text-xs font-medium text-white whitespace-nowrap transition-colors disabled:opacity-60">
               <Plus size={14} />
               {building ? t('Building...') : t('Build from Crimes')}
             </button>
             <button onClick={loadGraph} disabled={loading}
-              className="p-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-lg text-xs font-medium text-white whitespace-nowrap transition-colors disabled:opacity-60">
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+              {t('Refresh')}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Graph Area */}
-      <div className="graph-page flex-1 min-h-0" style={{ height: 'auto' }}>
-        <div className="graph-main">
-          <GraphControls
-            activeView={activeView}
-            onViewChange={setActiveView}
-            onZoomIn={handleZoomIn}
-            onZoomOut={handleZoomOut}
-            onReset={handleReset}
-            typeFilter={typeFilter}
-            onToggleType={toggleTypeFilter}
-          />
+      {/* Controls Bar — white toolbar like MapPage */}
+      <div role="toolbar" aria-label="Graph controls"
+        className="flex items-center gap-3 flex-wrap px-3 py-2.5 bg-white border border-slate-200 rounded-[10px] shrink-0">
+        <GraphControls
+          activeView={activeView}
+          onViewChange={setActiveView}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onReset={handleReset}
+          typeFilter={typeFilter}
+          onToggleType={toggleTypeFilter}
+        />
+      </div>
 
-          <div className="graph-canvas-container">
-            {loading ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="w-6 h-6 border-2 border-slate-200 border-t-orange-500 rounded-full animate-spin" />
-                <span className="ml-3 text-sm text-slate-500">{t('Loading graph...')}</span>
-              </div>
-            ) : (
-              <GraphCanvas
-                ref={canvasRef}
-                selectedNode={selectedNode}
-                onNodeSelect={handleNodeSelect}
-                activeView={activeView}
-                nodes={filteredNodes}
-                edges={filteredEdges}
-              />
-            )}
+      {/* Canvas + Details Panel — same layout as MapPage */}
+      <div className="flex gap-3 flex-1 min-h-0 min-w-0 max-lg:flex-col">
+        <div className="flex flex-1 flex-col min-w-0 min-h-0 bg-white border border-slate-200 rounded-xl overflow-hidden max-lg:min-h-[min(52vh,480px)] max-lg:order-1 max-md:min-h-[360px]">
+          {loading ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="w-6 h-6 border-2 border-slate-200 border-t-orange-500 rounded-full animate-spin" />
+              <span className="ml-3 text-sm text-slate-500">{t('Loading graph...')}</span>
+            </div>
+          ) : (
+            <GraphCanvas
+              ref={canvasRef}
+              selectedNode={selectedNode}
+              onNodeSelect={handleNodeSelect}
+              activeView={activeView}
+              nodes={filteredNodes}
+              edges={filteredEdges}
+            />
+          )}
 
-            <div className="graph-legend">
-              <span className="legend-title">{t('Legend')}</span>
-              <div className="legend-items">
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#ef4444' }} /> {t('Suspect')}</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#3b82f6' }} /> {t('Evidence')}</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#8b5cf6' }} /> {t('Vehicle')}</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#10b981' }} /> {t('Phone')}</div>
-                <div className="legend-item"><span className="legend-dot" style={{ background: '#f59e0b' }} /> {t('Criminal')}</div>
-              </div>
+          {/* Legend overlay */}
+          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
+            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">{t('Legend')}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500" /><span className="text-[10px] text-slate-600">{t('Suspect')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500" /><span className="text-[10px] text-slate-600">{t('Evidence')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-violet-500" /><span className="text-[10px] text-slate-600">{t('Vehicle')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-[10px] text-slate-600">{t('Phone')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500" /><span className="text-[10px] text-slate-600">{t('Criminal')}</span></div>
             </div>
           </div>
         </div>

@@ -4,10 +4,12 @@ import ReportStats from './reports/ReportStats'
 import ReportFilters from './reports/ReportFilters'
 import ReportTable from './reports/ReportTable'
 import { reports as allReports } from './reports/reportsData'
+import { useLanguage } from '../context/LanguageContext'
 
 const ITEMS_PER_PAGE = 8
 
 export default function ReportsPage() {
+  const { t } = useLanguage()
   const [filters, setFilters] = useState({ search: '', date: '', type: '', status: '' })
   const [page, setPage] = useState(1)
 

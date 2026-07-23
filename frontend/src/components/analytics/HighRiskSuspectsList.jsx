@@ -1,4 +1,6 @@
 import { Shield } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 const riskColors = {
   critical: '#ef4444',
@@ -8,14 +10,15 @@ const riskColors = {
 }
 
 export default function HighRiskSuspectsList({ suspects }) {
+  const { t } = useLanguage()
   if (!suspects || suspects.length === 0) {
     return (
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <Shield size={14} />
-          <h3>High-Risk Suspects</h3>
+          <h3>{t(t('High-Risk Suspects'))}</h3>
         </div>
-        <div className="similar-empty"><p>No high-risk suspects</p></div>
+        <div className="similar-empty"><p>{t(t('No high-risk suspects'))}</p></div>
       </div>
     )
   }
@@ -24,7 +27,7 @@ export default function HighRiskSuspectsList({ suspects }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <Shield size={14} />
-        <h3>High-Risk Suspects</h3>
+        <h3>{t(t('High-Risk Suspects'))}</h3>
         <span className="similar-count">{suspects.length}</span>
       </div>
       <div className="analytics-risk-list">

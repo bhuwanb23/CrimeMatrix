@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Bell, RefreshCw, CheckCircle, AlertTriangle, Shield, MapPin, TrendingUp } from 'lucide-react'
 import { listAlerts, detectAlerts, getEarlyWarningStats, acknowledgeAlert } from '../services/earlyWarning'
@@ -17,6 +18,7 @@ const alertTypeIcons = {
 }
 
 export default function EarlyWarningPage() {
+  const { t } = useLanguage()
   const [alerts, setAlerts] = useState([])
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -70,8 +72,8 @@ export default function EarlyWarningPage() {
         <div className="intel-header-left">
           <Bell size={22} />
           <div>
-            <h1>Early Warning Alerts</h1>
-            <p>Real-time crime monitoring and risk detection</p>
+            <h1>{t('Early Warning Alerts')}</h1>
+            <p>{t('Real-time crime monitoring and risk detection')}</p>
           </div>
         </div>
         <div className="intel-header-actions">
@@ -92,7 +94,7 @@ export default function EarlyWarningPage() {
               <AlertTriangle size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">Active</span>
+              <span className="analytics-pred-label">{t('Active')}</span>
               <span className="analytics-pred-value">{stats.active || 0}</span>
             </div>
           </div>
@@ -101,7 +103,7 @@ export default function EarlyWarningPage() {
               <Shield size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">Critical</span>
+              <span className="analytics-pred-label">{t('Critical')}</span>
               <span className="analytics-pred-value">{stats.critical || 0}</span>
             </div>
           </div>
@@ -110,7 +112,7 @@ export default function EarlyWarningPage() {
               <AlertTriangle size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">High</span>
+              <span className="analytics-pred-label">{t('High')}</span>
               <span className="analytics-pred-value">{stats.high || 0}</span>
             </div>
           </div>
@@ -119,7 +121,7 @@ export default function EarlyWarningPage() {
               <Bell size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">Total</span>
+              <span className="analytics-pred-label">{t('Total')}</span>
               <span className="analytics-pred-value">{stats.total || 0}</span>
             </div>
           </div>
@@ -143,13 +145,13 @@ export default function EarlyWarningPage() {
       {loading ? (
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading alerts...</span>
+          <span>{t('Loading alerts...')}</span>
         </div>
       ) : alerts.length === 0 ? (
         <div className="similar-empty">
           <Bell size={32} className="similar-empty-icon" />
-          <p>No alerts found</p>
-          <span>Click "Run Detection" to scan for early warning signals.</span>
+          <p>{t('No alerts found')}</p>
+          <span>{t('Click "Run Detection" to scan for early warning signals.')}</span>
         </div>
       ) : (
         <div className="ew-alerts-list">
@@ -176,7 +178,7 @@ export default function EarlyWarningPage() {
                   </div>
                   {alert.status === 'active' && (
                     <button className="similar-btn similar-btn-primary" onClick={() => handleAcknowledge(alert.id)}>
-                      <CheckCircle size={12} /> Acknowledge
+                      <CheckCircle size={12} /> {t('Acknowledge')}
                     </button>
                   )}
                   {alert.status === 'acknowledged' && (

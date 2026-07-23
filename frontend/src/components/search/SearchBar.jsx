@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { Search, X, BookmarkPlus } from 'lucide-react'
 import { getSuggestions } from '../../services/search'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function SearchBar({ value, onChange, onSearch, onSave }) {
+  const { t } = useLanguage()
   const [focused, setFocused] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState([])
@@ -52,7 +55,7 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          placeholder="Search crimes, suspects, FIRs, evidence..."
+          placeholder={t('Search crimes, suspects, FIRs, evidence...')}
           className="flex-1 outline-none text-sm text-gray-800 placeholder-gray-400"
         />
         {value && (
@@ -60,7 +63,7 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
             <X size={14} className="text-gray-400" />
           </button>
         )}
-        <button onClick={() => onSave(value)} className="p-1 hover:bg-gray-100 rounded" title="Save search">
+        <button onClick={() => onSave(value)} className="p-1 hover:bg-gray-100 rounded" title={t('Save search')}>
           <BookmarkPlus size={14} className="text-gray-400" />
         </button>
       </div>

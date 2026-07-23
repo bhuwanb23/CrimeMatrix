@@ -1,6 +1,8 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 
 export default function SuspectCard({ suspect }) {
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   return (
@@ -17,7 +19,7 @@ export default function SuspectCard({ suspect }) {
       </div>
       <div className="suspect-card-stats">
         <div className="suspect-card-risk">
-          <span className="risk-label">Risk</span>
+          <span className="risk-label">{t('Risk')}</span>
           <div className="risk-bar">
             <div
               className="risk-fill"

@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Shield, RefreshCw, AlertTriangle, TrendingUp, Users, Zap, ArrowUpRight, Activity, UserX } from 'lucide-react'
 import { getSuspectRiskStats, getSuspectRiskRankings, batchScoreSuspects, getSuspectRiskScore, getSuspectRiskFactors } from '../services/suspectRisk'
@@ -24,6 +25,7 @@ const factorConfig = [
 ]
 
 export default function SuspectRiskPage() {
+  const { t } = useLanguage()
   const [stats, setStats] = useState(null)
   const [rankings, setRankings] = useState([])
   const [selectedSuspect, setSelectedSuspect] = useState(null)
@@ -80,7 +82,7 @@ export default function SuspectRiskPage() {
               <button onClick={handleBatchScore} disabled={scoring}
                 className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-xs font-semibold transition-all disabled:opacity-50">
                 {scoring ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
-                {scoring ? 'Scoring...' : 'Score All Suspects'}
+                {scoring ? t('Scoring...') : t('Score All Suspects')}
               </button>
               <button onClick={loadData} disabled={loading}
                 className="p-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl transition-all">
@@ -107,7 +109,7 @@ export default function SuspectRiskPage() {
                   <ArrowUpRight size={14} className="text-slate-300" />
                 </div>
                 <span className="block text-2xl font-bold text-slate-900">{card.value}</span>
-                <span className="text-xs text-slate-400 font-medium">{card.label}</span>
+                <span className="text-xs text-slate-400 font-medium">{t(card.label)}</span>
               </div>
             ))}
           </div>
@@ -123,7 +125,7 @@ export default function SuspectRiskPage() {
                   <Shield size={16} className="text-amber-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Suspect Rankings</h3>
+                  <h3 className="text-sm font-bold text-slate-900">{t('Suspect Rankings')}</h3>
                   <p className="text-[10px] text-slate-400">{rankings.length} analyzed</p>
                 </div>
               </div>
@@ -132,9 +134,9 @@ export default function SuspectRiskPage() {
               {rankings.length === 0 ? (
                 <div className="py-12 text-center">
                   <UserX size={32} className="text-slate-200 mx-auto mb-2" />
-                  <p className="text-xs text-slate-400">No suspects scored yet</p>
+                  <p className="text-xs text-slate-400">{t('No suspects scored yet')}</p>
                   <button onClick={handleBatchScore} className="mt-2 text-xs text-amber-500 font-medium hover:underline">
-                    Click "Score All" to begin
+                    {t('Click "Score All" to begin')}
                   </button>
                 </div>
               ) : (
@@ -157,7 +159,7 @@ export default function SuspectRiskPage() {
                         </div>
                         <div className="text-right">
                           <span className="text-lg font-bold" style={{ color }}>{r.overall_score}%</span>
-                          <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{r.risk_level}</span>
+                          <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{t(r.risk_level)}</span>
                         </div>
                       </div>
                       <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -178,9 +180,9 @@ export default function SuspectRiskPage() {
                   <Activity size={16} className="text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Risk Analysis</h3>
+                  <h3 className="text-sm font-bold text-slate-900">{t('Risk Analysis')}</h3>
                   <p className="text-[10px] text-slate-400">
-                    {selectedScore ? `Analyzing ${rankings.find(r => r.suspect_id === selectedSuspect)?.name || 'suspect'}` : 'Select a suspect to analyze'}
+                    {selectedScore ? `${t('Analyzing')} ${rankings.find(r => r.suspect_id === selectedSuspect)?.name || t('suspect')}` : t('Select a suspect to analyze')}
                   </p>
                 </div>
               </div>
@@ -192,13 +194,13 @@ export default function SuspectRiskPage() {
                 <div className="flex items-center gap-6 mb-6 pb-6 border-b border-slate-100">
                   <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${riskGradients[selectedScore.risk_level] || 'from-slate-400 to-slate-500'} flex flex-col items-center justify-center text-white shadow-lg`}>
                     <span className="text-2xl font-extrabold">{selectedScore.overall_score}%</span>
-                    <span className="text-[9px] font-bold uppercase tracking-wider opacity-80">{selectedScore.risk_level}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-wider opacity-80">{t(selectedScore.risk_level)}</span>
                   </div>
                   <div className="flex-1 space-y-2">
                     {selectedScore.explanation?.slice(0, 3).map((exp, i) => (
                       <div key={i} className="flex items-start gap-2 text-sm text-slate-600">
                         <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
-                        <span>{exp}</span>
+                        <span>{t(exp)}</span>
                       </div>
                     ))}
                   </div>
@@ -206,21 +208,21 @@ export default function SuspectRiskPage() {
 
                 {/* Factor Analysis */}
                 <div>
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Contributing Factors</h4>
+                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t('Contributing Factors')}</h4>
                   <div className="space-y-3">
                     {factorConfig.map((factor) => {
                       const value = selectedFactors.find(f => f.name === factor.key)?.value || 0
                       return (
                         <div key={factor.key} className="group">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-medium text-slate-600">{factor.label}</span>
+                            <span className="text-xs font-medium text-slate-600">{t(factor.label)}</span>
                             <span className="text-xs font-bold text-slate-900">{value}%</span>
                           </div>
                           <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                             <div className="h-full rounded-full transition-all duration-700 ease-out group-hover:opacity-100 opacity-90"
                               style={{ width: `${value}%`, background: `linear-gradient(90deg, ${factor.color}, ${factor.color}cc)` }} />
                           </div>
-                          <span className="text-[10px] text-slate-400 mt-0.5 block">{factor.desc}</span>
+                          <span className="text-[10px] text-slate-400 mt-0.5 block">{t(factor.desc)}</span>
                         </div>
                       )
                     })}
@@ -232,8 +234,8 @@ export default function SuspectRiskPage() {
                 <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
                   <AlertTriangle size={24} className="text-slate-300" />
                 </div>
-                <p className="text-sm font-medium text-slate-500 mb-1">No suspect selected</p>
-                <p className="text-xs text-slate-400">Click on a suspect from the rankings to view their detailed risk analysis</p>
+                <p className="text-sm font-medium text-slate-500 mb-1">{t('No suspect selected')}</p>
+                <p className="text-xs text-slate-400">{t('Click on a suspect from the rankings to view their detailed risk analysis')}</p>
               </div>
             )}
           </div>

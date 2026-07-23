@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Clock, RefreshCw, User, FileText, Shield, Camera, AlertTriangle, ArrowRight } from 'lucide-react'
 import { getFullTimeline, getTimelineStats, getSuspectTimeline } from '../services/criminalTimeline'
@@ -26,6 +27,7 @@ const timeRanges = [
 ]
 
 export default function CriminalTimelinePage() {
+  const { t } = useLanguage()
   const [timeline, setTimeline] = useState(null)
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -77,13 +79,13 @@ export default function CriminalTimelinePage() {
         <div className="timeline-header-left">
           <Clock size={22} />
           <div>
-            <h1>Criminal Timeline</h1>
-            <p>Evolution of cases and suspects over time</p>
+            <h1>{t('Criminal Timeline')}</h1>
+            <p>{t('Evolution of cases and suspects over time')}</p>
           </div>
         </div>
         <button className="intel-refresh" onClick={loadTimeline} disabled={loading}>
           <RefreshCw size={14} className={loading ? 'similar-spinning' : ''} />
-          Refresh
+          {t('Refresh')}
         </button>
       </div>
 
@@ -120,7 +122,7 @@ export default function CriminalTimelinePage() {
             onKeyDown={(e) => e.key === 'Enter' && handleSuspectSearch()}
           />
           <button className="similar-btn similar-btn-primary" onClick={handleSuspectSearch} disabled={!suspectSearch.trim()}>
-            Search
+            {t('Search')}
           </button>
         </div>
       </div>
@@ -130,11 +132,11 @@ export default function CriminalTimelinePage() {
         <div className="timeline-stats">
           <div className="timeline-stat">
             <span className="timeline-stat-value">{stats.total_events || 0}</span>
-            <span className="timeline-stat-label">Total Events</span>
+            <span className="timeline-stat-label">{t('Total Events')}</span>
           </div>
           <div className="timeline-stat">
             <span className="timeline-stat-value">{stats.investigations_with_timeline || 0}</span>
-            <span className="timeline-stat-label">Investigations</span>
+            <span className="timeline-stat-label">{t('Investigations')}</span>
           </div>
           {stats.by_type && Object.entries(stats.by_type).map(([type, count]) => (
             <div key={type} className="timeline-stat">
@@ -149,13 +151,13 @@ export default function CriminalTimelinePage() {
       {loading ? (
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading timeline...</span>
+          <span>{t('Loading timeline...')}</span>
         </div>
       ) : groups.length === 0 ? (
         <div className="similar-empty">
           <Clock size={32} className="similar-empty-icon" />
-          <p>No timeline events found</p>
-          <span>Add events to investigations to see them here.</span>
+          <p>{t('No timeline events found')}</p>
+          <span>{t('Add events to investigations to see them here.')}</span>
         </div>
       ) : (
         <div className="timeline-groups">

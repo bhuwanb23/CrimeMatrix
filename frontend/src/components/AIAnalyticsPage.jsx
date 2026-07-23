@@ -10,8 +10,11 @@ import AIRecommendationsPanel from './analytics/AIRecommendationsPanel'
 import ModelEvaluationPanel from './analytics/ModelEvaluationPanel'
 import AccuracyTrendChart from './analytics/AccuracyTrendChart'
 import FeedbackSummary from './analytics/FeedbackSummary'
+import { useLanguage } from '../context/LanguageContext'
+
 
 export default function AIAnalyticsPage() {
+  const { t } = useLanguage()
   const [summary, setSummary] = useState(null)
   const [alerts, setAlerts] = useState([])
   const [forecasts, setForecasts] = useState(null)
@@ -39,7 +42,7 @@ export default function AIAnalyticsPage() {
       setHighRisk(highRiskRes?.data || [])
       setPriority(priorityRes?.data || [])
     } catch (e) {
-      console.error('Failed to load analytics dashboard', e)
+      console.error(t('Failed to load analytics dashboard'), e)
     } finally {
       setLoading(false)
     }
@@ -63,7 +66,7 @@ export default function AIAnalyticsPage() {
             <button onClick={loadAll} disabled={loading}
               className="flex items-center gap-1.5 px-4 py-2 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-xs font-semibold transition-all disabled:opacity-50">
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-              Refresh
+              {t('Refresh')}
             </button>
           </div>
         </div>
@@ -71,7 +74,7 @@ export default function AIAnalyticsPage() {
       {loading && !summary ? (
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading analytics dashboard...</span>
+          <span>{t(t('Loading analytics dashboard...'))}</span>
         </div>
       ) : summary ? (
         <div className="intel-grid">
@@ -102,7 +105,7 @@ export default function AIAnalyticsPage() {
         </div>
       ) : (
         <div className="similar-empty">
-          <p>Failed to load analytics dashboard</p>
+          <p>{t(t('Failed to load analytics dashboard'))}</p>
         </div>
       )}
       </div>

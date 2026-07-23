@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Zap, Radar, Shield } from 'lucide-react'
 import PrioritizationDashboard from './PrioritizationDashboard'
@@ -9,6 +10,7 @@ const tabs = [
 ]
 
 export default function PrioritizationIntelligencePage() {
+  const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
   const activeTab = location.pathname === '/proactive' ? 'proactive' : 'priority'

@@ -1,16 +1,19 @@
 import { Bell, CheckCircle, AlertTriangle } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function NotificationCenter({ events }) {
+  const { t } = useLanguage()
   if (!events || events.length === 0) {
     return (
       <div className="bg-white border border-slate-200 rounded-xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <Bell size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('Notifications')}</h3>
         </div>
         <div className="py-8 text-center text-xs text-slate-400">
           <Bell size={24} className="mx-auto mb-2 text-slate-200" />
-          <p>No notifications</p>
+          <p>{t('No notifications')}</p>
         </div>
       </div>
     )
@@ -24,7 +27,7 @@ export default function NotificationCenter({ events }) {
       <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bell size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('Notifications')}</h3>
         </div>
         {pending.length > 0 && (
           <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
@@ -39,7 +42,7 @@ export default function NotificationCenter({ events }) {
               <AlertTriangle size={12} className="text-amber-500" />
               <span className="text-xs font-semibold text-slate-900 capitalize">{event.event_type?.replace('_', ' ')}</span>
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">Needs attention</p>
+            <p className="text-[10px] text-slate-500 mt-1">{t('Needs attention')}</p>
           </div>
         ))}
         {processed.length > 0 && processed.slice(0, 5).map((event, i) => (
@@ -52,7 +55,7 @@ export default function NotificationCenter({ events }) {
         ))}
         {pending.length === 0 && processed.length === 0 && (
           <div className="py-8 text-center text-xs text-slate-400">
-            <p>No notifications</p>
+            <p>{t('No notifications')}</p>
           </div>
         )}
       </div>

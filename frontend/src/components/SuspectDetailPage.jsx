@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getSuspectById } from './suspects/suspectsData'
 import { useState } from 'react'
@@ -17,6 +18,7 @@ const tabs = [
 ]
 
 export default function SuspectDetailPage() {
+  const { t } = useLanguage()
   const { id } = useParams()
   const navigate = useNavigate()
   const suspect = getSuspectById(id)
@@ -25,10 +27,10 @@ export default function SuspectDetailPage() {
   if (!suspect) {
     return (
       <div className="case-detail-empty">
-        <h2>Suspect not found</h2>
-        <p>No suspect found with ID: {id}</p>
+        <h2>{t('Suspect not found')}</h2>
+        <p>{t('No suspect found with ID:')} {id}</p>
         <button className="case-back-btn" onClick={() => navigate('/suspects')}>
-          <ArrowLeft size={16} /> Back to Suspects
+          <ArrowLeft size={16} /> {t('Back to Suspects')}
         </button>
       </div>
     )
@@ -39,7 +41,7 @@ export default function SuspectDetailPage() {
       {/* Header */}
       <div className="suspect-detail-header">
         <button className="case-back-btn" onClick={() => navigate('/suspects')}>
-          <ArrowLeft size={16} /> Back to Suspects
+          <ArrowLeft size={16} /> {t('Back to Suspects')}
         </button>
 
         <div className="suspect-detail-top">
@@ -50,15 +52,15 @@ export default function SuspectDetailPage() {
             <div className="suspect-detail-name-row">
               <h1 className="suspect-detail-name">{suspect.name}</h1>
               <span className={`status-badge ${suspect.status.toLowerCase().replace(' ', '-')}`}>
-                {suspect.status}
+                {t(suspect.status)}
               </span>
             </div>
             <p className="suspect-detail-meta">
-              {suspect.age} years • {suspect.district} • ID: {suspect.id}
+              {suspect.age} {t('years')} • {t(suspect.district)} • ID: {suspect.id}
             </p>
           </div>
           <div className="suspect-risk-display">
-            <span className="risk-display-label">Risk Score</span>
+            <span className="risk-display-label">{t('Risk Score')}</span>
             <span className="risk-display-value" style={{
               color: suspect.riskScore > 70 ? '#ef4444' : suspect.riskScore > 40 ? '#f59e0b' : '#10b981'
             }}>
@@ -71,19 +73,19 @@ export default function SuspectDetailPage() {
         <div className="suspect-stats-row">
           <div className="suspect-stat">
             <span className="suspect-stat-value">{suspect.cases}</span>
-            <span className="suspect-stat-label">Cases</span>
+            <span className="suspect-stat-label">{t('Cases')}</span>
           </div>
           <div className="suspect-stat">
             <span className="suspect-stat-value">{suspect.moMatches}</span>
-            <span className="suspect-stat-label">MO Matches</span>
+            <span className="suspect-stat-label">{t('MO Matches')}</span>
           </div>
           <div className="suspect-stat">
             <span className="suspect-stat-value">{suspect.associates.length}</span>
-            <span className="suspect-stat-label">Associates</span>
+            <span className="suspect-stat-label">{t('Associates')}</span>
           </div>
           <div className="suspect-stat">
             <span className="suspect-stat-value">{suspect.lastActive}</span>
-            <span className="suspect-stat-label">Last Active</span>
+            <span className="suspect-stat-label">{t('Last Active')}</span>
           </div>
         </div>
       </div>
@@ -97,7 +99,7 @@ export default function SuspectDetailPage() {
             onClick={() => setActiveTab(tab.id)}
           >
             <tab.icon size={14} />
-            {tab.label}
+            {t(tab.label)}
           </button>
         ))}
       </div>

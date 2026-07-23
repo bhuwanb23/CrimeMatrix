@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Sparkles, Loader2, FileText, User } from 'lucide-react'
 import { naturalLanguageSearch } from '../../services/recommendations'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function NaturalLanguageSearch() {
+  const { t } = useLanguage()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -40,7 +43,7 @@ export default function NaturalLanguageSearch() {
         </div>
         <input
           className="nl-search-input"
-          placeholder="Search naturally — e.g. 'thefts in Bengaluru last month' or 'cases similar to FIR #4521'"
+          placeholder={t(\'Search naturally — e.g. "thefts in Bengaluru last month"\')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -55,7 +58,7 @@ export default function NaturalLanguageSearch() {
           {loading ? (
             <div className="similar-loading">
               <div className="similar-spinner" />
-              <span>Searching...</span>
+              <span>{t('Searching...')}</span>
             </div>
           ) : results.length === 0 ? (
             <div className="similar-empty">

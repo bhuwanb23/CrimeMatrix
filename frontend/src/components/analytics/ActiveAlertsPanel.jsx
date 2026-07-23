@@ -1,4 +1,6 @@
 import { AlertTriangle, Shield, MapPin, TrendingUp } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 const alertIcons = {
   repeat_offender: Shield,
@@ -13,14 +15,15 @@ const severityColors = {
 }
 
 export default function ActiveAlertsPanel({ alerts }) {
+  const { t } = useLanguage()
   if (!alerts || alerts.length === 0) {
     return (
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <AlertTriangle size={14} />
-          <h3>Active Alerts</h3>
+          <h3>{t('Active Alerts')}</h3>
         </div>
-        <div className="similar-empty"><p>No active alerts</p></div>
+        <div className="similar-empty"><p>{t('No active alerts')}</p></div>
       </div>
     )
   }
@@ -29,7 +32,7 @@ export default function ActiveAlertsPanel({ alerts }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <AlertTriangle size={14} />
-        <h3>Active Alerts</h3>
+        <h3>{t('Active Alerts')}</h3>
         <span className="similar-count">{alerts.length}</span>
       </div>
       <div className="analytics-alerts-list">

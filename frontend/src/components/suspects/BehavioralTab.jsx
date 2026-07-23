@@ -1,6 +1,8 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { Brain, AlertTriangle, Activity } from 'lucide-react'
 
 export default function BehavioralTab({ suspect }) {
+  const { t } = useLanguage()
   const { behavioralProfile } = suspect
 
   return (
@@ -9,7 +11,7 @@ export default function BehavioralTab({ suspect }) {
         <div className="behavioral-card">
           <div className="behavioral-card-header">
             <Brain size={16} />
-            <h4>Personality Profile</h4>
+            <h4>{t('Personality Profile')}</h4>
           </div>
           <p className="behavioral-card-text">{behavioralProfile.personality}</p>
         </div>
@@ -17,7 +19,7 @@ export default function BehavioralTab({ suspect }) {
         <div className="behavioral-card">
           <div className="behavioral-card-header">
             <AlertTriangle size={16} />
-            <h4>Risk Factors</h4>
+            <h4>{t('Risk Factors')}</h4>
           </div>
           <div className="behavioral-tags">
             {behavioralProfile.riskFactors.map((factor, i) => (
@@ -29,7 +31,7 @@ export default function BehavioralTab({ suspect }) {
         <div className="behavioral-card full-width">
           <div className="behavioral-card-header">
             <Activity size={16} />
-            <h4>Behavioral Patterns</h4>
+            <h4>{t('Behavioral Patterns')}</h4>
           </div>
           <div className="behavioral-patterns">
             {behavioralProfile.patterns.map((pattern, i) => (

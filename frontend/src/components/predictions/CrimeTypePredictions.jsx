@@ -1,14 +1,16 @@
 import { BarChart3 } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function CrimeTypePredictions({ predictions }) {
+  const { t } = useLanguage()
   if (!predictions || predictions.length === 0) {
     return (
       <div className="analytics-panel">
         <div className="analytics-panel-header">
           <BarChart3 size={14} />
-          <h3>Crime Type Predictions</h3>
+          <h3>{t('Crime Type Predictions')}</h3>
         </div>
-        <div className="similar-empty"><p>No predictions yet</p></div>
+        <div className="similar-empty"><p>{t('No predictions yet')}</p></div>
       </div>
     )
   }
@@ -29,13 +31,13 @@ export default function CrimeTypePredictions({ predictions }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <BarChart3 size={14} />
-        <h3>Crime Type Predictions</h3>
+        <h3>{t('Crime Type Predictions')}</h3>
       </div>
       <div className="analytics-type-list">
         {types.map((t, i) => (
           <div key={i} className="analytics-type-item">
             <div className="analytics-type-header">
-              <span className="analytics-type-name">Type #{t.type_id}</span>
+              <span className="analytics-type-name">{t('Type')} #{t.type_id}</span>
               <span className="analytics-type-count">{Math.round(t.total)}</span>
             </div>
             <div className="analytics-type-bar">

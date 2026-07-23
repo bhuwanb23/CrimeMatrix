@@ -1,6 +1,9 @@
 import { MapPin, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function DistrictForecastPanel({ district, forecast }) {
+  const { t } = useLanguage()
   if (!forecast) return null
 
   const trend = forecast.trend || 'stable'
@@ -12,7 +15,7 @@ export default function DistrictForecastPanel({ district, forecast }) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <MapPin size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">District Forecast</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('District Forecast')}</h3>
         </div>
         <div className="flex items-center gap-1">
           <TrendIcon size={14} className={trendColor} />
@@ -22,13 +25,13 @@ export default function DistrictForecastPanel({ district, forecast }) {
 
       {district && (
         <div className="mb-3 p-2 bg-slate-50 rounded-lg">
-          <span className="text-xs text-slate-500">District:</span>
+          <span className="text-xs text-slate-500">{t('District:')}</span>
           <span className="text-xs font-semibold text-slate-900 ml-1">{district.name}</span>
         </div>
       )}
 
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] text-slate-400">Confidence:</span>
+        <span className="text-[10px] text-slate-400">{t('Confidence:')}</span>
         <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
           <div className="h-full bg-amber-500 rounded-full" style={{ width: `${forecast.confidence || 0}%` }} />
         </div>
@@ -42,7 +45,7 @@ export default function DistrictForecastPanel({ district, forecast }) {
               <span className="block font-semibold text-slate-900">{f.predicted}</span>
               <span className="text-slate-400">{f.date?.slice(-5)}</span>
             </div>
-          ))}
+          )}
         </div>
       )}
 

@@ -1,12 +1,15 @@
 import { Eye, ExternalLink, ChevronLeft, ChevronRight, Search } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function SearchResults({ results, page, totalPages, onPageChange, onViewCase }) {
+  const { t } = useLanguage()
   if (results.length === 0) {
     return (
       <div className="search-empty">
         <Search size={48} strokeWidth={1} className="search-empty-icon" />
-        <h3>No results found</h3>
-        <p>Try adjusting your search or filters</p>
+        <h3>{t('No results found')}</h3>
+        <p>{t('Try adjusting your search or filters')}</p>
       </div>
     )
   }
@@ -14,20 +17,20 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
   return (
     <div className="search-results">
       <div className="results-header">
-        <span className="results-count">{results.length} results found</span>
+        <span className="results-count">{results.length} {t('results found')}</span>
       </div>
 
       <div className="results-table-wrapper">
         <table className="results-table">
           <thead>
             <tr>
-              <th>Crime No</th>
-              <th>Title</th>
-              <th>Crime Type</th>
-              <th>District</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>{t('Crime No')}</th>
+              <th>{t('Title')}</th>
+              <th>{t('Crime Type')}</th>
+              <th>{t('District')}</th>
+              <th>{t('Status')}</th>
+              <th>{t('Date')}</th>
+              <th>{t('Actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +47,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                   <span className="case-title-text">{row.title}</span>
                 </td>
                 <td>
-                  <span className="case-type-tag">{row.crime_type || row.type}</span>
+                  <span className="case-type-tag">{t(row.crime_type || row.type)}</span>
                 </td>
                 <td>{row.district}</td>
                 <td>
@@ -55,14 +58,14 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                   <div className="action-btns" onClick={(e) => e.stopPropagation()}>
                     <button
                       className="action-btn"
-                      aria-label="View"
+                      aria-label={t('View')}
                       onClick={() => onViewCase(row.id)}
                     >
                       <Eye size={14} strokeWidth={1.8} />
                     </button>
                     <button
                       className="action-btn"
-                      aria-label="Open"
+                      aria-label={t('Open')}
                       onClick={() => onViewCase(row.id)}
                     >
                       <ExternalLink size={14} strokeWidth={1.8} />

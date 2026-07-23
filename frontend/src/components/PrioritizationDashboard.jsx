@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Zap, RefreshCw, AlertTriangle, Users, BarChart3, ArrowUpRight, TrendingUp } from 'lucide-react'
 import { getPriorityStats, getPriorityRankings, batchScorePriorities, getWorkload } from '../services/priorities'
@@ -5,6 +6,7 @@ import { getPriorityStats, getPriorityRankings, batchScorePriorities, getWorkloa
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
 export default function PrioritizationDashboard() {
+  const { t } = useLanguage()
   const [stats, setStats] = useState(null)
   const [rankings, setRankings] = useState([])
   const [workload, setWorkload] = useState([])
@@ -78,8 +80,8 @@ export default function PrioritizationDashboard() {
                 <Zap size={16} className="text-violet-500" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Priority Queue</h3>
-                <p className="text-[10px] text-slate-400">Investigations ranked by urgency</p>
+                <h3 className="text-sm font-bold text-slate-900">{t('Priority Queue')}</h3>
+                <p className="text-[10px] text-slate-400">{t('Investigations ranked by urgency')}</p>
               </div>
             </div>
             <span className="text-[10px] text-slate-400">{rankings.length} items</span>
@@ -88,9 +90,9 @@ export default function PrioritizationDashboard() {
             {rankings.length === 0 ? (
               <div className="py-12 text-center">
                 <Zap size={32} className="text-slate-200 mx-auto mb-2" />
-                <p className="text-xs text-slate-400">No priorities scored yet</p>
+                <p className="text-xs text-slate-400">{t('No priorities scored yet')}</p>
                 <button onClick={handleBatchScore} className="mt-2 text-xs text-violet-500 font-medium hover:underline">
-                  Click "Score All" to begin
+                  {t('Click "Score All" to begin')}
                 </button>
               </div>
             ) : (
@@ -132,8 +134,8 @@ export default function PrioritizationDashboard() {
                 <Users size={16} className="text-blue-500" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Officer Workload</h3>
-                <p className="text-[10px] text-slate-400">Case distribution across officers</p>
+                <h3 className="text-sm font-bold text-slate-900">{t('Officer Workload')}</h3>
+                <p className="text-[10px] text-slate-400">{t('Case distribution across officers')}</p>
               </div>
             </div>
           </div>
@@ -141,7 +143,7 @@ export default function PrioritizationDashboard() {
             {workload.length === 0 ? (
               <div className="py-12 text-center">
                 <Users size={32} className="text-slate-200 mx-auto mb-2" />
-                <p className="text-xs text-slate-400">No workload data available</p>
+                <p className="text-xs text-slate-400">{t('No workload data available')}</p>
               </div>
             ) : (
               workload.map((w, i) => (

@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useMemo, useEffect } from 'react'
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis,
@@ -19,6 +20,7 @@ const filters = [
 ]
 
 export default function AlertsPage() {
+  const { t } = useLanguage()
   const [alerts, setAlerts] = useState([])
   const [activeFilter, setActiveFilter] = useState('all')
   const [selectedAlert, setSelectedAlert] = useState(null)
@@ -69,8 +71,8 @@ export default function AlertsPage() {
       {/* Header */}
       <div className="alerts-dash-header">
         <div>
-          <h1 className="alerts-dash-title">Intelligence Alerts</h1>
-          <p className="alerts-dash-subtitle">Monitor and respond to proactive intelligence</p>
+          <h1 className="alerts-dash-title">{t('Intelligence Alerts')}</h1>
+          <p className="alerts-dash-subtitle">{t('Monitor and respond to proactive intelligence')}</p>
         </div>
         <div className="alerts-dash-filters">
           {filters.map((f) => (
@@ -90,7 +92,7 @@ export default function AlertsPage() {
         {/* Stats Summary */}
         <div className="alerts-card stats-summary">
           <div className="card-header">
-            <h3>Alert Performance Summary</h3>
+            <h3>{t('Alert Performance Summary')}</h3>
             <button className="card-menu">⋯</button>
           </div>
           <div className="stats-summary-grid">
@@ -99,7 +101,7 @@ export default function AlertsPage() {
                 <AlertTriangle size={18} style={{ color: '#ef4444' }} />
               </div>
               <div className="stats-info">
-                <span className="stats-label">New Alerts</span>
+                <span className="stats-label">{t('New Alerts')}</span>
                 <span className="stats-value">{newCount}</span>
                 <span className="stats-trend up">
                   <TrendingUp size={12} /> +{newCount > 0 ? '15' : '0'}% Last 7 days
@@ -111,7 +113,7 @@ export default function AlertsPage() {
                 <Clock size={18} style={{ color: '#f59e0b' }} />
               </div>
               <div className="stats-info">
-                <span className="stats-label">Pending Review</span>
+                <span className="stats-label">{t('Pending Review')}</span>
                 <span className="stats-value">{pendingCount}</span>
                 <span className="stats-trend down">
                   <TrendingDown size={12} /> -{pendingCount > 0 ? '8' : '0'}% Last 7 days
@@ -123,7 +125,7 @@ export default function AlertsPage() {
                 <CheckCircle2 size={18} style={{ color: '#10b981' }} />
               </div>
               <div className="stats-info">
-                <span className="stats-label">Resolved</span>
+                <span className="stats-label">{t('Resolved')}</span>
                 <span className="stats-value">{resolvedCount}</span>
                 <span className="stats-trend up">
                   <TrendingUp size={12} /> +{resolvedCount > 0 ? '22' : '0'}% Last 7 days
@@ -137,7 +139,7 @@ export default function AlertsPage() {
         <div className="alerts-card trend-chart">
           <div className="card-header">
             <div>
-              <h3>Alert Trend</h3>
+              <h3>{t('Alert Trend')}</h3>
               <div className="trend-summary">
                 <span className="trend-big">{alerts.length}</span>
                 <span className="trend-change up">↑ {alerts.length > 0 ? '+12%' : '0%'} Last 7 days</span>
@@ -172,7 +174,7 @@ export default function AlertsPage() {
         {/* Donut Chart */}
         <div className="alerts-card donut-card">
           <div className="card-header">
-            <h3>Alert Distribution</h3>
+            <h3>{t('Alert Distribution')}</h3>
             <button className="card-menu">⋯</button>
           </div>
           <div className="card-body donut-body">
@@ -196,7 +198,7 @@ export default function AlertsPage() {
             </ResponsiveContainer>
             <div className="donut-center">
               <span className="donut-value">{alerts.length}</span>
-              <span className="donut-label">Total</span>
+              <span className="donut-label">{t('Total')}</span>
             </div>
             <div className="donut-legend">
               {typeBreakdown.map((d, i) => (
@@ -213,7 +215,7 @@ export default function AlertsPage() {
         {/* Bar Chart */}
         <div className="alerts-card bar-chart">
           <div className="card-header">
-            <h3>Alerts By Type</h3>
+            <h3>{t('Alerts By Type')}</h3>
             <button className="card-menu">⋯</button>
           </div>
           <div className="card-body">
@@ -240,8 +242,8 @@ export default function AlertsPage() {
         {/* Alert Feed */}
         <div className="alerts-card feed-card">
           <div className="card-header">
-            <h3>Recent Alerts</h3>
-            <button className="card-more">More details <ChevronRight size={14} /></button>
+            <h3>{t('Recent Alerts')}</h3>
+            <button className="card-more">{t('More details')} <ChevronRight size={14} /></button>
           </div>
           <div className="card-body feed-body">
             {filteredAlerts.slice(0, 5).map((alert) => {

@@ -1,6 +1,9 @@
 import { Lightbulb, CheckCircle, AlertTriangle } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
+  const { t } = useLanguage()
   const recommendations = []
 
   if (alerts && alerts.length > 0) {
@@ -8,8 +11,8 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
       type: 'alert',
       icon: AlertTriangle,
       color: '#ef4444',
-      title: `${alerts.length} active alerts require attention`,
-      description: 'Review high-severity alerts and take action on priority items.',
+      title: `${alerts.length} ${t('active alerts require attention')}`,
+      description: t('Review high-severity alerts and take action on priority items.'),
       confidence: 85,
     })
   }
@@ -19,8 +22,8 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
       type: 'risk',
       icon: AlertTriangle,
       color: '#f59e0b',
-      title: `${highRisk.length} high-risk suspects need monitoring`,
-      description: 'Consider increasing surveillance on repeat offenders with high risk scores.',
+      title: `${highRisk.length} ${t('high-risk suspects need monitoring')}`,
+      description: t('Consider increasing surveillance on repeat offenders with high risk scores.'),
       confidence: 78,
     })
   }
@@ -32,8 +35,8 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
         type: 'progress',
         icon: CheckCircle,
         color: '#3b82f6',
-        title: `${lowProgress.length} investigations need progress updates`,
-        description: 'These investigations have low progress and may need additional resources.',
+        title: `${lowProgress.length} ${t('investigations need progress updates')}`,
+        description: t('These investigations have low progress and may need additional resources.'),
         confidence: 72,
       })
     }
@@ -43,8 +46,8 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
     type: 'insight',
     icon: Lightbulb,
     color: '#8b5cf6',
-    title: 'Pattern analysis suggests cross-district coordination',
-    description: 'Similar crime patterns detected across multiple districts. Consider joint operations.',
+    title: t('Pattern analysis suggests cross-district coordination'),
+    description: t('Similar crime patterns detected across multiple districts. Consider joint operations.'),
     confidence: 65,
   })
 
@@ -52,13 +55,13 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <Lightbulb size={14} />
-        <h3>AI Recommendations</h3>
+        <h3>{t('AI Recommendations')}</h3>
       </div>
       <div className="analytics-recommendations-list">
         {recommendations.map((rec, i) => {
           const Icon = rec.icon
           return (
-            <div key={i} className="analytics-recommendation-item">
+             <div key={i} className="analytics-recommendation-item">
               <div className="analytics-rec-icon" style={{ color: rec.color }}>
                 <Icon size={14} />
               </div>
@@ -69,7 +72,7 @@ export default function AIRecommendationsPanel({ alerts, highRisk, priority }) {
                   <div className="analytics-confidence-bar">
                     <div className="analytics-confidence-fill" style={{ width: `${rec.confidence}%`, background: rec.color }} />
                   </div>
-                  <span>{rec.confidence}% confidence</span>
+                  <span>{rec.confidence}% {t('confidence')}</span>
                 </div>
               </div>
             </div>

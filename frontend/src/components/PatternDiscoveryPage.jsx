@@ -102,7 +102,7 @@ export default function PatternDiscoveryPage() {
       {loading ? (
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading patterns...</span>
+          <span>{t('Loading patterns...')}</span>
         </div>
       ) : patterns.length === 0 ? (
         <div className="similar-empty">

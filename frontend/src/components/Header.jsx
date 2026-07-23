@@ -49,7 +49,7 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
         </button>
 
         <div className="header-user">
-          <div className="header-user-avatar">SK</div>
+          <div className="header-user-avatar">{t('SK')}</div>
         </div>
       </div>
     </header>

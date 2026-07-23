@@ -1,13 +1,16 @@
 import { Activity, Clock, CheckCircle, Bell } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function IntelligenceSummaryCards({ stats }) {
+  const { t } = useLanguage()
   if (!stats) return null
 
   const cards = [
-    { label: 'Total Events', value: stats.total_events || 0, icon: Activity, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { label: 'Processed', value: stats.processed || 0, icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-50' },
-    { label: 'Pending', value: stats.pending || 0, icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
-    { label: 'In Queue', value: stats.queued || 0, icon: Bell, color: 'text-purple-500', bg: 'bg-purple-50' },
+    { label: t('Total Events'), value: stats.total_events || 0, icon: Activity, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: t('Processed'), value: stats.processed || 0, icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-50' },
+    { label: t('Pending'), value: stats.pending || 0, icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
+    { label: t('In Queue'), value: stats.queued || 0, icon: Bell, color: 'text-purple-500', bg: 'bg-purple-50' },
   ]
 
   return (

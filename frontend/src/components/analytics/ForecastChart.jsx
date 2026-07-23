@@ -1,6 +1,9 @@
 import { TrendingUp } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function ForecastChart({ forecasts }) {
+  const { t } = useLanguage()
   if (!forecasts) return null
 
   const historical = forecasts.historical || []
@@ -11,13 +14,13 @@ export default function ForecastChart({ forecasts }) {
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <TrendingUp size={14} />
-        <h3>Crime Forecast</h3>
-        <span className="similar-count">{forecasts.data_points || 0} data points</span>
+        <h3>{t('Crime Forecast')}</h3>
+        <span className="similar-count">{forecasts.data_points || 0} {t('data points')}</span>
       </div>
 
       <div className="analytics-forecast-chart">
         {historical.length === 0 ? (
-          <div className="similar-empty"><p>No forecast data</p></div>
+          <div className="similar-empty"><p>{t('No forecast data')}</p></div>
         ) : (
           <div className="analytics-forecast-bars">
             {historical.slice(-14).map((d, i) => (
@@ -39,7 +42,7 @@ export default function ForecastChart({ forecasts }) {
                     style={{ height: `${((f.count || 0) / maxCount) * 100}%` }}
                   />
                 </div>
-                <span className="analytics-forecast-label forecast-label">pred</span>
+                <span className="analytics-forecast-label forecast-label">{t('pred')}</span>
               </div>
             ))}
           </div>
@@ -48,8 +51,8 @@ export default function ForecastChart({ forecasts }) {
 
       {forecast.length > 0 && (
         <div className="analytics-forecast-info">
-          <span>Predicted: {forecast[0].count} crimes</span>
-          <span>Confidence: {forecast[0].confidence}%</span>
+          <span>{t('Predicted:')} {forecast[0].count} {t('crimes')}</span>
+          <span>{t('Confidence:')} {forecast[0].confidence}%</span>
         </div>
       )}
     </div>

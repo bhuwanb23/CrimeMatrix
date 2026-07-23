@@ -1,13 +1,15 @@
 import { Brain, Target, TrendingUp, Activity } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function PredictionSummaryCards({ stats }) {
+  const { t } = useLanguage()
   if (!stats) return null
 
   const cards = [
-    { key: 'total_predictions', label: 'Predictions', icon: Brain, color: '#f59e0b' },
-    { key: 'forecasts', label: 'Forecasts', icon: TrendingUp, color: '#3b82f6' },
-    { key: 'avg_confidence', label: 'Avg Confidence', icon: Target, color: '#10b981', suffix: '%' },
-    { key: 'total_models', label: 'Models', icon: Activity, color: '#8b5cf6' },
+    { key: 'total_predictions', label: t('Predictions'), icon: Brain, color: '#f59e0b' },
+    { key: 'forecasts', label: t('Forecasts'), icon: TrendingUp, color: '#3b82f6' },
+    { key: 'avg_confidence', label: t('Avg Confidence'), icon: Target, color: '#10b981', suffix: '%' },
+    { key: 'total_models', label: t('Models'), icon: Activity, color: '#8b5cf6' },
   ]
 
   return (
@@ -21,7 +23,7 @@ export default function PredictionSummaryCards({ stats }) {
               <Icon size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">{card.label}</span>
+              <span className="analytics-pred-label">{t(card.label)}</span>
               <span className="analytics-pred-value">{Math.round(value)}{card.suffix || ''}</span>
             </div>
           </div>

@@ -222,7 +222,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                   <div className="flex items-center gap-1.5">
                     <Icon size={12} className={config.color} />
                     <span className={`text-[10px] font-semibold uppercase tracking-wider ${config.color}`}>
-                      {config.label}
+                      {t(config.label)}
                     </span>
                   </div>
                   <span className="text-[10px] font-mono text-white/50">{rec.score || rec.confidence || 0}%</span>
@@ -271,7 +271,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                           ? 'bg-red-500/20 text-red-400'
                           : 'text-white/30 hover:text-red-400 hover:bg-red-500/10'
                       }`}
-                      title="Dismiss"
+                      title={t('Dismiss')}
                     >
                       <XCircle size={10} />
                       <span>{t('Dismiss')}</span>
@@ -283,7 +283,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                           ? 'bg-amber-500/20 text-amber-400'
                           : 'text-white/30 hover:text-amber-400 hover:bg-amber-500/10'
                       }`}
-                      title="Useful"
+                      title={t('Useful')}
                     >
                       <ThumbsUp size={10} />
                     </button>
@@ -294,7 +294,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                           ? 'bg-slate-500/20 text-slate-400'
                           : 'text-white/30 hover:text-slate-400 hover:bg-slate-500/10'
                       }`}
-                      title="Not useful"
+                      title={t('Not useful')}
                     >
                       <ThumbsDown size={10} />
                     </button>

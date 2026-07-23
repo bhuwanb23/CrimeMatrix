@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { Users } from 'lucide-react'
 
 const statusColors = {
@@ -10,6 +11,7 @@ const statusColors = {
 }
 
 export default function AssociatesTab({ suspect }) {
+  const { t } = useLanguage()
   return (
     <div className="associates-tab">
       <div className="associates-header">
@@ -38,7 +40,7 @@ export default function AssociatesTab({ suspect }) {
       </div>
 
       <div className="associates-network">
-        <h4>Network Summary</h4>
+        <h4>{t('Network Summary')}</h4>
         <p className="network-text">
           {suspect.name} is connected to {suspect.associates.length} known associates across{' '}
           {new Set(suspect.associates.map(a => a.relation)).size} different roles.

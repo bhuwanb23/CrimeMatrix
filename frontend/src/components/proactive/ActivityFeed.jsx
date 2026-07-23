@@ -3,6 +3,8 @@ import { AlertTriangle, FileText, Camera, Shield, Activity } from 'lucide-react'
 import ExplainButton from '../intelligence/ExplainButton'
 import ExplanationPanel from '../intelligence/ExplanationPanel'
 import { explainEvent } from '../../services/proactive'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 const eventIcons = {
   crime_update: FileText,
@@ -19,6 +21,7 @@ const eventColors = {
 }
 
 export default function ActivityFeed({ events }) {
+  const { t } = useLanguage()
   const [explainingId, setExplainingId] = useState(null)
   const [explanation, setExplanation] = useState(null)
 
@@ -45,12 +48,12 @@ export default function ActivityFeed({ events }) {
       <div className="bg-white border border-slate-200 rounded-xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <Activity size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Live Activity Feed</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('Live Activity Feed')}</h3>
         </div>
         <div className="py-8 text-center text-xs text-slate-400">
           <Activity size={24} className="mx-auto mb-2 text-slate-200" />
-          <p>No recent activity</p>
-          <p>Events will appear here as new data comes in</p>
+          <p>{t('No recent activity')}</p>
+          <p>{t('Events will appear here as new data comes in')}</p>
         </div>
       </div>
     )
@@ -61,7 +64,7 @@ export default function ActivityFeed({ events }) {
       <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Activity size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">Live Activity Feed</h3>
+          <h3 className="text-sm font-semibold text-slate-900">{t('Live Activity Feed')}</h3>
         </div>
         <span className="text-[10px] text-slate-400">{events.length} events</span>
       </div>

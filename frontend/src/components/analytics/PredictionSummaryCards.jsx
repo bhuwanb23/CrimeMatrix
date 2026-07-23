@@ -1,4 +1,5 @@
 import { Brain, Target, TrendingUp, Activity } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const cards = [
   { key: 'total_models', label: 'AI Models', icon: Brain, color: '#f59e0b' },
@@ -8,6 +9,7 @@ const cards = [
 ]
 
 export default function PredictionSummaryCards({ predictions }) {
+  const { t } = useLanguage()
   if (!predictions) return null
 
   return (
@@ -21,7 +23,7 @@ export default function PredictionSummaryCards({ predictions }) {
               <Icon size={18} />
             </div>
             <div className="analytics-pred-info">
-              <span className="analytics-pred-label">{card.label}</span>
+              <span className="analytics-pred-label">{t(card.label)}</span>
               <span className="analytics-pred-value">{value}{card.suffix || ''}</span>
             </div>
           </div>

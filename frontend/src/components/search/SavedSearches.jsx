@@ -1,6 +1,9 @@
 import { Bookmark, Play, Trash2, BookmarkPlus } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function SavedSearches({ searches, onRunSearch, onDelete, onSave, currentQuery }) {
+  const { t } = useLanguage()
   return (
     <div className="sidebar-section">
       <div className="sidebar-section-header">
@@ -12,7 +15,7 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
           <button
             className="sidebar-save-btn"
             onClick={() => onSave(currentQuery)}
-            aria-label="Save current search"
+            aria-label={t('Save current search')}
           >
             <BookmarkPlus size={14} />
           </button>
@@ -20,7 +23,7 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
       </div>
       <div className="saved-list">
         {searches.length === 0 ? (
-          <p className="sidebar-empty">No saved searches</p>
+          <p className="sidebar-empty">{t('No saved searches')}</p>
         ) : (
           searches.map((item) => (
             <div key={item.id} className="saved-item">
@@ -35,14 +38,14 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
                 <button
                   className="saved-action-btn"
                   onClick={() => onRunSearch(item.query)}
-                  aria-label="Run search"
+                  aria-label={t('Run search')}
                 >
                   <Play size={12} />
                 </button>
                 <button
                   className="saved-action-btn delete"
                   onClick={() => onDelete(item.id)}
-                  aria-label="Delete"
+                  aria-label={t('Delete')}
                 >
                   <Trash2 size={12} />
                 </button>

@@ -1,8 +1,11 @@
 import { MessageSquare } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { getEvaluationFeedback } from '../../services/analytics'
+import { useLanguage } from '../../context/LanguageContext'
+
 
 export default function FeedbackSummary() {
+  const { t } = useLanguage()
   const [feedback, setFeedback] = useState([])
 
   useEffect(() => {
@@ -23,21 +26,21 @@ export default function FeedbackSummary() {
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <MessageSquare size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">Feedback Summary</h3>
+        <h3 className="text-sm font-semibold text-slate-900">{t(t('Feedback Summary'))}</h3>
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="text-center p-2 bg-green-50 rounded-lg">
           <span className="block text-lg font-bold text-green-600">{correct}</span>
-          <span className="text-[9px] text-green-500">Correct</span>
+          <span className="text-[9px] text-green-500">{t(t('Correct'))}</span>
         </div>
         <div className="text-center p-2 bg-red-50 rounded-lg">
           <span className="block text-lg font-bold text-red-600">{incorrect}</span>
-          <span className="text-[9px] text-red-500">Incorrect</span>
+          <span className="text-[9px] text-red-500">{t(t('Incorrect'))}</span>
         </div>
         <div className="text-center p-2 bg-amber-50 rounded-lg">
           <span className="block text-lg font-bold text-amber-600">{avgRating}</span>
-          <span className="text-[9px] text-amber-500">Avg Rating</span>
+          <span className="text-[9px] text-amber-500">{t(t('Avg Rating'))}</span>
         </div>
       </div>
 

@@ -9,6 +9,10 @@ from app.models.crime_head import CrimeHead
 from app.models.crime_sub_head import CrimeSubHead
 from app.models.case_status_master import CaseStatusMaster
 from app.models.court import Court
+from app.models.occupation import Occupation
+from app.models.religion import Religion
+from app.models.caste_master import CasteMaster
+from app.models.gender import Gender
 
 router = APIRouter()
 
@@ -55,6 +59,34 @@ async def list_case_statuses(db: AsyncSession = Depends(get_db)):
 async def list_courts(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Court).order_by(Court.name))
     items = [{"id": r.id, "name": r.name, "code": r.code, "district": r.district, "court_type": r.court_type} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/occupations")
+async def list_occupations(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Occupation).order_by(Occupation.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "description": r.description} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/religions")
+async def list_religions(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Religion).order_by(Religion.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "description": r.description} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/caste")
+async def list_caste(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(CasteMaster).order_by(CasteMaster.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "description": r.description} for r in result.scalars().all()]
+    return success_response(data={"items": items, "total": len(items)})
+
+
+@router.get("/genders")
+async def list_genders(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Gender).order_by(Gender.name))
+    items = [{"id": r.id, "name": r.name, "code": r.code, "description": r.description} for r in result.scalars().all()]
     return success_response(data={"items": items, "total": len(items)})
 
 
@@ -173,6 +205,74 @@ async def seed_lookups(db: AsyncSession = Depends(get_db)):
         exists = await db.execute(select(Court).where(Court.code == code))
         if not exists.scalar():
             db.add(Court(name=name, code=code, district=district, court_type=ctype))
+            seeded += 1
+
+    # Occupations
+    occupations_data = [
+        ("Government Employee", "GOV", "Central or state government employee"),
+        ("Private Employee", "PVT", "Private sector employee"),
+        ("Business", "BIZ", "Business owner or self-employed"),
+        ("Student", "STD", "Student"),
+        ("Farmer", "FAR", "Agricultural worker or farmer"),
+        ("Daily Wage Worker", "DWG", "Daily wage laborer"),
+        ("Professional", "PRF", "Doctor, lawyer, engineer, etc."),
+        ("Retired", "RET", "Retired person"),
+        ("Unemployed", "UNEMP", "Currently unemployed"),
+        ("Homemaker", "HOME", "Homemaker"),
+        ("Driver", "DRV", "Driver (taxi, truck, auto)"),
+        ("Housewife", "HSW", "Housewife"),
+    ]
+    for name, code, desc in occupations_data:
+        exists = await db.execute(select(Occupation).where(Occupation.code == code))
+        if not exists.scalar():
+            db.add(Occupation(name=name, code=code, description=desc))
+            seeded += 1
+
+    # Religions
+    religions_data = [
+        ("Hindu", "HIN", "Hinduism"),
+        ("Muslim", "MUS", "Islam"),
+        ("Christian", "CHR", "Christianity"),
+        ("Sikh", "SIK", "Sikhism"),
+        ("Buddhist", "BUD", "Buddhism"),
+        ("Jain", "JAI", "Jainism"),
+        ("Other", "OTH", "Other religion"),
+        ("Not Specified", "NS", "Religion not specified"),
+    ]
+    for name, code, desc in religions_data:
+        exists = await db.execute(select(Religion).where(Religion.code == code))
+        if not exists.scalar():
+            db.add(Religion(name=name, code=code, description=desc))
+            seeded += 1
+
+    # Caste
+    caste_data = [
+        ("General", "GEN", "General category"),
+        ("SC", "SC", "Scheduled Caste"),
+        ("ST", "ST", "Scheduled Tribe"),
+        ("OBC", "OBC", "Other Backward Classes"),
+        ("EWS", "EWS", "Economically Weaker Section"),
+        ("Other", "OTH", "Other caste"),
+        ("Not Specified", "NS", "Caste not specified"),
+    ]
+    for name, code, desc in caste_data:
+        exists = await db.execute(select(CasteMaster).where(CasteMaster.code == code))
+        if not exists.scalar():
+            db.add(CasteMaster(name=name, code=code, description=desc))
+            seeded += 1
+
+    # Genders
+    genders_data = [
+        ("Male", "M", "Male"),
+        ("Female", "F", "Female"),
+        ("Transgender", "T", "Transgender"),
+        ("Other", "O", "Other gender"),
+        ("Not Specified", "NS", "Gender not specified"),
+    ]
+    for name, code, desc in genders_data:
+        exists = await db.execute(select(Gender).where(Gender.code == code))
+        if not exists.scalar():
+            db.add(Gender(name=name, code=code, description=desc))
             seeded += 1
 
     await db.commit()

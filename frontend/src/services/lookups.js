@@ -62,6 +62,11 @@ export async function getActSections(caseId) {
   return get(`/cases/${caseId}/act-sections`)
 }
 
+export async function getCrimeHeadActSections(crimeHeadId = null) {
+  const params = crimeHeadId ? `?crime_head_id=${crimeHeadId}` : ''
+  return get('/lookups/crime-head-act-sections' + params)
+}
+
 export async function addActSection(caseId, data) {
   return post(`/cases/${caseId}/act-sections`, data)
 }

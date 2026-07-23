@@ -21,7 +21,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
         <table className="results-table">
           <thead>
             <tr>
-              <th>Case ID</th>
+              <th>Crime No</th>
               <th>Title</th>
               <th>Crime Type</th>
               <th>District</th>
@@ -38,19 +38,19 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
                 onClick={() => onViewCase(row.id)}
               >
                 <td>
-                  <span className="case-id-badge">{row.id}</span>
+                  <span className="case-id-badge">{row.crime_no || row.case_number || row.id}</span>
                 </td>
                 <td>
                   <span className="case-title-text">{row.title}</span>
                 </td>
                 <td>
-                  <span className="case-type-tag">{row.type}</span>
+                  <span className="case-type-tag">{row.crime_type || row.type}</span>
                 </td>
                 <td>{row.district}</td>
                 <td>
                   <span className={`status-badge ${row.status}`}>{row.status}</span>
                 </td>
-                <td className="date-cell">{row.date}</td>
+                <td className="date-cell">{row.date || (row.created_at ? new Date(row.created_at).toLocaleDateString() : '')}</td>
                 <td>
                   <div className="action-btns" onClick={(e) => e.stopPropagation()}>
                     <button

@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { FileText, Users, Search } from 'lucide-react'
 import SearchPage from './SearchPage'
 import SuspectsPage from './SuspectsPage'
@@ -9,6 +10,7 @@ const tabs = [
 ]
 
 export default function UnifiedSearchPage() {
+  const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
   const activeTab = location.pathname.includes('/suspects') ? 'suspects' : 'cases'
@@ -27,8 +29,8 @@ export default function UnifiedSearchPage() {
               <Search size={28} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Crime Search</h1>
-              <p className="text-white/80 text-sm mt-0.5">Search cases, suspects, and investigate connections</p>
+              <h1 className="text-2xl font-bold">{t('Crime Search')}</h1>
+              <p className="text-white/80 text-sm mt-0.5">{t('Search cases, suspects, and investigate connections')}</p>
             </div>
           </div>
         </div>
@@ -48,7 +50,7 @@ export default function UnifiedSearchPage() {
                 }`}
               >
                 <Icon size={16} />
-                {tab.label}
+                {t(tab.label)}
               </button>
             )
           })}

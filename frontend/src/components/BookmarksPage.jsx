@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { Bookmark, FileText, User, Clock, Camera } from 'lucide-react'
 import { getGroupedBookmarks } from '../services/bookmarks'
@@ -12,6 +13,7 @@ const filterTabs = [
 ]
 
 export default function BookmarksPage() {
+  const { t } = useLanguage()
   const [grouped, setGrouped] = useState({})
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState('all')
@@ -53,7 +55,7 @@ export default function BookmarksPage() {
       <div className="bookmarks-header">
         <div className="bookmarks-title">
           <Bookmark size={20} />
-          <h1>Bookmarks</h1>
+          <h1>{t('Bookmarks')}</h1>
           <span className="similar-count">{getCount('all')}</span>
         </div>
       </div>
@@ -76,13 +78,13 @@ export default function BookmarksPage() {
         {loading ? (
           <div className="similar-loading">
             <div className="similar-spinner" />
-            <span>Loading bookmarks...</span>
+            <span>{t('Loading bookmarks...')}</span>
           </div>
-        ) : items.length === 0 ? (
+        {t(') : items.length === 0 ? (')}
           <div className="similar-empty">
             <Bookmark size={32} className="similar-empty-icon" />
-            <p>No bookmarks yet</p>
-            <span>Bookmark cases, evidence, criminals, and investigations to find them here.</span>
+            <p>{t('No bookmarks yet')}</p>
+            <span>{t('Bookmark cases, evidence, criminals, and investigations to find them here.')}</span>
           </div>
         ) : (
           <div className="bookmarks-list">

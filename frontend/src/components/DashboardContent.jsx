@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { ArrowUpRight, ArrowDownRight, ClipboardList, TrendingUp, AlertTriangle, Users, BarChart3 } from 'lucide-react'
 import CaseTrendChart from './charts/CaseTrendChart'
 import CrimeTypeChart from './charts/CrimeTypeChart'
@@ -50,6 +51,7 @@ const stats = [
 ]
 
 export default function DashboardContent() {
+  const { t } = useLanguage()
   const now = new Date()
   const lastUpdated = now.toLocaleDateString('en-US', {
     month: 'short',
@@ -61,7 +63,7 @@ export default function DashboardContent() {
     <div className="analytics-dashboard">
       {/* Page Header */}
       <div className="dashboard-header">
-        <h1 className="dashboard-title">Crime Analytics</h1>
+        <h1 className="dashboard-title">{t('Crime Analytics')}</h1>
         <span className="dashboard-updated">
           Last updated: {lastUpdated}
         </span>

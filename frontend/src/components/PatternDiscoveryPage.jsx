@@ -102,9 +102,9 @@ export default function PatternDiscoveryPage() {
       {loading ? (
         <div className="similar-loading">
           <div className="similar-spinner" />
-          <span>Loading patterns...</span>
+          <span>{t('Loading patterns...')}</span>
         </div>
-      ) : patterns.length === 0 ? (
+      {t(') : patterns.length === 0 ? (')}
         <div className="similar-empty">
           <GitBranch size={32} className="similar-empty-icon" />
           <p>{t('No patterns detected yet')}</p>

@@ -1,3 +1,4 @@
+import { useLanguage } from '../context/LanguageContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Zap, Radar, Shield } from 'lucide-react'
 import PrioritizationDashboard from './PrioritizationDashboard'
@@ -9,6 +10,7 @@ const tabs = [
 ]
 
 export default function PrioritizationIntelligencePage() {
+  const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
   const activeTab = location.pathname === '/proactive' ? 'proactive' : 'priority'
@@ -24,8 +26,8 @@ export default function PrioritizationIntelligencePage() {
                 <Shield size={28} />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Priority & Proactive Intelligence</h1>
-                <p className="text-white/80 text-sm mt-0.5">Case prioritization engine and AI-powered proactive monitoring</p>
+                <h1 className="text-2xl font-bold">{t('Priority & Proactive Intelligence')}</h1>
+                <p className="text-white/80 text-sm mt-0.5">{t('Case prioritization engine and AI-powered proactive monitoring')}</p>
               </div>
             </div>
           </div>

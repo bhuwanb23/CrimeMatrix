@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext'
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']
 
 export default function SettingsPage() {
+  const { t } = useLanguage()
   const { language, setLanguage, t } = useLanguage()
   const [profile] = useState({
     name: 'SI Karthik',
@@ -49,9 +50,9 @@ export default function SettingsPage() {
         <option key={opt} value={opt}>{opt}</option>
       ))}
     </select>
-  )
+  {t(')
 
-  return (
+  return (')}
     <div className="max-w-[900px]">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div>
@@ -75,7 +76,7 @@ export default function SettingsPage() {
         <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('Profile')}</h2>
         <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[#334155] text-xl font-bold text-white">
-            SK
+            {t('SK')}
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-lg font-bold text-[var(--text-primary)]">{profile.name}</div>
@@ -247,7 +248,7 @@ export default function SettingsPage() {
                 <span className="text-[13px] font-semibold text-[var(--text-primary)]">{t('This Device')}</span>
                 <span className="text-[10px] font-semibold text-[var(--color-success)]">{t('Active')}</span>
               </div>
-              <div className="text-[11px] text-[var(--text-muted)]">Last sync: 2 minutes ago</div>
+              <div className="text-[11px] text-[var(--text-muted)]">{t('Last sync: 2 minutes ago')}</div>
               <button
                 type="button"
                 className="mt-2 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-[11px] font-semibold text-white transition-all duration-150 hover:bg-[#1e293b]"
@@ -256,9 +257,9 @@ export default function SettingsPage() {
               </button>
             </div>
             <div className="h-px bg-[var(--border)]" />
-            <div className="text-[11px] font-semibold text-[var(--text-muted)]">Other Devices (2)</div>
-            <div className="text-xs text-[var(--text-secondary)]">• Tablet — Last sync: 1 hr ago</div>
-            <div className="text-xs text-[var(--text-secondary)]">• Desktop — Last sync: 3 hrs ago</div>
+            <div className="text-[11px] font-semibold text-[var(--text-muted)]">{t('Other Devices (2)')}</div>
+            <div className="text-xs text-[var(--text-secondary)]">{t('• Tablet — Last sync: 1 hr ago')}</div>
+            <div className="text-xs text-[var(--text-secondary)]">{t('• Desktop — Last sync: 3 hrs ago')}</div>
             <button
               type="button"
               className="w-full rounded-lg border border-[var(--border)] px-2 py-2 text-center text-xs font-medium text-[var(--text-muted)] transition-all duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"

@@ -66,7 +66,7 @@ export default function AIAnalyticsPage() {
             <button onClick={loadAll} disabled={loading}
               className="flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur hover:bg-white/30 rounded-xl text-sm font-semibold transition-all disabled:opacity-50">
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-              Refresh
+              {t('Refresh')}
             </button>
           </div>
         </div>
@@ -76,7 +76,7 @@ export default function AIAnalyticsPage() {
           <div className="similar-spinner" />
           <span>{t(t('Loading analytics dashboard...'))}</span>
         </div>
-      ) : summary ? (
+      {t(') : summary ? (')}
         <div className="intel-grid">
           {/* Prediction Summary Cards */}
           <PredictionSummaryCards predictions={summary.predictions} />

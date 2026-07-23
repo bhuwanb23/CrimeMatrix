@@ -86,6 +86,46 @@ export async function deleteVictim(caseId, victimId) {
   return del(`/cases/${caseId}/victims/${victimId}`)
 }
 
+export async function getStates() {
+  return get('/lookups/states')
+}
+
+export async function getArrestSurrenderTypes() {
+  return get('/lookups/arrest-surrender-types')
+}
+
+export async function getAccused(caseId) {
+  return get(`/cases/${caseId}/accused`)
+}
+
+export async function createAccused(caseId, data) {
+  return post(`/cases/${caseId}/accused`, data)
+}
+
+export async function updateAccused(caseId, accusedId, data) {
+  return post(`/cases/${caseId}/accused/${accusedId}`, data)
+}
+
+export async function deleteAccused(caseId, accusedId) {
+  return del(`/cases/${caseId}/accused/${accusedId}`)
+}
+
+export async function getArrestSurrender(caseId) {
+  return get(`/cases/${caseId}/arrest-surrender`)
+}
+
+export async function createArrestSurrender(caseId, data) {
+  return post(`/cases/${caseId}/arrest-surrender`, data)
+}
+
+export async function updateArrestSurrender(caseId, recordId, data) {
+  return post(`/cases/${caseId}/arrest-surrender/${recordId}`, data)
+}
+
+export async function deleteArrestSurrender(caseId, recordId) {
+  return del(`/cases/${caseId}/arrest-surrender/${recordId}`)
+}
+
 export async function seedLookups() {
   return post('/lookups/seed')
 }

@@ -267,6 +267,66 @@ export default function CaseDetailPage() {
           )}
         </div>
 
+        {/* Accused */}
+        <div className="case-card">
+          <h3 className="case-card-title">
+            <Fingerprint size={16} /> Accused
+          </h3>
+          {accused.length > 0 ? (
+            <div className="space-y-2">
+              {accused.map((a, i) => (
+                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-semibold text-slate-900">{a.name}</span>
+                    {a.person_id && (
+                      <span className="text-[10px] font-mono bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">{a.person_id}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                    {a.age_year && <span>Age: {a.age_year}</span>}
+                    {a.gender_name && <span>Gender: {a.gender_name}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="case-empty-text">No accused recorded</p>
+          )}
+        </div>
+
+        {/* Arrest / Surrender */}
+        <div className="case-card">
+          <h3 className="case-card-title">
+            <Handcuffs size={16} /> Arrest / Surrender
+          </h3>
+          {arrests.length > 0 ? (
+            <div className="space-y-2">
+              {arrests.map((a, i) => (
+                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-semibold text-slate-900">{a.type_name || 'Unknown'}</span>
+                    <div className="flex items-center gap-2">
+                      {a.is_accused && (
+                        <span className="text-[10px] font-semibold px-2 py-0.5 bg-red-100 text-red-700 rounded-full">Primary</span>
+                      )}
+                      {a.is_complainant_accused && (
+                        <span className="text-[10px] font-semibold px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full">Complainant-Accused</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                    {a.date && <span>{new Date(a.date).toLocaleDateString()}</span>}
+                    {a.accused_name && <span>Accused: {a.accused_name}</span>}
+                    {a.state_name && <span>State: {a.state_name}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="case-empty-text">No arrest/surrender records</p>
+          )}
+        </div>
+
         {/* Timeline */}
         <div className="case-card">
           <h3 className="case-card-title">

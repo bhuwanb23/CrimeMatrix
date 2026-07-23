@@ -131,6 +131,14 @@ export async function deleteArrestSurrender(caseId, recordId) {
   return del(`/cases/${caseId}/arrest-surrender/${recordId}`)
 }
 
+export async function getUnitTypes() {
+  return get('/lookups/unit-types')
+}
+
+export async function getRanks() {
+  return get('/lookups/ranks')
+}
+
 export async function seedLookups() {
   return post('/lookups/seed')
 }

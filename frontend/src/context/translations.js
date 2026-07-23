@@ -23,7 +23,12 @@ export const translations = {
     "Today's Cases": "Today's Cases", 'Live': 'Live', 'Theft': 'Theft', 'Fraud': 'Fraud', 'Cyber': 'Cyber', 'Crime Type Breakdown': 'Crime Type Breakdown',
     'cases': 'cases', 'Crime Trend': 'Crime Trend', 'Daily': 'Daily', 'Weekly': 'Weekly', 'Monthly': 'Monthly', 'Annually': 'Annually',
     'Cases Filed': 'Cases Filed', 'Top Districts': 'Top Districts', 'by case count': 'by case count', 'Case Resolution': 'Case Resolution',
-    'by time period': 'by time period', 'Total Resolved': 'Total Resolved', 'resolved': 'resolved'
+    'by time period': 'by time period', 'Total Resolved': 'Total Resolved', 'resolved': 'resolved',
+    'Remove bookmark': 'Remove bookmark', 'Add bookmark': 'Add bookmark',
+    'Case': 'Case', 'Evidence': 'Evidence', 'Criminal': 'Criminal', 'Investigation': 'Investigation', 'Search Result': 'Search Result',
+    'Bengaluru Urban': 'Bengaluru Urban', 'Mysuru': 'Mysuru', 'Mangaluru': 'Mangaluru', 'Hubballi': 'Hubballi', 'Other': 'Other',
+    '0-30 days': '0-30 days', '31-60 days': '31-60 days', '61-90 days': '61-90 days', '91-180 days': '91-180 days', '180+ days': '180+ days',
+    'Cybercrime': 'Cybercrime', 'Assault': 'Assault'
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -48,7 +53,12 @@ export const translations = {
     "Today's Cases": "ಇಂದಿನ ಪ್ರಕರಣಗಳು", 'Live': 'ಲೈವ್', 'Theft': 'ಕಳ್ಳತನ', 'Fraud': 'ವಂಚನೆ', 'Cyber': 'ಸೈಬರ್', 'Crime Type Breakdown': 'ಅಪರಾಧ ಪ್ರಕಾರದ ವಿಭಜನೆ',
     'cases': 'ಪ್ರಕರಣಗಳು', 'Crime Trend': 'ಅಪರಾಧ ಪ್ರವೃತ್ತಿ', 'Daily': 'ದೈನಂದಿನ', 'Weekly': 'ಸಾಪ್ತಾಹಿಕ', 'Monthly': 'ಮಾಸಿಕ', 'Annually': 'ವಾರ್ಷಿಕ',
     'Cases Filed': 'ದಾಖಲಾದ ಪ್ರಕರಣಗಳು', 'Top Districts': 'ಉನ್ನತ ಜಿಲ್ಲೆಗಳು', 'by case count': 'ಪ್ರಕರಣಗಳ ಸಂಖ್ಯೆಯಿಂದ', 'Case Resolution': 'ಪ್ರಕರಣ ಪರಿಹಾರ',
-    'by time period': 'ಸಮಯಾವಧಿಯಿಂದ', 'Total Resolved': 'ಒಟ್ಟು ಪರಿಹರಿಸಲಾಗಿದೆ', 'resolved': 'ಪರಿಹರಿಸಲಾಗಿದೆ'
+    'by time period': 'ಸಮಯಾವಧಿಯಿಂದ', 'Total Resolved': 'ಒಟ್ಟು ಪರಿಹರಿಸಲಾಗಿದೆ', 'resolved': 'ಪರಿಹರಿಸಲಾಗಿದೆ',
+    'Remove bookmark': 'ಬುಕ್‌ಮಾರ್ಕ್ ತೆಗೆದುಹಾಕಿ', 'Add bookmark': 'ಬುಕ್‌ಮಾರ್ಕ್ ಸೇರಿಸಿ',
+    'Case': 'ಪ್ರಕರಣ', 'Evidence': 'ಸಾಕ್ಷ್ಯ', 'Criminal': 'ಅಪರಾಧಿ', 'Investigation': 'ತನಿಖೆ', 'Search Result': 'ಹುಡುಕಾಟ ಫಲಿತಾಂಶ',
+    'Bengaluru Urban': 'ಬೆಂಗಳೂರು ನಗರ', 'Mysuru': 'ಮೈಸೂರು', 'Mangaluru': 'ಮಂಗಳೂರು', 'Hubballi': 'ಹುಬ್ಬಳ್ಳಿ', 'Other': 'ಇತರೆ',
+    '0-30 days': '0-30 ದಿನಗಳು', '31-60 days': '31-60 ದಿನಗಳು', '61-90 days': '61-90 ದಿನಗಳು', '91-180 days': '91-180 ದಿನಗಳು', '180+ days': '180+ ದಿನಗಳು',
+    'Cybercrime': 'ಸೈಬರ್ ಅಪರಾಧ', 'Assault': 'ಹಲ್ಲೆ'
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -73,7 +83,12 @@ export const translations = {
     "Today's Cases": "आज के मामले", 'Live': 'लाइव', 'Theft': 'चोरी', 'Fraud': 'धोखाधड़ी', 'Cyber': 'साइबर', 'Crime Type Breakdown': 'अपराध प्रकार का विवरण',
     'cases': 'मामले', 'Crime Trend': 'अपराध की प्रवृत्ति', 'Daily': 'दैनिक', 'Weekly': 'साप्ताहिक', 'Monthly': 'मासिक', 'Annually': 'वार्षिक',
     'Cases Filed': 'दर्ज मामले', 'Top Districts': 'शीर्ष जिले', 'by case count': 'मामलों की संख्या से', 'Case Resolution': 'मामले का समाधान',
-    'by time period': 'समय अवधि से', 'Total Resolved': 'कुल हल किए गए', 'resolved': 'हल किए गए'
+    'by time period': 'समय अवधि से', 'Total Resolved': 'कुल हल किए गए', 'resolved': 'हल किए गए',
+    'Remove bookmark': 'बुकमार्क निकालें', 'Add bookmark': 'बुकमार्क जोड़ें',
+    'Case': 'मामला', 'Evidence': 'साक्ष्य', 'Criminal': 'अपराधी', 'Investigation': 'जांच', 'Search Result': 'खोज परिणाम',
+    'Bengaluru Urban': 'बेंगलुरु शहरी', 'Mysuru': 'मैसूर', 'Mangaluru': 'मंगलुरु', 'Hubballi': 'हुबली', 'Other': 'अन्य',
+    '0-30 days': '0-30 दिन', '31-60 days': '31-60 दिन', '61-90 days': '61-90 दिन', '91-180 days': '91-180 दिन', '180+ days': '180+ दिन',
+    'Cybercrime': 'साइबर अपराध', 'Assault': 'हमला'
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -98,7 +113,12 @@ export const translations = {
     "Today's Cases": "இன்றைய வழக்குகள்", 'Live': 'நேரலை', 'Theft': 'திருட்டு', 'Fraud': 'மோசடி', 'Cyber': 'சைபர்', 'Crime Type Breakdown': 'குற்ற வகை முறிவு',
     'cases': 'வழக்குகள்', 'Crime Trend': 'குற்ற போக்கு', 'Daily': 'தினசரி', 'Weekly': 'வாராந்திர', 'Monthly': 'மாதாந்திர', 'Annually': 'வருடாந்திர',
     'Cases Filed': 'தாக்கல் செய்யப்பட்ட வழக்குகள்', 'Top Districts': 'சிறந்த மாவட்டங்கள்', 'by case count': 'வழக்கு எண்ணிக்கை அடிப்படையில்', 'Case Resolution': 'வழக்கு தீர்வு',
-    'by time period': 'கால அளவு அடிப்படையில்', 'Total Resolved': 'மொத்தம் தீர்க்கப்பட்டது', 'resolved': 'தீர்க்கப்பட்டது'
+    'by time period': 'கால அளவு அடிப்படையில்', 'Total Resolved': 'மொத்தம் தீர்க்கப்பட்டது', 'resolved': 'தீர்க்கப்பட்டது',
+    'Remove bookmark': 'புக்மார்க்கை அகற்று', 'Add bookmark': 'புக்மார்க்கைச் சேர்',
+    'Case': 'வழக்கு', 'Evidence': 'ஆதாரம்', 'Criminal': 'குற்றவாளி', 'Investigation': 'விசாரணை', 'Search Result': 'தேடல் முடிவு',
+    'Bengaluru Urban': 'பெங்களூரு நகர்ப்புறம்', 'Mysuru': 'மைசூர்', 'Mangaluru': 'மங்களூரு', 'Hubballi': 'ஹுப்பள்ளி', 'Other': 'மற்றவை',
+    '0-30 days': '0-30 நாட்கள்', '31-60 days': '31-60 நாட்கள்', '61-90 days': '61-90 நாட்கள்', '91-180 days': '91-180 நாட்கள்', '180+ days': '180+ நாட்கள்',
+    'Cybercrime': 'சைபர் குற்றம்', 'Assault': 'தாக்குதல்'
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -123,6 +143,11 @@ export const translations = {
     "Today's Cases": "నేటి కేసులు", 'Live': 'లైవ్', 'Theft': 'దొంగతనం', 'Fraud': 'మోసం', 'Cyber': 'సైబర్', 'Crime Type Breakdown': 'నేర రకం బ్రేక్‌డౌన్',
     'cases': 'కేసులు', 'Crime Trend': 'నేర ధోరణి', 'Daily': 'దైనందిన', 'Weekly': 'వారాంతపు', 'Monthly': 'నెలవారీ', 'Annually': 'వార్షిక',
     'Cases Filed': 'నమోదైన కేసులు', 'Top Districts': 'అగ్ర జిల్లాలు', 'by case count': 'కేసుల సంఖ్య ఆధారంగా', 'Case Resolution': 'కేసుల పరిష్కారం',
-    'by time period': 'సమయ వ్యవధి ఆధారంగా', 'Total Resolved': 'మొత్తం పరిష్కరించబడినవి', 'resolved': 'పరిష్కరించబడినవి'
+    'by time period': 'సమయ వ్యవధి ఆధారంగా', 'Total Resolved': 'మొత్తం పరిష్కరించబడినవి', 'resolved': 'పరిష్కరించబడినవి',
+    'Remove bookmark': 'బుక్‌మార్క్ తీసివేయి', 'Add bookmark': 'బుక్‌మార్క్ జోడించు',
+    'Case': 'కేసు', 'Evidence': 'సాక్ష్యం', 'Criminal': 'నేరస్థుడు', 'Investigation': 'దర్యాప్తు', 'Search Result': 'శోధన ఫలితం',
+    'Bengaluru Urban': 'బెంగళూరు అర్బన్', 'Mysuru': 'మైసూర్', 'Mangaluru': 'మంగళూరు', 'Hubballi': 'హుబ్బళ్లి', 'Other': 'ఇతర',
+    '0-30 days': '0-30 రోజులు', '31-60 days': '31-60 రోజులు', '61-90 days': '61-90 రోజులు', '91-180 days': '91-180 రోజులు', '180+ days': '180+ రోజులు',
+    'Cybercrime': 'సైబర్ నేరం', 'Assault': 'దాడి'
   }
 }

@@ -126,6 +126,8 @@ __all__ = [
     # Crime data
     "Crime", "CrimeType", "Criminal", "Person", "Victim", "Witness",
     "Officer", "Station", "District", "Vehicle", "Phone", "Location",
+    # Unit & Rank
+    "UnitType", "Rank",
     # Investigation
     "Attachment", "Bookmark", "CaseLink", "CaseStatusLog", "Note",
     "TimelineEvent", "Report",

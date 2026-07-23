@@ -405,12 +405,19 @@ class SimilarCaseService:
         return {
             "id": case.id,
             "case_number": case.case_number,
+            "crime_no": case.crime_no,
             "title": case.title,
             "description": case.description,
             "crime_type": case.crime_type,
             "district": case.district,
             "status": case.status,
             "priority": case.priority,
+            "case_category_id": case.case_category_id,
+            "gravity_offence_id": case.gravity_offence_id,
+            "crime_major_head_id": case.crime_major_head_id,
+            "police_station_id": case.police_station_id,
+            "latitude": case.latitude,
+            "longitude": case.longitude,
             "created_at": str(case.created_at) if case.created_at else None,
         }
 

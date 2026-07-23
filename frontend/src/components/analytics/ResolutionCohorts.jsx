@@ -3,9 +3,9 @@ import { useLanguage } from '../../context/LanguageContext'
 
 export default function ResolutionCohorts() {
   const { t } = useLanguage()
-  const maxPercentage = Math.max(...resolutionCohorts.map((r) => r.percentage))
+  const maxPercentage = Math.max(...resolutionCohorts.map((r) => {t('r.percentage))
 
-  return (
+  return (')}
     <div className="analytics-cohort-card">
       <div className="analytics-cohort-header">
         <h3>{t('Case Resolution')}</h3>

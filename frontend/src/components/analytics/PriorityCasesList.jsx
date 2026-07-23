@@ -17,7 +17,7 @@ export default function PriorityCasesList({ cases }) {
           <ClipboardList size={14} />
           <h3>{t(t('Priority Cases'))}</h3>
         </div>
-        <div className="similar-empty"><p>No priority cases</p></div>
+        <div className="similar-empty"><p>{t('No priority cases')}</p></div>
       </div>
     )
   }

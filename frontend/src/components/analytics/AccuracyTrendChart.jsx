@@ -29,7 +29,7 @@ export default function AccuracyTrendChart() {
       </div>
 
       {loading ? (
-        <p className="text-[10px] text-slate-400 text-center py-4">Loading...</p>
+        <p className="text-[10px] text-slate-400 text-center py-4">{t('Loading...')}</p>
       ) : trend.length === 0 ? (
         <p className="text-[10px] text-slate-400 text-center py-4">{t(t('No accuracy data yet'))}</p>
       ) : (

@@ -8,9 +8,9 @@ export default function ForecastChart({ forecasts }) {
 
   const historical = forecasts.historical || []
   const forecast = forecasts.forecast || []
-  const maxCount = Math.max(...historical.map(d => d.count || 0), 1)
+  const maxCount = Math.max(...historical.map(d => {t('d.count || 0), 1)
 
-  return (
+  return (')}
     <div className="analytics-panel">
       <div className="analytics-panel-header">
         <TrendingUp size={14} />
@@ -20,7 +20,7 @@ export default function ForecastChart({ forecasts }) {
 
       <div className="analytics-forecast-chart">
         {historical.length === 0 ? (
-          <div className="similar-empty"><p>No forecast data</p></div>
+          <div className="similar-empty"><p>{t('No forecast data')}</p></div>
         ) : (
           <div className="analytics-forecast-bars">
             {historical.slice(-14).map((d, i) => (
@@ -42,7 +42,7 @@ export default function ForecastChart({ forecasts }) {
                     style={{ height: `${((f.count || 0) / maxCount) * 100}%` }}
                   />
                 </div>
-                <span className="analytics-forecast-label forecast-label">pred</span>
+                <span className="analytics-forecast-label forecast-label">{t('pred')}</span>
               </div>
             ))}
           </div>

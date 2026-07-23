@@ -35,7 +35,7 @@ function SimilarCaseCard({ item, onCompare, expanded, onToggle }) {
     <div className={`similar-card ${expanded ? 'similar-card-expanded' : ''}`}>
       <div className="similar-card-header" onClick={onToggle}>
         <div className="similar-card-header-left">
-          <span className="similar-card-id">{item.case_number || `Case #${item.case_id}`}</span>
+          <span className="similar-card-id">{item.crime_no || item.case_number || `Case #${item.case_id}`}</span>
           <span className={`similar-card-type ${item.crime_type?.toLowerCase().replace(/\s+/g, '-')}`}>
             {item.crime_type}
           </span>

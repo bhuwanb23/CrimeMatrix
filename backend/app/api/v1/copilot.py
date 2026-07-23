@@ -55,7 +55,7 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
     if data.case_id:
         try:
             async with httpx.AsyncClient() as client:
-                case_resp = await client.get(f"{AI_SERVICES_URL.replace('8002', '8001')}/api/v1/crimes/{data.case_id}", timeout=10.0)
+                case_resp = await client.get(f"{AI_SERVICES_URL.replace('8002', '8000')}/api/v1/crimes/{data.case_id}", timeout=10.0)
                 if case_resp.status_code == 200:
                     case_data = case_resp.json().get("data", {})
                     if case_data:

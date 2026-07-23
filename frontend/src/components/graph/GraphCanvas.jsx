@@ -10,49 +10,55 @@ function forceLayout(nodes, edges, width = 800, height = 500) {
   const nodeMap = {}
   const cx = width / 2, cy = height / 2
 
-  // Initialize positions in a circle
+  // Initialize positions in a wider circle
+  const spread = Math.min(width, height) * 0.35
   nodes.forEach((n, i) => {
     const angle = (2 * Math.PI * i) / nodes.length
-    const r = 150 + (((i * 7 + 13) % 50)) // deterministic spread
+    const jitter = ((i * 7 + 13) % 30) - 15
     nodeMap[n.id || n.node_id] = {
       ...n,
-      x: cx + r * Math.cos(angle),
-      y: cy + r * Math.sin(angle),
+      x: cx + (spread + jitter) * Math.cos(angle),
+      y: cy + (spread + jitter) * Math.sin(angle),
     }
   })
 
-  // Force simulation (30 iterations)
-  for (let iter = 0; iter < 30; iter++) {
+  // Force simulation (50 iterations for better convergence)
+  for (let iter = 0; iter < 50; iter++) {
     const keys = Object.keys(nodeMap)
+    const alpha = 1 - iter / 50 // cooling
+
+    // Repulsion between all nodes
     for (let i = 0; i < keys.length; i++) {
       for (let j = i + 1; j < keys.length; j++) {
         const a = nodeMap[keys[i]], b = nodeMap[keys[j]]
         let dx = a.x - b.x, dy = a.y - b.y
         let dist = Math.sqrt(dx * dx + dy * dy) || 1
-        let force = 2000 / (dist * dist)
+        let force = (3000 / (dist * dist)) * alpha
         let fx = (dx / dist) * force, fy = (dy / dist) * force
         a.x += fx; a.y += fy
         b.x -= fx; b.y -= fy
       }
     }
 
+    // Attraction along edges
     edges.forEach((e) => {
       const src = nodeMap[e.source || e.source_id]
       const tgt = nodeMap[e.target || e.target_id]
       if (!src || !tgt) return
       let dx = tgt.x - src.x, dy = tgt.y - src.y
       let dist = Math.sqrt(dx * dx + dy * dy) || 1
-      let force = (dist - 100) * 0.01
+      let force = (dist - 120) * 0.02 * alpha
       let fx = (dx / dist) * force, fy = (dy / dist) * force
       src.x += fx; src.y += fy
       tgt.x -= fx; tgt.y -= fy
     })
 
+    // Center gravity (weak, decreases over time)
     keys.forEach((k) => {
-      nodeMap[k].x += (cx - nodeMap[k].x) * 0.01
-      nodeMap[k].y += (cy - nodeMap[k].y) * 0.01
-      nodeMap[k].x = Math.max(40, Math.min(width - 40, nodeMap[k].x))
-      nodeMap[k].y = Math.max(40, Math.min(height - 40, nodeMap[k].y))
+      nodeMap[k].x += (cx - nodeMap[k].x) * 0.005 * alpha
+      nodeMap[k].y += (cy - nodeMap[k].y) * 0.005 * alpha
+      nodeMap[k].x = Math.max(50, Math.min(width - 50, nodeMap[k].x))
+      nodeMap[k].y = Math.max(50, Math.min(height - 50, nodeMap[k].y))
     })
   }
 

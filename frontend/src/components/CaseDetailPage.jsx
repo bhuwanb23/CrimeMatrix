@@ -3,11 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
-  Camera, Bot, MapPin, Calendar, Hash,
+  Camera, Bot, MapPin, Calendar, Hash, Users,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'
+import { getComplainant } from '../services/lookups'
 
 const timelineIcons = {
   filing: FileText,
@@ -19,7 +20,19 @@ const timelineIcons = {
 export default function CaseDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [complainant, setComplainant] = useState(null)
   const caseData = getCaseById(id)
+
+  useEffect(() => {
+    if (id) {
+      const numericId = parseInt(id.replace(/\D/g, ''), 10)
+      if (numericId) {
+        getComplainant(numericId).then(res => {
+          setComplainant(res?.data || null)
+        }).catch(() => {})
+      }
+    }
+  }, [id])
 
   if (!caseData) {
     return (
@@ -156,6 +169,43 @@ export default function CaseDetailPage() {
               <span className="case-info-value">{caseData.case_status_id ? `#${caseData.case_status_id}` : '—'}</span>
             </div>
           </div>
+        </div>
+
+        {/* Complainant Details */}
+        <div className="case-card">
+          <h3 className="case-card-title">
+            <Users size={16} /> Complainant Details
+          </h3>
+          {complainant ? (
+            <div className="case-info-grid">
+              <div className="case-info-item">
+                <span className="case-info-label">Name</span>
+                <span className="case-info-value">{complainant.name}</span>
+              </div>
+              <div className="case-info-item">
+                <span className="case-info-label">Age</span>
+                <span className="case-info-value">{complainant.age_year ? `${complainant.age_year} years` : '—'}</span>
+              </div>
+              <div className="case-info-item">
+                <span className="case-info-label">Gender</span>
+                <span className="case-info-value">{complainant.gender_name || '—'}</span>
+              </div>
+              <div className="case-info-item">
+                <span className="case-info-label">Occupation</span>
+                <span className="case-info-value">{complainant.occupation_name || '—'}</span>
+              </div>
+              <div className="case-info-item">
+                <span className="case-info-label">Religion</span>
+                <span className="case-info-value">{complainant.religion_name || '—'}</span>
+              </div>
+              <div className="case-info-item">
+                <span className="case-info-label">Caste</span>
+                <span className="case-info-value">{complainant.caste_name || '—'}</span>
+              </div>
+            </div>
+          ) : (
+            <p className="case-empty-text">No complainant details recorded</p>
+          )}
         </div>
 
         {/* Timeline */}

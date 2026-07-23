@@ -25,6 +25,30 @@ export async function getCourts() {
   return get('/lookups/courts')
 }
 
+export async function getOccupations() {
+  return get('/lookups/occupations')
+}
+
+export async function getReligions() {
+  return get('/lookups/religions')
+}
+
+export async function getCaste() {
+  return get('/lookups/caste')
+}
+
+export async function getGenders() {
+  return get('/lookups/genders')
+}
+
+export async function getComplainant(caseId) {
+  return get(`/cases/${caseId}/complainant`)
+}
+
+export async function createComplainant(caseId, data) {
+  return post(`/cases/${caseId}/complainant`, data)
+}
+
 export async function seedLookups() {
   return post('/lookups/seed')
 }

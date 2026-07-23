@@ -17,6 +17,8 @@ from app.models.act_section_association import ActSectionAssociation
 from app.models.crime_head_act_section import CrimeHeadActSection
 from app.models.victim import Victim
 from app.models.state import State
+from app.models.unit_type import UnitType
+from app.models.rank import Rank
 from app.models.arrest_surrender_type import ArrestSurrenderType
 from app.models.accused import Accused
 from app.models.arrest_surrender import ArrestSurrender

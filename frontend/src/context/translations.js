@@ -100,7 +100,8 @@ export const translations = {
     'Total Events': 'Total Events',
     'Try adjusting your search or filters': 'Try adjusting your search or filters',
     'Type': 'Type',
-    'Useful': 'Useful'
+    'Useful': 'Useful',
+    'results found': 'results found'
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',

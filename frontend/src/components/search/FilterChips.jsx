@@ -34,7 +34,7 @@ export default function FilterChips({ activeFilters, onToggleFilter, onClearAll 
       {activeFilters.length > 0 && (
         <button className="filter-clear" onClick={onClearAll}>
           <X size={14} />
-          {t('{t('Clear all')}')}
+          {t('Clear all')}
         </button>
       )}
     </div>

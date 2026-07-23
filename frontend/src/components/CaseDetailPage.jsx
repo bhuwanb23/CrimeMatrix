@@ -3,12 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
-  Camera, Bot, MapPin, Calendar, Hash, Users,
+  Camera, Bot, MapPin, Calendar, Hash, Users, Scale, BookOpen,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'
-import { getComplainant } from '../services/lookups'
+import { getComplainant, getVictims, getActSections } from '../services/lookups'
 
 const timelineIcons = {
   filing: FileText,
@@ -21,15 +21,17 @@ export default function CaseDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [complainant, setComplainant] = useState(null)
+  const [victims, setVictims] = useState([])
+  const [actSections, setActSections] = useState([])
   const caseData = getCaseById(id)
 
   useEffect(() => {
     if (id) {
       const numericId = parseInt(id.replace(/\D/g, ''), 10)
       if (numericId) {
-        getComplainant(numericId).then(res => {
-          setComplainant(res?.data || null)
-        }).catch(() => {})
+        getComplainant(numericId).then(res => setComplainant(res?.data || null)).catch(() => {})
+        getVictims(numericId).then(res => setVictims(res?.data?.items || [])).catch(() => {})
+        getActSections(numericId).then(res => setActSections(res?.data?.items || [])).catch(() => {})
       }
     }
   }, [id])

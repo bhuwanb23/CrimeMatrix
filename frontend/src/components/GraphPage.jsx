@@ -18,18 +18,42 @@ export default function GraphPage() {
   const { t } = useLanguage()
   const canvasRef = useRef(null)
 
-  const loadGraph = useCallback(async () => {
+  const loadGraph = useCallback(async ({ autoBuild = false } = {}) => {
     setLoading(true)
     try {
-      const [nodesRes, edgesRes, statsRes] = await Promise.all([
+      let [nodesRes, edgesRes, statsRes] = await Promise.all([
         getGraphNodes(),
         getGraphEdges(),
         getGraphStats(),
       ])
-      const nodesData = nodesRes?.data || nodesRes
-      const edgesData = edgesRes?.data || edgesRes
-      setNodes(Array.isArray(nodesData) ? nodesData : nodesData?.nodes || [])
-      setEdges(Array.isArray(edgesData) ? edgesData : edgesData?.edges || [])
+      let nodesData = nodesRes?.data || nodesRes
+      let edgesData = edgesRes?.data || edgesRes
+      let nodeList = Array.isArray(nodesData) ? nodesData : nodesData?.nodes || []
+      let edgeList = Array.isArray(edgesData) ? edgesData : edgesData?.edges || []
+
+      // Empty graph: build from crimes once, then reload (no mock fallback)
+      if (autoBuild && nodeList.length === 0) {
+        setBuilding(true)
+        try {
+          await buildGraphFromCrimes()
+          ;[nodesRes, edgesRes, statsRes] = await Promise.all([
+            getGraphNodes(),
+            getGraphEdges(),
+            getGraphStats(),
+          ])
+          nodesData = nodesRes?.data || nodesRes
+          edgesData = edgesRes?.data || edgesRes
+          nodeList = Array.isArray(nodesData) ? nodesData : nodesData?.nodes || []
+          edgeList = Array.isArray(edgesData) ? edgesData : edgesData?.edges || []
+        } catch (buildErr) {
+          console.error('Auto-build graph failed', buildErr)
+        } finally {
+          setBuilding(false)
+        }
+      }
+
+      setNodes(nodeList)
+      setEdges(edgeList)
       setStats(statsRes?.data || statsRes)
     } catch (e) {
       console.error('Failed to load graph', e)
@@ -38,7 +62,7 @@ export default function GraphPage() {
     }
   }, [])
 
-  useEffect(() => { loadGraph() }, [loadGraph])
+  useEffect(() => { loadGraph({ autoBuild: true }) }, [loadGraph])
 
   async function handleBuildGraph() {
     setBuilding(true)

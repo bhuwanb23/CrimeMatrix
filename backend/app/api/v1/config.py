@@ -14,7 +14,7 @@ async def get_config():
         "debug": settings.app_debug,
         "default_ai_provider": settings.default_ai_provider,
         "features": {
-            "authentication": True,
+            "authentication": False,
             "ai_chat": True,
             "file_upload": True,
             "real_time": True,

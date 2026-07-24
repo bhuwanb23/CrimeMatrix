@@ -24,7 +24,7 @@ class InvestigationContextAPI:
     async def get_investigation(self, investigation_id: int) -> Optional[Dict]:
         try:
             async with httpx.AsyncClient() as client:
-                resp = await client.get(f"{self.backend_url}/api/v1/crimes/{investigation_id}", timeout=10.0)
+                resp = await client.get(f"{self.backend_url}/api/v1/investigations/{investigation_id}", timeout=10.0)
                 if resp.status_code == 200:
                     return resp.json().get("data", {})
         except Exception as e:
@@ -56,7 +56,7 @@ class InvestigationContextAPI:
     async def get_notes(self, investigation_id: int) -> List[Dict]:
         try:
             async with httpx.AsyncClient() as client:
-                resp = await client.get(f"{self.backend_url}/api/v1/notes/?investigation_id={investigation_id}", timeout=10.0)
+                resp = await client.get(f"{self.backend_url}/api/v1/notes/investigation/{investigation_id}", timeout=10.0)
                 if resp.status_code == 200:
                     data = resp.json().get("data", {})
                     return data.get("items", data) if isinstance(data, dict) else data

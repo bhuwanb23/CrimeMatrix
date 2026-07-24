@@ -6,26 +6,26 @@ export default function PredictionSummaryCards({ stats }) {
   if (!stats) return null
 
   const cards = [
-    { key: 'total_predictions', label: t('Predictions'), icon: Brain, color: '#f59e0b' },
-    { key: 'forecasts', label: t('Forecasts'), icon: TrendingUp, color: '#3b82f6' },
-    { key: 'avg_confidence', label: t('Avg Confidence'), icon: Target, color: '#10b981', suffix: '%' },
-    { key: 'total_models', label: t('Models'), icon: Activity, color: '#8b5cf6' },
+    { key: 'total_predictions', label: t('Predictions'), icon: Brain, color: 'text-amber-500', bg: 'bg-amber-50' },
+    { key: 'forecasts', label: t('Forecasts'), icon: TrendingUp, color: 'text-blue-500', bg: 'bg-blue-50' },
+    { key: 'avg_confidence', label: t('Avg Confidence'), icon: Target, color: 'text-emerald-500', bg: 'bg-emerald-50', suffix: '%' },
+    { key: 'total_models', label: t('Models'), icon: Activity, color: 'text-purple-500', bg: 'bg-purple-50' },
   ]
 
   return (
-    <div className="analytics-summary-cards">
+    <div className="grid grid-cols-4 gap-4">
       {cards.map((card) => {
         const value = stats[card.key] || 0
         const Icon = card.icon
         return (
-          <div key={card.key} className="analytics-pred-card">
-            <div className="analytics-pred-icon" style={{ color: card.color }}>
-              <Icon size={18} />
+          <div key={card.key} className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-sm transition-shadow">
+            <div className="flex items-center gap-3 mb-2">
+              <div className={`w-9 h-9 rounded-xl ${card.bg} flex items-center justify-center`}>
+                <Icon size={16} className={card.color} />
+              </div>
+              <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{card.label}</span>
             </div>
-            <div className="analytics-pred-info">
-              <span className="analytics-pred-label">{t(card.label)}</span>
-              <span className="analytics-pred-value">{Math.round(value)}{card.suffix || ''}</span>
-            </div>
+            <div className="text-xl font-bold text-slate-900">{Math.round(value)}{card.suffix || ''}</div>
           </div>
         )
       })}

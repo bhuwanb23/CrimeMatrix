@@ -350,6 +350,6 @@ export const getCases = (t) => [
   },
 ]
 
-export function getCaseById(id) {
-  return cases.find((c) => c.id === id)
+export function getCaseById(id, t) {
+  return getCases(t).find((c) => c.id === id)
 }

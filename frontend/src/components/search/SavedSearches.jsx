@@ -6,23 +6,6 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
   const { t } = useLanguage()
   return (
     <div className="sidebar-section">
-      <div className="sidebar-section-header">
-        <h3 className="sidebar-section-title">
-          <Bookmark size={14} />
-          {t('Saved Searches')}
-        </h3>
-        {currentQuery && (
-          <button
-            className="sidebar-save-btn"
-            onClick={() => onSave(currentQuery)}
-            aria-label={t('{t('Save current')} search')}
-          >
-            <BookmarkPlus size={14} />
-          </button>
-        )}
-      </div>
-      <div className="saved-list">
-        {searches.length === 0 ? (
           <p className="sidebar-empty">{t('{t('No saved searches')}')}</p>
         ) : (
           searches.map((item) => (

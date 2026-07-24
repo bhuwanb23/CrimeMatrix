@@ -42,16 +42,12 @@ async def run_bootstrap(base_url: str | None = None) -> dict[str, str]:
     results: dict[str, str] = {}
 
     async with httpx.AsyncClient(timeout=120.0) as client:
-        # Health check
+        # Soft health check (continue even if it fails — individual steps report errors)
         try:
-            health = await client.get(url.replace("/api/v1", "") + "/api/v1/health")
-            if health.status_code >= 400:
-                # try alternate
-                health = await client.get(f"{url}/health")
+            await client.get(f"{url}/health", timeout=5.0)
         except Exception as exc:
-            print(f"  [bootstrap] Backend not reachable at {url}: {exc}")
-            print("  Start the API first: uvicorn main:app --port 8000 --reload")
-            return {"_error": str(exc)}
+            print(f"  [bootstrap] Warning: health check failed at {url}/health: {exc}")
+            print("  Ensure API is running: uvicorn main:app --port 8000 --reload")
 
         for label, method, path, body in BOOTSTRAP_STEPS:
             full = f"{url}{path}"

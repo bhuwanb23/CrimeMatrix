@@ -129,6 +129,16 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Delete SQLite DB and recreate tables before seeding (recommended once)",
     )
+    parser.add_argument(
+        "--bootstrap",
+        action="store_true",
+        help="After seeding (or alone), POST detect/batch/build endpoints (API must be running)",
+    )
+    parser.add_argument(
+        "--bootstrap-only",
+        action="store_true",
+        help="Skip table seeding; only run intelligence bootstrap",
+    )
     args = parser.parse_args(argv)
 
     if args.list:
@@ -145,10 +155,21 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Unknown seed keys: {', '.join(sorted(unknown))}")
             return 1
 
-    print("Seeding CrimeMatrix database…")
-    results = asyncio.run(run_all(only=only, fresh=args.fresh))
-    total = sum(results.values())
-    print(f"Done. {total} new rows across {len(results)} tables.")
+    if not args.bootstrap_only:
+        print("Seeding CrimeMatrix database…")
+        results = asyncio.run(run_all(only=only, fresh=args.fresh))
+        total = sum(results.values())
+        print(f"Done. {total} new rows across {len(results)} tables.")
+
+    if args.bootstrap or args.bootstrap_only:
+        print("Bootstrapping intelligence pipelines…")
+        from seed.bootstrap_intelligence import run_bootstrap
+        boot = asyncio.run(run_bootstrap())
+        ok = sum(1 for v in boot.values() if v == "ok")
+        print(f"Bootstrap finished: {ok}/{len(boot)} steps OK.")
+        if boot.get("_error"):
+            return 1
+
     return 0
 
 

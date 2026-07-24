@@ -82,25 +82,30 @@ python -m venv venv
 # Windows: venv\Scripts\activate
 source venv/bin/activate
 pip install -r requirements.txt
-python seed_crimes.py
-# or full modular seed (lookups, cases, suspects, investigations, …):
-# python -m seed --fresh
 uvicorn main:app --port 8000 --reload
 
-# AI Services — http://localhost:8002
+# In another terminal — seed DB + compute intelligence (API must be up)
+cd backend
+source venv/bin/activate   # Windows: venv\Scripts\activate
+python -m seed --fresh
+python -m seed --bootstrap-only
+
+# AI Services — http://localhost:8002 (required for Copilot / semantic search)
 cd ai-services
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 uvicorn main:app --port 8002 --reload
 
-# Frontend — http://localhost:5173
+# Frontend — http://localhost:5173 (API default http://localhost:8000/api/v1)
 cd frontend
 npm install
 npm run dev
 ```
 
 For local LLM support, run [Ollama](https://ollama.com/) and pull a model (for example `llama3.2:1b`). Configure API keys in each service’s `.env` as needed. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for deployment notes.
+
+**Run order:** backend → `python -m seed --fresh` → `python -m seed --bootstrap-only` → ai-services (+ Ollama for Copilot) → frontend.
 
 </details>
 

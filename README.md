@@ -114,6 +114,10 @@ For local LLM support, run [Ollama](https://ollama.com/) and pull a model (for e
 
 Further design notes live in [docs/](docs/).
 
+### Crime vs Case detail
+
+Case detail pages load the primary record from **`GET /crimes/{id}`** (search also lists crimes). Optional CaseMaster sub-resources (`/cases/{id}/complainant`, evidence, etc.) only populate when a matching `cases.id` exists — missing rows show empty sections and do not block the page.
+
 ---
 
 ## Contributing

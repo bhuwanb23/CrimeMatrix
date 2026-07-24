@@ -20,48 +20,78 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
   ]
 
   return (
-    <div className="graph-controls">
-      <div className="graph-view-btns">
+    <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
+      {/* View Buttons */}
+      <div className="flex items-center gap-1.5 flex-wrap" role="group" aria-label="Graph views">
         {views.map((view) => (
           <button
             key={view.id}
-            className={`graph-view-btn ${activeView === view.id ? 'active' : ''}`}
+            type="button"
             onClick={() => onViewChange(view.id)}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 ${
+              activeView === view.id
+                ? 'bg-white text-slate-900 border-slate-300'
+                : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-800'
+            }`}
           >
             {view.label}
           </button>
         ))}
       </div>
 
+      {/* Divider */}
+      <div className="w-px h-6 bg-slate-200 shrink-0 max-lg:hidden" aria-hidden="true" />
+
+      {/* Type Filters */}
       {onToggleType && (
-        <div className="graph-type-filters">
-          <Filter size={12} />
-          {nodeTypes.map((nt) => (
-            <button
-              key={nt.id}
-              className={`graph-type-btn ${typeFilter.includes(nt.id) ? 'active' : ''}`}
-              onClick={() => onToggleType(nt.id)}
-              style={typeFilter.includes(nt.id) ? { borderColor: nt.color, color: nt.color } : {}}
-            >
-              <span className="graph-type-dot" style={{ background: nt.color }} />
-              {nt.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+            <Filter size={13} aria-hidden="true" />
+            {t('Filter')}
+          </span>
+          <div className="flex items-center gap-1.5 flex-wrap" role="group" aria-label="Node type filters">
+            {nodeTypes.map((nt) => {
+              const isActive = typeFilter.includes(nt.id)
+              return (
+                <button
+                  key={nt.id}
+                  type="button"
+                  onClick={() => onToggleType(nt.id)}
+                  aria-pressed={isActive}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 ${
+                    isActive
+                      ? 'bg-white text-slate-900'
+                      : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-800'
+                  }`}
+                  style={isActive ? { borderColor: nt.color } : undefined}
+                >
+                  <span className="size-1.5 rounded-full shrink-0" style={{ background: nt.color }} aria-hidden="true" />
+                  {nt.label}
+                </button>
+              )
+            })}
+          </div>
         </div>
       )}
 
-      <div className="graph-zoom-btns">
-        <button className="graph-zoom-btn" onClick={onZoomIn} aria-label={t("Zoom in")}>
+      {/* Divider */}
+      <div className="w-px h-6 bg-slate-200 shrink-0 max-lg:hidden" aria-hidden="true" />
+
+      {/* Zoom Controls */}
+      <div className="flex items-center gap-1.5 shrink-0">
+        <button type="button" onClick={onZoomIn} aria-label={t("Zoom in")}
+          className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer transition-colors hover:border-slate-300 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <ZoomIn size={16} />
         </button>
-        <button className="graph-zoom-btn" onClick={onZoomOut} aria-label={t("Zoom out")}>
+        <button type="button" onClick={onZoomOut} aria-label={t("Zoom out")}
+          className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer transition-colors hover:border-slate-300 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <ZoomOut size={16} />
         </button>
-        <button className="graph-zoom-btn" onClick={onReset} aria-label={t("Reset view")}>
+        <button type="button" onClick={onReset} aria-label={t("Reset view")}
+          className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer transition-colors hover:border-slate-300 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <Maximize2 size={16} />
         </button>
       </div>
     </div>
   )
 }
-

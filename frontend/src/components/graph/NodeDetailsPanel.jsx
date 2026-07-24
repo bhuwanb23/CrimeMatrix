@@ -14,11 +14,14 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
 
   if (!node) {
     return (
-      <div className="node-details-empty">
-        <div className="node-details-empty-icon">🔍</div>
-        <h3>{t('Select a Node')}</h3>
-        <p>{t('Click on any node in the graph to view details')}</p>
-      </div>
+      <aside className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px]"
+        aria-label="Node details">
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-12 text-center text-slate-400">
+          <span className="text-2xl" aria-hidden="true">🔍</span>
+          <p className="m-0 text-xs font-semibold">{t('Select a Node')}</p>
+          <p className="m-0 text-[10px]">{t('Click on any node in the graph to view details')}</p>
+        </div>
+      </aside>
     )
   }
 
@@ -28,72 +31,93 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
   )
 
   return (
-    <div className="node-details-panel">
-      <div className="node-details-header">
-        <div className="node-details-type">
-          <Icon size={14} />
-          <span>{t(node.type)}</span>
+    <aside className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px]"
+      aria-label="Node details">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-2 border-b border-slate-200 px-3.5 py-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className={`inline-flex size-6 items-center justify-center rounded-md ${node.type === 'suspect' ? 'bg-red-500/10 text-red-500' : 'bg-blue-500/10 text-blue-500'}`}>
+            <Icon size={13} />
+          </div>
+          <h2 className="m-0 min-w-0 text-[13px] font-semibold text-slate-900">
+            {node.label || t(node.type)}
+          </h2>
         </div>
-        <button className="node-details-close" onClick={onClose}>
+        <button type="button" onClick={onClose} aria-label="Close node details"
+          className="inline-flex size-7 shrink-0 items-center justify-center rounded-md border-0 bg-transparent text-slate-400 cursor-pointer hover:bg-slate-50 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <X size={16} />
         </button>
       </div>
 
-      <div className="node-details-info">
+      {/* Node Info */}
+      <div className="flex-1 overflow-y-auto">
         {node.type === 'suspect' ? (
-          <>
-            <div className="node-details-avatar" style={{ background: node.gradient }}>
-              {node.id}
-            </div>
-            <h3 className="node-details-name">{t(node.label)}</h3>
-            <div className="node-details-stats">
-              <div className="node-detail-stat">
-                <span className="node-detail-stat-value">{node.risk}</span>
-                <span className="node-detail-stat-label">{t('Risk')}</span>
+          <div className="border-b border-slate-200 p-3.5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white"
+                style={{ background: node.gradient || '#0f172a' }}>
+                {node.id}
               </div>
-              <div className="node-detail-stat">
-                <span className="node-detail-stat-value">{node.cases}</span>
-                <span className="node-detail-stat-label">{t('Cases')}</span>
+              <div>
+                <p className="m-0 text-xs font-semibold text-slate-900">{node.label}</p>
+                <p className="m-0 text-[10px] text-slate-400 capitalize">{t(node.type)}</p>
               </div>
             </div>
-          </>
+            <div className="flex gap-3">
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-slate-900">{node.risk}</span>
+                <span className="text-[10px] text-slate-400">{t('Risk')}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-slate-900">{node.cases}</span>
+                <span className="text-[10px] text-slate-400">{t('Cases')}</span>
+              </div>
+            </div>
+          </div>
         ) : (
-          <>
-            <div className="node-details-evidence-icon">{node.icon}</div>
-            <h3 className="node-details-name">{t(node.label)}</h3>
-          </>
+          <div className="border-b border-slate-200 p-3.5">
+            <p className="m-0 text-2xl">{node.icon}</p>
+            <p className="m-0 mt-1 text-xs font-semibold text-slate-900">{node.label}</p>
+            <p className="m-0 text-[10px] text-slate-400 capitalize">{t(node.type)}</p>
+          </div>
+        )}
+
+        {/* Connections */}
+        <section className="p-3.5">
+          <h3 className="mb-2 mt-0 flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
+            {t('Connections')} ({connections.length})
+          </h3>
+          <div className="flex flex-col gap-2">
+            {connections.length === 0 ? (
+              <p className="m-0 text-xs text-slate-400">{t('No connections')}</p>
+            ) : connections.map((conn, i) => {
+              const otherNodeId = conn.source === node.id ? conn.target : conn.source
+              const otherNode = nodes.find((n) => n.id === otherNodeId)
+              return (
+                <div key={i} className="flex items-center gap-2 text-xs">
+                  <span className="size-2 shrink-0 rounded-full" style={{ background: edgeColors[conn.type] || '#64748b' }} />
+                  <div className="flex min-w-0 flex-col gap-px">
+                    <span className="text-slate-900 truncate">{otherNode?.label || otherNodeId}</span>
+                    <span className="text-[11px] text-slate-400">{conn.label || conn.type}</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* Actions */}
+        {node.type === 'suspect' && (
+          <div className="border-t border-slate-200 p-3.5 flex gap-2">
+            <button className="flex-1 px-3 py-1.5 text-[11px] font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors cursor-pointer">
+              {t('View Full Profile')}
+            </button>
+            <button className="flex-1 px-3 py-1.5 text-[11px] font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer">
+              {t('Add to Investigation')}
+            </button>
+          </div>
         )}
       </div>
-
-      <div className="node-details-connections">
-        <h4>{t('Connections')} ({connections.length})</h4>
-        <div className="connections-list">
-          {connections.map((conn, i) => {
-            const otherNodeId = conn.source === node.id ? conn.target : conn.source
-            const otherNode = nodes.find((n) => n.id === otherNodeId)
-            return (
-              <div key={i} className="connection-item">
-                <div
-                  className="connection-dot"
-                  style={{ background: edgeColors[conn.type] }}
-                />
-                <div className="connection-info">
-                  <span className="connection-name">{t(otherNode?.label || otherNodeId)}</span>
-                  <span className="connection-type">{t(conn.label || conn.type)}</span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {node.type === 'suspect' && (
-        <div className="node-details-actions">
-          <button className="node-action-btn">{t('View Full Profile')}</button>
-          <button className="node-action-btn secondary">{t('Add to Investigation')}</button>
-        </div>
-      )}
-    </div>
+    </aside>
   )
 }
-

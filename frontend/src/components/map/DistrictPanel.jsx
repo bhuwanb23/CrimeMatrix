@@ -1,4 +1,5 @@
 import { MapPin, X, TrendingUp, AlertTriangle } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const riskBadgeClass = {
   critical: 'bg-red-500/10 text-red-500',
@@ -59,6 +60,7 @@ function buildHotspots(mapData) {
 }
 
 export default function DistrictPanel({ selectedDistrict, onClose, mapData = null, stats = null }) {
+  const { t } = useLanguage()
   const risk = selectedDistrict?.risk || selectedDistrict?.risk_level || 'low'
   const density = buildDensity(mapData, stats)
   const hotspots = buildHotspots(mapData)

@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import { useLanguage } from '../context/LanguageContext'
+import { chat } from '../services/copilot'
 
 const quickStats = [
   { icon: FileText, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)', value: '12', label: 'Cases Today' },
@@ -48,29 +49,59 @@ const initialMessages = [
   },
 ]
 
+function nowLabel() {
+  return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+}
+
 export default function RightPanel({ isOpen }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [activeTab, setActiveTab] = useState('activity')
   const [messages, setMessages] = useState(initialMessages)
   const [inputValue, setInputValue] = useState('')
+  const [sending, setSending] = useState(false)
+  const [sessionId, setSessionId] = useState(null)
   const chatEndRef = useRef(null)
+
+  const copilotLang = language === 'Kannada' || language === 'kn' ? 'kn' : 'en'
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const handleSend = () => {
-    if (!inputValue.trim()) return
-    const userMsg = { role: 'user', content: inputValue.trim(), time: 'Now' }
+  const handleSend = async () => {
+    if (!inputValue.trim() || sending) return
+    const text = inputValue.trim()
+    const userMsg = { role: 'user', content: text, time: nowLabel() }
     setMessages((prev) => [...prev, userMsg])
     setInputValue('')
-    setTimeout(() => {
+    setSending(true)
+
+    try {
+      const res = await chat(text, sessionId, 'default', true, copilotLang)
+      const data = res?.data || res || {}
+      if (data.session_id) setSessionId(data.session_id)
+      const reply =
+        data.response ||
+        data.message ||
+        data.content ||
+        data.reply ||
+        (typeof data === 'string' ? data : null) ||
+        'No response from copilot.'
       setMessages((prev) => [...prev, {
         role: 'assistant',
-        content: 'Let me analyze that for you. Based on the current database, I found relevant information. Would you like me to generate a detailed report?',
-        time: 'Now',
+        content: reply,
+        time: nowLabel(),
       }])
-    }, 1200)
+    } catch (err) {
+      console.error(err)
+      setMessages((prev) => [...prev, {
+        role: 'assistant',
+        content: 'Sorry — the copilot is unavailable right now. Please try again.',
+        time: nowLabel(),
+      }])
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -135,6 +166,9 @@ export default function RightPanel({ isOpen }) {
             {messages.map((msg, i) => (
               <ChatMessage key={i} {...msg} />
             ))}
+            {sending && (
+              <ChatMessage role="assistant" content="Thinking..." time={nowLabel()} />
+            )}
             <div ref={chatEndRef} />
           </div>
           <div className="chat-input-area">
@@ -145,8 +179,9 @@ export default function RightPanel({ isOpen }) {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+              disabled={sending}
             />
-            <button className="chat-send-btn" onClick={handleSend} disabled={!inputValue.trim()}>
+            <button className="chat-send-btn" onClick={handleSend} disabled={!inputValue.trim() || sending}>
               <Send size={16} strokeWidth={1.8} />
             </button>
           </div>

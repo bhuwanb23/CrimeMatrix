@@ -2,6 +2,9 @@
 
 Usage (from backend/):
     python -m seed
+    python -m seed --fresh
+    python -m seed --fresh --bootstrap   # seed then POST detect/batch/build (API must be up)
+    python -m seed --bootstrap-only      # intelligence only
     python -m seed --only states,districts,crimes
     python -m seed --list
 """

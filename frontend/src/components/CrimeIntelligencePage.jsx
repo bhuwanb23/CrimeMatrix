@@ -212,11 +212,7 @@ function ProfilingTab() {
 }
 
 function MOTab() {
-  return (
-    <div className="max-w-3xl mx-auto">
-      <MOComparisonTab />
-    </div>
-  )
+  return <MOComparisonTab />
 }
 
 function CrossDistrictTab() {

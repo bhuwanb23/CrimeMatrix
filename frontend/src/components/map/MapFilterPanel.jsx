@@ -1,4 +1,5 @@
 import { Filter } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const crimeTypes = [
   { value: '', label: 'All types' },
@@ -12,18 +13,11 @@ const crimeTypes = [
   { value: '8', label: 'Burglary' },
 ]
 
-const riskLevels = [
-  { value: '', label: 'All risk' },
-  { value: 'critical', label: 'Critical' },
-  { value: 'high', label: 'High' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'low', label: 'Low' },
-]
-
 const selectClass =
   'bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 font-[inherit] min-w-[110px] max-w-[160px] focus:outline-none focus:border-amber-500'
 
 export default function MapFilterPanel({ filters, onChange }) {
+  const { t } = useLanguage()
   return (
     <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
@@ -40,18 +34,6 @@ export default function MapFilterPanel({ filters, onChange }) {
           >
             {crimeTypes.map((ct) => (
               <option key={ct.value} value={ct.value}>{ct.label}</option>
-            ))}
-          </select>
-        </label>
-        <label className="block min-w-0">
-          <span className="sr-only">Risk level</span>
-          <select
-            className={selectClass}
-            value={filters.risk_level || ''}
-            onChange={(e) => onChange({ ...filters, risk_level: e.target.value })}
-          >
-            {riskLevels.map((rl) => (
-              <option key={rl.value} value={rl.value}>{rl.label}</option>
             ))}
           </select>
         </label>

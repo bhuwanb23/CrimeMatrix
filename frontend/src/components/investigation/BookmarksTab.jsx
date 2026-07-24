@@ -1,10 +1,12 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { Clock, User } from 'lucide-react'
 
 export default function BookmarksTab({ investigationId: _investigationId, bookmarks }) {
+  const { t } = useLanguage()
   if (!bookmarks || bookmarks.length === 0) {
     return (
       <div className="similar-empty">
-        <p>No status logs yet</p>
+        <p>{t('No status logs yet')}</p>
       </div>
     )
   }

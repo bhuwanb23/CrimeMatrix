@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { Camera, FileText, Phone, MapPin, Fingerprint } from 'lucide-react'
 
 const typeIcons = {
@@ -12,11 +13,12 @@ const typeIcons = {
 }
 
 export default function EvidenceTab({ caseId: _caseId, evidence }) {
+  const { t } = useLanguage()
   return (
     <div className="evidence-tab">
       {evidence.length === 0 ? (
         <div className="similar-empty">
-          <p>No evidence collected for this case</p>
+          <p>{t('No evidence collected for this case')}</p>
         </div>
       ) : (
         <div className="evidence-grid">

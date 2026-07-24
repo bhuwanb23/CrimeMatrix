@@ -1,4 +1,5 @@
 import { Layers } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const layers = [
   { id: 'crimes', label: 'Crimes', color: '#f59e0b' },
@@ -9,6 +10,7 @@ const layers = [
 ]
 
 export default function MapLayerControls({ activeLayers, onToggleLayer }) {
+  const { t } = useLanguage()
   return (
     <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">

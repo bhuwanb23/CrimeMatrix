@@ -1,8 +1,10 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { Search, Bookmark, ChevronDown, ChevronRight, RefreshCw, Plus, Clock } from 'lucide-react'
 import { getRecentInvestigations } from '../../services/investigations'
 
 export default function CaseListPanel({ investigations, selectedId, onSelectCase, loading, onRefresh, onCreated }) {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState('')
   const [activeSection, setActiveSection] = useState('active')
   const [recentItems, setRecentItems] = useState([])
@@ -54,7 +56,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         <Search size={14} />
         <input
           type="text"
-          placeholder="Search investigations..."
+          placeholder={t('Search investigations...')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -67,7 +69,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
 
       <button className="case-list-create-btn" onClick={() => setShowCreate(!showCreate)}>
         <Plus size={14} />
-        New Investigation
+        {t('New Investigation')}
       </button>
 
       {showCreate && (
@@ -85,7 +87,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         <div className="case-list-section">
           <div className="case-list-section-header">
             <Clock size={12} />
-            <span>Recently Viewed</span>
+            <span>{t('Recently Viewed')}</span>
           </div>
           <div className="case-list-recent">
             {recentItems.map((inv) => (
@@ -111,7 +113,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
           onClick={() => setActiveSection('active')}
         >
           {activeSection === 'active' ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          Active ({activeCount})
+          {t('Active')} ({activeCount})
         </button>
         <button
           className={`case-list-section-btn ${activeSection === 'saved' ? 'active' : ''}`}
@@ -119,7 +121,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         >
           {activeSection === 'saved' ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           <Bookmark size={12} />
-          Saved ({savedCount})
+          {t('Saved')} ({savedCount})
         </button>
       </div>
 
@@ -127,11 +129,11 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         {loading ? (
           <div className="similar-loading">
             <div className="similar-spinner" />
-            <span>Loading...</span>
+            <span>{t('Loading...')}</span>
           </div>
         ) : filtered.length === 0 ? (
           <div className="similar-empty">
-            <p>No investigations found</p>
+            <p>{t('No investigations found')}</p>
           </div>
         ) : (
           filtered.map((inv) => (
@@ -143,7 +145,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
               <div className="case-list-item-top">
                 <span className="case-list-item-id">INV-{String(inv.id).padStart(3, '0')}</span>
                 <span className={`case-list-priority priority-${(inv.priority || 'medium').toLowerCase()}`}>
-                  {inv.priority}
+                  {t(inv.priority)}
                 </span>
               </div>
               <p className="case-list-item-title">{inv.title}</p>
@@ -190,30 +192,30 @@ function CreateInvestigationInline({ onCreated, onCancel }) {
     <div className="case-create-form">
       <input
         className="case-create-input"
-        placeholder="Investigation title..."
+        placeholder={t('Investigation title...')}
         value={form.title}
         onChange={(e) => setForm({ ...form, title: e.target.value })}
         autoFocus
       />
       <div className="case-create-row">
         <select className="case-create-select" value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })}>
-          <option value="high">High Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="low">Low Priority</option>
+          <option value="high">{t('High Priority')}</option>
+          <option value="medium">{t('Medium Priority')}</option>
+          <option value="low">{t('Low Priority')}</option>
         </select>
         <select className="case-create-select" value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })}>
-          <option value="Bengaluru Urban">Bengaluru Urban</option>
-          <option value="Bengaluru Rural">Bengaluru Rural</option>
-          <option value="Mysuru">Mysuru</option>
-          <option value="Mangaluru">Mangaluru</option>
-          <option value="Hubballi">Hubballi</option>
+          <option value="Bengaluru Urban">{t('Bengaluru Urban')}</option>
+          <option value="Bengaluru Rural">{t('Bengaluru Rural')}</option>
+          <option value="Mysuru">{t('Mysuru')}</option>
+          <option value="Mangaluru">{t('Mangaluru')}</option>
+          <option value="Hubballi">{t('Hubballi')}</option>
         </select>
       </div>
       <div className="case-create-actions">
         <button className="similar-btn similar-btn-primary" onClick={handleSubmit} disabled={submitting || !form.title.trim()}>
           {submitting ? 'Creating...' : 'Create'}
         </button>
-        <button className="similar-btn similar-btn-secondary" onClick={onCancel}>Cancel</button>
+        <button className="similar-btn similar-btn-secondary" onClick={onCancel}>{t('Cancel')}</button>
       </div>
     </div>
   )

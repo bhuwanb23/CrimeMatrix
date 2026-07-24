@@ -1,4 +1,4 @@
-import { get, post } from './api'
+import { post } from './api'
 
 export async function analyzeInvestigation(investigationId, analysisType = 'summary', question = null) {
   const payload = { analysis_type: analysisType }
@@ -14,5 +14,5 @@ export async function askInvestigationQuestion(investigationId, question) {
 }
 
 export async function getInvestigationInsights(investigationId) {
-  return get(`/investigations/${investigationId}/analyze?analysis_type=summary`)
+  return post(`/investigations/${investigationId}/analyze`, { analysis_type: 'summary' })
 }

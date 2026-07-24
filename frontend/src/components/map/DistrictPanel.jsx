@@ -1,5 +1,4 @@
 import { MapPin, X, TrendingUp, AlertTriangle } from 'lucide-react'
-import { hotspots, crimeDensity } from './mapData'
 
 const riskBadgeClass = {
   critical: 'bg-red-500/10 text-red-500',
@@ -15,8 +14,54 @@ const hotspotDotClass = {
   low: 'bg-emerald-500',
 }
 
-export default function DistrictPanel({ selectedDistrict, onClose }) {
+const DENSITY_COLORS = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6']
+
+function buildDensity(mapData, stats) {
+  if (stats?.district_density && Array.isArray(stats.district_density)) {
+    return stats.district_density.map((d, i) => ({
+      label: d.name || d.district || `District ${i + 1}`,
+      count: d.count ?? d.crime_count ?? 0,
+      color: d.color || DENSITY_COLORS[i % DENSITY_COLORS.length],
+    }))
+  }
+  const features = mapData?.districts?.features || []
+  if (features.length) {
+    return features.slice(0, 8).map((f, i) => {
+      const props = f.properties || {}
+      return {
+        label: props.name || props.district || `District ${i + 1}`,
+        count: props.crime_count ?? props.cases ?? props.count ?? 0,
+        color: DENSITY_COLORS[i % DENSITY_COLORS.length],
+      }
+    })
+  }
+  return []
+}
+
+function buildHotspots(mapData) {
+  const features = mapData?.hotspots?.features || []
+  if (features.length) {
+    return features.slice(0, 5).map((f) => {
+      const props = f.properties || {}
+      return {
+        name: props.name || props.label || 'Hotspot',
+        cases: props.cases ?? props.crime_count ?? props.count ?? 0,
+        severity: (props.severity || props.risk || props.risk_level || 'medium').toLowerCase(),
+      }
+    })
+  }
+  const points = mapData?.heatmap?.points || []
+  return points.slice(0, 5).map((p, i) => ({
+    name: p.name || p.label || `Cluster ${i + 1}`,
+    cases: p.weight ?? p.count ?? 0,
+    severity: (p.severity || 'medium').toLowerCase(),
+  }))
+}
+
+export default function DistrictPanel({ selectedDistrict, onClose, mapData = null, stats = null }) {
   const risk = selectedDistrict?.risk || selectedDistrict?.risk_level || 'low'
+  const density = buildDensity(mapData, stats)
+  const hotspots = buildHotspots(mapData)
 
   return (
     <aside
@@ -25,7 +70,7 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
     >
       <div className="flex items-center justify-between gap-2 border-b border-slate-200 px-3.5 py-3">
         <h2 className="m-0 min-w-0 text-[13px] font-semibold text-slate-900 [overflow-wrap:anywhere]">
-          {selectedDistrict ? selectedDistrict.name : 'Overview'}
+          {selectedDistrict ? selectedDistrict.name : t('Overview')}
         </h2>
         {selectedDistrict && (
           <button
@@ -44,23 +89,23 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
           <div className="border-b border-slate-200 p-3.5">
             <div className="mb-3 flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
               <MapPin size={15} className="text-amber-500" aria-hidden="true" />
-              <span>Selected district</span>
+              <span>{t('Selected district')}</span>
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-xs text-slate-400">Total cases</span>
+                <span className="text-xs text-slate-400">{t('Total cases')}</span>
                 <span className="text-[13px] font-semibold text-slate-900">
                   {selectedDistrict.cases ?? selectedDistrict.crime_count ?? '—'}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <span className="text-xs text-slate-400">Hotspots</span>
+                <span className="text-xs text-slate-400">{t('Hotspots')}</span>
                 <span className="text-[13px] font-semibold text-slate-900">
                   {selectedDistrict.hotspots ?? '—'}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <span className="text-xs text-slate-400">Risk</span>
+                <span className="text-xs text-slate-400">{t('Risk')}</span>
                 <span className={`rounded-lg px-2 py-0.5 text-[10px] font-semibold capitalize ${riskBadgeClass[risk] || riskBadgeClass.low}`}>
                   {selectedDistrict.risk || selectedDistrict.risk_level || '—'}
                 </span>
@@ -71,7 +116,7 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
           <div className="flex flex-col items-center justify-center gap-2 border-b border-slate-200 px-4 py-7 text-center text-slate-400">
             <MapPin size={20} aria-hidden="true" />
             <p className="m-0 max-w-[16ch] text-xs leading-snug">
-              Select a district on the map
+              {t('Select a district on the map')}
             </p>
           </div>
         )}
@@ -79,13 +124,15 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
         <section className="border-b border-slate-200 p-3.5">
           <h3 className="mb-2.5 mt-0 flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
             <TrendingUp size={13} aria-hidden="true" />
-            Density
+            {t('Density')}
           </h3>
           <div className="flex flex-col gap-2">
-            {crimeDensity.map((d, i) => (
+            {density.length === 0 ? (
+              <p className="m-0 text-xs text-slate-400">No density data from API</p>
+            ) : density.map((d, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
                 <span className="size-2 shrink-0 rounded-full" style={{ background: d.color }} />
-                <span className="min-w-0 flex-1 text-slate-900">{d.label}</span>
+                <span className="min-w-0 flex-1 text-slate-900">{t(d.label)}</span>
                 <span className="whitespace-nowrap text-[11px] text-slate-400">{d.count}</span>
               </div>
             ))}
@@ -98,12 +145,14 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
             Hotspots
           </h3>
           <div className="flex flex-col gap-2">
-            {hotspots.slice(0, 5).map((h, i) => (
+            {hotspots.length === 0 ? (
+              <p className="m-0 text-xs text-slate-400">No hotspot data from API</p>
+            ) : hotspots.map((h, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
                 <span className={`size-2 shrink-0 rounded-full ${hotspotDotClass[h.severity] || 'bg-slate-400'}`} />
                 <div className="flex min-w-0 flex-col gap-px">
                   <span className="text-slate-900">{h.name}</span>
-                  <span className="whitespace-nowrap text-[11px] text-slate-400">{h.cases} cases</span>
+                  <span className="whitespace-nowrap text-[11px] text-slate-400">{h.cases} {t('cases')}</span>
                 </div>
               </div>
             ))}

@@ -1,19 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip,
 } from 'recharts'
 import { useLanguage } from '../../context/LanguageContext'
-
-const data = [
-  { day: 'Sun', cases: 18, resolved: 14 },
-  { day: 'Mon', cases: 24, resolved: 20 },
-  { day: 'Tue', cases: 21, resolved: 18 },
-  { day: 'Wed', cases: 28, resolved: 22 },
-  { day: 'Thu', cases: 22, resolved: 19 },
-  { day: 'Fri', cases: 30, resolved: 25 },
-  { day: 'Sat', cases: 15, resolved: 12 },
-]
+import { getCrimeTrends, getResolutionTrends } from '../../services/analyticsLive'
 
 function CustomTooltip({ active, payload, label, t }) {
   if (!active || !payload?.length) return null
@@ -25,9 +16,45 @@ function CustomTooltip({ active, payload, label, t }) {
   )
 }
 
+function normalizeTrend(res) {
+  const data = res?.data?.data || res?.data || []
+  if (!Array.isArray(data)) return []
+  return data.map((row) => ({
+    day: row.date || row.day || row.label || '—',
+    cases: row.count ?? row.value ?? row.cases ?? 0,
+  }))
+}
+
 export default function CaseTrendChart() {
   const { t } = useLanguage()
   const [interval, setInterval] = useState('Weekly')
+  const [data, setData] = useState([])
+  const [resolved, setResolved] = useState(0)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      setLoading(true)
+      const period = interval === 'Monthly' ? 'monthly' : interval === 'Yearly' ? 'yearly' : 'daily'
+      try {
+        const [trendRes, resRes] = await Promise.all([
+          getCrimeTrends(`period=${period}`),
+          getResolutionTrends().catch(() => null),
+        ])
+        if (cancelled) return
+        setData(normalizeTrend(trendRes))
+        setResolved(resRes?.data?.resolved ?? 0)
+      } catch (e) {
+        console.error(e)
+        if (!cancelled) setData([])
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    load()
+    return () => { cancelled = true }
+  }, [interval])
 
   return (
     <div className="chart-card">
@@ -36,7 +63,7 @@ export default function CaseTrendChart() {
           <h3 className="chart-card-title">{t('Case Trend')}</h3>
           <span className="chart-legend">
             <span className="chart-legend-dot" style={{ background: '#e57373' }} />
-            {t('Resolved')}: 130
+            {t('Resolved')}: {resolved}
           </span>
         </div>
         <div className="chart-card-actions">
@@ -53,35 +80,39 @@ export default function CaseTrendChart() {
         </div>
       </div>
       <div className="chart-card-body">
-        <ResponsiveContainer width="100%" height={260}>
-          <LineChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-            <XAxis
-              dataKey="day"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
-              tickFormatter={(v) => t(v)}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
-              tickFormatter={(v) => `${v}`}
-            />
-            <Tooltip content={<CustomTooltip t={t} />} />
-            <Line
-              type="monotone"
-              dataKey="cases"
-              stroke="#e57373"
-              strokeWidth={2.5}
-              dot={{ r: 4, fill: '#e57373', strokeWidth: 2, stroke: '#fff' }}
-              activeDot={{ r: 6, stroke: '#e57373', strokeWidth: 2, fill: '#fff' }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        {loading ? (
+          <p className="text-sm text-slate-400 m-0 p-4">{t('Loading...')}</p>
+        ) : data.length === 0 ? (
+          <p className="text-sm text-slate-400 m-0 p-4">{t('No trend data')}</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+              <XAxis
+                dataKey="day"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
+                tickFormatter={(v) => t(String(v).slice(5) || v)}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
+              />
+              <Tooltip content={<CustomTooltip t={t} />} />
+              <Line
+                type="monotone"
+                dataKey="cases"
+                stroke="#e57373"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: '#e57373', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6, stroke: '#e57373', strokeWidth: 2, fill: '#fff' }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   )
 }
-

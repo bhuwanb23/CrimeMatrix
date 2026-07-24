@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 import {
   Clock, Activity, AlertTriangle, Link2, Sparkles, Shield, Globe,
   RefreshCw, Calendar, ChevronRight,
@@ -38,18 +39,19 @@ function groupByDate(entries) {
   return groups
 }
 
-function timeAgo(dateStr) {
+function timeAgo(dateStr, t) {
   if (!dateStr) return ''
   const now = Date.now()
   const then = new Date(dateStr).getTime()
   const diff = now - then
-  if (diff < 60000) return 'Just now'
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
-  return `${Math.floor(diff / 86400000)}d ago`
+  if (diff < 60000) return t('Just now')
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}${t('m ago')}`
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}${t('h ago')}`
+  return `${Math.floor(diff / 86400000)}${t('d ago')}`
 }
 
 export default function IntelligenceTimelinePage() {
+  const { t } = useLanguage()
   const [entries, setEntries] = useState([])
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -126,7 +128,7 @@ export default function IntelligenceTimelinePage() {
                 </div>
                 <div>
                   <p className="text-lg font-bold text-slate-900">{value}</p>
-                  <p className="text-[10px] text-slate-500">{label}</p>
+                  <p className="text-[10px] text-slate-500">{t(label)}</p>
                 </div>
               </div>
             ))}
@@ -149,7 +151,7 @@ export default function IntelligenceTimelinePage() {
                 }`}
               >
                 <TabIcon size={12} />
-                {tab.label}
+                {t(tab.label)}
                 {count > 0 && (
                   <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-full">
                     {count}
@@ -164,13 +166,13 @@ export default function IntelligenceTimelinePage() {
         {loading ? (
           <div className="flex items-center justify-center py-16">
             <div className="w-6 h-6 border-2 border-violet-400/30 border-t-violet-400 rounded-full animate-spin" />
-            <span className="ml-3 text-slate-500 text-sm">Loading timeline...</span>
+            <span className="ml-3 text-slate-500 text-sm">{t('Loading timeline...')}</span>
           </div>
         ) : entries.length === 0 ? (
           <div className="text-center py-16 bg-white border border-slate-200 rounded-2xl">
             <Clock size={40} className="mx-auto text-slate-200 mb-3" />
-            <p className="text-slate-500 font-medium">No timeline entries</p>
-            <p className="text-slate-400 text-xs mt-1">Intelligence activity will appear here as events are processed</p>
+            <p className="text-slate-500 font-medium">{t('No timeline entries')}</p>
+            <p className="text-slate-400 text-xs mt-1">{t('Intelligence activity will appear here as events are processed')}</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -179,9 +181,9 @@ export default function IntelligenceTimelinePage() {
                 {/* Date header */}
                 <div className="flex items-center gap-3 mb-3">
                   <Calendar size={12} className="text-slate-400" />
-                  <span className="text-xs font-semibold text-slate-600">{date}</span>
+                  <span className="text-xs font-semibold text-slate-600">{date === 'Unknown Date' ? t('Unknown Date') : date}</span>
                   <div className="flex-1 h-px bg-slate-200" />
-                  <span className="text-[10px] text-slate-400">{dateEntries.length} entries</span>
+                  <span className="text-[10px] text-slate-400">{dateEntries.length} {t('entries')}</span>
                 </div>
 
                 {/* Entries */}
@@ -206,7 +208,7 @@ export default function IntelligenceTimelinePage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] font-semibold uppercase tracking-wider ${config.color}`}>
-                              {config.label}
+                              {t(config.label)}
                             </span>
                             {entry.score != null && (
                               <span className="text-[10px] font-mono text-slate-400">{Math.round(entry.score)}%</span>
@@ -220,7 +222,7 @@ export default function IntelligenceTimelinePage() {
 
                         {/* Timestamp */}
                         <span className="text-[10px] text-slate-400 whitespace-nowrap flex-shrink-0">
-                          {timeAgo(entry.created_at)}
+                          {timeAgo(entry.created_at, t)}
                         </span>
                       </div>
                     )

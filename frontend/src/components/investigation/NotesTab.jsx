@@ -1,8 +1,10 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState } from 'react'
 import { Send, User, Trash2 } from 'lucide-react'
 import { createNote, deleteNote } from '../../services/investigations'
 
 export default function NotesTab({ investigationId, notes: initialNotes }) {
+  const { t } = useLanguage()
   const [notes, setNotes] = useState(initialNotes)
   const [newNote, setNewNote] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -55,7 +57,7 @@ export default function NotesTab({ investigationId, notes: initialNotes }) {
       <div className="notes-input-area">
         <textarea
           className="notes-input"
-          placeholder="Add an investigation note..."
+          placeholder={t('Add an investigation note...')}
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
           onKeyDown={(e) => {
@@ -72,13 +74,13 @@ export default function NotesTab({ investigationId, notes: initialNotes }) {
           disabled={!newNote.trim() || submitting}
         >
           <Send size={14} />
-          {submitting ? 'Adding...' : 'Add Note'}
+          {submitting ? t('Adding...') : t('Add Note')}
         </button>
       </div>
 
       <div className="notes-list">
         {notes.length === 0 ? (
-          <div className="similar-empty"><p>No notes yet</p></div>
+          <div className="similar-empty"><p>{t('No notes yet')}</p></div>
         ) : (
           notes.map((note) => (
             <div key={note.id} className="note-card">

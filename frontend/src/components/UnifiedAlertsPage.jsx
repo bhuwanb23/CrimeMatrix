@@ -1,11 +1,16 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Bell, RefreshCw, CheckCircle, AlertTriangle, Shield, MapPin, TrendingUp, Search, BarChart3 } from 'lucide-react'
 import { listAlerts, detectAlerts, acknowledgeAlert, getEarlyWarningStats } from '../services/earlyWarning'
-import { alerts as legacyAlerts, alertTypes } from './alerts/alertsData'
 import { useLanguage } from '../context/LanguageContext'
 
 const severityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 const alertTypeIcons = { spike: TrendingUp, hotspot: MapPin, serial: AlertTriangle, escalation: Shield }
+const alertTypeMeta = {
+  spike: { label: 'Spike', color: '#ef4444' },
+  hotspot: { label: 'Hotspot', color: '#f59e0b' },
+  serial: { label: 'Serial', color: '#8b5cf6' },
+  escalation: { label: 'Escalation', color: '#3b82f6' },
+}
 
 const tabs = [
   { id: 'early-warning', label: 'Early Warning', icon: Bell },
@@ -16,6 +21,7 @@ export default function UnifiedAlertsPage() {
   const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('early-warning')
   const [ewAlerts, setEwAlerts] = useState([])
+  const [allAlerts, setAllAlerts] = useState([])
   const [ewStats, setEwStats] = useState(null)
   const [ewLoading, setEwLoading] = useState(true)
   const [detecting, setDetecting] = useState(false)
@@ -24,11 +30,13 @@ export default function UnifiedAlertsPage() {
   const loadEarlyWarning = useCallback(async () => {
     setEwLoading(true)
     try {
-      const [alertsRes, statsRes] = await Promise.all([
-        listAlerts({ status: filter }),
+      const [alertsRes, allRes, statsRes] = await Promise.all([
+        listAlerts({ status: filter === 'all' ? undefined : filter }),
+        listAlerts({}),
         getEarlyWarningStats(),
       ])
       setEwAlerts(alertsRes?.data?.items || [])
+      setAllAlerts(allRes?.data?.items || alertsRes?.data?.items || [])
       setEwStats(statsRes?.data || statsRes)
     } catch (e) { console.error(e) } finally { setEwLoading(false) }
   }, [filter])
@@ -41,17 +49,43 @@ export default function UnifiedAlertsPage() {
   }
 
   async function handleAcknowledge(alertId) {
-    try { await acknowledgeAlert(alertId); setEwAlerts(ewAlerts.map(a => a.id === alertId ? { ...a, status: 'acknowledged' } : a)) } catch (e) { console.error(e) }
+    try {
+      await acknowledgeAlert(alertId)
+      setEwAlerts(ewAlerts.map(a => a.id === alertId ? { ...a, status: 'acknowledged' } : a))
+      setAllAlerts(allAlerts.map(a => a.id === alertId ? { ...a, status: 'acknowledged' } : a))
+    } catch (e) { console.error(e) }
   }
 
-  const typeBreakdown = Object.entries(alertTypes).map(([id, info]) => ({
-    name: info.label, value: legacyAlerts.filter(a => a.type === id).length, color: info.color,
-  })).filter(d => d.value > 0)
+  const typeBreakdown = useMemo(() => {
+    const counts = {}
+    for (const alert of allAlerts) {
+      const key = alert.alert_type || alert.type || 'unknown'
+      counts[key] = (counts[key] || 0) + 1
+    }
+    return Object.entries(counts).map(([id, value]) => ({
+      name: alertTypeMeta[id]?.label || id,
+      value,
+      color: alertTypeMeta[id]?.color || severityColors[id] || '#64748b',
+    }))
+  }, [allAlerts])
+
+  const statusBreakdown = useMemo(() => {
+    const counts = { active: 0, acknowledged: 0, resolved: 0 }
+    for (const alert of allAlerts) {
+      const status = alert.status || 'active'
+      if (status in counts) counts[status] += 1
+      else counts.active += 1
+    }
+    return [
+      { label: 'Active', count: counts.active, color: '#ef4444' },
+      { label: 'Acknowledged', count: counts.acknowledged, color: '#f59e0b' },
+      { label: 'Resolved', count: counts.resolved, color: '#10b981' },
+    ]
+  }, [allAlerts])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
       <div className="max-w-7xl mx-auto space-y-5">
-        {/* Hero Header */}
         <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -71,7 +105,6 @@ export default function UnifiedAlertsPage() {
           </div>
         </div>
 
-        {/* Tab Bar */}
         <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 w-fit">
           {tabs.map((tab) => {
             const Icon = tab.icon
@@ -92,7 +125,6 @@ export default function UnifiedAlertsPage() {
           })}
         </div>
 
-        {/* Tab Content */}
         {activeTab === 'early-warning' && (
           <EarlyWarningTab
             alerts={ewAlerts} stats={ewStats} loading={ewLoading}
@@ -101,7 +133,12 @@ export default function UnifiedAlertsPage() {
           />
         )}
         {activeTab === 'analytics' && (
-          <AlertAnalyticsTab typeBreakdown={typeBreakdown} t={t} />
+          <AlertAnalyticsTab
+            typeBreakdown={typeBreakdown}
+            statusBreakdown={statusBreakdown}
+            recentAlerts={allAlerts.slice(0, 4)}
+            t={t}
+          />
         )}
       </div>
     </div>
@@ -111,7 +148,6 @@ export default function UnifiedAlertsPage() {
 function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowledge, t }) {
   return (
     <div className="space-y-5">
-      {/* Stats */}
       {stats && (
         <div className="grid grid-cols-4 gap-3">
           {[
@@ -128,7 +164,6 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
         </div>
       )}
 
-      {/* Filter */}
       <div className="flex gap-1">
         {['active', 'acknowledged', 'all'].map(f => (
           <button key={f} onClick={() => setFilter(f)}
@@ -140,7 +175,6 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
         ))}
       </div>
 
-      {/* Alerts List */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <div className="w-6 h-6 border-2 border-slate-200 border-t-orange-500 rounded-full animate-spin" />
@@ -191,34 +225,34 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
   )
 }
 
-function AlertAnalyticsTab({ typeBreakdown, t }) {
+function AlertAnalyticsTab({ typeBreakdown, statusBreakdown, recentAlerts, t }) {
+  const maxType = Math.max(...typeBreakdown.map(d => d.value), 1)
+
   return (
     <div className="grid grid-cols-3 gap-4">
-      {/* Alert Type Breakdown */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
         <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Alerts by Type')}</h3>
-        <div className="space-y-2">
-          {typeBreakdown.map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 w-20">{t(item.name)}</span>
-              <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full rounded-full" style={{ width: `${(item.value / Math.max(...typeBreakdown.map(d => d.value), 1)) * 100}%`, background: item.color }} />
+        {typeBreakdown.length === 0 ? (
+          <p className="text-xs text-slate-400 m-0">{t('No alert data yet')}</p>
+        ) : (
+          <div className="space-y-2">
+            {typeBreakdown.map((item, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <span className="text-xs text-slate-500 w-20">{t(item.name)}</span>
+                <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: `${(item.value / maxType) * 100}%`, background: item.color }} />
+                </div>
+                <span className="text-xs font-semibold text-slate-700 w-6 text-right">{item.value}</span>
               </div>
-              <span className="text-xs font-semibold text-slate-700 w-6 text-right">{item.value}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Alert Status */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
         <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Alert Status')}</h3>
         <div className="space-y-2">
-          {[
-            { label: 'New', count: legacyAlerts.filter(a => a.status === 'new').length, color: '#ef4444' },
-            { label: 'Pending', count: legacyAlerts.filter(a => a.status === 'pending').length, color: '#f59e0b' },
-            { label: 'Resolved', count: legacyAlerts.filter(a => a.status === 'resolved').length, color: '#10b981' },
-          ].map((item, i) => (
+          {statusBreakdown.map((item, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
               <span className="text-xs text-slate-500 flex-1">{t(item.label)}</span>
@@ -228,26 +262,32 @@ function AlertAnalyticsTab({ typeBreakdown, t }) {
         </div>
       </div>
 
-      {/* Recent Alerts Feed */}
       <div className="bg-white border border-slate-200 rounded-xl p-4">
         <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Recent Alerts')}</h3>
-        <div className="space-y-2">
-          {legacyAlerts.slice(0, 4).map((alert, i) => {
-            const typeInfo = alertTypes[alert.type] || { color: '#64748b', icon: '⚪' }
-            return (
-              <div key={i} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg">
-                <div className="w-6 h-6 rounded flex items-center justify-center text-xs"
-                  style={{ background: (typeInfo.color || '#64748b') + '20', color: typeInfo.color || '#64748b' }}>
-                  {typeInfo.icon}
+        {recentAlerts.length === 0 ? (
+          <p className="text-xs text-slate-400 m-0">{t('No recent alerts')}</p>
+        ) : (
+          <div className="space-y-2">
+            {recentAlerts.map((alert) => {
+              const color = severityColors[alert.severity] || '#64748b'
+              return (
+                <div key={alert.id} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg">
+                  <div className="w-6 h-6 rounded flex items-center justify-center text-xs"
+                    style={{ background: `${color}20`, color }}>
+                    <AlertTriangle size={12} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-slate-900 truncate">{alert.title}</p>
+                    <p className="text-[10px] text-slate-400">
+                      {alert.alert_type || alert.type || 'alert'}
+                      {alert.district ? ` • ${alert.district}` : ''}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-slate-900 truncate">{alert.title}</p>
-                  <p className="text-[10px] text-slate-400">{alert.timestamp} • {alert.district}</p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

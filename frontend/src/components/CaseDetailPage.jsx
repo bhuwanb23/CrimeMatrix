@@ -18,8 +18,31 @@ const timelineIcons = {
 }
 
 export default function CaseDetailPage() {
+  const { t } = useLanguage()
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const caseData = getCaseById(id, t)
+
+  if (!caseData) {
+    return (
+      <div className="case-detail-empty">
+        <h2>{t('Case not found')}</h2>
+        <p>No case found with ID: {id}</p>
+        <button className="case-back-btn" onClick={() => navigate('/cases')}>
+          <ArrowLeft size={16} /> {t('Back to Search')}
         </button>
-        <div className="case-header-info">
+      </div>
+    )
+  }
+
+  return (
+    <div className="case-detail">
+      {/* Header */}
+      <div className="case-header">
+        <button className="case-back-btn" onClick={() => navigate('/cases')}>
+          <ArrowLeft size={16} /> {t('Back to Search')}
+        </button>
+<div className="case-header-info">
           <h1 className="case-header-id">{caseData.crime_no || caseData.id}</h1>
           <span className={`status-badge ${caseData.status}`}>{caseData.status}</span>
           <BookmarkButton entityType="case" entityId={caseData.id} />

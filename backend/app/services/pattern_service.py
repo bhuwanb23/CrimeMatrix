@@ -171,7 +171,7 @@ class PatternService:
         }
 
         for period, period_crimes in hour_groups.items():
-            if len(period_crimes) >= 3:
+            if len(period_crimes) >= 2:
                 crime_types = defaultdict(int)
                 for c in period_crimes:
                     crime_types[c.get("crime_type_id")] = crime_types.get(c.get("crime_type_id"), 0) + 1
@@ -206,7 +206,7 @@ class PatternService:
 
         patterns = []
         for categories, group_crimes in desc_groups.items():
-            if len(group_crimes) >= 3:
+            if len(group_crimes) >= 2:
                 cat_names = sorted(categories)
                 confidence = min(100, len(group_crimes) * 12)
                 patterns.append({
@@ -230,7 +230,7 @@ class PatternService:
 
         patterns = []
         for district_id, group_crimes in district_groups.items():
-            if len(group_crimes) >= 3:
+            if len(group_crimes) >= 2:
                 crime_types = defaultdict(int)
                 for c in group_crimes:
                     crime_types[c.get("crime_type_id")] += 1
@@ -265,6 +265,8 @@ class PatternService:
             time_pattern=pattern_data.get("time_pattern"),
             location_pattern=pattern_data.get("location_pattern"),
             mo_summary=pattern_data.get("mo_summary"),
+            first_seen=datetime.now(),
+            last_seen=datetime.now(),
         )
         self.db.add(pattern)
         await self.db.flush()

@@ -2,12 +2,14 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
 } from 'recharts'
-import { reports, reportTypes, weeklyData } from './reportsData'
+import { getReports, reportTypes, weeklyData } from './reportsData'
 import { useLanguage } from '../../context/LanguageContext'
+import { useMemo } from 'react'
 
 
 export default function ReportStats() {
   const { t } = useLanguage()
+  const reports = useMemo(() => getReports(t), [t])
   const typeCounts = Object.entries(reportTypes).map(([id, info]) => ({
     name: t(info.label),
     value: reports.filter((r) => r.type === id).length,

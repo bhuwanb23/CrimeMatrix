@@ -1,5 +1,4 @@
-/** Static graph styling (not fake records). Live nodes/edges come from the API. */
-
+/** Static graph styling only — node/edge records come from the API. */
 export const edgeColors = {
   accomplice: '#ef4444',
   fence: '#f59e0b',

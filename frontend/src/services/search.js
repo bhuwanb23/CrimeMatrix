@@ -56,6 +56,18 @@ export async function listAllCrimes(page = 1, perPage = 50) {
     return get(`/crimes/?page=${page}&page_size=${perPage}`);
 }
 
+export async function getCrime(crimeId) {
+    return get(`/crimes/${crimeId}`);
+}
+
+export async function getSuspect(suspectId) {
+    return get(`/suspects/${suspectId}`);
+}
+
+export async function getCase(caseId) {
+    return get(`/cases/${caseId}`);
+}
+
 export async function listDistricts() {
     return get('/search/district/districts');
 }

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import GraphNode from './GraphNode'
 import GraphEdge from './GraphEdge'
-import { nodes as fallbackNodes, edges as fallbackEdges } from './graphData'
 import { useLanguage } from '../../context/LanguageContext'
 
 // Force-directed layout — memoized to prevent recalculation on zoom/pan/hover
@@ -84,12 +83,11 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _a
   const [hoveredNode, setHoveredNode] = useState(null)
   const [containerSize, setContainerSize] = useState({ width: 800, height: 500 })
 
-  // Use real data if provided, fallback to hardcoded
-  const useRealData = realNodes && realNodes.length > 0
-  const rawNodes = useRealData ? realNodes : fallbackNodes
-  const rawEdges = useRealData ? realEdges : fallbackEdges
+  const rawNodes = realNodes || []
+  const rawEdges = realEdges || []
+  const isEmpty = rawNodes.length === 0
 
-  // KEY FIX: Memoize force layout — only recalculates when nodes/edges change
+  // Memoize force layout — only recalculates when nodes/edges change
   const { positionedNodes, positionedEdges } = useMemo(
     () => forceLayout(rawNodes, rawEdges, containerSize.width, containerSize.height),
     [rawNodes, rawEdges, containerSize.width, containerSize.height]
@@ -162,6 +160,17 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _a
     }
     return ids
   }, [selectedNode, positionedEdges])
+
+  if (isEmpty) {
+    return (
+      <div ref={containerRef} className="w-full h-full min-h-[400px] flex items-center justify-center">
+        <div className="text-center px-6">
+          <p className="m-0 text-sm font-medium text-slate-700">{t('No graph data')}</p>
+          <p className="mt-1 mb-0 text-xs text-slate-400">{t('Load an investigation or run a graph query to see nodes and links.')}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef} className="w-full h-full min-h-[400px]">

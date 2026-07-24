@@ -1,7 +1,6 @@
 import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
   Camera, Bot, MapPin, Calendar, Hash, Users, Scale, BookOpen,
@@ -10,7 +9,10 @@ import {
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
 import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
 import BookmarkButton from './bookmarks/BookmarkButton'
-import { getComplainant, getVictims, getActSections, getAccused, getArrestSurrender, getChargesheetDetails } from '../services/lookups'
+import { getCrime, getCase } from '../services/search'
+import {
+  getComplainant, getVictims, getActSections, getAccused, getArrestSurrender, getChargesheetDetails,
+} from '../services/lookups'
 
 const timelineIcons = {
   filing: FileText,
@@ -19,37 +21,115 @@ const timelineIcons = {
   suspect: AlertTriangle,
 }
 
+/**
+ * Case detail is crime-primary (GET /crimes/{id}) because Search lists crimes.
+ * CaseMaster sub-resources (GET /cases/{id}/…) load when a matching cases row exists;
+ * empty sections are expected when crime.id has no CaseMaster counterpart.
+ */
 export default function CaseDetailPage() {
   const { t } = useLanguage()
   const { id } = useParams()
   const navigate = useNavigate()
+  const numericId = Number.parseInt(String(id).replace(/\D/g, ''), 10) || null
+
+  const [caseData, setCaseData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [complainant, setComplainant] = useState(null)
   const [victims, setVictims] = useState([])
   const [actSections, setActSections] = useState([])
   const [accused, setAccused] = useState([])
   const [arrests, setArrests] = useState([])
   const [chargesheets, setChargesheets] = useState([])
-  const caseData = getCaseById(id)
 
   useEffect(() => {
-    if (id) {
-      const numericId = parseInt(id.replace(/\D/g, ''), 10)
-      if (numericId) {
-        getComplainant(numericId).then(res => setComplainant(res?.data || null)).catch(() => {})
-        getVictims(numericId).then(res => setVictims(res?.data?.items || [])).catch(() => {})
-        getActSections(numericId).then(res => setActSections(res?.data?.items || [])).catch(() => {})
-        getAccused(numericId).then(res => setAccused(res?.data?.items || [])).catch(() => {})
-        getArrestSurrender(numericId).then(res => setArrests(res?.data?.items || [])).catch(() => {})
-        getChargesheetDetails(numericId).then(res => setChargesheets(res?.data?.items || [])).catch(() => {})
+    let cancelled = false
+    async function load() {
+      if (!numericId) {
+        setLoading(false)
+        setError('Invalid case id')
+        return
+      }
+      setLoading(true)
+      setError(null)
+      try {
+        const crimeRes = await getCrime(numericId)
+        const crime = crimeRes?.data
+        if (!crime || !crime.id) {
+          if (!cancelled) {
+            setCaseData(null)
+            setError(crimeRes?.message || 'Crime not found')
+          }
+          return
+        }
+
+        let caseMaster = null
+        try {
+          const caseRes = await getCase(numericId)
+          caseMaster = caseRes?.data || null
+        } catch {
+          caseMaster = null
+        }
+
+        const merged = {
+          ...crime,
+          ...(caseMaster || {}),
+          id: crime.id,
+          title: crime.title || caseMaster?.title,
+          description: crime.description || caseMaster?.brief_facts,
+          status: crime.status || caseMaster?.status,
+          priority: crime.priority || 'medium',
+          crime_no: caseMaster?.crime_no,
+          case_number: caseMaster?.case_number,
+          timeline: caseMaster?.timeline || [],
+          suspects: caseMaster?.suspects || [],
+          evidence: caseMaster?.evidence || [],
+          aiInsights: caseMaster?.aiInsights || null,
+        }
+        if (!cancelled) setCaseData(merged)
+
+        const loadSub = async (fn, setter, pick) => {
+          try {
+            const res = await fn(numericId)
+            if (!cancelled) setter(pick(res))
+          } catch {
+            if (!cancelled) setter(pick(null))
+          }
+        }
+        await Promise.all([
+          loadSub(getComplainant, setComplainant, (r) => r?.data || null),
+          loadSub(getVictims, setVictims, (r) => r?.data?.items || []),
+          loadSub(getActSections, setActSections, (r) => r?.data?.items || []),
+          loadSub(getAccused, setAccused, (r) => r?.data?.items || []),
+          loadSub(getArrestSurrender, setArrests, (r) => r?.data?.items || []),
+          loadSub(getChargesheetDetails, setChargesheets, (r) => r?.data?.items || []),
+        ])
+      } catch (err) {
+        if (!cancelled) {
+          setCaseData(null)
+          setError(err?.message || 'Failed to load case')
+        }
+      } finally {
+        if (!cancelled) setLoading(false)
       }
     }
-  }, [id])
+    load()
+    return () => { cancelled = true }
+  }, [numericId])
+
+  if (loading) {
+    return (
+      <div className="case-detail-empty">
+        <h2>{t('Loading…')}</h2>
+      </div>
+    )
+  }
 
   if (!caseData) {
     return (
       <div className="case-detail-empty">
         <h2>{t('Case not found')}</h2>
-        <p>No case found with ID: {id}</p>
+        <p>{error || `No case found with ID: ${id}`}</p>
         <button className="case-back-btn" onClick={() => navigate('/cases')}>
           <ArrowLeft size={16} /> {t('Back to Search')}
         </button>
@@ -59,22 +139,19 @@ export default function CaseDetailPage() {
 
   return (
     <div className="case-detail">
-      {/* Header */}
       <div className="case-header">
         <button className="case-back-btn" onClick={() => navigate('/cases')}>
           <ArrowLeft size={16} /> {t('Back to Search')}
         </button>
         <div className="case-header-info">
-          <h1 className="case-header-id">{caseData.crime_no || caseData.id}</h1>
+          <h1 className="case-header-id">{caseData.crime_no || `#${caseData.id}`}</h1>
           <span className={`status-badge ${caseData.status}`}>{caseData.status}</span>
-          <BookmarkButton entityType="case" entityId={caseData.id} />
+          <BookmarkButton entityType="case" entityId={numericId} />
         </div>
         <p className="case-header-title">{caseData.title}</p>
       </div>
 
-      {/* Main Grid */}
       <div className="case-grid">
-        {/* Case Information */}
         <div className="case-card">
           <h3 className="case-card-title">{t('Case Information')}</h3>
           <div className="case-info-grid">
@@ -88,11 +165,11 @@ export default function CaseDetailPage() {
             </div>
             <div className="case-info-item">
               <span className="case-info-label">{t('Type')}</span>
-              <span className="case-info-value">{caseData.type || caseData.crime_type}</span>
+              <span className="case-info-value">{caseData.type || caseData.crime_type || (caseData.crime_type_id ? `#${caseData.crime_type_id}` : '—')}</span>
             </div>
             <div className="case-info-item">
               <span className="case-info-label">{t('District')}</span>
-              <span className="case-info-value">{caseData.district}</span>
+              <span className="case-info-value">{caseData.district || (caseData.district_id ? `#${caseData.district_id}` : '—')}</span>
             </div>
             <div className="case-info-item">
               <span className="case-info-label">{t('Priority')}</span>
@@ -100,7 +177,7 @@ export default function CaseDetailPage() {
             </div>
             <div className="case-info-item">
               <span className="case-info-label">{t('Officer')}</span>
-              <span className="case-info-value">{caseData.officer || `Officer #${caseData.officer_id || '—'}`}</span>
+              <span className="case-info-value">{caseData.officer || `Officer #${caseData.officer_id || caseData.reported_by || '—'}`}</span>
             </div>
             <div className="case-info-item">
               <span className="case-info-label">{t('Date Filed')}</span>
@@ -113,7 +190,6 @@ export default function CaseDetailPage() {
           </div>
         </div>
 
-        {/* Incident Details (CaseMaster fields) */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Calendar size={16} /> {t('Incident Details')}
@@ -122,7 +198,9 @@ export default function CaseDetailPage() {
             <div className="case-info-item">
               <span className="case-info-label">{t('Incident From')}</span>
               <span className="case-info-value">
-                {caseData.incident_from_date ? new Date(caseData.incident_from_date).toLocaleString() : '—'}
+                {caseData.incident_from_date || caseData.occurred_at
+                  ? new Date(caseData.incident_from_date || caseData.occurred_at).toLocaleString()
+                  : '—'}
               </span>
             </div>
             <div className="case-info-item">
@@ -142,14 +220,13 @@ export default function CaseDetailPage() {
                 <span className="case-info-label">{t('Location')}</span>
                 <span className="case-info-value flex items-center gap-1">
                   <MapPin size={12} />
-                  {caseData.latitude.toFixed(4)}, {caseData.longitude.toFixed(4)}
+                  {Number(caseData.latitude).toFixed(4)}, {Number(caseData.longitude).toFixed(4)}
                 </span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Classification (Lookup references) */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Hash size={16} /> {t('Classification')}
@@ -182,7 +259,6 @@ export default function CaseDetailPage() {
           </div>
         </div>
 
-        {/* Complainant Details */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Users size={16} /> Complainant Details
@@ -219,7 +295,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Victims */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Users size={16} /> Victims
@@ -246,7 +321,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Legal Sections */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Scale size={16} /> Legal Sections
@@ -271,7 +345,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Accused */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Fingerprint size={16} /> Accused
@@ -298,7 +371,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Arrest / Surrender */}
         <div className="case-card">
           <h3 className="case-card-title">
             <ShieldCheck size={16} /> Arrest / Surrender
@@ -331,7 +403,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Timeline */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Clock size={16} /> {t('Timeline')}
@@ -357,7 +428,6 @@ export default function CaseDetailPage() {
           </div>
         </div>
 
-        {/* Chargesheet Details */}
         <div className="case-card">
           <h3 className="case-card-title">
             <FileText size={16} /> Chargesheet Details
@@ -385,7 +455,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Description / Brief Facts */}
         <div className="case-card full-width">
           <h3 className="case-card-title">{t('Description')}</h3>
           <p className="case-description">{caseData.description || 'No description available'}</p>
@@ -397,7 +466,6 @@ export default function CaseDetailPage() {
           )}
         </div>
 
-        {/* Suspects */}
         <div className="case-card">
           <h3 className="case-card-title">
             <User size={16} /> {t('Suspects')}
@@ -410,22 +478,21 @@ export default function CaseDetailPage() {
                 <div key={i} className="suspect-card">
                   <div className="suspect-header">
                     <span className="suspect-name">{suspect.name}</span>
-                    <span className={`suspect-status ${suspect.status.toLowerCase().replace(' ', '-')}`}>
+                    <span className={`suspect-status ${(suspect.status || '').toLowerCase().replace(' ', '-')}`}>
                       {suspect.status}
                     </span>
                   </div>
                   <div className="suspect-details">
                     {suspect.age > 0 && <span>Age: {suspect.age}</span>}
-                    <span>Relation: {suspect.relation}</span>
+                    {suspect.relation && <span>Relation: {suspect.relation}</span>}
                   </div>
-                  <p className="suspect-notes">{suspect.notes}</p>
+                  {suspect.notes && <p className="suspect-notes">{suspect.notes}</p>}
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        {/* Evidence */}
         <div className="case-card">
           <h3 className="case-card-title">
             <Camera size={16} /> {t('Evidence')}
@@ -438,16 +505,17 @@ export default function CaseDetailPage() {
                 <div key={i} className="evidence-item">
                   <div className="evidence-type">{item.type}</div>
                   <p className="evidence-desc">{item.description}</p>
-                  <span className={`evidence-status ${item.status.toLowerCase().replace(' ', '-')}`}>
-                    {item.status}
-                  </span>
+                  {item.status && (
+                    <span className={`evidence-status ${String(item.status).toLowerCase().replace(' ', '-')}`}>
+                      {item.status}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        {/* AI Insights */}
         <div className="case-card full-width">
           <h3 className="case-card-title">
             <Bot size={16} /> {t('AI Insights')}
@@ -457,14 +525,12 @@ export default function CaseDetailPage() {
           </div>
         </div>
 
-        {/* Similar Cases */}
         <div className="case-card full-width">
-          <SimilarCasesPanel caseId={caseData.id} />
+          <SimilarCasesPanel caseId={numericId} />
         </div>
 
-        {/* FIR Intelligence Suggestions */}
         <div className="case-card full-width">
-          <FIRSuggestionsPanel firId={caseData.id} />
+          <FIRSuggestionsPanel firId={numericId} />
         </div>
       </div>
     </div>

@@ -440,7 +440,7 @@ export const translations = {
     'Suspect Network Report': 'Suspect Network Report',
   
     'SI': 'SI',
-    'Inspector': 'Inspector',,
+    'Inspector': 'Inspector',
     'light': 'Light',
     'dark': 'Dark',
     'system': 'System'

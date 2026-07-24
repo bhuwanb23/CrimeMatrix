@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { FileText, Download, Printer, BarChart3, Clock, StickyNote, Save, Play, Zap, AlertTriangle } from 'lucide-react'
 import { toggleSaveInvestigation } from '../../services/investigations'
-import { scoreInvestigation, getPriorityExplain } from '../../services/priorities'
+import { scoreInvestigation, getPriorityExplain, getPriorityRankings } from '../../services/priorities'
 
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
@@ -16,7 +16,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
     try {
       const [priRes, rankRes] = await Promise.all([
         getPriorityExplain(investigation.id),
-        fetch(`${window.location.origin}/api/v1/priorities/rankings?limit=50`).then(r => r.json()),
+        getPriorityRankings(50),
       ])
       setExplanations(priRes?.data?.items || [])
       const found = (rankRes?.data || []).find(r => r.investigation_id === investigation.id)

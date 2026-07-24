@@ -8,6 +8,7 @@ from fastapi import APIRouter
 router = APIRouter()
 
 AI_SERVICES_URL = "http://localhost:8002"
+BACKEND_URL = "http://localhost:8000"
 
 
 class SemanticSearchRequest(BaseModel):
@@ -34,7 +35,7 @@ async def semantic_search(data: SemanticSearchRequest):
     try:
         async with httpx.AsyncClient() as client:
             resp = await client.post(
-                f"{self.backend_url}/api/v1/search/",
+                f"{BACKEND_URL}/api/v1/search/",
                 json={"query": data.query, "page": 1, "page_size": data.top_k},
                 timeout=10.0,
             )

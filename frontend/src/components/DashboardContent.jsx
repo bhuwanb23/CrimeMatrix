@@ -1,6 +1,6 @@
 import { useLanguage } from '../context/LanguageContext'
 import { useEffect, useState } from 'react'
-import { ArrowUpRight, ArrowDownRight, ClipboardList, TrendingUp, AlertTriangle, Users, BarChart3, LayoutDashboard, RefreshCw } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, ClipboardList, TrendingUp, AlertTriangle, Users, BarChart3, LayoutDashboard } from 'lucide-react'
 import CaseTrendChart from './charts/CaseTrendChart'
 import CrimeTypeChart from './charts/CrimeTypeChart'
 import DistrictDonut from './charts/DistrictDonut'
@@ -61,67 +61,65 @@ export default function DashboardContent() {
   const lastUpdated = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-      <div className="max-w-7xl mx-auto space-y-5">
-        {/* Hero Header */}
-        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
-                <LayoutDashboard size={20} />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold">{t('Crime Analytics')}</h1>
-                <p className="text-white/80 text-xs">Last updated: {lastUpdated}</p>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 space-y-5">
+      {/* Hero Header */}
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+              <LayoutDashboard size={20} />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold">{t('Crime Analytics')}</h1>
+              <p className="text-white/80 text-xs">Last updated: {lastUpdated}</p>
             </div>
           </div>
         </div>
+      </div>
 
-        {error && (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
-        )}
+      {error && (
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+      )}
 
-        {/* Stats Cards — 5 columns */}
-        <div className="grid grid-cols-5 gap-4">
-          {cards.map((stat, i) => (
-            <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center">
-                  <stat.icon size={16} className="text-slate-500" strokeWidth={1.8} />
-                </div>
-                <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{stat.label}</span>
+      {/* Stats Cards — 5 columns */}
+      <div className="grid grid-cols-5 gap-4">
+        {cards.map((stat, i) => (
+          <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center">
+                <stat.icon size={16} className="text-slate-500" strokeWidth={1.8} />
               </div>
-              <div className="text-xl font-bold text-slate-900">{stat.value}</div>
-              <div className={`flex items-center gap-1 mt-1 text-[10px] font-medium ${stat.trendDir === 'up' ? 'text-emerald-600' : 'text-red-500'}`}>
-                {stat.trendDir === 'up' ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-                <span>{stat.trend}</span>
-                <span className="text-slate-400 ml-0.5">{stat.trendLabel}</span>
-              </div>
+              <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{stat.label}</span>
             </div>
-          ))}
-        </div>
+            <div className="text-xl font-bold text-slate-900">{stat.value}</div>
+            <div className={`flex items-center gap-1 mt-1 text-[10px] font-medium ${stat.trendDir === 'up' ? 'text-emerald-600' : 'text-red-500'}`}>
+              {stat.trendDir === 'up' ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
+              <span>{stat.trend}</span>
+              <span className="text-slate-400 ml-0.5">{stat.trendLabel}</span>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Charts Row — 70/30 split */}
-        <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-8">
-            <CaseTrendChart />
-          </div>
-          <div className="col-span-4 space-y-5">
-            <CrimeTypeChart />
-            <DistrictDonut />
-          </div>
+      {/* Charts Row — 8/4 split */}
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-8">
+          <CaseTrendChart />
         </div>
+        <div className="col-span-4 space-y-5">
+          <CrimeTypeChart />
+          <DistrictDonut />
+        </div>
+      </div>
 
-        {/* Bottom Row — 70/30 split */}
-        <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-8">
-            <StatusBars />
-          </div>
-          <div className="col-span-4 space-y-5">
-            <InvestmentCalendar />
-            <RecommendationsPanel />
-          </div>
+      {/* Bottom Row — 8/4 split */}
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-8">
+          <StatusBars />
+        </div>
+        <div className="col-span-4 space-y-5">
+          <InvestmentCalendar />
+          <RecommendationsPanel />
         </div>
       </div>
     </div>

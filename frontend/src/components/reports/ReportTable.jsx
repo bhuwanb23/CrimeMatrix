@@ -31,16 +31,16 @@ export default function ReportTable({ reports, page, totalPages, onPageChange })
                     <span className="report-id">{report.id}</span>
                   </td>
                   <td>
-                    <span className="report-title">{report.title}</span>
+                    <span className="report-title">{t(report.title)}</span>
                   </td>
                   <td>
                     <span className="report-type-badge" style={{ background: typeInfo.color + '12', color: typeInfo.color }}>
                       {t(typeInfo.label)}
                     </span>
                   </td>
-                  <td className="report-case">{report.caseId}</td>
-                  <td className="report-officer">{report.officer}</td>
-                  <td className="report-date">{report.date}</td>
+                  <td className="report-case">{t(report.caseId)}</td>
+                  <td className="report-officer">{t(report.officer)}</td>
+                  <td className="report-date">{t(report.date)}</td>
                   <td className="report-pages">{report.pages}</td>
                   <td>
                     <span className="report-status-badge" style={{ background: statusInfo.color + '12', color: statusInfo.color }}>

@@ -438,6 +438,9 @@ export const translations = {
     'Assault Case': 'Assault Case',
     'Monthly Summary July': 'Monthly Summary July',
     'Suspect Network Report': 'Suspect Network Report',
+  
+    'SI': 'SI',
+    'Inspector': 'Inspector',
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -852,6 +855,12 @@ export const translations = {
     'Assault Case': 'ಹಲ್ಲೆ ಪ್ರಕರಣ',
     'Monthly Summary July': 'ಮಾಸಿಕ ಸಾರಾಂಶ ಜುಲೈ',
     'Suspect Network Report': 'ಶಂಕಿತ ನೆಟ್‌ವರ್ಕ್ ವರದಿ',
+  
+    'Draft': 'ಕರಡು',
+    'Filed': 'ದಾಖಲಿಸಲಾಗಿದೆ',
+    'Final': 'ಅಂತಿಮ',
+    'SI': 'ಎಸ್.ಐ',
+    'Inspector': 'ಇನ್ಸ್ಪೆಕ್ಟರ್',
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -1266,6 +1275,12 @@ export const translations = {
     'Assault Case': 'हमला मामला',
     'Monthly Summary July': 'मासिक सारांश जुलाई',
     'Suspect Network Report': 'संदिग्ध नेटवर्क रिपोर्ट',
+  
+    'Draft': 'मसौदा',
+    'Filed': 'दायर',
+    'Final': 'अंतिम',
+    'SI': 'एस.आई',
+    'Inspector': 'इंस्पेक्टर',
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -1680,6 +1695,12 @@ export const translations = {
     'Assault Case': 'தாக்குதல் வழக்கு',
     'Monthly Summary July': 'மாதாந்திர சுருக்கம் ஜூலை',
     'Suspect Network Report': 'சந்தேக நபர் பிணைய அறிக்கை',
+  
+    'Draft': 'வரைவு',
+    'Filed': 'தாக்கல்',
+    'Final': 'இறுதி',
+    'SI': 'எஸ்.ஐ',
+    'Inspector': 'ஆய்வாளர்',
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -2095,4 +2116,10 @@ export const translations = {
     'Assault Case': 'దాడి కేసు',
     'Monthly Summary July': 'నెలవారీ సారాంశం జూలై',
     'Suspect Network Report': 'అనుమానిత నెట్‌వర్క్ నివేదిక',
+  
+    'Draft': 'చిత్తుప్రతి',
+    'Filed': 'దాఖలు చేయబడింది',
+    'Final': 'తుది',
+    'SI': 'ఎస్.ఐ',
+    'Inspector': 'ఇన్స్పెక్టర్',
   }

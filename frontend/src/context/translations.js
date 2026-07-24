@@ -431,6 +431,13 @@ export const translations = {
     'Jul 6, 2026': 'Jul 6, 2026',
     'Jul 5, 2026': 'Jul 5, 2026',
     'Jul 4, 2026': 'Jul 4, 2026',
+  
+    'Investigation Report': 'Investigation Report',
+    'Theft Case': 'Theft Case',
+    'Fraud Case': 'Fraud Case',
+    'Assault Case': 'Assault Case',
+    'Monthly Summary July': 'Monthly Summary July',
+    'Suspect Network Report': 'Suspect Network Report',
   },
   Kannada: {
     'Accept': 'ಸ್ವೀಕರಿಸಿ', 'Dismiss': 'ವಜಾಗೊಳಿಸಿ', 'View': 'ವೀಕ್ಷಿಸಿ', 'Alert Feed': 'ಎಚ್ಚರಿಕೆ ಫೀಡ್', 'alerts': 'ಎಚ್ಚರಿಕೆಗಳು',
@@ -838,6 +845,13 @@ export const translations = {
     'Jul 6, 2026': 'ಜುಲೈ 6, 2026',
     'Jul 5, 2026': 'ಜುಲೈ 5, 2026',
     'Jul 4, 2026': 'ಜುಲೈ 4, 2026',
+  
+    'Investigation Report': 'ತನಿಖಾ ವರದಿ',
+    'Theft Case': 'ಕಳ್ಳತನ ಪ್ರಕರಣ',
+    'Fraud Case': 'ವಂಚನೆ ಪ್ರಕರಣ',
+    'Assault Case': 'ಹಲ್ಲೆ ಪ್ರಕರಣ',
+    'Monthly Summary July': 'ಮಾಸಿಕ ಸಾರಾಂಶ ಜುಲೈ',
+    'Suspect Network Report': 'ಶಂಕಿತ ನೆಟ್‌ವರ್ಕ್ ವರದಿ',
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -1245,6 +1259,13 @@ export const translations = {
     'Jul 6, 2026': 'जुलाई 6, 2026',
     'Jul 5, 2026': 'जुलाई 5, 2026',
     'Jul 4, 2026': 'जुलाई 4, 2026',
+  
+    'Investigation Report': 'जांच रिपोर्ट',
+    'Theft Case': 'चोरी का मामला',
+    'Fraud Case': 'धोखाधड़ी का मामला',
+    'Assault Case': 'हमला मामला',
+    'Monthly Summary July': 'मासिक सारांश जुलाई',
+    'Suspect Network Report': 'संदिग्ध नेटवर्क रिपोर्ट',
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -1652,6 +1673,13 @@ export const translations = {
     'Jul 6, 2026': 'ஜூலை 6, 2026',
     'Jul 5, 2026': 'ஜூலை 5, 2026',
     'Jul 4, 2026': 'ஜூலை 4, 2026',
+  
+    'Investigation Report': 'விசாரணை அறிக்கை',
+    'Theft Case': 'திருட்டு வழக்கு',
+    'Fraud Case': 'மோசடி வழக்கு',
+    'Assault Case': 'தாக்குதல் வழக்கு',
+    'Monthly Summary July': 'மாதாந்திர சுருக்கம் ஜூலை',
+    'Suspect Network Report': 'சந்தேக நபர் பிணைய அறிக்கை',
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -2060,4 +2088,11 @@ export const translations = {
     'Jul 6, 2026': 'జూలై 6, 2026',
     'Jul 5, 2026': 'జూలై 5, 2026',
     'Jul 4, 2026': 'జూలై 4, 2026',
+  
+    'Investigation Report': 'దర్యాప్తు నివేదిక',
+    'Theft Case': 'దొంగతనం కేసు',
+    'Fraud Case': 'మోసం కేసు',
+    'Assault Case': 'దాడి కేసు',
+    'Monthly Summary July': 'నెలవారీ సారాంశం జూలై',
+    'Suspect Network Report': 'అనుమానిత నెట్‌వర్క్ నివేదిక',
   }

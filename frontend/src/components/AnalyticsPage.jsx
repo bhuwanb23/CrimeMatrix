@@ -1,13 +1,54 @@
+import { useEffect, useState } from 'react'
 import CrimeDonut from './analytics/CrimeDonut'
 import CrimeBreakdown from './analytics/CrimeBreakdown'
 import CrimeTrendLine from './analytics/CrimeTrendLine'
 import DistrictRanking from './analytics/DistrictRanking'
 import ResolutionCohorts from './analytics/ResolutionCohorts'
-import { crimeSummary } from './analytics/analyticsData'
 import { useLanguage } from '../context/LanguageContext'
+import { getStatistics } from '../services/analyticsLive'
+import { getAnalyticsOverview, getResolutionTrends } from '../services/analyticsLive'
 
 export default function AnalyticsPage() {
   const { t } = useLanguage()
+  const [summary, setSummary] = useState({
+    totalCases: 0,
+    totalResolved: 0,
+    resolutionRate: 0,
+    avgResolutionDays: '—',
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      try {
+        const [statsRes, overviewRes, resolutionRes] = await Promise.all([
+          getStatistics().catch(() => null),
+          getAnalyticsOverview().catch(() => null),
+          getResolutionTrends().catch(() => null),
+        ])
+        if (cancelled) return
+        const stats = statsRes?.data || {}
+        const overview = overviewRes?.data || {}
+        const resolution = resolutionRes?.data || {}
+        const totalCases = overview.total_crimes ?? stats.totals?.cases ?? 0
+        const totalResolved = overview.closed_crimes ?? stats.cases_by_status?.closed ?? resolution.resolved ?? 0
+        const resolutionRate = overview.resolution_rate ?? stats.resolution_rate ?? resolution.resolution_rate ?? 0
+        setSummary({
+          totalCases,
+          totalResolved,
+          resolutionRate,
+          avgResolutionDays: '—',
+        })
+      } catch (e) {
+        console.error(e)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    load()
+    return () => { cancelled = true }
+  }, [])
 
   return (
     <div className="analytics-page">
@@ -18,19 +59,19 @@ export default function AnalyticsPage() {
         </div>
         <div className="analytics-summary-cards">
           <div className="analytics-summary-card">
-            <span className="summary-value">{crimeSummary.totalCases.toLocaleString()}</span>
+            <span className="summary-value">{loading ? '…' : summary.totalCases.toLocaleString()}</span>
             <span className="summary-label">{t('Total Cases')}</span>
           </div>
           <div className="analytics-summary-card">
-            <span className="summary-value">{crimeSummary.totalResolved.toLocaleString()}</span>
+            <span className="summary-value">{loading ? '…' : summary.totalResolved.toLocaleString()}</span>
             <span className="summary-label">{t('Resolved')}</span>
           </div>
           <div className="analytics-summary-card">
-            <span className="summary-value">{crimeSummary.resolutionRate}%</span>
+            <span className="summary-value">{loading ? '…' : `${summary.resolutionRate}%`}</span>
             <span className="summary-label">{t('Resolution Rate')}</span>
           </div>
           <div className="analytics-summary-card">
-            <span className="summary-value">{crimeSummary.avgResolutionDays} {t('days')}</span>
+            <span className="summary-value">{summary.avgResolutionDays}</span>
             <span className="summary-label">{t('Avg. Resolution')}</span>
           </div>
         </div>
@@ -52,4 +93,3 @@ export default function AnalyticsPage() {
     </div>
   )
 }
-

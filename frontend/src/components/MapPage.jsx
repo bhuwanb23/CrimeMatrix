@@ -11,7 +11,7 @@ export default function MapPage() {
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [activeLayers, setActiveLayers] = useState(['crimes', 'hotspots', 'stations'])
   const [days, setDays] = useState(30)
-  const [filters, setFilters] = useState({ crime_type: '', risk_level: '' })
+  const [filters, setFilters] = useState({ crime_type: '' })
   const [mapData, setMapData] = useState({ crimes: null, districts: null, heatmap: null, hotspots: null, stations: null, routes: null })
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -125,6 +125,8 @@ export default function MapPage() {
         <DistrictPanel
           selectedDistrict={selectedDistrict}
           onClose={() => setSelectedDistrict(null)}
+          mapData={mapData}
+          stats={stats}
         />
       </div>
     </div>

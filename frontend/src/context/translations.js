@@ -861,6 +861,8 @@ export const translations = {
     'Final': 'ಅಂತಿಮ',
     'SI': 'ಎಸ್.ಐ',
     'Inspector': 'ಇನ್ಸ್ಪೆಕ್ಟರ್',
+  
+    'Download': 'ಡೌನ್‌ಲೋಡ್',
   },
   Hindi: {
     'Accept': 'स्वीकार करें', 'Dismiss': 'खारिज करें', 'View': 'देखें', 'Alert Feed': 'अलर्ट फ़ीड', 'alerts': 'अलर्ट',
@@ -1281,6 +1283,8 @@ export const translations = {
     'Final': 'अंतिम',
     'SI': 'एस.आई',
     'Inspector': 'इंस्पेक्टर',
+  
+    'Download': 'डाउनलोड करें',
   },
   Tamil: {
     'Accept': 'ஏற்றுக்கொள்', 'Dismiss': 'நிராகரி', 'View': 'பார்வை', 'Alert Feed': 'எச்சரிக்கை ஊட்டம்', 'alerts': 'எச்சரிக்கைகள்',
@@ -1701,6 +1705,8 @@ export const translations = {
     'Final': 'இறுதி',
     'SI': 'எஸ்.ஐ',
     'Inspector': 'ஆய்வாளர்',
+  
+    'Download': 'பதிவிறக்கம்',
   },
   Telugu: {
     'Accept': 'అంగీకరించు', 'Dismiss': 'తిరస్కరించు', 'View': 'వీక్షించు', 'Alert Feed': 'అలర్ట్ ఫీడ్', 'alerts': 'అలర్ట్‌లు',
@@ -2122,4 +2128,6 @@ export const translations = {
     'Final': 'తుది',
     'SI': 'ఎస్.ఐ',
     'Inspector': 'ఇన్స్పెక్టర్',
+  
+    'Download': 'డౌన్‌లోడ్',
   }

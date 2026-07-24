@@ -83,6 +83,8 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python seed_crimes.py
+# or full modular seed (lookups, cases, suspects, investigations, …):
+# python -m seed --fresh
 uvicorn main:app --port 8000 --reload
 
 # AI Services — http://localhost:8002

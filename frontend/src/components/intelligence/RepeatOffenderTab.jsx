@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react'
-import { UserX, RefreshCw, AlertTriangle, Clock, MapPin, Shield, TrendingUp } from 'lucide-react'
+import { UserX, RefreshCw, AlertTriangle, Clock, MapPin, Shield, TrendingUp, Search } from 'lucide-react'
 import { listRepeatOffenders, getRepeatOffenderStats, analyzeRepeatOffenders } from '../../services/repeatOffenders'
 import { useLanguage } from '../../context/LanguageContext'
 
-const riskColors = {
-  critical: '#ef4444',
-  high: '#f59e0b',
-  medium: '#3b82f6',
-  low: '#10b981',
-}
+const riskColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
 export default function RepeatOffenderTab() {
   const { t } = useLanguage()
-
   const dimensionConfig = [
     { key: 'frequency_score', label: t('Frequency'), icon: TrendingUp, color: '#f59e0b' },
     { key: 'recency_score', label: t('Recency'), icon: Clock, color: '#ef4444' },
@@ -26,9 +20,7 @@ export default function RepeatOffenderTab() {
   const [analyzing, setAnalyzing] = useState(false)
   const [expandedId, setExpandedId] = useState(null)
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  useEffect(() => { loadData() }, [])
 
   async function loadData() {
     setLoading(true)
@@ -48,110 +40,126 @@ export default function RepeatOffenderTab() {
 
   async function handleAnalyze() {
     setAnalyzing(true)
-    try {
-      await analyzeRepeatOffenders()
-      await loadData()
-    } catch (e) {
-      console.error('Analysis failed', e)
-    } finally {
-      setAnalyzing(false)
-    }
+    try { await analyzeRepeatOffenders(); await loadData() } catch (e) { console.error(e) } finally { setAnalyzing(false) }
   }
 
   if (loading) {
     return (
-      <div className="repeat-tab">
-        <div className="similar-loading">
-          <div className="similar-spinner" />
-          <span>{t('Loading repeat offenders...')}</span>
+      <div className="bg-white border border-slate-200 rounded-xl p-6">
+        <div className="flex items-center justify-center py-12">
+          <div className="w-6 h-6 border-2 border-slate-200 border-t-amber-500 rounded-full animate-spin" />
         </div>
       </div>
     )
   }
 
   return (
-    <div className="repeat-tab">
-      <div className="behavior-header">
-        <div className="behavior-header-left">
-          <UserX size={16} />
-          <h3>{t('Repeat Offender Tracking')}</h3>
+    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+            <UserX size={16} className="text-red-500" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">Repeat Offender Tracking</h3>
+            <p className="text-[10px] text-slate-400">Identify and track repeat criminal activity</p>
+          </div>
         </div>
-        <div className="behavior-analyze">
-          <button className="similar-btn similar-btn-primary" onClick={handleAnalyze} disabled={analyzing}>
-            {analyzing ? t('Analyzing...') : t('Analyze Offenders')}
+        <div className="flex items-center gap-2">
+          <button onClick={handleAnalyze} disabled={analyzing}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-white hover:bg-amber-600 rounded-lg text-xs font-medium transition-colors disabled:opacity-50">
+            {analyzing ? <RefreshCw size={12} className="animate-spin" /> : <Search size={12} />}
+            {analyzing ? 'Analyzing...' : 'Analyze Offenders'}
           </button>
-          <button className="intel-refresh" onClick={loadData} disabled={loading}>
+          <button onClick={loadData} className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors">
             <RefreshCw size={12} />
           </button>
         </div>
       </div>
 
+      {/* Stats */}
       {stats && (
-        <div className="behavior-stats">
-          <div className="behavior-stat">
-            <span className="behavior-stat-value">{stats.total_offenders || 0}</span>
-            <span className="behavior-stat-label">{t('Offenders')}</span>
+        <div className="px-5 py-3 border-b border-slate-100 flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold text-slate-900">{stats.total_offenders || 0}</span>
+            <span className="text-[10px] text-slate-400">Offenders</span>
           </div>
-          <div className="behavior-stat">
-            <span className="behavior-stat-value" style={{ color: '#ef4444' }}>{stats.critical || 0}</span>
-            <span className="behavior-stat-label">{t('Critical')}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold text-red-500">{stats.critical || 0}</span>
+            <span className="text-[10px] text-slate-400">Critical</span>
           </div>
-          <div className="behavior-stat">
-            <span className="behavior-stat-value" style={{ color: '#f59e0b' }}>{stats.high || 0}</span>
-            <span className="behavior-stat-label">{t('High Risk')}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold text-amber-500">{stats.high || 0}</span>
+            <span className="text-[10px] text-slate-400">High Risk</span>
           </div>
         </div>
       )}
 
+      {/* Content */}
       {offenders.length === 0 ? (
-        <div className="similar-empty">
-          <UserX size={32} className="similar-empty-icon" />
-          <p>{t('No repeat offenders identified')}</p>
-          <span>{t('Click "Analyze Offenders" to scan crime data for repeat offenders.')}</span>
+        <div className="text-center py-12">
+          <UserX size={32} className="mx-auto text-slate-200 mb-3" />
+          <p className="text-sm font-medium text-slate-500 mb-1">No repeat offenders identified</p>
+          <p className="text-xs text-slate-400 mb-4">Click "Analyze Offenders" to scan crime data for repeat offenders.</p>
+          <div className="inline-block bg-slate-50 rounded-lg px-4 py-3 text-[10px] text-slate-500 text-left max-w-xs">
+            <p className="m-0 font-medium text-slate-600 mb-1">How repeat offender detection works:</p>
+            <ul className="m-0 pl-3 space-y-0.5">
+              <li>Analyzes frequency of offenses per suspect</li>
+              <li>Checks recency of criminal activity</li>
+              <li>Evaluates severity and geographic spread</li>
+              <li>Generates overall risk score per offender</li>
+            </ul>
+          </div>
         </div>
       ) : (
-        <div className="repeat-list">
+        <div className="p-5 space-y-3">
           {offenders.map((o, i) => (
-            <div
-              key={o.id || i}
-              className={`repeat-card ${expandedId === o.id ? 'expanded' : ''}`}
-              onClick={() => setExpandedId(expandedId === o.id ? null : o.id)}
-            >
-              <div className="repeat-card-header">
-                <div className="repeat-card-rank">#{i + 1}</div>
-                <div className="repeat-card-info">
-                  <span className="repeat-card-name">{o.offender_name}</span>
-                  <span className="repeat-card-offenses">{o.total_offenses} {t('offenses')}</span>
+            <div key={o.id || i}
+              className="border border-slate-200 rounded-xl overflow-hidden hover:border-slate-300 transition-colors">
+              {/* Header row */}
+              <div className="px-4 py-3 flex items-center gap-3 cursor-pointer"
+                onClick={() => setExpandedId(expandedId === o.id ? null : o.id)}>
+                <span className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 flex-shrink-0">
+                  #{i + 1}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs font-semibold text-slate-900 block">{o.offender_name}</span>
+                  <span className="text-[10px] text-slate-400">{o.total_offenses} offenses</span>
                 </div>
-                <div className="repeat-card-score">
-                  <span className="repeat-card-overall">{o.overall_score}%</span>
-                  <span className="repeat-risk-badge" style={{ color: riskColors[o.risk_level], background: `${riskColors[o.risk_level]}15` }}>
-                    {t(o.risk_level)}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-slate-900">{o.overall_score}%</span>
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: riskColors[o.risk_level], background: `${riskColors[o.risk_level]}15` }}>
+                    {o.risk_level}
                   </span>
                 </div>
               </div>
 
-              <div className="repeat-card-dimensions">
+              {/* Dimension bars */}
+              <div className="px-4 pb-3 space-y-1.5">
                 {dimensionConfig.map((dim) => (
-                  <div key={dim.key} className="repeat-dim-row">
-                    <span className="repeat-dim-label">{dim.label}</span>
-                    <div className="repeat-dim-bar">
-                      <div className="repeat-dim-fill" style={{ width: `${o[dim.key] || 0}%`, background: dim.color }} />
+                  <div key={dim.key} className="flex items-center gap-2">
+                    <span className="text-[10px] text-slate-400 w-16 flex-shrink-0">{dim.label}</span>
+                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${o[dim.key] || 0}%`, background: dim.color }} />
                     </div>
-                    <span className="repeat-dim-value">{Math.round(o[dim.key] || 0)}%</span>
+                    <span className="text-[10px] font-mono text-slate-400 w-8 text-right">{Math.round(o[dim.key] || 0)}%</span>
                   </div>
                 ))}
               </div>
 
+              {/* Expanded risk factors */}
               {expandedId === o.id && o.risk_factors && o.risk_factors.length > 0 && (
-                <div className="repeat-card-factors">
-                  <h5>{t('Risk Factors')}</h5>
-                  {o.risk_factors.map((f, fi) => (
-                    <div key={fi} className="repeat-factor-item">
-                      <AlertTriangle size={10} />
-                      <span>{t(f)}</span>
-                    </div>
-                  ))}
+                <div className="px-4 pb-3 border-t border-slate-100 pt-2">
+                  <p className="text-[10px] font-semibold text-slate-500 mb-1">Risk Factors</p>
+                  <div className="space-y-0.5">
+                    {o.risk_factors.map((f, fi) => (
+                      <div key={fi} className="flex items-center gap-1.5 text-[10px] text-slate-500">
+                        <AlertTriangle size={9} className="text-amber-500 flex-shrink-0" />
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -161,4 +169,3 @@ export default function RepeatOffenderTab() {
     </div>
   )
 }
-

@@ -1,4 +1,4 @@
-import { ArrowUpRight, ArrowDownRight, Minus } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, Minus, TrendingUp } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
 export default function TrendMainChart({ data, title = "Crime Trend", height = 200 }) {

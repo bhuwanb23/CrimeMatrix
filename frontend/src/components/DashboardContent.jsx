@@ -113,9 +113,15 @@ export default function DashboardContent() {
 
       {/* Charts Row 2 — Status + District + Calendar (3-col equal height) */}
       <div className="grid grid-cols-3 gap-5" style={{ gridAutoRows: '1fr' }}>
-        <StatusBars />
-        <DistrictDonut />
-        <InvestmentCalendar />
+        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[380px]">
+          <StatusBars />
+        </div>
+        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[380px]">
+          <DistrictDonut />
+        </div>
+        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[380px]">
+          <InvestmentCalendar />
+        </div>
       </div>
 
       {/* Recommendations — Full Width */}

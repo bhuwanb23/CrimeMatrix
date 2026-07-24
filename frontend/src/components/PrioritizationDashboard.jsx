@@ -39,7 +39,7 @@ export default function PrioritizationDashboard() {
         <button onClick={handleBatchScore} disabled={scoring}
           className="flex items-center gap-2 px-5 py-2.5 bg-orange-500 text-white hover:bg-orange-600 rounded-xl text-sm font-semibold transition-all shadow-sm disabled:opacity-50">
           {scoring ? <RefreshCw size={14} className="animate-spin" /> : <Zap size={14} />}
-          {scoring ? 'Scoring...' : 'Score All Investigations'}
+          {scoring ? t('Scoring...') : t('Score All Investigations')}
         </button>
         <button onClick={loadData} disabled={loading}
           className="p-2.5 bg-white border border-slate-200 hover:border-orange-400 rounded-xl transition-all">
@@ -64,7 +64,7 @@ export default function PrioritizationDashboard() {
                 <ArrowUpRight size={14} className="text-slate-300" />
               </div>
               <span className="block text-2xl font-bold text-slate-900">{card.value}</span>
-              <span className="text-xs text-slate-400 font-medium">{card.label}</span>
+              <span className="text-xs text-slate-400 font-medium">{t(card.label)}</span>
             </div>
           ))}
         </div>
@@ -84,7 +84,7 @@ export default function PrioritizationDashboard() {
                 <p className="text-[10px] text-slate-400">{t('Investigations ranked by urgency')}</p>
               </div>
             </div>
-            <span className="text-[10px] text-slate-400">{rankings.length} items</span>
+            <span className="text-[10px] text-slate-400">{rankings.length} {t('items')}</span>
           </div>
           <div className="divide-y divide-slate-50">
             {rankings.length === 0 ? (
@@ -108,12 +108,12 @@ export default function PrioritizationDashboard() {
                         </span>
                         <div>
                           <span className="text-sm font-semibold text-slate-900 block">{r.title}</span>
-                          <span className="text-[10px] text-slate-400">{r.district} • {r.progress || 0}% progress</span>
+                          <span className="text-[10px] text-slate-400">{t(r.district)} • {r.progress || 0}% {t('progress')}</span>
                         </div>
                       </div>
                       <div className="text-right">
                         <span className="text-lg font-bold" style={{ color }}>{r.overall_score}%</span>
-                        <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{r.priority_level}</span>
+                        <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{t(r.priority_level)}</span>
                       </div>
                     </div>
                     <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -153,9 +153,9 @@ export default function PrioritizationDashboard() {
                       <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
                         <Users size={14} className="text-blue-500" />
                       </div>
-                      <span className="text-sm font-semibold text-slate-900">Officer #{w.officer_id}</span>
+                      <span className="text-sm font-semibold text-slate-900">{t('Officer')} #{w.officer_id}</span>
                     </div>
-                    <span className="text-xs text-slate-400">{w.count} cases</span>
+                    <span className="text-xs text-slate-400">{w.count} {t('cases')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -163,7 +163,7 @@ export default function PrioritizationDashboard() {
                     </div>
                     {w.high_priority > 0 && (
                       <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
-                        {w.high_priority} high
+                        {w.high_priority} {t('high')}
                       </span>
                     )}
                   </div>

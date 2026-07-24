@@ -9,13 +9,13 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
       <div className="sidebar-section-header">
         <h3 className="sidebar-section-title">
           <Bookmark size={14} />
-          Saved Searches
+          {t('Saved Searches')}
         </h3>
         {currentQuery && (
           <button
             className="sidebar-save-btn"
             onClick={() => onSave(currentQuery)}
-            aria-label={t('Save current search')}
+            aria-label={t('{t('Save current')} search')}
           >
             <BookmarkPlus size={14} />
           </button>
@@ -23,7 +23,7 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
       </div>
       <div className="saved-list">
         {searches.length === 0 ? (
-          <p className="sidebar-empty">{t('No saved searches')}</p>
+          <p className="sidebar-empty">{t('{t('No saved searches')}')}</p>
         ) : (
           searches.map((item) => (
             <div key={item.id} className="saved-item">

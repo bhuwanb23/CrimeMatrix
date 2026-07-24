@@ -175,7 +175,7 @@ function WorkspaceTab({ data, trendData, seasonalData, hotspots, riskData, loadi
       <IntelligenceOverviewCards overview={data.overview} />
 
       <div className="grid grid-cols-2 gap-5">
-        <TrendMainChart data={trendData?.data || data.trends?.daily || []} title={`Crime Trend (${filters.time_range})`} />
+        <TrendMainChart data={trendData?.data || data.trends?.daily || []} title={`${t('Crime Trend')} (${filters.time_range})`} />
         <IntelligenceHotspotPreview hotspots={data.hotspots} />
       </div>
 

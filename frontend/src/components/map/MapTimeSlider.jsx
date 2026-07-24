@@ -1,4 +1,5 @@
 import { Clock } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 const timeOptions = [
   { value: 7, label: '7D' },
@@ -8,6 +9,7 @@ const timeOptions = [
 ]
 
 export default function MapTimeSlider({ days, onChange }) {
+  const { t } = useLanguage()
   return (
     <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
@@ -29,7 +31,7 @@ export default function MapTimeSlider({ days, onChange }) {
                   : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-800'
               }`}
             >
-              {opt.label}
+              {t(opt.label)}
             </button>
           )
         })}

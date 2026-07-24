@@ -1,6 +1,8 @@
 import { Clock, Play } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext'
 
 export default function SearchHistory({ history, onRunSearch }) {
+  const { t } = useLanguage()
   return (
     <div className="sidebar-section">
       <h3 className="sidebar-section-title">
@@ -9,7 +11,7 @@ export default function SearchHistory({ history, onRunSearch }) {
       </h3>
       <div className="history-list">
         {history.length === 0 ? (
-          <p className="sidebar-empty">No search history</p>
+          <p className="sidebar-empty">{t('No search history')}</p>
         ) : (
           history.map((item) => (
             <button

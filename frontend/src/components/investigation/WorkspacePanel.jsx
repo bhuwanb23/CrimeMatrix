@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { FileText, Camera, Clock, GitBranch, Link, Bot, Paperclip, Bookmark } from 'lucide-react'
 import NotesTab from './NotesTab'
@@ -22,6 +23,7 @@ const tabs = [
 ]
 
 export default function WorkspacePanel({ investigation, loading }) {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('notes')
   const [relatedCases, setRelatedCases] = useState([])
 
@@ -50,7 +52,7 @@ export default function WorkspacePanel({ investigation, loading }) {
     return (
       <div className="workspace-empty">
         <div className="similar-spinner" />
-        <p>Loading investigation...</p>
+        <p>{t('Loading investigation...')}</p>
       </div>
     )
   }
@@ -59,8 +61,8 @@ export default function WorkspacePanel({ investigation, loading }) {
     return (
       <div className="workspace-empty">
         <div className="workspace-empty-icon">🔍</div>
-        <h3>Select an Investigation</h3>
-        <p>Choose a case from the list to start working</p>
+        <h3>{t('Select an Investigation')}</h3>
+        <p>{t('Choose a case from the list to start working')}</p>
       </div>
     )
   }
@@ -74,16 +76,16 @@ export default function WorkspacePanel({ investigation, loading }) {
       <div className="workspace-header">
         <div className="workspace-header-top">
           <span className="workspace-case-id">INV-{String(invId).padStart(3, '0')}</span>
-          <span className={`status-badge ${investigation.status}`}>{investigation.status}</span>
+          <span className={`status-badge ${t(investigation.status)}`}>{t(investigation.status)}</span>
           <span className={`workspace-priority priority-${(investigation.priority || 'medium').toLowerCase()}`}>
-            {investigation.priority}
+            {t(investigation.priority)}
           </span>
         </div>
         <h2 className="workspace-title">{investigation.title}</h2>
         <div className="workspace-meta">
-          {investigation.district && <span>{investigation.district}</span>}
+          {investigation.district && <span>{t(investigation.district)}</span>}
           {investigation.district && <span>•</span>}
-          {investigation.progress !== undefined && <span>{investigation.progress}% complete</span>}
+          {investigation.progress !== undefined && <span>{investigation.progress}% {t('complete')}</span>}
         </div>
       </div>
 
@@ -96,7 +98,7 @@ export default function WorkspacePanel({ investigation, loading }) {
             onClick={() => setActiveTab(tab.id)}
           >
             <tab.icon size={14} />
-            {tab.label}
+            {t(tab.label)}
           </button>
         ))}
       </div>

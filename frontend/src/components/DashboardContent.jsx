@@ -112,16 +112,10 @@ export default function DashboardContent() {
       </div>
 
       {/* Charts Row 2 — Status + District + Calendar (3-col equal height) */}
-      <div className="grid grid-cols-3 gap-5 items-stretch">
-        <div className="flex flex-col">
-          <StatusBars />
-        </div>
-        <div className="flex flex-col">
-          <DistrictDonut />
-        </div>
-        <div className="flex flex-col">
-          <InvestmentCalendar />
-        </div>
+      <div className="grid grid-cols-3 gap-5" style={{ gridAutoRows: '1fr' }}>
+        <StatusBars />
+        <DistrictDonut />
+        <InvestmentCalendar />
       </div>
 
       {/* Recommendations — Full Width */}

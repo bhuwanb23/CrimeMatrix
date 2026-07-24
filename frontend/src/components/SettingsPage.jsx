@@ -86,7 +86,7 @@ export default function SettingsPage() {
   )
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div>
           <h1 className="text-[22px] font-bold tracking-tight text-[var(--text-primary)]">

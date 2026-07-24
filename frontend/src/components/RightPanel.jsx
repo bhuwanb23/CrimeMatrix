@@ -1,50 +1,19 @@
 import { useState, useRef, useEffect } from 'react'
 import {
-  AlertTriangle, Clock, FileText, CheckCircle2, Activity, TrendingUp,
+  AlertTriangle, Clock, FileText, Activity, TrendingUp,
   Send, Bot,
 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import { useLanguage } from '../context/LanguageContext'
 import { chat } from '../services/copilot'
-
-const quickStats = [
-  { icon: FileText, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)', value: '12', label: 'Cases Today' },
-  { icon: AlertTriangle, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)', value: '5', label: 'Alerts' },
-  { icon: Clock, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)', value: '8', label: 'Pending' },
-  { icon: TrendingUp, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)', value: '73%', label: 'Resolution' },
-]
-
-const activities = [
-  {
-    icon: AlertTriangle, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)',
-    title: 'New FIR registered — FIR #4521/2026',
-    subtitle: 'Theft at Malleshwaram, Bengaluru',
-    time: '12 min ago',
-  },
-  {
-    icon: FileText, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)',
-    title: 'Suspect flagged — Ravi Kumar',
-    subtitle: 'Linked to 3 open cases across districts',
-    time: '28 min ago',
-  },
-  {
-    icon: CheckCircle2, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)',
-    title: 'Case #1089 — Investigation closed',
-    subtitle: 'Charge sheet filed, awaiting court date',
-    time: '1 hr ago',
-  },
-  {
-    icon: Activity, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)',
-    title: 'Whisper Alert: Vehicle KA-01-AB-1234',
-    subtitle: 'Matches suspect in unsolved case #987',
-    time: '2 hrs ago',
-  },
-]
+import { getStatistics } from '../services/analyticsLive'
+import { listAlerts } from '../services/earlyWarning'
+import { getUnifiedTimeline } from '../services/intelligenceTimeline'
 
 const initialMessages = [
   {
     role: 'assistant',
-    content: 'Hello SI Karthik. I\'m your AI Investigation Copilot. How can I help you today?',
+    content: 'Hello. I\'m your AI Investigation Copilot. How can I help you today?',
     time: '9:00 AM',
   },
 ]
@@ -60,6 +29,9 @@ export default function RightPanel({ isOpen }) {
   const [inputValue, setInputValue] = useState('')
   const [sending, setSending] = useState(false)
   const [sessionId, setSessionId] = useState(null)
+  const [quickStats, setQuickStats] = useState([])
+  const [activities, setActivities] = useState([])
+  const [activityLoading, setActivityLoading] = useState(true)
   const chatEndRef = useRef(null)
 
   const copilotLang = language === 'Kannada' || language === 'kn' ? 'kn' : 'en'
@@ -67,6 +39,56 @@ export default function RightPanel({ isOpen }) {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadActivity() {
+      setActivityLoading(true)
+      try {
+        const [statsRes, alertsRes, timelineRes] = await Promise.all([
+          getStatistics().catch(() => null),
+          listAlerts({ status: 'active' }).catch(() => null),
+          getUnifiedTimeline({ limit: 8 }).catch(() => null),
+        ])
+        if (cancelled) return
+        const stats = statsRes?.data || {}
+        const totals = stats.totals || {}
+        const byStatus = stats.cases_by_status || {}
+        setQuickStats([
+          { icon: FileText, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)', value: String(totals.cases ?? '—'), label: 'Cases' },
+          { icon: AlertTriangle, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)', value: String(totals.alerts ?? '—'), label: 'Alerts' },
+          { icon: Clock, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)', value: String(byStatus.pending ?? byStatus.active ?? '—'), label: 'Pending' },
+          { icon: TrendingUp, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)', value: `${stats.resolution_rate ?? 0}%`, label: 'Resolution' },
+        ])
+
+        const alerts = alertsRes?.data?.items || []
+        const timeline = timelineRes?.data?.items || timelineRes?.data || []
+        const fromAlerts = alerts.slice(0, 4).map((a) => ({
+          icon: AlertTriangle,
+          color: '#f59e0b',
+          bg: 'rgba(245, 158, 11, 0.1)',
+          title: a.title || 'Alert',
+          subtitle: a.description || a.alert_type || '',
+          time: a.created_at ? new Date(a.created_at).toLocaleString() : a.status || '',
+        }))
+        const fromTimeline = (Array.isArray(timeline) ? timeline : []).slice(0, 4).map((e) => ({
+          icon: Activity,
+          color: '#8b5cf6',
+          bg: 'rgba(139, 92, 246, 0.1)',
+          title: e.title || e.event_type || 'Timeline event',
+          subtitle: e.description || e.entity_type || '',
+          time: e.created_at || e.timestamp || '',
+        }))
+        setActivities([...fromAlerts, ...fromTimeline].slice(0, 6))
+      } catch (e) {
+        console.error(e)
+      } finally {
+        if (!cancelled) setActivityLoading(false)
+      }
+    }
+    loadActivity()
+    return () => { cancelled = true }
+  }, [])
 
   const handleSend = async () => {
     if (!inputValue.trim() || sending) return
@@ -108,6 +130,7 @@ export default function RightPanel({ isOpen }) {
     <aside className={`right-panel ${isOpen ? 'open' : 'closed'}`}>
       <div className="right-panel-tabs">
         <button
+          type="button"
           className={`right-panel-tab ${activeTab === 'activity' ? 'active' : ''}`}
           onClick={() => setActiveTab('activity')}
         >
@@ -115,6 +138,7 @@ export default function RightPanel({ isOpen }) {
           {t('Activity')}
         </button>
         <button
+          type="button"
           className={`right-panel-tab ${activeTab === 'chat' ? 'active' : ''}`}
           onClick={() => setActiveTab('chat')}
         >
@@ -128,7 +152,7 @@ export default function RightPanel({ isOpen }) {
           <section className="right-panel-section">
             <h3 className="right-panel-section-title">{t("Today's Overview")}</h3>
             <div className="quick-stats-grid">
-              {quickStats.map((stat, i) => (
+              {(activityLoading ? [] : quickStats).map((stat, i) => (
                 <div key={i} className="quick-stat-card">
                   <div className="quick-stat-icon" style={{ background: stat.bg, color: stat.color }}>
                     <stat.icon size={14} strokeWidth={1.8} />
@@ -137,21 +161,25 @@ export default function RightPanel({ isOpen }) {
                   <div className="quick-stat-label">{t(stat.label)}</div>
                 </div>
               ))}
+              {activityLoading && <p className="text-xs text-slate-400 m-0">{t('Loading...')}</p>}
             </div>
           </section>
 
           <section className="right-panel-section">
-            <h3 className="right-panel-section-title">{t("Recent Activity")}</h3>
+            <h3 className="right-panel-section-title">{t('Recent Activity')}</h3>
             <div className="right-panel-items">
+              {!activityLoading && activities.length === 0 && (
+                <p className="text-xs text-slate-400 m-0">{t('No recent activity')}</p>
+              )}
               {activities.map((item, i) => (
                 <div key={i} className="activity-card">
                   <div className="activity-icon" style={{ background: item.bg, color: item.color }}>
                     <item.icon size={14} strokeWidth={1.8} />
                   </div>
                   <div className="activity-content">
-                    <p className="activity-title">{t(item.title)}</p>
-                    <p className="activity-subtitle">{t(item.subtitle)}</p>
-                    <span className="activity-time">{t(item.time)}</span>
+                    <p className="activity-title">{item.title}</p>
+                    <p className="activity-subtitle">{item.subtitle}</p>
+                    <span className="activity-time">{item.time}</span>
                   </div>
                 </div>
               ))}
@@ -175,13 +203,13 @@ export default function RightPanel({ isOpen }) {
             <input
               type="text"
               className="chat-input"
-              placeholder={t("Ask about cases...")}
+              placeholder={t('Ask about cases...')}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               disabled={sending}
             />
-            <button className="chat-send-btn" onClick={handleSend} disabled={!inputValue.trim() || sending}>
+            <button type="button" className="chat-send-btn" onClick={handleSend} disabled={!inputValue.trim() || sending}>
               <Send size={16} strokeWidth={1.8} />
             </button>
           </div>

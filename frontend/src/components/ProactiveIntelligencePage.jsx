@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
-import { Radar, RefreshCw, Search, Zap, AlertTriangle, Brain, CheckCircle } from 'lucide-react'
+import { Radar, RefreshCw, Search, Zap, AlertTriangle, Brain, CheckCircle, Activity } from 'lucide-react'
 import { getProactiveStats, scanData, processEvents, getActivity } from '../services/proactive'
 import { batchProcess } from '../services/proactive'
 import IntelligenceSummaryCards from './proactive/IntelligenceSummaryCards'
@@ -98,6 +98,19 @@ export default function ProactiveIntelligencePage() {
                 <span>{stats?.processed || 0} {t('events processed automatically')}</span>
               </div>
             </div>
+
+            {/* How it works */}
+            {(stats?.total_events || 0) === 0 && (
+              <div className="mt-3 pt-3 border-t border-slate-100">
+                <p className="text-[10px] font-semibold text-slate-500 mb-1">How proactive intelligence works:</p>
+                <ul className="text-[10px] text-slate-400 space-y-0.5 pl-3">
+                  <li>New FIRs, evidence, and case updates create events</li>
+                  <li>AI analyzes events for hidden relationships</li>
+                  <li>Matching patterns trigger alerts and recommendations</li>
+                  <li>Click "Scan Now" to detect new data</li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

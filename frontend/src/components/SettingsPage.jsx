@@ -71,7 +71,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Profile */}
-      <div className="mb-3 rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
+      <div className="mb-4 rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
         <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('Profile')}</h2>
         <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[#334155] text-xl font-bold text-white">

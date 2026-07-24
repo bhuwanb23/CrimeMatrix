@@ -163,14 +163,87 @@ export default function PredictionAnalyticsPage() {
 }
 
 function DistrictPredictionsTab({ districts }) {
+  const { t } = useLanguage()
+
+  if (!districts || districts.length === 0) {
+    return (
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+            <Map size={16} className="text-emerald-500" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">District Predictions</h3>
+            <p className="text-[10px] text-slate-400">Crime prediction breakdown by district</p>
+          </div>
+        </div>
+        <div className="text-center py-12">
+          <Map size={32} className="mx-auto text-slate-200 mb-3" />
+          <p className="text-sm font-medium text-slate-500 mb-1">No district data available</p>
+          <p className="text-xs text-slate-400">District predictions will appear once crime data is loaded with district information.</p>
+        </div>
+      </div>
+    )
+  }
+
+  const maxCount = Math.max(...districts.map(d => d.crime_count || d.total || 0), 1)
+
   return (
-    <div className="space-y-5">
-      <DistrictPredictionMap districts={districts} />
+    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+            <Map size={16} className="text-emerald-500" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">District Predictions</h3>
+            <p className="text-[10px] text-slate-400">Crime prediction breakdown by district</p>
+          </div>
+        </div>
+        <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">{districts.length} districts</span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-slate-100">
+              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">District</th>
+              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Crime Count</th>
+              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider w-[40%]">Distribution</th>
+              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider text-right">Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            {districts.map((d, i) => {
+              const count = d.crime_count || d.total || 0
+              const risk = d.risk || (count > maxCount * 0.7 ? 'high' : count > maxCount * 0.3 ? 'medium' : 'low')
+              const color = risk === 'high' ? '#ef4444' : risk === 'medium' ? '#f59e0b' : '#10b981'
+              return (
+                <tr key={i} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                  <td className="px-5 py-3 text-xs font-medium text-slate-900">{d.name || d.district || `District ${i + 1}`}</td>
+                  <td className="px-5 py-3 text-xs font-bold text-slate-700">{count}</td>
+                  <td className="px-5 py-3">
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${(count / maxCount) * 100}%`, background: color }} />
+                    </div>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded capitalize" style={{ color, background: `${color}15` }}>
+                      {risk}
+                    </span>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
 
 function CrimeForecastTab({ forecast, seasonal, predictions }) {
+  const { t } = useLanguage()
+
   return (
     <div className="space-y-5">
       <PredictionForecastChart forecast={forecast} />
@@ -186,11 +259,13 @@ function AIPredictionsTab({ stats, models, predictions, forecast, districts }) {
   return (
     <div className="space-y-5">
       <PredictionSummaryCards stats={stats} />
-      <div className="grid grid-cols-3 gap-5">
-        <div className="col-span-2">
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-8">
           <AIPredictionsPanel forecast={forecast} predictions={predictions} districts={districts} />
         </div>
-        <ModelPerformance models={models} />
+        <div className="col-span-4">
+          <ModelPerformance models={models} />
+        </div>
       </div>
       <div className="grid grid-cols-3 gap-5">
         <ConfidenceBreakdown forecast={forecast} />

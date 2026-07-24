@@ -220,17 +220,9 @@ function MOTab() {
 }
 
 function CrossDistrictTab() {
-  return (
-    <div className="max-w-3xl mx-auto">
-      <CrossDistrictSection />
-    </div>
-  )
+  return <CrossDistrictSection />
 }
 
 function EvidenceLinkingTab() {
-  return (
-    <div className="max-w-3xl mx-auto">
-      <EvidenceLinkingSection />
-    </div>
-  )
+  return <EvidenceLinkingSection />
 }

@@ -26,6 +26,25 @@ async def list_investigations(
     return success_response(data={"items": items, "total": len(items)})
 
 
+# Static routes BEFORE parameterized routes
+@router.get("/recent")
+async def get_recent_investigations(
+    limit: int = Query(default=3, ge=1, le=10),
+    db: AsyncSession = Depends(get_db),
+):
+    svc = get_service(db)
+    items = await svc.get_recent(limit=limit)
+    return success_response(data={"items": items})
+
+
+@router.get("/stats")
+async def investigation_stats(db: AsyncSession = Depends(get_db)):
+    svc = get_service(db)
+    stats = await svc.get_stats()
+    return success_response(data=stats)
+
+
+# Parameterized routes AFTER static routes
 @router.get("/{investigation_id}")
 async def get_investigation(investigation_id: int, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
@@ -60,16 +79,6 @@ async def delete_investigation(investigation_id: int, db: AsyncSession = Depends
     return success_response(message="Investigation deleted" if deleted else "Investigation not found")
 
 
-@router.get("/recent")
-async def get_recent_investigations(
-    limit: int = Query(default=3, ge=1, le=10),
-    db: AsyncSession = Depends(get_db),
-):
-    svc = get_service(db)
-    items = await svc.get_recent(limit=limit)
-    return success_response(data={"items": items})
-
-
 @router.put("/{investigation_id}/save")
 async def toggle_save(investigation_id: int, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
@@ -77,10 +86,3 @@ async def toggle_save(investigation_id: int, db: AsyncSession = Depends(get_db))
     if not result:
         return success_response(message="Investigation not found")
     return success_response(data=result, message=f"Investigation {'saved' if result['status'] == 'saved' else 'resumed'}")
-
-
-@router.get("/stats")
-async def investigation_stats(db: AsyncSession = Depends(get_db)):
-    svc = get_service(db)
-    stats = await svc.get_stats()
-    return success_response(data=stats)

@@ -111,15 +111,15 @@ export default function DashboardContent() {
         </div>
       </div>
 
-      {/* Charts Row 2 — Status + District + Calendar (3-col equal) */}
-      <div className="grid grid-cols-12 gap-5">
-        <div className="col-span-4">
+      {/* Charts Row 2 — Status + District + Calendar (3-col equal height) */}
+      <div className="grid grid-cols-3 gap-5 items-stretch">
+        <div className="flex flex-col">
           <StatusBars />
         </div>
-        <div className="col-span-4">
+        <div className="flex flex-col">
           <DistrictDonut />
         </div>
-        <div className="col-span-4">
+        <div className="flex flex-col">
           <InvestmentCalendar />
         </div>
       </div>

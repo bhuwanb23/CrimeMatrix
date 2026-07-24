@@ -4,14 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
-  Camera, Bot, MapPin, Calendar, Hash,
-} from 'lucide-react'
-import SimilarCasesPanel from './similar/SimilarCasesPanel'
-import FIRSuggestionsPanel from './case-detail/FIRSuggestionsPanel'
-import BookmarkButton from './bookmarks/BookmarkButton'
-
-const timelineIcons = {
-  filing: FileText,
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getCaseById } from './search/caseData'
@@ -31,11 +23,6 @@ const timelineIcons = {
 }
 
 export default function CaseDetailPage() {
-        <p>No case found with ID: {id}</p>
-        <button className="case-back-btn" onClick={() => navigate('/cases')}>
-          <ArrowLeft size={16} /> {t('Back to Search')}
-        </button>
-      </div>
     )
   }
 

@@ -8,6 +8,8 @@ import MOTab from './suspects/MOTab'
 import TimelineTab from './suspects/TimelineTab'
 import AssociatesTab from './suspects/AssociatesTab'
 import { getSuspect } from '../services/search'
+import { getSuspectRiskScore, getSuspectRiskFactors, scoreSuspect } from '../services/suspectRisk'
+import { getSuspectTimeline } from '../services/criminalTimeline'
 
 const tabs = [
   { id: 'profile', label: 'Profile', icon: Shield },
@@ -95,7 +97,58 @@ export default function SuspectDetailPage() {
       setError(null)
       try {
         const res = await getSuspect(numericId)
-        const normalized = normalizeSuspect(res?.data)
+        let normalized = normalizeSuspect(res?.data)
+        if (normalized) {
+          // Enrich from risk + timeline APIs (best-effort)
+          const [riskRes, factorsRes, timelineRes] = await Promise.all([
+            getSuspectRiskScore(numericId).catch(() => null),
+            getSuspectRiskFactors(numericId).catch(() => null),
+            getSuspectTimeline(normalized.name).catch(() => null),
+          ])
+          const risk = riskRes?.data
+          if (risk) {
+            normalized = {
+              ...normalized,
+              riskScore: risk.overall_score ?? risk.risk_score ?? risk.score ?? normalized.riskScore,
+            }
+          }
+          const factors = factorsRes?.data?.items || factorsRes?.data || []
+          if (Array.isArray(factors) && factors.length) {
+            normalized = {
+              ...normalized,
+              behavioralProfile: {
+                ...normalized.behavioralProfile,
+                riskFactors: factors.map((f) => f.factor || f.name || f.description || String(f)),
+                personality: normalized.behavioralProfile.personality,
+              },
+            }
+          }
+          const tl = timelineRes?.data?.items || timelineRes?.data || []
+          if (Array.isArray(tl) && tl.length) {
+            normalized = {
+              ...normalized,
+              timeline: tl.map((e) => ({
+                date: e.event_date || e.date || e.created_at || '—',
+                event: e.title || e.description || e.event_type || 'Event',
+                type: e.event_type || 'event',
+              })),
+              lastActive: (tl[0]?.event_date || tl[0]?.created_at || normalized.lastActive || '').toString().slice(0, 10),
+            }
+          }
+          // If no risk score yet, try scoring once
+          if (!risk && (normalized.riskScore === 0 || normalized.riskScore == null)) {
+            try {
+              const scored = await scoreSuspect(numericId)
+              const s = scored?.data
+              if (s) {
+                normalized = {
+                  ...normalized,
+                  riskScore: s.overall_score ?? s.risk_score ?? s.score ?? normalized.riskScore,
+                }
+              }
+            } catch { /* ignore */ }
+          }
+        }
         if (!cancelled) {
           setSuspect(normalized)
           if (!normalized) setError(res?.message || 'Suspect not found')

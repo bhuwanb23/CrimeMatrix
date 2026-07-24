@@ -110,15 +110,9 @@ export async function deleteAttachment(id) {
   return del(`/attachments/${id}`);
 }
 
-// Bookmarks
-export async function listBookmarks(userId = 'default') {
-  return get(`/bookmarks/user/${userId}`);
-}
-
-export async function createBookmark(data) {
-  return post('/bookmarks/', data);
-}
-
-export async function deleteBookmark(id) {
-  return del(`/bookmarks/${id}`);
-}
+// Bookmarks — prefer frontend/src/services/bookmarks.js; these re-export for compatibility
+export {
+  listBookmarks,
+  createBookmark,
+  removeBookmark as deleteBookmark,
+} from './bookmarks'

@@ -79,5 +79,6 @@ export default function SearchBar({ value, onChange, onSearch, onSave }) {
         </div>
       )}
     </div>
+    
   )
 }

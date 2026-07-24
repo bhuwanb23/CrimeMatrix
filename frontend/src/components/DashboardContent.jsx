@@ -101,27 +101,31 @@ export default function DashboardContent() {
         ))}
       </div>
 
-      {/* Charts Row — 8/4 split */}
+      {/* Charts Row 1 — Trend + Crime Type */}
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-8">
           <CaseTrendChart />
         </div>
-        <div className="col-span-4 space-y-5">
+        <div className="col-span-4">
           <CrimeTypeChart />
-          <DistrictDonut />
         </div>
       </div>
 
-      {/* Bottom Row — 8/4 split */}
+      {/* Charts Row 2 — Status + District + Calendar (3-col equal) */}
       <div className="grid grid-cols-12 gap-5">
-        <div className="col-span-8">
+        <div className="col-span-4">
           <StatusBars />
         </div>
-        <div className="col-span-4 space-y-5">
+        <div className="col-span-4">
+          <DistrictDonut />
+        </div>
+        <div className="col-span-4">
           <InvestmentCalendar />
-          <RecommendationsPanel />
         </div>
       </div>
+
+      {/* Recommendations — Full Width */}
+      <RecommendationsPanel />
     </div>
   )
 }

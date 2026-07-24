@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']
@@ -12,7 +12,7 @@ export default function SettingsPage() {
   })
   
   const [secondaryLang, setSecondaryLang] = useState('English')
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState(localStorage.getItem('app-theme') || 'system')
   const [notifications, setNotifications] = useState({
     push: true, email: true, sound: false, whisper: true,
   })
@@ -22,6 +22,13 @@ export default function SettingsPage() {
   const [offline, setOffline] = useState({
     enabled: true, sync: 'WiFi', storage: '2.4 GB',
   })
+
+  useEffect(() => {
+    localStorage.setItem('app-theme', theme)
+    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark')
+    else if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light')
+    else document.documentElement.removeAttribute('data-theme')
+  }, [theme])
 
   const Toggle = ({ checked, onChange }) => (
     <button

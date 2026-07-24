@@ -1,7 +1,6 @@
 import { Bookmark, Play, Trash2, BookmarkPlus } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function SavedSearches({ searches, onRunSearch, onDelete, onSave, currentQuery }) {
   const { t } = useLanguage()
   return (
@@ -15,7 +14,7 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
           <button
             className="sidebar-save-btn"
             onClick={() => onSave(currentQuery)}
-            aria-label={t('{t('Save current')} search')}
+            aria-label={t('Save current search')}
           >
             <BookmarkPlus size={14} />
           </button>
@@ -23,21 +22,18 @@ export default function SavedSearches({ searches, onRunSearch, onDelete, onSave,
       </div>
       <div className="saved-list">
         {searches.length === 0 ? (
-          <p className="sidebar-empty">{t('{t('No saved searches')}')}</p>
+          <p className="sidebar-empty">{t('No saved searches')}</p>
         ) : (
           searches.map((item) => (
             <div key={item.id} className="saved-item">
-              <button
-                className="saved-item-info"
-                onClick={() => onRunSearch(item.query)}
-              >
-                <span className="saved-item-query">{item.query}</span>
-                <span className="saved-item-count">{item.count} results</span>
-              </button>
-              <div className="saved-item-actions">
+              <div className="saved-info">
+                <span className="saved-name">{item.name}</span>
+                <span className="saved-query">{item.query}</span>
+              </div>
+              <div className="saved-actions">
                 <button
                   className="saved-action-btn"
-                  onClick={() => onRunSearch(item.query)}
+                  onClick={() => onRunSearch(item.query, item.filters)}
                   aria-label={t('Run search')}
                 >
                   <Play size={12} />

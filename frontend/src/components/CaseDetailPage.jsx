@@ -4,11 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getCaseById } from './search/caseData'
 import {
   ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { getCaseById } from './search/caseData'
-import {
-  ArrowLeft, Clock, User, FileText, Shield, AlertTriangle,
   Camera, Bot, MapPin, Calendar, Hash,
 } from 'lucide-react'
 import SimilarCasesPanel from './similar/SimilarCasesPanel'
@@ -23,15 +18,6 @@ const timelineIcons = {
 }
 
 export default function CaseDetailPage() {
-    )
-  }
-
-  return (
-    <div className="case-detail">
-      {/* Header */}
-      <div className="case-header">
-        <button className="case-back-btn" onClick={() => navigate('/cases')}>
-          <ArrowLeft size={16} /> {t('Back to Search')}
         </button>
         <div className="case-header-info">
           <h1 className="case-header-id">{caseData.crime_no || caseData.id}</h1>

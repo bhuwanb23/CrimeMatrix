@@ -40,11 +40,11 @@ export async function deleteGraphEdge(source, target) {
 
 // Traversal
 export async function traverseGraph(startNode, method = 'bfs', maxDepth = 3) {
-  return post('/graph/traverse', { start_node: startNode, method, max_depth: maxDepth })
+  return get(`/graph/traverse/${encodeURIComponent(startNode)}?method=${encodeURIComponent(method)}&max_depth=${maxDepth}`)
 }
 
 export async function shortestPath(source, target) {
-  return get(`/graph/shortest-path?source=${source}&target=${target}`)
+  return get(`/graph/shortest/${encodeURIComponent(source)}/${encodeURIComponent(target)}`)
 }
 
 export async function getNeighbors(nodeId, edgeType = null) {

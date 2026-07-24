@@ -98,7 +98,7 @@ export async function uploadAttachment(investigationId, file) {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('investigation_id', investigationId);
-  const base = import.meta.env.VITE_API_URL || 'http://localhost:8001/api/v1';
+  const base = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
   const res = await fetch(`${base}/attachments/upload`, {
     method: 'POST',
     body: formData,

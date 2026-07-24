@@ -14,6 +14,31 @@ export default function TrendMainChart({ data, title = "Crime Trend", height = 2
     )
   }
 
+  // Sparse data: show message if too few periods
+  if (data.length <= 2) {
+    const total = data.reduce((s, d) => s + (d.count || 0), 0)
+    return (
+      <div className="trend-chart-widget">
+        <div className="intel-widget-header">
+          <h3>{t(title)}</h3>
+          <div className="intel-trend-badge intel-trend-stable">
+            <Minus size={14} />
+            <span>—</span>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center py-12">
+          <TrendingUp size={32} className="text-slate-300 mb-2" />
+          <p className="text-sm text-slate-500 font-medium">Limited Data Available</p>
+          <p className="text-xs text-slate-400 mt-1">Only {data.length} period(s) recorded — need more data for trend analysis</p>
+          <div className="mt-4 flex items-center gap-4 text-xs text-slate-500">
+            <span>Total: <strong>{total}</strong></span>
+            <span>Avg: <strong>{data.length > 0 ? Math.round(total / data.length) : 0}</strong></span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const maxCount = Math.max(...data.map(d => d.count || 0), 1)
   const total = data.reduce((s, d) => s + (d.count || 0), 0)
   const avg = Math.round(total / data.length)

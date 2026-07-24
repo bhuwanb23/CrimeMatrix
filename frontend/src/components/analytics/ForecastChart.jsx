@@ -1,58 +1,98 @@
 import { TrendingUp } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function ForecastChart({ forecasts }) {
   const { t } = useLanguage()
-  if (!forecasts) return null
+  if (!forecasts) {
+    return (
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden min-h-[300px]">
+        <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2">
+          <TrendingUp size={14} className="text-amber-500" />
+          <h3 className="text-sm font-semibold text-slate-900">{t('Crime Forecast')}</h3>
+        </div>
+        <div className="flex flex-col items-center justify-center py-10">
+          <TrendingUp size={28} className="text-slate-200 mb-2" />
+          <p className="text-xs text-slate-400">No forecast data available</p>
+        </div>
+      </div>
+    )
+  }
 
   const historical = forecasts.historical || []
   const forecast = forecasts.forecast || []
+  const dataPoints = forecasts.data_points || historical.length
   const maxCount = Math.max(...historical.map(d => d.count || 0), 1)
 
+  // Sparse data: show message when very few points
+  if (historical.length <= 3) {
+    return (
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden min-h-[300px]">
+        <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <TrendingUp size={14} className="text-amber-500" />
+            <h3 className="text-sm font-semibold text-slate-900">{t('Crime Forecast')}</h3>
+          </div>
+          <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">{dataPoints} data points</span>
+        </div>
+        <div className="flex flex-col items-center justify-center py-10">
+          <TrendingUp size={28} className="text-slate-200 mb-2" />
+          <p className="text-xs font-medium text-slate-500 mb-1">Limited forecast data</p>
+          <p className="text-[10px] text-slate-400 text-center max-w-[220px]">
+            Only {dataPoints} day(s) recorded. Need at least 7 days of data for accurate forecasting.
+          </p>
+          {historical.length > 0 && (
+            <div className="mt-3 text-xs text-slate-500">
+              <span>Current avg: <strong>{Math.round(historical.reduce((s, d) => s + (d.count || 0), 0) / historical.length)}</strong> crimes/day</span>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="analytics-panel">
-      <div className="analytics-panel-header">
-        <TrendingUp size={14} />
-        <h3>{t('Crime Forecast')}</h3>
-        <span className="similar-count">{forecasts.data_points || 0} {t('data points')}</span>
+    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden min-h-[300px]">
+      <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <TrendingUp size={14} className="text-amber-500" />
+          <h3 className="text-sm font-semibold text-slate-900">{t('Crime Forecast')}</h3>
+        </div>
+        <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">{dataPoints} data points</span>
       </div>
 
-      <div className="analytics-forecast-chart">
-        {historical.length === 0 ? (
-          <div className="similar-empty"><p>{t('No forecast data')}</p></div>
-        ) : (
-          <div className="analytics-forecast-bars">
-            {historical.slice(-14).map((d, i) => (
-              <div key={i} className="analytics-forecast-col">
-                <div className="analytics-forecast-wrapper">
-                  <div
-                    className="analytics-forecast-bar"
-                    style={{ height: `${((d.count || 0) / maxCount) * 100}%` }}
-                  />
-                </div>
-                <span className="analytics-forecast-label">{(d.date || '').slice(-5)}</span>
+      <div className="px-4 py-3">
+        <div className="flex items-end gap-[3px]" style={{ height: 140 }}>
+          {historical.slice(-14).map((d, i) => (
+            <div key={i} className="flex flex-col items-center flex-1 min-w-0">
+              <div className="w-full flex items-end" style={{ height: 120 }}>
+                <div
+                  className="w-full rounded-t bg-blue-400 hover:bg-blue-500 transition-colors"
+                  style={{ height: `${((d.count || 0) / maxCount) * 100}%`, minHeight: d.count > 0 ? 4 : 1 }}
+                  title={`${d.date}: ${d.count} crimes`}
+                />
               </div>
-            ))}
-            {forecast.map((f, i) => (
-              <div key={`f-${i}`} className="analytics-forecast-col">
-                <div className="analytics-forecast-wrapper">
-                  <div
-                    className="analytics-forecast-bar forecast"
-                    style={{ height: `${((f.count || 0) / maxCount) * 100}%` }}
-                  />
-                </div>
-                <span className="analytics-forecast-label forecast-label">{t('pred')}</span>
+              <span className="text-[8px] text-slate-400 mt-1">{(d.date || '').slice(-5)}</span>
+            </div>
+          ))}
+          {forecast.map((f, i) => (
+            <div key={`f-${i}`} className="flex flex-col items-center flex-1 min-w-0">
+              <div className="w-full flex items-end" style={{ height: 120 }}>
+                <div
+                  className="w-full rounded-t bg-amber-400 border-2 border-dashed border-amber-300"
+                  style={{ height: `${((f.count || 0) / maxCount) * 100}%`, minHeight: 4 }}
+                  title={`Predicted: ${f.count} crimes (${f.confidence}% confidence)`}
+                />
               </div>
-            ))}
-          </div>
-        )}
+              <span className="text-[8px] text-amber-500 font-medium mt-1">pred</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {forecast.length > 0 && (
-        <div className="analytics-forecast-info">
-          <span>{t('Predicted:')} {forecast[0].count} {t('crimes')}</span>
-          <span>{t('Confidence:')} {forecast[0].confidence}%</span>
+        <div className="px-4 py-2 border-t border-slate-100 flex items-center gap-4 text-[10px] text-slate-500">
+          <span>Predicted: <strong className="text-slate-700">{forecast[0].count}</strong> crimes</span>
+          <span>Confidence: <strong className="text-slate-700">{forecast[0].confidence}%</strong></span>
         </div>
       )}
     </div>

@@ -186,7 +186,7 @@ function WorkspaceTab({ data, trendData, seasonalData, hotspots, riskData, loadi
 
       <div className="grid grid-cols-2 gap-5">
         <RiskMap riskData={riskData} />
-        <DistrictComparisonChart districts={{}} />
+        <DistrictComparisonChart districts={data.hotspots?.districts ? Object.fromEntries(data.hotspots.districts.map(d => [d.name || d.district, { total: d.count || d.crime_count || 0 }])) : {}} />
       </div>
 
       <div className="grid grid-cols-2 gap-5">

@@ -22,9 +22,9 @@ export default function ReportsPage() {
       results = results.filter(
         (r) =>
           r.id.toLowerCase().includes(q) ||
-          t(r.title).toLowerCase().includes(q) ||
-          t(r.caseId).toLowerCase().includes(q) ||
-          t(r.officer).toLowerCase().includes(q)
+          r.title.toLowerCase().includes(q) ||
+          r.caseId.toLowerCase().includes(q) ||
+          r.officer.toLowerCase().includes(q)
       )
     }
 

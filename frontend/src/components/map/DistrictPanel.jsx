@@ -1,5 +1,4 @@
 import { MapPin, X, TrendingUp, AlertTriangle } from 'lucide-react'
-import { hotspots, crimeDensity } from './mapData'
 
 const riskBadgeClass = {
   critical: 'bg-red-500/10 text-red-500',
@@ -15,8 +14,54 @@ const hotspotDotClass = {
   low: 'bg-emerald-500',
 }
 
-export default function DistrictPanel({ selectedDistrict, onClose }) {
+const DENSITY_COLORS = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6']
+
+function buildDensity(mapData, stats) {
+  if (stats?.district_density && Array.isArray(stats.district_density)) {
+    return stats.district_density.map((d, i) => ({
+      label: d.name || d.district || `District ${i + 1}`,
+      count: d.count ?? d.crime_count ?? 0,
+      color: d.color || DENSITY_COLORS[i % DENSITY_COLORS.length],
+    }))
+  }
+  const features = mapData?.districts?.features || []
+  if (features.length) {
+    return features.slice(0, 8).map((f, i) => {
+      const props = f.properties || {}
+      return {
+        label: props.name || props.district || `District ${i + 1}`,
+        count: props.crime_count ?? props.cases ?? props.count ?? 0,
+        color: DENSITY_COLORS[i % DENSITY_COLORS.length],
+      }
+    })
+  }
+  return []
+}
+
+function buildHotspots(mapData) {
+  const features = mapData?.hotspots?.features || []
+  if (features.length) {
+    return features.slice(0, 5).map((f) => {
+      const props = f.properties || {}
+      return {
+        name: props.name || props.label || 'Hotspot',
+        cases: props.cases ?? props.crime_count ?? props.count ?? 0,
+        severity: (props.severity || props.risk || props.risk_level || 'medium').toLowerCase(),
+      }
+    })
+  }
+  const points = mapData?.heatmap?.points || []
+  return points.slice(0, 5).map((p, i) => ({
+    name: p.name || p.label || `Cluster ${i + 1}`,
+    cases: p.weight ?? p.count ?? 0,
+    severity: (p.severity || 'medium').toLowerCase(),
+  }))
+}
+
+export default function DistrictPanel({ selectedDistrict, onClose, mapData = null, stats = null }) {
   const risk = selectedDistrict?.risk || selectedDistrict?.risk_level || 'low'
+  const density = buildDensity(mapData, stats)
+  const hotspots = buildHotspots(mapData)
 
   return (
     <aside
@@ -82,7 +127,9 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
             Density
           </h3>
           <div className="flex flex-col gap-2">
-            {crimeDensity.map((d, i) => (
+            {density.length === 0 ? (
+              <p className="m-0 text-xs text-slate-400">No density data from API</p>
+            ) : density.map((d, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
                 <span className="size-2 shrink-0 rounded-full" style={{ background: d.color }} />
                 <span className="min-w-0 flex-1 text-slate-900">{d.label}</span>
@@ -98,7 +145,9 @@ export default function DistrictPanel({ selectedDistrict, onClose }) {
             Hotspots
           </h3>
           <div className="flex flex-col gap-2">
-            {hotspots.slice(0, 5).map((h, i) => (
+            {hotspots.length === 0 ? (
+              <p className="m-0 text-xs text-slate-400">No hotspot data from API</p>
+            ) : hotspots.map((h, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
                 <span className={`size-2 shrink-0 rounded-full ${hotspotDotClass[h.severity] || 'bg-slate-400'}`} />
                 <div className="flex min-w-0 flex-col gap-px">

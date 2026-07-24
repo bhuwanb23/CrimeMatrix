@@ -52,7 +52,7 @@ export default function SettingsPage() {
   )
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div>
           <h1 className="text-[22px] font-bold tracking-tight text-[var(--text-primary)]">
@@ -91,7 +91,7 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {/* Language */}
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
           <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('Language')}</h2>

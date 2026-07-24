@@ -45,6 +45,13 @@ export default function SuspectRiskPage() {
 
   useEffect(() => { loadData() }, [loadData])
 
+  // Auto-select first suspect after rankings load
+  useEffect(() => {
+    if (rankings.length > 0 && !selectedSuspect) {
+      handleSelectSuspect(rankings[0].suspect_id)
+    }
+  }, [rankings])
+
   async function handleBatchScore() {
     setScoring(true)
     try { await batchScoreSuspects(); await loadData() } catch (e) { console.error(e) } finally { setScoring(false) }

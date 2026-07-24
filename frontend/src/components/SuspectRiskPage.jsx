@@ -39,13 +39,9 @@ export default function SuspectRiskPage() {
     try {
       const [statsRes, rankingsRes] = await Promise.all([getSuspectRiskStats(), getSuspectRiskRankings(10)])
       setStats(statsRes?.data || statsRes)
-      const ranks = rankingsRes?.data || []
-      setRankings(ranks)
-      if (ranks.length > 0 && !selectedSuspect) {
-        handleSelectSuspect(ranks[0].suspect_id)
-      }
+      setRankings(rankingsRes?.data || [])
     } catch (e) { console.error(e) } finally { setLoading(false) }
-  }, [selectedSuspect])
+  }, [])
 
   useEffect(() => { loadData() }, [loadData])
 

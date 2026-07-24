@@ -3,7 +3,7 @@ import { FileText } from 'lucide-react'
 import ReportStats from './reports/ReportStats'
 import ReportFilters from './reports/ReportFilters'
 import ReportTable from './reports/ReportTable'
-import { reports as allReports } from './reports/reportsData'
+import { getReports } from './reports/reportsData'
 import { useLanguage } from '../context/LanguageContext'
 
 const ITEMS_PER_PAGE = 8
@@ -13,6 +13,7 @@ export default function ReportsPage() {
   const [filters, setFilters] = useState({ search: '', date: '', type: '', status: '' })
   const [page, setPage] = useState(1)
 
+  const allReports = useMemo(() => getReports(t), [t])
   const filteredReports = useMemo(() => {
     let results = allReports
 

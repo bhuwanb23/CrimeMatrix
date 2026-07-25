@@ -15,16 +15,15 @@ class TrendEngine:
         self, period: str = "daily", start_date: str = None, end_date: str = None
     ) -> dict:
         # Use occurred_at (incident date) instead of created_at (insertion time)
-        # Fall back to created_at if occurred_at is null
         date_col = func.coalesce(Crime.occurred_at, Crime.created_at)
-        query = select(date_col, func.count(Crime.id))
+        query = select(sql_func.date(date_col), func.count(Crime.id))
 
         if start_date:
             query = query.where(date_col >= start_date)
         if end_date:
             query = query.where(date_col <= end_date)
 
-        query = query.group_by(date_col).order_by(date_col)
+        query = query.group_by(sql_func.date(date_col)).order_by(sql_func.date(date_col))
         result = await self.db.execute(query)
         rows = result.all()
 

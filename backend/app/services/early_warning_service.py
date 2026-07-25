@@ -133,17 +133,19 @@ class EarlyWarningService:
         date_from = datetime.utcnow() - timedelta(days=7)
         date_prev = datetime.utcnow() - timedelta(days=14)
 
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
+
         stmt = select(
             Crime.district_id,
             sql_func.count(Crime.id).label("count")
-        ).where(Crime.created_at >= date_from).group_by(Crime.district_id)
+        ).where(date_col >= date_from).group_by(Crime.district_id)
         result = await self.db.execute(stmt)
         recent = {r[0]: r[1] for r in result.all()}
 
         stmt2 = select(
             Crime.district_id,
             sql_func.count(Crime.id).label("count")
-        ).where(Crime.created_at >= date_prev, Crime.created_at < date_from).group_by(Crime.district_id)
+        ).where(date_col >= date_prev, date_col < date_from).group_by(Crime.district_id)
         result2 = await self.db.execute(stmt2)
         previous = {r[0]: r[1] for r in result2.all()}
 

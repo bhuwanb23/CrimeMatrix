@@ -48,22 +48,23 @@ class IntelligenceService:
     async def _get_overview(self, district: str = None, time_range: str = "30d",
                             crime_type: str = None) -> dict:
         date_from = self._get_date_from(time_range)
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
 
         query = select(sql_func.count(Crime.id))
         if date_from:
-            query = query.where(Crime.created_at >= date_from)
+            query = query.where(date_col >= date_from)
         if crime_type:
             query = query.where(Crime.crime_type_id.isnot(None))
         total = (await self.db.execute(query)).scalar() or 0
 
         open_q = select(sql_func.count(Crime.id)).where(Crime.status == "open")
         if date_from:
-            open_q = open_q.where(Crime.created_at >= date_from)
+            open_q = open_q.where(date_col >= date_from)
         open_count = (await self.db.execute(open_q)).scalar() or 0
 
         closed_q = select(sql_func.count(Crime.id)).where(Crime.status == "closed")
         if date_from:
-            closed_q = closed_q.where(Crime.created_at >= date_from)
+            closed_q = closed_q.where(date_col >= date_from)
         closed_count = (await self.db.execute(closed_q)).scalar() or 0
 
         active_inv = (await self.db.execute(

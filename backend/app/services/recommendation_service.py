@@ -345,18 +345,15 @@ class RecommendationService:
         try:
             stmt = (
                 select(CasePriority)
-                .join(Case, CasePriority.case_id == Case.id)
-                .where(Case.status == "open")
-                .order_by(CasePriority.overall_score.desc())
+                .order_by(CasePriority.overall_priority_score.desc())
+                .where(CasePriority.overall_priority_score >= 60)
                 .limit(limit)
             )
             result = await self.db.execute(stmt)
             priorities = result.scalars().all()
             recs = []
             for p in priorities:
-                if p.overall_score < 60:
-                    continue
-                case = await self._load_case(p.case_id)
+                case = await self._load_case(p.investigation_id)
                 recs.append({
                     "type": "priority_escalation",
                     "case_id": p.case_id,

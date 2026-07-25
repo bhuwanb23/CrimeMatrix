@@ -109,15 +109,14 @@ class AnalyticsDashboardService:
         return alerts[:10]
 
     async def get_forecasts(self) -> dict:
-        # Get recent crime counts for forecasting
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
         stmt = select(
-            sql_func.date(Crime.created_at).label("date"),
+            sql_func.date(date_col).label("date"),
             sql_func.count(Crime.id).label("count")
-        ).group_by(sql_func.date(Crime.created_at)).order_by(sql_func.date(Crime.created_at))
+        ).group_by(sql_func.date(date_col)).order_by(sql_func.date(date_col))
         result = await self.db.execute(stmt)
         data = [{"date": str(r[0]) if r[0] else "unknown", "count": r[1]} for r in result.all()]
 
-        # Simple moving average forecast
         if len(data) >= 7:
             recent = [d["count"] for d in data[-7:]]
             avg = sum(recent) / len(recent)

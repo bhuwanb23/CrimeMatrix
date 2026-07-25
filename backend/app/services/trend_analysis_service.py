@@ -55,10 +55,11 @@ class TrendAnalysisService:
     async def get_weekly_trends(self, weeks: int = 12, district_id: int = None,
                                 crime_type_id: int = None) -> dict:
         date_from = datetime.utcnow() - timedelta(weeks=weeks)
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
         query = select(
-            sql_func.strftime("%Y-%W", Crime.created_at).label("week"),
+            sql_func.strftime("%Y-%W", date_col).label("week"),
             sql_func.count(Crime.id).label("count")
-        ).where(Crime.created_at >= date_from)
+        ).where(date_col >= date_from)
         if district_id:
             query = query.where(Crime.district_id == district_id)
         if crime_type_id:
@@ -71,10 +72,11 @@ class TrendAnalysisService:
     async def get_monthly_trends(self, months: int = 12, district_id: int = None,
                                  crime_type_id: int = None) -> dict:
         date_from = datetime.utcnow() - timedelta(days=months * 30)
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
         query = select(
-            sql_func.strftime("%Y-%m", Crime.created_at).label("month"),
+            sql_func.strftime("%Y-%m", date_col).label("month"),
             sql_func.count(Crime.id).label("count")
-        ).where(Crime.created_at >= date_from)
+        ).where(date_col >= date_from)
         if district_id:
             query = query.where(Crime.district_id == district_id)
         if crime_type_id:

@@ -14,14 +14,17 @@ class TrendEngine:
     async def crime_trends(
         self, period: str = "daily", start_date: str = None, end_date: str = None
     ) -> dict:
-        query = select(Crime.created_at, func.count(Crime.id))
+        # Use occurred_at (incident date) instead of created_at (insertion time)
+        # Fall back to created_at if occurred_at is null
+        date_col = func.coalesce(Crime.occurred_at, Crime.created_at)
+        query = select(date_col, func.count(Crime.id))
 
         if start_date:
-            query = query.where(Crime.created_at >= start_date)
+            query = query.where(date_col >= start_date)
         if end_date:
-            query = query.where(Crime.created_at <= end_date)
+            query = query.where(date_col <= end_date)
 
-        query = query.group_by(Crime.created_at).order_by(Crime.created_at)
+        query = query.group_by(date_col).order_by(date_col)
         result = await self.db.execute(query)
         rows = result.all()
 

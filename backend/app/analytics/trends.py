@@ -16,18 +16,18 @@ class TrendEngine:
     ) -> dict:
         # Use occurred_at (incident date) instead of created_at (insertion time)
         date_col = func.coalesce(Crime.occurred_at, Crime.created_at)
-        query = select(sql_func.date(date_col), func.count(Crime.id))
+        query = select(sql_func.strftime("%Y-%m-%d", date_col), func.count(Crime.id))
 
         if start_date:
             query = query.where(date_col >= start_date)
         if end_date:
             query = query.where(date_col <= end_date)
 
-        query = query.group_by(sql_func.date(date_col)).order_by(sql_func.date(date_col))
+        query = query.group_by(sql_func.strftime("%Y-%m-%d", date_col)).order_by(sql_func.strftime("%Y-%m-%d", date_col))
         result = await self.db.execute(query)
         rows = result.all()
 
-        data = [{"date": str(row[0])[:10] if row[0] else "unknown", "count": row[1]} for row in rows]
+        data = [{"date": str(row[0]) if row[0] else "unknown", "count": row[1]} for row in rows]
         return {"period": period, "data": data}
 
     async def case_trends(

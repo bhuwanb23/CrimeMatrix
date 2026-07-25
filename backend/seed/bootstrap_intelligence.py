@@ -17,7 +17,7 @@ from typing import Any
 
 import httpx
 
-BACKEND_URL = os.getenv("CRIMEMATRIX_API_URL", "http://localhost:8000/api/v1")
+BACKEND_URL = os.getenv("CRIMEMATRIX_API_URL", "http://localhost:8001/api/v1")
 
 # (label, method, path, optional json body)
 BOOTSTRAP_STEPS: list[tuple[str, str, str, dict[str, Any] | None]] = [

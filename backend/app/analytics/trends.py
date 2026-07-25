@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func as sql_func
 from app.models.crime import Crime
 from typing import Optional
 import structlog
@@ -14,9 +14,8 @@ class TrendEngine:
     async def crime_trends(
         self, period: str = "daily", start_date: str = None, end_date: str = None
     ) -> dict:
-        # Use occurred_at (incident date) instead of created_at (insertion time)
-        date_col = func.coalesce(Crime.occurred_at, Crime.created_at)
-        query = select(sql_func.strftime("%Y-%m-%d", date_col), func.count(Crime.id))
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
+        query = select(sql_func.strftime("%Y-%m-%d", date_col), sql_func.count(Crime.id))
 
         if start_date:
             query = query.where(date_col >= start_date)
@@ -33,7 +32,7 @@ class TrendEngine:
     async def case_trends(
         self, start_date: str = None, end_date: str = None
     ) -> dict:
-        query = select(Crime.status, func.count(Crime.id))
+        query = select(Crime.status, sql_func.count(Crime.id))
 
         if start_date:
             query = query.where(Crime.created_at >= start_date)
@@ -48,9 +47,9 @@ class TrendEngine:
         return {"data": data}
 
     async def resolution_trend(self) -> dict:
-        total = (await self.db.execute(select(func.count(Crime.id)))).scalar() or 0
+        total = (await self.db.execute(select(sql_func.count(Crime.id)))).scalar() or 0
         resolved = (await self.db.execute(
-            select(func.count(Crime.id)).where(Crime.status == "closed")
+            select(sql_func.count(Crime.id)).where(Crime.status == "closed")
         )).scalar() or 0
 
         rate = round((resolved / total * 100), 1) if total > 0 else 0

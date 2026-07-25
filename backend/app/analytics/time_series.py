@@ -12,14 +12,14 @@ class TimeSeriesEngine:
 
     async def crime_series(self, start_date: str = None, end_date: str = None) -> list:
         date_col = func.coalesce(Crime.occurred_at, Crime.created_at)
-        query = select(sql_func.date(date_col), func.count(Crime.id))
+        query = select(sql_func.strftime("%Y-%m-%d", date_col), func.count(Crime.id))
 
         if start_date:
             query = query.where(date_col >= start_date)
         if end_date:
             query = query.where(date_col <= end_date)
 
-        query = query.group_by(sql_func.date(date_col)).order_by(sql_func.date(date_col))
+        query = query.group_by(sql_func.strftime("%Y-%m-%d", date_col)).order_by(sql_func.strftime("%Y-%m-%d", date_col))
         result = await self.db.execute(query)
 
         return [
@@ -45,12 +45,12 @@ class TimeSeriesEngine:
 
     async def activity_series(self, start_date: str = None, end_date: str = None) -> list:
         date_col = func.coalesce(Crime.occurred_at, Crime.created_at)
-        crime_query = select(date_col, func.count(Crime.id))
+        crime_query = select(sql_func.strftime("%Y-%m-%d", date_col), func.count(Crime.id))
         if start_date:
             crime_query = crime_query.where(date_col >= start_date)
         if end_date:
             crime_query = crime_query.where(date_col <= end_date)
-        crime_query = crime_query.group_by(date_col).order_by(date_col)
+        crime_query = crime_query.group_by(sql_func.strftime("%Y-%m-%d", date_col)).order_by(sql_func.strftime("%Y-%m-%d", date_col))
         crimes = await self.db.execute(crime_query)
 
         series = {}

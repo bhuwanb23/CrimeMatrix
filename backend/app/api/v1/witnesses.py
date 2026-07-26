@@ -6,6 +6,7 @@ from app.services.witness_service import WitnessService
 from app.schemas.witness import WitnessCreate, WitnessResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
+from app.db.phase1_store import store_create, store_delete, store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -16,6 +17,17 @@ def get_service(db: AsyncSession):
 
 @router.get("/", )
 async def list_witnesses(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        data = await store_list("witnesses", page=page, page_size=page_size)
+        data["items"] = [
+            {
+                "id": i.get("id"),
+                "title": (i.get("statement") or "")[:80],
+                "status": i.get("reliability") or "",
+            }
+            for i in data["items"]
+        ]
+        return {"success": True, "data": data, "message": "Success"}
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
     result = await svc.get_paginated(params); return {"success": True, "data": {"items": [{"id": i.id, "title": getattr(i, "title", getattr(i, "name", "")), "status": getattr(i, "status", "")} for i in result.items], "total": result.total, "page": result.page, "page_size": result.page_size, "total_pages": result.total_pages}, "message": "Success"}
@@ -23,6 +35,11 @@ async def list_witnesses(page: int = 1, page_size: int = 20, db: AsyncSession = 
 
 @router.get("/{witness_id}")
 async def get_witness(witness_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        witness = await store_get("witnesses", witness_id)
+        if not witness:
+            return success_response(message="Witness not found")
+        return success_response(data=witness)
     svc = get_service(db)
     witness = await svc.get_by_id(witness_id)
     if not witness:
@@ -32,6 +49,9 @@ async def get_witness(witness_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/")
 async def create_witness(data: WitnessCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        witness = await store_create("witnesses", data.model_dump())
+        return success_response(data=witness, message="Witness created")
     svc = get_service(db)
     witness = await svc.create(data.model_dump())
     return success_response(data=WitnessResponse.model_validate(witness).model_dump(), message="Witness created")
@@ -39,6 +59,9 @@ async def create_witness(data: WitnessCreate, db: AsyncSession = Depends(get_db)
 
 @router.delete("/{witness_id}")
 async def delete_witness(witness_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        deleted = await store_delete("witnesses", witness_id)
+        return success_response(message="Witness deleted" if deleted else "Witness not found")
     svc = get_service(db)
     deleted = await svc.delete(witness_id)
     return success_response(message="Witness deleted" if deleted else "Witness not found")

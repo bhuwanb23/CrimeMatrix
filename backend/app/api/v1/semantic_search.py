@@ -4,11 +4,9 @@ from typing import Optional
 import httpx
 from app.core.response import success_response
 from fastapi import APIRouter
+from app.core.service_urls import AI_SERVICES_URL, BACKEND_URL
 
 router = APIRouter()
-
-AI_SERVICES_URL = "http://localhost:8002"
-BACKEND_URL = "http://localhost:8000"
 
 
 class SemanticSearchRequest(BaseModel):

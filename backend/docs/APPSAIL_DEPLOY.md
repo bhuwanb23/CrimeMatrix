@@ -36,7 +36,7 @@ reads `CM_*` first, then falls back.
 | `CM_CLIENT_SECRET` | *(from `backend/.env`)* |
 | `CM_REFRESH_TOKEN` | *(from `backend/.env`)* |
 | `CM_FILE_FOLDER_ID` | *(File Store folder id)* |
-| `AI_SERVICES_URL` | `https://crimematrix-ai-50044181811.development.catalystappsail.in` |
+| `AI_SERVICES_URL` | `https://crimematrix-ai-50044181811.development.catalystappsail.in` (**origin only** — no `/api/ai`) |
 | `STORAGE_PROVIDER` | `catalyst` |
 
 5. Save; wait ~30–60s for a new instance.

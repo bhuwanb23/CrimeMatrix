@@ -14,7 +14,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "8000:8000"
     environment:
@@ -23,6 +23,8 @@ services:
       - APP_HOST=0.0.0.0
       - APP_PORT=8000
       - REDIS_URL=redis://redis:6379/0
+      - AI_SERVICES_URL=http://ai-services:8002
+      - BACKEND_URL=http://backend:8000
     depends_on:
       redis:
         condition: service_healthy
@@ -40,6 +42,7 @@ services:
       - OLLAMA_BASE_URL=http://ollama:11434
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - BACKEND_URL=http://backend:8000
     depends_on:
       ollama:
         condition: service_healthy

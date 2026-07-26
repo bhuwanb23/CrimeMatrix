@@ -65,3 +65,6 @@ ai-services/crimematrix-ai.tar
 
 # Local Catalyst working dir secrets (if any)
 catalyst/
+
+# Keep Phase 1 Data Store schema/scripts tracked
+!backend/catalyst_datastore/

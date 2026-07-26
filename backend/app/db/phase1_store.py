@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from typing import Any, Optional
 
 from app.db.providers import get_data_provider, get_db_provider_name
-from app.db.providers.row_mapper import api_to_store, store_to_api
+from app.db.providers.row_mapper import from_api_row, to_api_row
 
 
 def using_phase1_store() -> bool:
@@ -16,11 +16,11 @@ def using_phase1_store() -> bool:
 def _normalize_out(row: dict[str, Any] | None) -> dict[str, Any] | None:
     if not row:
         return None
-    return store_to_api(row)
+    return to_api_row(row)
 
 
 def _normalize_in(row: dict[str, Any]) -> dict[str, Any]:
-    return api_to_store(row)
+    return from_api_row(row)
 
 
 async def store_list(

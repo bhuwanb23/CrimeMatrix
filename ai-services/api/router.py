@@ -167,7 +167,7 @@ async def get_memory_history(session_id: str, limit: int = 50):
     agent = _agents.get("default")
     if not agent:
         raise HTTPException(status_code=404, detail="No agent")
-    session_mem = agent.memory.get_session(session_id)
+    session_mem = await agent.memory.get_session(session_id)
     messages = session_mem.get_messages()[-limit:]
     return {"success": True, "data": {"messages": messages, "total": len(session_mem.messages), "summary": session_mem.summary}}
 
@@ -177,7 +177,7 @@ async def get_memory_summary(session_id: str):
     agent = _agents.get("default")
     if not agent:
         raise HTTPException(status_code=404, detail="No agent")
-    session_mem = agent.memory.get_session(session_id)
+    session_mem = await agent.memory.get_session(session_id)
     return {"success": True, "data": {"summary": session_mem.summary, "message_count": len(session_mem.messages)}}
 
 
@@ -681,7 +681,11 @@ class PredictionRequest(BaseModel):
 
 @router.post("/predict/forecast")
 async def predict_forecast(data: dict):
-    result = _prediction_engine.forecast.forecast(data.get("historical", []), data.get("periods_ahead", 1))
+    historical = data.get("historical", [])
+    # Accept bare counts [1,2,3] or [{count: n}, ...]
+    if historical and not isinstance(historical[0], dict):
+        historical = [{"count": int(v)} for v in historical]
+    result = _prediction_engine.forecast.forecast(historical, data.get("periods_ahead", 1))
     return {"success": True, "data": result}
 
 
@@ -792,10 +796,12 @@ async def normalize_query(data: NormalizeRequest):
 
 @router.get("/language/stats")
 async def language_stats():
+    from language.kanglish import KANGlish_KN
+    from language.translator import EN_KN_DICT
     return {"success": True, "data": {
         "supported_languages": ["en", "kn", "hi"],
         "kanglish_entries": len(KANGlish_KN),
-        "en_kn_dict_size": len(EN_KN_DICT) if "EN_KN_DICT" in dir() else 0,
+        "en_kn_dict_size": len(EN_KN_DICT),
     }}
 
 

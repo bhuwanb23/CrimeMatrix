@@ -62,3 +62,6 @@ docker-compose.override.yml
 # Catalyst AppSail image archives (large)
 *.tar
 ai-services/crimematrix-ai.tar
+
+# Local Catalyst working dir secrets (if any)
+catalyst/

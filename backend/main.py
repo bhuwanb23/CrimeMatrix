@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from contextlib import asynccontextmanager
 from app.api.v1.router import router as v1_router
 from app.core.exceptions import (
@@ -12,6 +13,29 @@ from app.core.logging import setup_logging, get_logger
 from app.audit.middleware import AuditMiddleware
 from app.audit.stores import request_logs, api_logs, metrics
 from config import get_settings
+
+
+class TextPlainJsonMiddleware(BaseHTTPMiddleware):
+    """Accept CORS-safelisted text/plain bodies as JSON (AppSail OPTIONS lacks ACAO)."""
+
+    async def dispatch(self, request: Request, call_next):
+        ct = (request.headers.get("content-type") or "").split(";")[0].strip().lower()
+        if ct == "text/plain" and request.method in {"POST", "PUT", "PATCH"}:
+            body = await request.body()
+
+            async def receive():
+                return {"type": "http.request", "body": body, "more_body": False}
+
+            headers = [
+                (k, v)
+                for k, v in request.scope["headers"]
+                if k.lower() != b"content-type"
+            ]
+            headers.append((b"content-type", b"application/json"))
+            scope = dict(request.scope)
+            scope["headers"] = headers
+            request = Request(scope, receive)
+        return await call_next(request)
 
 
 @asynccontextmanager
@@ -71,6 +95,7 @@ def create_app() -> FastAPI:
             "metrics": metrics,
         },
     )
+    app.add_middleware(TextPlainJsonMiddleware)
 
     app.add_exception_handler(AppError, app_error_handler)
     app.add_exception_handler(ValidationError, validation_error_handler)

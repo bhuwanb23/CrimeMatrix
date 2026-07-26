@@ -1,0 +1,2533 @@
+{
+  "phase": 1,
+  "file_store_folder": "cm_uploads",
+  "seed_order": [
+    "states",
+    "unit_types",
+    "ranks",
+    "designations",
+    "genders",
+    "crime_types",
+    "crime_heads",
+    "crime_sub_heads",
+    "case_categories",
+    "case_status_master",
+    "acts",
+    "sections",
+    "districts",
+    "stations",
+    "officers",
+    "locations",
+    "persons",
+    "firs",
+    "cases",
+    "crimes",
+    "criminals",
+    "suspects",
+    "complainants",
+    "victims",
+    "accused",
+    "witnesses",
+    "evidence",
+    "vehicles",
+    "phones",
+    "investigations",
+    "notes",
+    "timeline_events",
+    "case_links",
+    "case_status_logs",
+    "attachments"
+  ],
+  "list_projections": {
+    "states": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "active"
+    ],
+    "districts": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "state",
+      "state_id",
+      "population",
+      "active"
+    ],
+    "stations": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "district_id",
+      "state_id",
+      "phone",
+      "active"
+    ],
+    "officers": [
+      "ROWID",
+      "legacy_id",
+      "badge_number",
+      "first_name",
+      "rank",
+      "district_id",
+      "station_id",
+      "status",
+      "phone"
+    ],
+    "firs": [
+      "ROWID",
+      "legacy_id",
+      "fir_number",
+      "title",
+      "crime_type",
+      "district",
+      "station",
+      "status",
+      "date_filed"
+    ],
+    "cases": [
+      "ROWID",
+      "legacy_id",
+      "case_number",
+      "title",
+      "crime_type",
+      "district",
+      "status",
+      "priority",
+      "fir_id",
+      "latitude",
+      "longitude"
+    ],
+    "crimes": [
+      "ROWID",
+      "legacy_id",
+      "title",
+      "crime_type_id",
+      "district_id",
+      "location_id",
+      "status",
+      "priority",
+      "reported_by",
+      "occurred_at"
+    ],
+    "persons": [
+      "ROWID",
+      "legacy_id",
+      "first_name",
+      "last_name",
+      "phone",
+      "district",
+      "gender"
+    ],
+    "criminals": [
+      "ROWID",
+      "legacy_id",
+      "person_id",
+      "alias",
+      "risk_score",
+      "status"
+    ],
+    "suspects": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "age",
+      "district",
+      "status",
+      "risk_score"
+    ],
+    "investigations": [
+      "ROWID",
+      "legacy_id",
+      "case_id",
+      "title",
+      "status",
+      "priority",
+      "officer_id",
+      "progress",
+      "district"
+    ],
+    "notes": [
+      "ROWID",
+      "legacy_id",
+      "investigation_id",
+      "author_id"
+    ],
+    "timeline_events": [
+      "ROWID",
+      "legacy_id",
+      "investigation_id",
+      "title",
+      "event_type",
+      "event_date"
+    ],
+    "evidence": [
+      "ROWID",
+      "legacy_id",
+      "case_id",
+      "evidence_type",
+      "status",
+      "file_id",
+      "folder_id"
+    ],
+    "attachments": [
+      "ROWID",
+      "legacy_id",
+      "investigation_id",
+      "filename",
+      "file_id",
+      "folder_id",
+      "file_size",
+      "file_type"
+    ],
+    "vehicles": [
+      "ROWID",
+      "legacy_id",
+      "registration_number",
+      "make",
+      "model",
+      "color",
+      "status"
+    ],
+    "phones": [
+      "ROWID",
+      "legacy_id",
+      "number",
+      "owner_id",
+      "carrier",
+      "status"
+    ],
+    "locations": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "district_id",
+      "latitude",
+      "longitude",
+      "type"
+    ],
+    "complainants": [
+      "ROWID",
+      "legacy_id",
+      "case_id",
+      "name",
+      "age_year",
+      "gender_id"
+    ],
+    "victims": [
+      "ROWID",
+      "legacy_id",
+      "case_id",
+      "name",
+      "age_year",
+      "gender_id"
+    ],
+    "accused": [
+      "ROWID",
+      "legacy_id",
+      "case_id",
+      "name",
+      "age_year",
+      "gender_id"
+    ],
+    "witnesses": [
+      "ROWID",
+      "legacy_id",
+      "case_id",
+      "person_id",
+      "reliability"
+    ],
+    "case_links": [
+      "ROWID",
+      "legacy_id",
+      "investigation_id",
+      "linked_case_id",
+      "link_type"
+    ],
+    "case_status_logs": [
+      "ROWID",
+      "legacy_id",
+      "investigation_id",
+      "old_status",
+      "new_status",
+      "changed_at"
+    ],
+    "genders": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code"
+    ],
+    "crime_types": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "severity_level"
+    ],
+    "crime_heads": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "active"
+    ],
+    "crime_sub_heads": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "crime_head_id"
+    ],
+    "case_categories": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "active"
+    ],
+    "case_status_master": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code"
+    ],
+    "acts": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "act_code",
+      "short_name",
+      "active"
+    ],
+    "sections": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "section_code",
+      "act_id",
+      "active"
+    ],
+    "ranks": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "hierarchy",
+      "active"
+    ],
+    "designations": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "sort_order",
+      "active"
+    ],
+    "unit_types": [
+      "ROWID",
+      "legacy_id",
+      "name",
+      "code",
+      "hierarchy",
+      "active"
+    ]
+  },
+  "tables": {
+    "states": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "nationality_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "unit_types": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "city_dist_state",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "hierarchy",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "ranks": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "hierarchy",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "designations": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "sort_order",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "genders": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "crime_types": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "severity_level",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "is_active",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "crime_heads": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "crime_sub_heads": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "crime_head_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "seq_id",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "case_categories": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "case_status_master": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "acts": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "act_code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": true,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "short_name",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "sections": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "section_code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "act_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "districts": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "state",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "state_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "population",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "area_sq_km",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "stations": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "code",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "type_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "parent_unit",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "nationality_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "state_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "district_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "address",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 200
+        },
+        {
+          "column_name": "phone",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "type",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "officers": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "badge_number",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "rank",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "rank_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "station_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "unit_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "designation_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "district_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "kgid",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "first_name",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "dob",
+          "data_type": "date",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "gender_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "blood_group_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "physically_challenged",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "appointment_date",
+          "data_type": "date",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "specialization",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 100
+        },
+        {
+          "column_name": "phone",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        }
+      ]
+    },
+    "firs": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "fir_number",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": true,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "title",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "crime_type",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "district",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "station",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 100
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "complainant_name",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 100
+        },
+        {
+          "column_name": "complainant_phone",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "date_filed",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "cases": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_number",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": true,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "crime_no",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "title",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "crime_type",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "district",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "priority",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "officer_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "fir_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "incident_from_date",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "incident_to_date",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "info_received_ps_date",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "latitude",
+          "data_type": "double",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "longitude",
+          "data_type": "double",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "brief_facts",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "case_category_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "gravity_offence_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "crime_major_head_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "crime_minor_head_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "case_status_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "court_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "police_person_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "police_station_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "crimes": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "title",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "crime_type_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "district_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "location_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "priority",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "reported_by",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "occurred_at",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        }
+      ]
+    },
+    "persons": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "first_name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "last_name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "date_of_birth",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 10
+        },
+        {
+          "column_name": "gender",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 10
+        },
+        {
+          "column_name": "phone",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "email",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 100
+        },
+        {
+          "column_name": "address",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "district",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "aadhar_number",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        }
+      ]
+    },
+    "criminals": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "person_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "alias",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "risk_score",
+          "data_type": "double",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "mo_description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "behavioral_profile",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "first_offense_date",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 10
+        }
+      ]
+    },
+    "suspects": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "age",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "gender",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 10
+        },
+        {
+          "column_name": "district",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "risk_score",
+          "data_type": "double",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "physical_description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "aliases",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "victims": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "age_year",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "gender_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "is_police",
+          "data_type": "boolean",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "witnesses": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "person_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "statement",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "reliability",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        }
+      ]
+    },
+    "complainants": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "age_year",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "occupation_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "religion_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "caste_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "gender_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "accused": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "age_year",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "gender_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "person_id",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 10
+        }
+      ]
+    },
+    "evidence": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "evidence_type",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "file_path",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 500
+        },
+        {
+          "column_name": "file_id",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "folder_id",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 100
+        },
+        {
+          "column_name": "recorded_by",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "vehicles": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "registration_number",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": true,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "make",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "model",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "color",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 30
+        },
+        {
+          "column_name": "type",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 30
+        },
+        {
+          "column_name": "owner_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        }
+      ]
+    },
+    "phones": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "number",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "owner_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "carrier",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "type",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        }
+      ]
+    },
+    "locations": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "address",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 300
+        },
+        {
+          "column_name": "latitude",
+          "data_type": "double",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "longitude",
+          "data_type": "double",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "district_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "type",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        }
+      ]
+    },
+    "investigations": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "case_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "title",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 200
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 20
+        },
+        {
+          "column_name": "priority",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "officer_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "progress",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "district",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "last_accessed",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "notes": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "investigation_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "content",
+          "data_type": "text",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "author_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "timeline_events": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "investigation_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "title",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 200
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "event_type",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 50
+        },
+        {
+          "column_name": "event_date",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        }
+      ]
+    },
+    "case_links": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "investigation_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "linked_case_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "link_type",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "description",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 200
+        }
+      ]
+    },
+    "case_status_logs": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "investigation_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "old_status",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "new_status",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 20
+        },
+        {
+          "column_name": "changed_by",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "notes",
+          "data_type": "text",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "changed_at",
+          "data_type": "datetime",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    },
+    "attachments": {
+      "columns": [
+        {
+          "column_name": "legacy_id",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "investigation_id",
+          "data_type": "bigint",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": true
+        },
+        {
+          "column_name": "filename",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 200
+        },
+        {
+          "column_name": "file_path",
+          "data_type": "varchar",
+          "is_mandatory": true,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 500
+        },
+        {
+          "column_name": "file_id",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": true,
+          "max_length": 100
+        },
+        {
+          "column_name": "folder_id",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 100
+        },
+        {
+          "column_name": "file_size",
+          "data_type": "int",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        },
+        {
+          "column_name": "file_type",
+          "data_type": "varchar",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false,
+          "max_length": 50
+        },
+        {
+          "column_name": "uploaded_by",
+          "data_type": "bigint",
+          "is_mandatory": false,
+          "is_unique": false,
+          "search_index_enabled": false
+        }
+      ]
+    }
+  },
+  "notes": [
+    "System columns ROWID/CREATORID/CREATEDTIME/MODIFIEDTIME are automatic.",
+    "API id maps from ROWID; legacy_id holds original SQLite PK for seed remaps.",
+    "ZCQL SELECT is limited to 20 columns and 300 rows \u2014 use list_projections + paging.",
+    "Text fields max 10,000 characters in Data Store."
+  ]
+}

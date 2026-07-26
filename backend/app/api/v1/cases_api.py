@@ -182,6 +182,13 @@ async def _enrich_complainant(c, db):
 
 @router.get("/{case_id}/complainant")
 async def get_complainant(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import case_children
+
+        rows = await case_children("complainants", case_id)
+        if not rows:
+            return success_response(message="No complainant found for this case")
+        return success_response(data=rows[0])
     result = await db.execute(select(Complainant).where(Complainant.case_id == case_id))
     c = result.scalar()
     if not c:

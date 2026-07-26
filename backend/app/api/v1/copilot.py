@@ -11,7 +11,7 @@ from app.db.session import get_db
 from app.models.chat import ChatSession, ChatMessage, ConversationMemory
 from app.core.response import success_response
 from fastapi import Depends
-from app.core.service_urls import AI_SERVICES_URL, BACKEND_URL
+from app.core.service_urls import get_ai_services_url, get_backend_url
 
 router = APIRouter()
 
@@ -39,6 +39,8 @@ class TitleUpdate(BaseModel):
 @router.post("/chat")
 async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
     session_id = data.session_id or uuid.uuid4().hex[:12]
+    ai_base = get_ai_services_url()
+    backend_base = get_backend_url()
 
     # Ensure session exists in DB
     existing = (await db.execute(
@@ -54,7 +56,7 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
     if data.case_id:
         try:
             async with httpx.AsyncClient() as client:
-                case_resp = await client.get(f"{BACKEND_URL}/api/v1/crimes/{data.case_id}", timeout=10.0)
+                case_resp = await client.get(f"{backend_base}/api/v1/crimes/{data.case_id}", timeout=10.0)
                 if case_resp.status_code == 200:
                     case_data = case_resp.json().get("data", {})
                     if case_data:
@@ -75,7 +77,7 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
             if investigation_context:
                 ai_payload["investigation_context"] = investigation_context
             ai_response = await client.post(
-                f"{AI_SERVICES_URL}/api/ai/chat",
+                f"{ai_base}/api/ai/chat",
                 json=ai_payload,
                 timeout=120.0,
             )
@@ -85,13 +87,20 @@ async def copilot_chat(data: ChatRequest, db: AsyncSession = Depends(get_db)):
                 reasoning_trace = ai_data.get("data", {}).get("reasoning_trace", [])
                 steps = ai_data.get("data", {}).get("steps", 0)
             else:
-                response_text = "AI service temporarily unavailable. Please try again."
+                response_text = (
+                    f"AI service temporarily unavailable (HTTP {ai_response.status_code} from {ai_base}). "
+                    "Verify AI_SERVICES_URL on backend AppSail."
+                )
                 reasoning_trace = []
                 steps = 0
     except Exception as e:
-        response_text = f"Connection error: {str(e)[:100]}"
+        response_text = (
+            f"AI unreachable at {ai_base}: {type(e).__name__}: {str(e)[:120]}. "
+            "Set AI_SERVICES_URL on backend AppSail to the live AI host."
+        )
         reasoning_trace = []
         steps = 0
+
 
     # Auto-generate title from first message
     if existing and not existing.title:
@@ -134,7 +143,7 @@ async def copilot_chat_stream(data: ChatRequest, db: AsyncSession = Depends(get_
             async with httpx.AsyncClient() as client:
                 async with client.stream(
                     "POST",
-                    f"{AI_SERVICES_URL}/api/ai/chat/stream",
+                    f"{get_ai_services_url()}/api/ai/chat/stream",
                     json={
                         "message": data.message,
                         "session_id": session_id,

@@ -38,7 +38,8 @@ class CrimeSearchTool(BackendTool):
         if priority:
             filters.append({"field": "priority", "operator": "eq", "value": priority})
 
-        payload = {"query": query, "limit": limit}
+        q = (query or "").strip() or "crime"
+        payload = {"query": q, "page": 1, "page_size": max(1, min(int(limit or 10), 50))}
         if filters:
             payload["filters"] = filters
 

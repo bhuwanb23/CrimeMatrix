@@ -4,7 +4,7 @@ from typing import Optional
 import httpx
 from app.core.response import success_response
 from fastapi import APIRouter
-from app.core.service_urls import AI_SERVICES_URL, BACKEND_URL
+from app.core.service_urls import get_ai_services_url, get_backend_url
 
 router = APIRouter()
 
@@ -20,7 +20,7 @@ async def semantic_search(data: SemanticSearchRequest):
     try:
         async with httpx.AsyncClient() as client:
             resp = await client.post(
-                f"{AI_SERVICES_URL}/api/ai/search/intelligent",
+                f"{get_ai_services_url()}/api/ai/search/intelligent",
                 json={"query": data.query, "top_k": data.top_k, "doc_type": data.doc_type},
                 timeout=30.0,
             )
@@ -33,7 +33,7 @@ async def semantic_search(data: SemanticSearchRequest):
     try:
         async with httpx.AsyncClient() as client:
             resp = await client.post(
-                f"{BACKEND_URL}/api/v1/search/",
+                f"{get_backend_url()}/api/v1/search/",
                 json={"query": data.query, "page": 1, "page_size": data.top_k},
                 timeout=10.0,
             )
@@ -49,7 +49,7 @@ async def semantic_search(data: SemanticSearchRequest):
 async def index_documents():
     try:
         async with httpx.AsyncClient() as client:
-            resp = await client.post(f"{AI_SERVICES_URL}/api/ai/rag/index", timeout=30.0)
+            resp = await client.post(f"{get_ai_services_url()}/api/ai/rag/index", timeout=30.0)
             if resp.status_code == 200:
                 return success_response(data=resp.json().get("data", {}))
     except Exception as e:
@@ -61,7 +61,7 @@ async def index_documents():
 async def semantic_stats():
     try:
         async with httpx.AsyncClient() as client:
-            resp = await client.get(f"{AI_SERVICES_URL}/api/ai/search/stats", timeout=10.0)
+            resp = await client.get(f"{get_ai_services_url()}/api/ai/search/stats", timeout=10.0)
             if resp.status_code == 200:
                 return success_response(data=resp.json().get("data", {}))
     except Exception:

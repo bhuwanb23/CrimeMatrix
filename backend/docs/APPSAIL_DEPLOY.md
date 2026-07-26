@@ -13,7 +13,11 @@
 
 ## Console env (required once)
 
-Custom AppSail **cannot** receive secrets from the CLI. Set them in the console:
+Custom AppSail **cannot** receive secrets from the CLI. Set them in the console.
+
+**Important:** AppSail rejects custom env keys named `CATALYST_*` (platform-reserved).
+Use the `CM_*` names below. Local `backend/.env` may still use `CATALYST_*`; the app
+reads `CM_*` first, then falls back.
 
 1. [Catalyst Console (IN)](https://console.catalyst.zoho.in/) → **Project-Rainfall**
 2. **Serverless → AppSail → crimematrix-backend**
@@ -23,19 +27,26 @@ Custom AppSail **cannot** receive secrets from the CLI. Set them in the console:
 | Key | Value |
 |-----|--------|
 | `DB_PROVIDER` | `catalyst` |
-| `CATALYST_PROJECT_ID` | `46575000000013023` |
-| `CATALYST_ORG_ID` | `60079208195` |
-| `CATALYST_ENVIRONMENT` | `Development` |
-| `CATALYST_API_DOMAIN` | `https://api.catalyst.zoho.in` |
-| `CATALYST_ACCOUNTS_DOMAIN` | `https://accounts.zoho.in` |
-| `CATALYST_CLIENT_ID` | *(from `backend/.env`)* |
-| `CATALYST_CLIENT_SECRET` | *(from `backend/.env`)* |
-| `CATALYST_REFRESH_TOKEN` | *(from `backend/.env`)* |
-| `CATALYST_FILE_FOLDER_ID` | *(File Store folder id)* |
+| `CM_PROJECT_ID` | `46575000000013023` |
+| `CM_ORG_ID` | `60079208195` |
+| `CM_ENVIRONMENT` | `Development` |
+| `CM_API_DOMAIN` | `https://api.catalyst.zoho.in` |
+| `CM_ACCOUNTS_DOMAIN` | `https://accounts.zoho.in` |
+| `CM_CLIENT_ID` | *(from `backend/.env`)* |
+| `CM_CLIENT_SECRET` | *(from `backend/.env`)* |
+| `CM_REFRESH_TOKEN` | *(from `backend/.env`)* |
+| `CM_FILE_FOLDER_ID` | *(File Store folder id)* |
 | `AI_SERVICES_URL` | `https://crimematrix-ai-50044181811.development.catalystappsail.in` |
 | `STORAGE_PROVIDER` | `catalyst` |
 
 5. Save; wait ~30–60s for a new instance.
+
+Paste-ready lines (reads local `.env` via `CM_*` or legacy `CATALYST_*`):
+
+```bash
+cd backend
+python scripts/print_appsail_env.py
+```
 
 Also set on **crimematrix-ai**:
 

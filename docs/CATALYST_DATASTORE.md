@@ -14,16 +14,20 @@ Schema source of truth:
 | Variable | Purpose |
 |----------|---------|
 | `DB_PROVIDER` | `sqlite` (default app), `catalyst_local` (local Phase-1 mirror), `catalyst` (live Data Store) |
-| `CATALYST_PROJECT_ID` | default `46575000000013023` (Project-Rainfall) |
-| `CATALYST_ORG_ID` | default `60079208195` |
-| `CATALYST_ENVIRONMENT` | `Development` |
-| `CATALYST_API_DOMAIN` | `https://api.catalyst.zoho.in` |
-| `CATALYST_ACCOUNTS_DOMAIN` | `https://accounts.zoho.in` |
-| `CATALYST_CLIENT_ID` / `CATALYST_CLIENT_SECRET` / `CATALYST_REFRESH_TOKEN` | Self-client OAuth for live Data Store |
-| `CATALYST_ACCESS_TOKEN` | Optional short-lived token instead of refresh flow |
-| `CATALYST_FILE_FOLDER` | default `cm_uploads` |
-| `CATALYST_FILE_FOLDER_ID` | File Store folder id after creation |
+| `CM_PROJECT_ID` | default `46575000000013023` (Project-Rainfall) |
+| `CM_ORG_ID` | default `60079208195` |
+| `CM_ENVIRONMENT` | `Development` |
+| `CM_API_DOMAIN` | `https://api.catalyst.zoho.in` |
+| `CM_ACCOUNTS_DOMAIN` | `https://accounts.zoho.in` |
+| `CM_CLIENT_ID` / `CM_CLIENT_SECRET` / `CM_REFRESH_TOKEN` | Self-client OAuth for live Data Store |
+| `CM_ACCESS_TOKEN` | Optional short-lived token instead of refresh flow |
+| `CM_FILE_FOLDER` | default `cm_uploads` |
+| `CM_FILE_FOLDER_ID` | File Store folder id after creation |
 | `STORAGE_PROVIDER` | `catalyst` to force File Store uploads |
+| `AI_SERVICES_URL` | Backend → AI services base URL |
+
+**AppSail note:** do **not** create `CATALYST_*` custom env keys — the console treats them as reserved.
+Use `CM_*` on AppSail. Local `backend/.env` may still use legacy `CATALYST_*`; readers accept either (`CM_*` wins).
 
 Register a **Self Client** in Zoho API Console ([api-console.zoho.in](https://api-console.zoho.in/)) and generate a code with these **exact** scopes (comma-separated, no spaces; there is no `tables.ALL` / `files.ALL`):
 

@@ -306,6 +306,7 @@ async def seed_all() -> dict[str, int]:
                 "gender": "M",
             },
         )
+        id_map.setdefault("persons", {})[i] = person["id"]
         await _upsert(
             provider,
             "criminals",
@@ -397,21 +398,23 @@ async def seed_all() -> dict[str, int]:
     counts["phones"] += 1
 
     # investigations + notes/timeline
+    inv_ids = []
     for i, case_id in enumerate(case_ids[:3], start=1):
-        inv = await _upsert(
-            provider,
-            "investigations",
-            "legacy_id",
-            i,
-            {
-                "case_id": case_id,
-                "title": f"Investigation {i}",
-                "description": "Seed investigation",
-                "status": "active",
-                "priority_level": "medium",
-                "progress": 20 * i,
-            },
-        )
+        inv_payload = {
+            "case_id": case_id,
+            "title": f"Investigation {i}",
+            "description": "Seed investigation",
+            "status": "active",
+            "priority_level": "medium",
+            "progress": 20 * i,
+            "district": "Bengaluru Urban",  # may be ignored if column missing in live schema
+        }
+        try:
+            inv = await _upsert(provider, "investigations", "legacy_id", i, inv_payload)
+        except Exception:
+            inv_payload.pop("district", None)
+            inv = await _upsert(provider, "investigations", "legacy_id", i, inv_payload)
+        inv_ids.append(inv["id"])
         await _upsert(
             provider,
             "notes",
@@ -435,6 +438,89 @@ async def seed_all() -> dict[str, int]:
         counts["investigations"] += 1
         counts["notes"] += 1
         counts["timeline_events"] += 1
+
+    # witnesses / case_links / case_status_logs / attachments
+    if case_ids and inv_ids:
+        await _upsert(
+            provider,
+            "witnesses",
+            "legacy_id",
+            1,
+            {
+                "case_id": case_ids[0],
+                "person_id": id_map.get("persons", {}).get(1),
+                "statement": "Saw two suspects on a scooter near MG Road.",
+                "reliability": "high",
+            },
+        )
+        # persons map uses aadhar unique; rebuild from loop if needed
+        counts["witnesses"] += 1
+
+        await _upsert(
+            provider,
+            "case_links",
+            "legacy_id",
+            1,
+            {
+                "investigation_id": inv_ids[0],
+                "linked_case_id": case_ids[min(1, len(case_ids) - 1)],
+                "link_type": "related",
+                "description": "Same MO / area",
+            },
+        )
+        counts["case_links"] += 1
+
+        await _upsert(
+            provider,
+            "case_status_logs",
+            "legacy_id",
+            1,
+            {
+                "investigation_id": inv_ids[0],
+                "old_status": "open",
+                "new_status": "active",
+                "notes": "Investigation started",
+                "changed_at": now.isoformat(),
+            },
+        )
+        counts["case_status_logs"] += 1
+
+        # attachments metadata (+ optional File Store upload)
+        file_path = "seed/readme.txt"
+        file_id = None
+        folder_id = os.getenv("CATALYST_FILE_FOLDER_ID")
+        if get_db_provider_name() == "catalyst" and folder_id:
+            try:
+                from app.db.providers.catalyst_client import CatalystClient
+
+                client = CatalystClient()
+                meta = client.upload_file(
+                    folder_id,
+                    "seed_attachment.txt",
+                    b"CrimeMatrix Phase 1 seed attachment\n",
+                )
+                file_id = str(meta.get("id") or meta.get("file_id") or "")
+                file_path = f"catalyst://{folder_id}/{file_id}/seed_attachment.txt"
+                client.close()
+            except Exception as e:
+                print(f"  [attachments] File Store upload skipped: {e}")
+
+        await _upsert(
+            provider,
+            "attachments",
+            "legacy_id",
+            1,
+            {
+                "investigation_id": inv_ids[0],
+                "filename": "seed_attachment.txt",
+                "file_path": file_path,
+                "file_id": file_id,
+                "folder_id": folder_id,
+                "file_size": 40,
+                "file_type": "text/plain",
+            },
+        )
+        counts["attachments"] += 1
 
     # crime_sub_heads
     head_id = next(iter(id_map["crime_heads"].values()))

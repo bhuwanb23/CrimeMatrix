@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 from typing import Optional, Dict, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func as sql_func

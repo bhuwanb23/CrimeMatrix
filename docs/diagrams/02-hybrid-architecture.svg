@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">CrimeMatrix  Hybrid Multi-Level Architecture</title>
+  <desc id="desc">Four-level architecture: Experience, Application, Platform, Intelligence &amp; Data</desc>
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .band { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1.5; }
+      .band-alt { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; }
+      .card { fill: #ffffff; stroke: #0f172a; stroke-width: 1.5; }
+      .card-soft { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.25; }
+      .card-gold { fill: #fffbeb; stroke: #d97706; stroke-width: 1.5; }
+      .card-navy { fill: #0f172a; }
+      .ink { fill: #0f172a; }
+      .on-navy { fill: #ffffff; }
+      .muted { fill: #64748b; }
+      .accent { fill: #f59e0b; }
+      .title { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 32px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 15px; fill: #64748b; }
+      .badge { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #92400e; letter-spacing: 0.06em; }
+      .lvl { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 700; fill: #ffffff; letter-spacing: 0.08em; }
+      .lvl-name { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
+      .h { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
+      .h-on { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #ffffff; }
+      .p { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; fill: #475569; }
+      .p-on { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; fill: #cbd5e1; }
+      .tiny { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; fill: #64748b; }
+      .arrow { stroke: #94a3b8; stroke-width: 1.5; fill: none; marker-end: url(#arr); }
+      .arrow-strong { stroke: #0f172a; stroke-width: 1.75; fill: none; marker-end: url(#arr-ink); }
+    </style>
+    <marker id="arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arr-ink" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#0f172a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1920" height="1080"/>
+
+  <!-- Header -->
+  <rect class="accent" x="56" y="36" width="48" height="6" rx="3"/>
+  <text class="badge" x="56" y="68">CRIMEMATRIX  ·  HYBRID ARCHITECTURE</text>
+  <text class="title" x="56" y="110">Multi-Level System Architecture</text>
+  <text class="subtitle" x="56" y="138">Experience ’ Application ’ Catalyst Platform ’ Intelligence &amp; Persistence</text>
+
+  <!-- ========== L1 EXPERIENCE ========== -->
+  <rect class="band" x="56" y="168" width="1808" height="150" rx="14"/>
+  <rect class="accent" x="72" y="188" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="214" text-anchor="middle">L1</text>
+  <text class="lvl-name" x="128" y="204">EXPERIENCE LAYER</text>
+  <text class="tiny" x="128" y="222">Who uses CrimeMatrix</text>
+
+  <rect class="card" x="320" y="192" width="200" height="100" rx="10"/>
+  <text class="h" x="420" y="228" text-anchor="middle">Investigating Officer</text>
+  <text class="p" x="420" y="250" text-anchor="middle">Query · triage · case work</text>
+  <text class="tiny" x="420" y="272" text-anchor="middle">Primary actor</text>
+
+  <rect class="card" x="540" y="192" width="200" height="100" rx="10"/>
+  <text class="h" x="640" y="228" text-anchor="middle">Supervisor / SO</text>
+  <text class="p" x="640" y="250" text-anchor="middle">Priorities · workload</text>
+  <text class="tiny" x="640" y="272" text-anchor="middle">Oversight actor</text>
+
+  <rect class="card" x="760" y="192" width="200" height="100" rx="10"/>
+  <text class="h" x="860" y="228" text-anchor="middle">Analyst</text>
+  <text class="p" x="860" y="250" text-anchor="middle">Trends · hotspots · maps</text>
+  <text class="tiny" x="860" y="272" text-anchor="middle">Intelligence actor</text>
+
+  <rect class="card-navy" x="1000" y="192" width="820" height="100" rx="10"/>
+  <text class="h-on" x="1410" y="228" text-anchor="middle">Catalyst Slate  CrimeMatrix Frontend</text>
+  <text class="p-on" x="1410" y="252" text-anchor="middle">React 19 + Vite  ·  Dashboard · Copilot · Maps · Graph · Predictions · Risk</text>
+  <text class="p-on" x="1410" y="274" text-anchor="middle">Static SPA on Slate  ·  VITE_API_URL ’ Backend AppSail</text>
+
+  <!-- ========== L2 APPLICATION ========== -->
+  <rect class="band-alt" x="56" y="338" width="1808" height="220" rx="14"/>
+  <rect class="accent" x="72" y="358" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="384" text-anchor="middle">L2</text>
+  <text class="lvl-name" x="128" y="374">APPLICATION LAYER</text>
+  <text class="tiny" x="128" y="392">Services that run the product</text>
+
+  <!-- Backend column -->
+  <rect class="card" x="320" y="358" width="720" height="180" rx="12"/>
+  <text class="h" x="348" y="388">Backend AppSail  ·  FastAPI</text>
+  <text class="tiny" x="348" y="408">REST /api/v1  ·  50+ route groups  ·  Phase-1 store adapters</text>
+
+  <rect class="card-soft" x="348" y="428" width="150" height="84" rx="8"/>
+  <text class="h" x="423" y="458" text-anchor="middle" font-size="13">Cases &amp; Crimes</text>
+  <text class="p" x="423" y="480" text-anchor="middle">CRUD · search</text>
+
+  <rect class="card-soft" x="514" y="428" width="150" height="84" rx="8"/>
+  <text class="h" x="589" y="458" text-anchor="middle" font-size="13">Analytics</text>
+  <text class="p" x="589" y="480" text-anchor="middle">Trends · stats</text>
+
+  <rect class="card-soft" x="680" y="428" width="150" height="84" rx="8"/>
+  <text class="h" x="755" y="458" text-anchor="middle" font-size="13">Intel Modules</text>
+  <text class="p" x="755" y="480" text-anchor="middle">Risk · graph</text>
+
+  <rect class="card-soft" x="846" y="428" width="168" height="84" rx="8"/>
+  <text class="h" x="930" y="458" text-anchor="middle" font-size="13">Copilot Proxy</text>
+  <text class="p" x="930" y="480" text-anchor="middle">’ AI Services</text>
+
+  <!-- AI column -->
+  <rect class="card-gold" x="1060" y="358" width="760" height="180" rx="12"/>
+  <text class="h" x="1088" y="388">AI AppSail  ·  Agent Runtime</text>
+  <text class="tiny" x="1088" y="408">/api/ai  ·  tool-using investigation agent</text>
+
+  <rect class="card-soft" x="1088" y="428" width="160" height="84" rx="8"/>
+  <text class="h" x="1168" y="458" text-anchor="middle" font-size="13">Planner</text>
+  <text class="p" x="1168" y="480" text-anchor="middle">Decompose query</text>
+
+  <rect class="card-soft" x="1264" y="428" width="160" height="84" rx="8"/>
+  <text class="h" x="1344" y="458" text-anchor="middle" font-size="13">Tool Hub</text>
+  <text class="p" x="1344" y="480" text-anchor="middle">28+ tools</text>
+
+  <rect class="card-soft" x="1440" y="428" width="160" height="84" rx="8"/>
+  <text class="h" x="1520" y="458" text-anchor="middle" font-size="13">RAG / Memory</text>
+  <text class="p" x="1520" y="480" text-anchor="middle">Context build</text>
+
+  <rect class="card-soft" x="1616" y="428" width="176" height="84" rx="8"/>
+  <text class="h" x="1704" y="458" text-anchor="middle" font-size="13">Responder</text>
+  <text class="p" x="1704" y="480" text-anchor="middle">Grounded answer</text>
+
+  <!-- ========== L3 PLATFORM ========== -->
+  <rect class="band" x="56" y="578" width="1808" height="200" rx="14"/>
+  <rect class="accent" x="72" y="598" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="624" text-anchor="middle">L3</text>
+  <text class="lvl-name" x="128" y="614">CATALYST PLATFORM</text>
+  <text class="tiny" x="128" y="632">Zoho Catalyst services in use</text>
+
+  <rect class="card" x="320" y="602" width="280" height="150" rx="12"/>
+  <text class="h" x="460" y="640" text-anchor="middle">AppSail</text>
+  <text class="p" x="460" y="668" text-anchor="middle">Container host for</text>
+  <text class="p" x="460" y="688" text-anchor="middle">Backend + AI images</text>
+  <text class="tiny" x="460" y="716" text-anchor="middle">Docker · env CM_*</text>
+
+  <rect class="card" x="620" y="602" width="280" height="150" rx="12"/>
+  <text class="h" x="760" y="640" text-anchor="middle">Slate</text>
+  <text class="p" x="760" y="668" text-anchor="middle">Static frontend hosting</text>
+  <text class="p" x="760" y="688" text-anchor="middle">CDN-style SPA delivery</text>
+  <text class="tiny" x="760" y="716" text-anchor="middle">React + Vite build</text>
+
+  <rect class="card" x="920" y="602" width="280" height="150" rx="12"/>
+  <text class="h" x="1060" y="640" text-anchor="middle">Data Store</text>
+  <text class="p" x="1060" y="668" text-anchor="middle">Phase-1 tables (35)</text>
+  <text class="p" x="1060" y="688" text-anchor="middle">ZCQL + row APIs</text>
+  <text class="tiny" x="1060" y="716" text-anchor="middle">DB_PROVIDER=catalyst</text>
+
+  <rect class="card" x="1220" y="602" width="280" height="150" rx="12"/>
+  <text class="h" x="1360" y="640" text-anchor="middle">File Store</text>
+  <text class="p" x="1360" y="668" text-anchor="middle">Uploads · attachments</text>
+  <text class="p" x="1360" y="688" text-anchor="middle">Evidence binaries</text>
+  <text class="tiny" x="1360" y="716" text-anchor="middle">STORAGE_PROVIDER=catalyst</text>
+
+  <rect class="card-soft" x="1520" y="602" width="300" height="150" rx="12"/>
+  <text class="h" x="1670" y="640" text-anchor="middle">Identity / Access</text>
+  <text class="p" x="1670" y="668" text-anchor="middle">Self-client OAuth (CM_*)</text>
+  <text class="p" x="1670" y="688" text-anchor="middle">Server-to-Catalyst only</text>
+  <text class="tiny" x="1670" y="716" text-anchor="middle">Not end-user Catalyst Auth</text>
+
+  <!-- ========== L4 DATA + INTELLIGENCE ========== -->
+  <rect class="band-alt" x="56" y="798" width="1808" height="220" rx="14"/>
+  <rect class="accent" x="72" y="818" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="844" text-anchor="middle">L4</text>
+  <text class="lvl-name" x="128" y="834">INTELLIGENCE &amp; PERSISTENCE</text>
+  <text class="tiny" x="128" y="852">Models, stores, and providers</text>
+
+  <rect class="card" x="320" y="822" width="520" height="170" rx="12"/>
+  <text class="h" x="348" y="854">Domain Data (Phase-1)</text>
+  <text class="p" x="348" y="882">Crimes · Cases · Suspects · Investigations</text>
+  <text class="p" x="348" y="904">Districts · Stations · Officers · Evidence links</text>
+  <text class="p" x="348" y="926">Hotspots / patterns soft-derived at API layer</text>
+  <text class="tiny" x="348" y="958">Seeded Development Data Store</text>
+
+  <rect class="card-gold" x="860" y="822" width="520" height="170" rx="12"/>
+  <text class="h" x="888" y="854">LLM Providers</text>
+  <text class="p" x="888" y="882">OpenRouter (default) · Gemini · OpenAI</text>
+  <text class="p" x="888" y="904">Ollama optional for local / air-gapped</text>
+  <text class="p" x="888" y="926">Used by planner + responder only</text>
+  <text class="tiny" x="888" y="958">Keys via AppSail env  never in frontend</text>
+
+  <rect class="card" x="1400" y="822" width="420" height="170" rx="12"/>
+  <text class="h" x="1428" y="854">In-process / Derived</text>
+  <text class="p" x="1428" y="882">Network graph (nodes / edges)</text>
+  <text class="p" x="1428" y="904">Risk &amp; priority scoring</text>
+  <text class="p" x="1428" y="926">Forecasts · early-warning alerts</text>
+  <text class="tiny" x="1428" y="958">Computed on read / detect from Phase-1</text>
+
+  <!-- Side flow labels -->
+  <text class="tiny" x="1860" y="250" text-anchor="end">HTTPS</text>
+  <text class="tiny" x="1860" y="450" text-anchor="end">REST</text>
+  <text class="tiny" x="1860" y="680" text-anchor="end">Catalyst APIs</text>
+  <text class="tiny" x="1860" y="900" text-anchor="end">Grounded I/O</text>
+</svg>

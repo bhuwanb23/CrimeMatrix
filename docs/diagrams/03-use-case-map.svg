@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .sys { fill: #fffbeb; stroke: #d97706; stroke-width: 2; stroke-dasharray: 8 6; }
+      .actor { fill: #ffffff; stroke: #0f172a; stroke-width: 2; }
+      .uc { fill: #ffffff; stroke: #0f172a; stroke-width: 1.75; }
+      .uc-gold { fill: #fffbeb; stroke: #d97706; stroke-width: 1.75; }
+      .line { stroke: #0f172a; stroke-width: 1.5; }
+      .title { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 32px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 15px; fill: #64748b; }
+      .badge { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #92400e; letter-spacing: 0.06em; }
+      .h { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
+      .p { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; fill: #475569; }
+      .sys-label { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 16px; font-weight: 700; fill: #92400e; }
+    </style>
+  </defs>
+  <rect class="bg" width="1920" height="1080"/>
+
+  <rect fill="#f59e0b" x="56" y="36" width="48" height="6" rx="3"/>
+  <text class="badge" x="56" y="68">CRIMEMATRIX  ·  USE CASES</text>
+  <text class="title" x="56" y="110">Core Use-Case Map</text>
+  <text class="subtitle" x="56" y="138">Actors and primary system capabilities (white theme for PPT)</text>
+
+  <!-- System boundary -->
+  <rect class="sys" x="420" y="180" width="1080" height="820" rx="18"/>
+  <text class="sys-label" x="960" y="220" text-anchor="middle">CrimeMatrix System</text>
+
+  <!-- Actors left -->
+  <g transform="translate(140,320)">
+    <circle cx="60" cy="0" r="22" class="actor"/>
+    <line class="line" x1="60" y1="22" x2="60" y2="70"/>
+    <line class="line" x1="30" y1="42" x2="90" y2="42"/>
+    <line class="line" x1="60" y1="70" x2="35" y2="110"/>
+    <line class="line" x1="60" y1="70" x2="85" y2="110"/>
+    <text class="h" x="60" y="145" text-anchor="middle">Investigating</text>
+    <text class="h" x="60" y="165" text-anchor="middle">Officer</text>
+  </g>
+  <g transform="translate(140,560)">
+    <circle cx="60" cy="0" r="22" class="actor"/>
+    <line class="line" x1="60" y1="22" x2="60" y2="70"/>
+    <line class="line" x1="30" y1="42" x2="90" y2="42"/>
+    <line class="line" x1="60" y1="70" x2="35" y2="110"/>
+    <line class="line" x1="60" y1="70" x2="85" y2="110"/>
+    <text class="h" x="60" y="145" text-anchor="middle">Supervisor</text>
+  </g>
+  <g transform="translate(140,780)">
+    <circle cx="60" cy="0" r="22" class="actor"/>
+    <line class="line" x1="60" y1="22" x2="60" y2="70"/>
+    <line class="line" x1="30" y1="42" x2="90" y2="42"/>
+    <line class="line" x1="60" y1="70" x2="35" y2="110"/>
+    <line class="line" x1="60" y1="70" x2="85" y2="110"/>
+    <text class="h" x="60" y="145" text-anchor="middle">Crime Analyst</text>
+  </g>
+
+  <!-- Actor right (external) -->
+  <g transform="translate(1620,520)">
+    <circle cx="60" cy="0" r="22" class="actor"/>
+    <line class="line" x1="60" y1="22" x2="60" y2="70"/>
+    <line class="line" x1="30" y1="42" x2="90" y2="42"/>
+    <line class="line" x1="60" y1="70" x2="35" y2="110"/>
+    <line class="line" x1="60" y1="70" x2="85" y2="110"/>
+    <text class="h" x="60" y="145" text-anchor="middle">LLM / Catalyst</text>
+    <text class="p" x="60" y="165" text-anchor="middle">External systems</text>
+  </g>
+
+  <!-- Use cases - oval as ellipses -->
+  <ellipse class="uc-gold" cx="720" cy="340" rx="150" ry="48"/>
+  <text class="h" x="720" y="336" text-anchor="middle">Ask AI Copilot</text>
+  <text class="p" x="720" y="356" text-anchor="middle">grounded investigation Q&amp;A</text>
+
+  <ellipse class="uc" cx="1040" cy="300" rx="150" ry="48"/>
+  <text class="h" x="1040" y="296" text-anchor="middle">Search Cases / Crimes</text>
+  <text class="p" x="1040" y="316" text-anchor="middle">keyword · semantic</text>
+
+  <ellipse class="uc" cx="720" cy="460" rx="150" ry="48"/>
+  <text class="h" x="720" y="456" text-anchor="middle">Open Case Workspace</text>
+  <text class="p" x="720" y="476" text-anchor="middle">detail · similar · FIR intel</text>
+
+  <ellipse class="uc" cx="1040" cy="440" rx="150" ry="48"/>
+  <text class="h" x="1040" y="436" text-anchor="middle">View Risk &amp; Priorities</text>
+  <text class="p" x="1040" y="456" text-anchor="middle">suspect · investigation</text>
+
+  <ellipse class="uc" cx="720" cy="580" rx="150" ry="48"/>
+  <text class="h" x="720" y="576" text-anchor="middle">Explore Crime Graph</text>
+  <text class="p" x="720" y="596" text-anchor="middle">entities · links</text>
+
+  <ellipse class="uc" cx="1040" cy="580" rx="150" ry="48"/>
+  <text class="h" x="1040" y="576" text-anchor="middle">Map Hotspots / Trends</text>
+  <text class="p" x="1040" y="596" text-anchor="middle">geo · seasonal</text>
+
+  <ellipse class="uc" cx="720" cy="700" rx="150" ry="48"/>
+  <text class="h" x="720" y="696" text-anchor="middle">Run Predictions</text>
+  <text class="p" x="720" y="716" text-anchor="middle">forecast · early warning</text>
+
+  <ellipse class="uc" cx="1040" cy="700" rx="150" ry="48"/>
+  <text class="h" x="1040" y="696" text-anchor="middle">Manage Workload</text>
+  <text class="p" x="1040" y="716" text-anchor="middle">rank · assign focus</text>
+
+  <ellipse class="uc-gold" cx="880" cy="840" rx="170" ry="48"/>
+  <text class="h" x="880" y="836" text-anchor="middle">Persist / Retrieve Evidence</text>
+  <text class="p" x="880" y="856" text-anchor="middle">Data Store · File Store</text>
+
+  <!-- Associations Officer -->
+  <line class="line" x1="260" y1="380" x2="570" y2="340"/>
+  <line class="line" x1="260" y1="390" x2="570" y2="460"/>
+  <line class="line" x1="260" y1="400" x2="570" y2="580"/>
+  <line class="line" x1="260" y1="410" x2="890" y2="300"/>
+
+  <!-- Supervisor -->
+  <line class="line" x1="260" y1="620" x2="890" y2="440"/>
+  <line class="line" x1="260" y1="630" x2="890" y2="700"/>
+
+  <!-- Analyst -->
+  <line class="line" x1="260" y1="840" x2="890" y2="580"/>
+  <line class="line" x1="260" y1="850" x2="890" y2="700"/>
+  <line class="line" x1="260" y1="860" x2="710" y2="840"/>
+
+  <!-- External -->
+  <line class="line" x1="1620" y1="540" x2="870" y2="340"/>
+  <line class="line" x1="1620" y1="560" x2="1050" y2="840"/>
+
+  <text class="p" x="960" y="1040" text-anchor="middle">Gold = AI / platform-backed capabilities · White = core investigation workflows</text>
+</svg>

@@ -1,4 +1,6 @@
 import uvicorn
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.router import router
@@ -34,26 +36,46 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # Register providers
+    # Register OpenRouter (default) — uses OpenAI-compatible API
+    openrouter = None
+    if config.openrouter.api_key:
+        openrouter = OpenAIProvider(
+            api_key=config.openrouter.api_key,
+            base_url=config.openrouter.base_url,
+            default_model=config.openrouter.default_model,
+        )
+        provider_registry.register(openrouter, default=True)
+        logger.info("provider_registered", name="openrouter", default=True)
+    else:
+        logger.warning("openrouter_api_key_missing", msg="Set OPENROUTER_API_KEY in .env")
+
+    # Register Gemini (fallback)
+    gemini = None
+    if config.gemini.api_key:
+        gemini = GeminiProvider(
+            api_key=config.gemini.api_key,
+            default_model=config.gemini.default_model,
+        )
+        provider_registry.register(gemini)
+        logger.info("provider_registered", name="gemini", default=False)
+
+    # Register OpenAI
+    openai = None
+    if config.openai.api_key:
+        openai = OpenAIProvider(
+            api_key=config.openai.api_key,
+            default_model=config.openai.default_model,
+        )
+        provider_registry.register(openai)
+        logger.info("provider_registered", name="openai", default=False)
+
+    # Register Ollama (fallback if no API keys)
     ollama = OllamaProvider(
         base_url=config.ollama.base_url,
         default_model=config.ollama.default_model,
     )
-    provider_registry.register(ollama, default=True)
-
-    openai = OpenAIProvider(
-        api_key=config.openai.api_key,
-        default_model=config.openai.default_model,
-    )
-    if config.openai.api_key:
-        provider_registry.register(openai)
-
-    gemini = GeminiProvider(
-        api_key=config.gemini.api_key,
-        default_model=config.gemini.default_model,
-    )
-    if config.gemini.api_key:
-        provider_registry.register(gemini)
+    provider_registry.register(ollama, default=not config.openrouter.api_key)
+    logger.info("provider_registered", name="ollama", default=not config.openrouter.api_key)
 
     # Register tools
     from tools.builtins.calculator import CalculatorTool
@@ -107,7 +129,7 @@ def create_app() -> FastAPI:
 
     logger.info("tools_registered", count=len(tool_registry.list_all()))
 
-    # Register built-in workflows (registration happens at import time)
+    # Register built-in workflows
     import workflows.builtin.investigation
     import workflows.builtin.case_analysis
     import workflows.builtin.suspect_profile
@@ -119,9 +141,14 @@ def create_app() -> FastAPI:
 
     @app.on_event("startup")
     async def startup():
-        logger.info("ai_services_startup", port=config.port, version="3.0.0")
-        healthy = await ollama.health_check()
-        logger.info("ollama_health", healthy=healthy)
+        default = provider_registry.default_name
+        logger.info("ai_services_startup", port=config.port, version=config.version, default_provider=default)
+        try:
+            provider = provider_registry.get()
+            healthy = await provider.health_check()
+            logger.info("provider_health", provider=default, healthy=healthy)
+        except Exception as e:
+            logger.warning("provider_health_check_failed", error=str(e))
 
     return app
 

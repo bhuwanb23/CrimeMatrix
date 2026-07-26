@@ -249,6 +249,28 @@ class ActSectionCreate(BaseModel):
 
 @router.get("/{case_id}/act-sections")
 async def get_act_sections(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import case_children, resolve_names
+
+        rows = await case_children("act_section_associations", case_id)
+        acts = await resolve_names("acts")
+        sections = await resolve_names("sections")
+        items = [
+            {
+                "id": row.get("id"),
+                "case_id": row.get("case_id"),
+                "act_id": row.get("act_id"),
+                "act_name": acts.get(str(row.get("act_id"))),
+                "act_code": row.get("act_code"),
+                "section_id": row.get("section_id"),
+                "section_name": sections.get(str(row.get("section_id"))),
+                "section_code": row.get("section_code"),
+                "act_order": row.get("act_order"),
+                "section_order": row.get("section_order"),
+            }
+            for row in rows
+        ]
+        return success_response(data={"items": items, "total": len(items)})
     result = await db.execute(select(ActSectionAssociation).where(ActSectionAssociation.case_id == case_id).order_by(ActSectionAssociation.act_order))
     items = []
     for a in result.scalars().all():

@@ -49,8 +49,13 @@ class AIConfig:
     ))
 
     # Agent defaults — OpenRouter is default provider
-    default_provider: str = "openrouter"
-    default_model: str = "meta-llama/llama-3.1-8b-instruct"
+    default_provider: str = field(default_factory=lambda: os.getenv("DEFAULT_AI_PROVIDER", "openrouter"))
+    default_model: str = field(
+        default_factory=lambda: os.getenv(
+            "OPENROUTER_MODEL",
+            os.getenv("DEFAULT_AI_MODEL", "meta-llama/llama-3.1-8b-instruct"),
+        )
+    )
     max_agent_steps: int = 10
     max_context_messages: int = 50
 

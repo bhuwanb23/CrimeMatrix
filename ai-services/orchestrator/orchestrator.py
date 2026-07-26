@@ -1,7 +1,7 @@
 from typing import Dict, Optional
-from agent.agent import AIAgent
+from agent.agent import CoreAgent
 from agent.message import ConversationContext
-from core.provider import registry as provider_registry
+from config import get_config
 import structlog
 
 logger = structlog.get_logger()
@@ -9,23 +9,31 @@ logger = structlog.get_logger()
 
 class Orchestrator:
     def __init__(self):
-        self._agents: Dict[str, AIAgent] = {}
+        self._agents: Dict[str, CoreAgent] = {}
         self._sessions: Dict[str, ConversationContext] = {}
+        cfg = get_config()
 
-        default_agent = AIAgent(
+        default_agent = CoreAgent(
             agent_id="default",
             name="CrimeMatrix Copilot",
-            provider="ollama",
-            model="llama3.2:1b",
+            provider=cfg.default_provider,
+            model=cfg.default_model,
         )
         self._agents["default"] = default_agent
 
-    def get_agent(self, agent_id: str = "default") -> Optional[AIAgent]:
+    def get_agent(self, agent_id: str = "default") -> Optional[CoreAgent]:
         return self._agents.get(agent_id)
 
     def create_agent(self, agent_id: str, name: str, provider: str = None,
-                     model: str = None, system_prompt: str = None) -> AIAgent:
-        agent = AIAgent(agent_id, name, system_prompt, provider, model)
+                     model: str = None, system_prompt: str = None) -> CoreAgent:
+        cfg = get_config()
+        agent = CoreAgent(
+            agent_id,
+            name,
+            system_prompt,
+            provider or cfg.default_provider,
+            model or cfg.default_model,
+        )
         self._agents[agent_id] = agent
         return agent
 

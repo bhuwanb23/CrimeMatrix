@@ -9,18 +9,24 @@ from core.prompts import prompt_manager
 from core.provider import registry as provider_registry
 from streaming.sse import sse_response
 from rag.pipeline import RAGPipeline
+from config import get_config
 import structlog
 
 logger = structlog.get_logger()
 
 router = APIRouter()
+_config = get_config()
 
 # RAG pipeline
 _rag = RAGPipeline()
 
-# Shared instances
-_default_agent = CoreAgent(agent_id="default", name="CrimeMatrix Copilot",
-                           provider="ollama", model="llama3.2:1b")
+# Shared instances — use configured default provider (OpenRouter), not hardcoded Ollama
+_default_agent = CoreAgent(
+    agent_id="default",
+    name="CrimeMatrix Copilot",
+    provider=_config.default_provider,
+    model=_config.default_model,
+)
 _agents = {"default": _default_agent}
 _sessions: dict[str, ConversationContext] = {}
 

@@ -23,6 +23,19 @@ class AnalyticsDashboardService:
         self.db = db
 
     async def get_summary(self) -> dict:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import dashboard_overview
+
+            data = await dashboard_overview()
+            return {
+                "overview": data["overview"],
+                "intelligence": data["intelligence"],
+                "predictions": data["predictions"],
+                "source": "phase1_store",
+            }
+
         total_crimes = (await self.db.execute(select(sql_func.count(Crime.id)))).scalar() or 0
         open_crimes = (await self.db.execute(select(sql_func.count(Crime.id)).where(Crime.status == "open"))).scalar() or 0
         closed_crimes = (await self.db.execute(select(sql_func.count(Crime.id)).where(Crime.status == "closed"))).scalar() or 0
@@ -63,7 +76,54 @@ class AnalyticsDashboardService:
             },
         }
 
+    async def get_stats(self) -> dict:
+        from app.db.phase1_store import store_list, using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import fetch_all
+
+            total = len(await fetch_all("crimes"))
+            return {
+                "total_crimes": total,
+                "data_quality": 85.0,
+                "model_accuracy": 78.5,
+                "last_updated": datetime.utcnow().isoformat(),
+                "source": "phase1_store",
+            }
+        total = (await self.db.execute(select(sql_func.count(Crime.id)))).scalar() or 0
+        return {
+            "total_crimes": total,
+            "data_quality": 85.0,
+            "model_accuracy": 78.5,
+            "last_updated": datetime.utcnow().isoformat(),
+        }
+
     async def get_alerts(self) -> List[dict]:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import (
+                derive_early_alerts,
+                fetch_all,
+                id_name_map,
+            )
+
+            crimes = await fetch_all("crimes")
+            district_names = await id_name_map("districts")
+            type_names = await id_name_map("crime_types")
+            derived = derive_early_alerts(crimes, district_names, type_names)
+            return [
+                {
+                    "type": a.get("alert_type") or "alert",
+                    "severity": a.get("severity") or "medium",
+                    "title": a.get("title"),
+                    "description": a.get("description"),
+                    "confidence": a.get("confidence"),
+                    "entity_id": a.get("id"),
+                }
+                for a in derived[:10]
+            ]
+
         alerts = []
 
         # High-risk repeat offenders
@@ -108,45 +168,32 @@ class AnalyticsDashboardService:
         alerts.sort(key=lambda x: x.get("confidence", 0), reverse=True)
         return alerts[:10]
 
-    async def get_forecasts(self) -> dict:
-        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
-        stmt = select(
-            sql_func.date(date_col).label("date"),
-            sql_func.count(Crime.id).label("count")
-        ).group_by(sql_func.date(date_col)).order_by(sql_func.date(date_col))
-        result = await self.db.execute(stmt)
-        data = [{"date": str(r[0]) if r[0] else "unknown", "count": r[1]} for r in result.all()]
-
-        if len(data) >= 7:
-            recent = [d["count"] for d in data[-7:]]
-            avg = sum(recent) / len(recent)
-            forecast = [{"date": "predicted", "count": round(avg), "confidence": 75}]
-        else:
-            forecast = []
-
-        return {"historical": data, "forecast": forecast, "data_points": len(data)}
-
-    async def get_high_risk(self) -> List[dict]:
-        stmt = (
-            select(RepeatOffender)
-            .where(RepeatOffender.status == "active")
-            .order_by(RepeatOffender.overall_score.desc())
-            .limit(10)
-        )
-        result = await self.db.execute(stmt)
-        return [
-            {
-                "id": r.id,
-                "name": r.offender_name,
-                "offenses": r.total_offenses,
-                "risk_score": r.overall_score,
-                "risk_level": r.risk_level,
-                "factors": eval(r.risk_factors) if r.risk_factors else [],
-            }
-            for r in result.scalars().all()
-        ]
-
     async def get_priority_cases(self) -> List[dict]:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import fetch_all, id_name_map
+
+            investigations = await fetch_all("investigations")
+            district_names = await id_name_map("districts")
+            active = [
+                i
+                for i in investigations
+                if str(i.get("status") or "").lower() in {"active", "saved", "open"}
+            ]
+            active.sort(key=lambda i: (str(i.get("priority") or ""), float(i.get("progress") or 0)))
+            return [
+                {
+                    "id": i.get("id"),
+                    "title": i.get("title"),
+                    "status": i.get("status"),
+                    "priority": i.get("priority"),
+                    "progress": i.get("progress"),
+                    "district": district_names.get(str(i.get("district_id") or ""), i.get("district")),
+                }
+                for i in active[:10]
+            ]
+
         stmt = (
             select(Investigation)
             .where(Investigation.status == "active")
@@ -166,11 +213,75 @@ class AnalyticsDashboardService:
             for i in result.scalars().all()
         ]
 
-    async def get_stats(self) -> dict:
-        total = (await self.db.execute(select(sql_func.count(Crime.id)))).scalar() or 0
-        return {
-            "total_crimes": total,
-            "data_quality": 85.0,
-            "model_accuracy": 78.5,
-            "last_updated": datetime.utcnow().isoformat(),
-        }
+    async def get_forecasts(self) -> dict:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import bucket_crimes_by_day, fetch_all
+
+            crimes = await fetch_all("crimes")
+            data = bucket_crimes_by_day(crimes)
+            if len(data) >= 3:
+                recent = [d["count"] for d in data[-7:]]
+                avg = sum(recent) / len(recent) if recent else 0
+                forecast = [{"date": "predicted", "count": round(avg), "confidence": 75}]
+            else:
+                forecast = []
+            return {"historical": data, "forecast": forecast, "data_points": len(data), "source": "phase1_store"}
+
+        date_col = sql_func.coalesce(Crime.occurred_at, Crime.created_at)
+        stmt = select(
+            sql_func.date(date_col).label("date"),
+            sql_func.count(Crime.id).label("count")
+        ).group_by(sql_func.date(date_col)).order_by(sql_func.date(date_col))
+        result = await self.db.execute(stmt)
+        data = [{"date": str(r[0]) if r[0] else "unknown", "count": r[1]} for r in result.all()]
+
+        if len(data) >= 7:
+            recent = [d["count"] for d in data[-7:]]
+            avg = sum(recent) / len(recent)
+            forecast = [{"date": "predicted", "count": round(avg), "confidence": 75}]
+        else:
+            forecast = []
+
+        return {"historical": data, "forecast": forecast, "data_points": len(data)}
+
+    async def get_high_risk(self) -> List[dict]:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import fetch_all
+
+            suspects = await fetch_all("suspects")
+            ranked = sorted(suspects, key=lambda s: float(s.get("risk_score") or 0), reverse=True)
+            return [
+                {
+                    "id": s.get("id"),
+                    "name": s.get("name"),
+                    "offenses": 1,
+                    "risk_score": float(s.get("risk_score") or 0),
+                    "risk_level": "high" if float(s.get("risk_score") or 0) >= 70 else "medium",
+                    "factors": [],
+                }
+                for s in ranked[:10]
+                if float(s.get("risk_score") or 0) > 0
+            ]
+
+        stmt = (
+            select(RepeatOffender)
+            .where(RepeatOffender.status == "active")
+            .order_by(RepeatOffender.overall_score.desc())
+            .limit(10)
+        )
+        result = await self.db.execute(stmt)
+        return [
+            {
+                "id": r.id,
+                "name": r.offender_name,
+                "offenses": r.total_offenses,
+                "risk_score": r.overall_score,
+                "risk_level": r.risk_level,
+                "factors": eval(r.risk_factors) if r.risk_factors else [],
+            }
+            for r in result.scalars().all()
+        ]

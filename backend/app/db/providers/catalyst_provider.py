@@ -75,9 +75,35 @@ class CatalystDataProvider(DataProvider):
                     if all(str(m.get(k)) == str(v) for k, v in where.items())
                 ]
             items = mapped[offset : offset + page_size]
+
+        total = offset + len(items)
+        if len(items) < page_size:
+            total = offset + len(items)
+        else:
+            # Full page — ask Catalyst for an accurate COUNT when possible
+            try:
+                count_raw = self.client.zcql_execute(
+                    f"SELECT COUNT(ROWID) FROM {table}{where_sql}"
+                )
+                if count_raw:
+                    row0 = count_raw[0]
+                    # ZCQL may return {table: {COUNT(ROWID): n}} or flat
+                    if isinstance(row0, dict):
+                        for v in row0.values():
+                            if isinstance(v, dict):
+                                for vv in v.values():
+                                    total = int(vv)
+                                    break
+                            elif isinstance(v, (int, float, str)) and str(v).isdigit():
+                                total = int(v)
+                                break
+            except Exception:
+                # Keep lower-bound estimate (at least one more page may exist)
+                total = offset + len(items) + 1
+
         return {
             "items": items,
-            "total": len(items) if page == 1 and len(items) < page_size else offset + len(items),
+            "total": total,
             "page": page,
             "page_size": page_size,
         }

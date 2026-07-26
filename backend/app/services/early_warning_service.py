@@ -47,6 +47,27 @@ class EarlyWarningService:
 
     async def get_alerts(self, status: str = None, severity: str = None,
                          alert_type: str = None) -> List[dict]:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import (
+                derive_early_alerts,
+                fetch_all,
+                id_name_map,
+            )
+
+            crimes = await fetch_all("crimes")
+            district_names = await id_name_map("districts")
+            type_names = await id_name_map("crime_types")
+            alerts = derive_early_alerts(crimes, district_names, type_names)
+            if status:
+                alerts = [a for a in alerts if a.get("status") == status]
+            if severity:
+                alerts = [a for a in alerts if a.get("severity") == severity]
+            if alert_type:
+                alerts = [a for a in alerts if a.get("alert_type") == alert_type]
+            return alerts
+
         stmt = select(EarlyWarningAlert)
         if status:
             stmt = stmt.where(EarlyWarningAlert.status == status)

@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import os
 from typing import List, Optional
 
 from app.db.providers.catalyst_client import CatalystClient
+from app.db.providers.catalyst_env import DEFAULT_FILE_FOLDER, cm_getenv
 from app.storage.base import StorageProvider
 from catalyst_datastore.schema.phase1_tables import FILE_STORE_FOLDER
 
@@ -13,8 +13,10 @@ from catalyst_datastore.schema.phase1_tables import FILE_STORE_FOLDER
 class CatalystFileProvider(StorageProvider):
     def __init__(self, client: Optional[CatalystClient] = None, folder_name: str = FILE_STORE_FOLDER):
         self.client = client or CatalystClient()
-        self.folder_name = folder_name or os.getenv("CATALYST_FILE_FOLDER", FILE_STORE_FOLDER)
-        self.folder_id: Optional[str] = os.getenv("CATALYST_FILE_FOLDER_ID")
+        self.folder_name = (
+            folder_name or cm_getenv("CM_FILE_FOLDER", DEFAULT_FILE_FOLDER) or DEFAULT_FILE_FOLDER
+        )
+        self.folder_id: Optional[str] = cm_getenv("CM_FILE_FOLDER_ID")
         self._index: dict[str, dict] = {}
 
     async def connect(self) -> None:

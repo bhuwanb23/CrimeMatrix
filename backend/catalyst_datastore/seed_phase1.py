@@ -33,6 +33,7 @@ except ImportError:
     pass
 
 from app.db.providers import get_data_provider, get_db_provider_name, init_data_provider
+from app.db.providers.catalyst_env import cm_getenv
 from catalyst_datastore.schema.phase1_tables import SEED_ORDER
 
 
@@ -488,7 +489,7 @@ async def seed_all() -> dict[str, int]:
         # attachments metadata (+ optional File Store upload)
         file_path = "seed/readme.txt"
         file_id = None
-        folder_id = os.getenv("CATALYST_FILE_FOLDER_ID")
+        folder_id = cm_getenv("CM_FILE_FOLDER_ID")
         if get_db_provider_name() == "catalyst" and folder_id:
             try:
                 from app.db.providers.catalyst_client import CatalystClient

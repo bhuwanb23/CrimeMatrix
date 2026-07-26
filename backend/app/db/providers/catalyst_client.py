@@ -6,12 +6,20 @@ DC defaults to India (zoho.in) for Project-Rainfall.
 
 from __future__ import annotations
 
-import os
 import time
 from pathlib import Path
 from typing import Any, Optional
 
 import httpx
+
+from app.db.providers.catalyst_env import (
+    DEFAULT_ACCOUNTS_DOMAIN,
+    DEFAULT_API_DOMAIN,
+    DEFAULT_ENVIRONMENT,
+    DEFAULT_ORG_ID,
+    DEFAULT_PROJECT_ID,
+    cm_getenv,
+)
 
 # Ensure backend/.env is loaded once for CLI scripts / providers
 try:
@@ -41,19 +49,21 @@ class CatalystClient:
         accounts_domain: Optional[str] = None,
         api_domain: Optional[str] = None,
     ):
-        self.project_id = (project_id or os.getenv("CATALYST_PROJECT_ID", "46575000000013023")).strip()
-        self.org_id = (org_id or os.getenv("CATALYST_ORG_ID", "60079208195")).strip()
-        self.client_id = (client_id or os.getenv("CATALYST_CLIENT_ID", "")).strip()
-        self.client_secret = (client_secret or os.getenv("CATALYST_CLIENT_SECRET", "")).strip()
-        self.refresh_token = (refresh_token or os.getenv("CATALYST_REFRESH_TOKEN", "")).strip()
-        self.environment = (environment or os.getenv("CATALYST_ENVIRONMENT", "Development")).strip()
+        self.project_id = (project_id or cm_getenv("CM_PROJECT_ID", DEFAULT_PROJECT_ID) or DEFAULT_PROJECT_ID).strip()
+        self.org_id = (org_id or cm_getenv("CM_ORG_ID", DEFAULT_ORG_ID) or DEFAULT_ORG_ID).strip()
+        self.client_id = (client_id or cm_getenv("CM_CLIENT_ID", "") or "").strip()
+        self.client_secret = (client_secret or cm_getenv("CM_CLIENT_SECRET", "") or "").strip()
+        self.refresh_token = (refresh_token or cm_getenv("CM_REFRESH_TOKEN", "") or "").strip()
+        self.environment = (
+            environment or cm_getenv("CM_ENVIRONMENT", DEFAULT_ENVIRONMENT) or DEFAULT_ENVIRONMENT
+        ).strip()
         self.accounts_domain = (
-            accounts_domain or os.getenv("CATALYST_ACCOUNTS_DOMAIN", "https://accounts.zoho.in")
+            accounts_domain or cm_getenv("CM_ACCOUNTS_DOMAIN", DEFAULT_ACCOUNTS_DOMAIN) or DEFAULT_ACCOUNTS_DOMAIN
         ).strip().rstrip("/")
         self.api_domain = (
-            api_domain or os.getenv("CATALYST_API_DOMAIN", "https://api.catalyst.zoho.in")
+            api_domain or cm_getenv("CM_API_DOMAIN", DEFAULT_API_DOMAIN) or DEFAULT_API_DOMAIN
         ).strip().rstrip("/")
-        self._access_token: Optional[str] = (os.getenv("CATALYST_ACCESS_TOKEN") or "").strip() or None
+        self._access_token: Optional[str] = (cm_getenv("CM_ACCESS_TOKEN") or "").strip() or None
         self._token_expires_at = 0.0
         self._http = httpx.Client(timeout=60.0)
 
@@ -66,15 +76,16 @@ class CatalystClient:
         if self._access_token and time.time() < self._token_expires_at - 60:
             return self._access_token
         # Prefer short-lived access token from env for one-shot scripts
-        env_token = os.getenv("CATALYST_ACCESS_TOKEN")
+        env_token = cm_getenv("CM_ACCESS_TOKEN")
         if env_token and not (self.client_id and self.refresh_token):
             self._access_token = env_token
             self._token_expires_at = time.time() + 3500
             return env_token
         if not (self.client_id and self.client_secret and self.refresh_token):
             raise CatalystConfigError(
-                "Set CATALYST_CLIENT_ID, CATALYST_CLIENT_SECRET, CATALYST_REFRESH_TOKEN "
-                "(or CATALYST_ACCESS_TOKEN) to talk to Data Store."
+                "Set CM_CLIENT_ID, CM_CLIENT_SECRET, CM_REFRESH_TOKEN "
+                "(or CM_ACCESS_TOKEN) — AppSail cannot use CATALYST_* names. "
+                "Local .env may still use CATALYST_* as a fallback."
             )
         resp = self._http.post(
             f"{self.accounts_domain}/oauth/v2/token",

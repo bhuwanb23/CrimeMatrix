@@ -1,4 +1,5 @@
 from typing import List, Dict, Optional
+import os
 import numpy as np
 from models.registry import model_registry
 import structlog
@@ -15,6 +16,11 @@ class EmbeddingModel:
 
     def _get_model(self):
         if self._model is None:
+            backend = os.getenv("EMBEDDING_BACKEND", "").lower()
+            if backend == "tfidf":
+                self._model = "tfidf"
+                logger.info("embedding_model_forced_tfidf")
+                return self._model
             try:
                 from sentence_transformers import SentenceTransformer
                 self._model = SentenceTransformer(MODEL_NAME)

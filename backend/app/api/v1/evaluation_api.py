@@ -5,8 +5,19 @@ from typing import Optional
 from app.db.session import get_db
 from app.services.evaluation_service import EvaluationService
 from app.core.response import success_response
+from app.db.phase1_store import using_phase1_store
 
 router = APIRouter()
+
+
+async def _phase1_bundle():
+    from app.db.phase1_aggregations import evaluation_bundle, fetch_all_safe
+
+    return evaluation_bundle(
+        await fetch_all_safe("crimes"),
+        await fetch_all_safe("investigations"),
+        await fetch_all_safe("suspects"),
+    )
 
 
 class MetricRecordRequest(BaseModel):

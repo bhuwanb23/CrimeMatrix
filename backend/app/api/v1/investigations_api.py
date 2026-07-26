@@ -4,7 +4,7 @@ from app.db.session import get_db
 from app.services.investigation_service import InvestigationService
 from app.schemas.investigation import InvestigationCreate, InvestigationUpdate, InvestigationResponse, InvestigationListItem
 from app.core.response import success_response
-from app.db.phase1_store import store_get, store_list, using_phase1_store
+from app.db.phase1_store import store_create, store_delete, store_get, store_list, store_update, using_phase1_store
 
 router = APIRouter()
 
@@ -42,6 +42,9 @@ async def get_recent_investigations(
     limit: int = Query(default=3, ge=1, le=10),
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        data = await store_list("investigations", page=1, page_size=limit)
+        return success_response(data={"items": data["items"]})
     svc = get_service(db)
     items = await svc.get_recent(limit=limit)
     return success_response(data={"items": items})
@@ -49,6 +52,16 @@ async def get_recent_investigations(
 
 @router.get("/stats")
 async def investigation_stats(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        data = await store_list("investigations", page=1, page_size=100)
+        items = data["items"]
+        by_status: dict[str, int] = {}
+        for i in items:
+            st = str(i.get("status") or "unknown")
+            by_status[st] = by_status.get(st, 0) + 1
+        return success_response(
+            data={"total": data.get("total", len(items)), "by_status": by_status}
+        )
     svc = get_service(db)
     stats = await svc.get_stats()
     return success_response(data=stats)
@@ -71,6 +84,15 @@ async def get_investigation(investigation_id: int, db: AsyncSession = Depends(ge
 
 @router.post("/")
 async def create_investigation(data: InvestigationCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        payload = data.model_dump()
+        # tolerate missing district column on live schema
+        try:
+            inv = await store_create("investigations", payload)
+        except Exception:
+            payload.pop("district", None)
+            inv = await store_create("investigations", payload)
+        return success_response(data=inv, message="Investigation created")
     svc = get_service(db)
     inv = await svc.create_investigation(data.model_dump())
     return success_response(data=inv, message="Investigation created")
@@ -80,6 +102,16 @@ async def create_investigation(data: InvestigationCreate, db: AsyncSession = Dep
 async def update_investigation(
     investigation_id: int, data: InvestigationUpdate, db: AsyncSession = Depends(get_db)
 ):
+    if using_phase1_store():
+        fields = data.model_dump(exclude_unset=True)
+        try:
+            inv = await store_update("investigations", investigation_id, fields)
+        except Exception:
+            fields.pop("district", None)
+            inv = await store_update("investigations", investigation_id, fields)
+        if not inv:
+            return success_response(message="Investigation not found")
+        return success_response(data=inv, message="Investigation updated")
     svc = get_service(db)
     inv = await svc.update_investigation(investigation_id, data.model_dump(exclude_unset=True))
     if not inv:
@@ -89,6 +121,9 @@ async def update_investigation(
 
 @router.delete("/{investigation_id}")
 async def delete_investigation(investigation_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        deleted = await store_delete("investigations", investigation_id)
+        return success_response(message="Investigation deleted" if deleted else "Investigation not found")
     svc = get_service(db)
     deleted = await svc.delete_investigation(investigation_id)
     return success_response(message="Investigation deleted" if deleted else "Investigation not found")
@@ -96,6 +131,16 @@ async def delete_investigation(investigation_id: int, db: AsyncSession = Depends
 
 @router.put("/{investigation_id}/save")
 async def toggle_save(investigation_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        inv = await store_get("investigations", investigation_id)
+        if not inv:
+            return success_response(message="Investigation not found")
+        new_status = "saved" if inv.get("status") != "saved" else "active"
+        updated = await store_update("investigations", investigation_id, {"status": new_status})
+        return success_response(
+            data=updated,
+            message=f"Investigation {'saved' if new_status == 'saved' else 'resumed'}",
+        )
     svc = get_service(db)
     result = await svc.save_investigation(investigation_id)
     if not result:

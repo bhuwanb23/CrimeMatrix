@@ -11,6 +11,7 @@ from app.analytics.time_series import TimeSeriesEngine
 from app.core.response import success_response
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
+from app.db.phase1_store import store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -24,6 +25,20 @@ class AggregateRequest(BaseModel):
 # Statistics
 @router.get("/stats/overview")
 async def stats_overview(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        crimes = await store_list("crimes", page=1, page_size=1)
+        districts = await store_list("districts", page=1, page_size=1)
+        cases = await store_list("cases", page=1, page_size=1)
+        investigations = await store_list("investigations", page=1, page_size=1)
+        return success_response(
+            data={
+                "crimes": crimes.get("total", 0),
+                "districts": districts.get("total", 0),
+                "cases": cases.get("total", 0),
+                "investigations": investigations.get("total", 0),
+                "source": "phase1_store",
+            }
+        )
     engine = StatisticsEngine(db)
     data = await engine.get_overview()
     return success_response(data=data)
@@ -31,6 +46,8 @@ async def stats_overview(db: AsyncSession = Depends(get_db)):
 
 @router.get("/stats/summary")
 async def stats_summary(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        return await stats_overview(db)
     engine = StatisticsEngine(db)
     data = await engine.get_summary()
     return success_response(data=data)

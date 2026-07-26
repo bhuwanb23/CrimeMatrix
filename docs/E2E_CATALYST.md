@@ -45,12 +45,19 @@ Date: 2026-07-26 (verified after Slate frontend deploy)
 
 ## Frontend
 
+Live: **https://crimematrix-frontend-nvjwdioh.onslate.in** (Catalyst Slate)
+
+Local against live APIs:
+
 ```bash
-cd frontend && npm run dev
+cd frontend
+cp .env.catalyst .env.local
+npm run dev
 ```
 
 ## Deploy docs
 
+- Frontend Slate: [`frontend/docs/SLATE_DEPLOY.md`](../frontend/docs/SLATE_DEPLOY.md)
 - Backend: [`backend/docs/APPSAIL_DEPLOY.md`](../backend/docs/APPSAIL_DEPLOY.md)
 - AI: [`ai-services/docs/APPSAIL_DEPLOY.md`](../ai-services/docs/APPSAIL_DEPLOY.md)
 

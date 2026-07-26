@@ -65,11 +65,11 @@ Slate builds remotely from the linked source (runs `npm install` + `npm run buil
 AppSail’s edge answers OPTIONS without CORS headers. The frontend therefore:
 
 - Omits `Content-Type` on body-less GETs/DELETEs so they stay simple requests (no preflight)
+- Sends JSON bodies as `text/plain;charset=UTF-8` (CORS-safelisted) so POSTs/PUTs also skip preflight
 - Relies on backend `CORSMiddleware` reflecting the Slate origin (`*.onslate.in` + localhost)
+- Backend `TextPlainJsonMiddleware` rewrites `text/plain` → `application/json` before route parsing
 
 Backend CORS is configured in `backend/main.py` (`allow_credentials=False`, explicit origins / regex).
-
-If POSTs (JSON) start failing preflight from a new Slate URL, either update backend `allow_origins` / regex and redeploy AppSail, or whitelist the domain under Catalyst **Authentication → Whitelisting → Authorized Domains** (CORS enabled).
 
 ## Smoke
 

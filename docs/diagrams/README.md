@@ -7,6 +7,7 @@
 | `01-user-flow-sequence.png` / `.svg` | **Sequence / user flow** — officer → Slate → Backend → AI → LLM → Data Store |
 | `02-hybrid-architecture.png` / `.svg` | **Hybrid multi-level architecture** — L1 Experience → L2 Application → L3 Catalyst → L4 Intelligence |
 | `03-use-case-map.png` / `.svg` | **Use-case map** (optional alternate to sequence) |
+| `04-ai-crime-intelligence-ecosystem.png` / `.svg` | **AI Crime Intelligence Ecosystem** — signals → AI core → outcomes |
 
 ## Paste into PPT
 

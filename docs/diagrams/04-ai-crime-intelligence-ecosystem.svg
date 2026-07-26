@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">CrimeMatrix — AI Crime Intelligence Ecosystem</title>
+  <desc id="desc">High-level ecosystem: people, signals, AI core capabilities, and outcomes</desc>
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .band { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1.5; }
+      .card { fill: #ffffff; stroke: #0f172a; stroke-width: 1.5; }
+      .card-soft { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.25; }
+      .card-gold { fill: #fffbeb; stroke: #d97706; stroke-width: 1.5; }
+      .card-navy { fill: #0f172a; }
+      .hub-ring { fill: none; stroke: #f59e0b; stroke-width: 1.5; stroke-opacity: 0.35; }
+      .spoke { stroke: #cbd5e1; stroke-width: 1.5; fill: none; }
+      .spoke-gold { stroke: #f59e0b; stroke-width: 1.5; fill: none; stroke-opacity: 0.45; }
+      .accent { fill: #f59e0b; }
+      .title { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 32px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 15px; fill: #64748b; }
+      .badge { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #92400e; letter-spacing: 0.06em; }
+      .lvl { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 700; fill: #ffffff; letter-spacing: 0.08em; }
+      .lvl-name { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
+      .h { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; }
+      .h-lg { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #0f172a; }
+      .h-on { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 16px; font-weight: 700; fill: #ffffff; }
+      .p { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; fill: #475569; }
+      .p-on { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; fill: #cbd5e1; }
+      .tiny { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; fill: #64748b; }
+      .flow { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #92400e; letter-spacing: 0.04em; }
+    </style>
+    <marker id="arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arr-ink" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#0f172a"/>
+    </marker>
+    <marker id="arr-gold" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L8,3.5 L0,7 Z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1920" height="1080"/>
+
+  <!-- Header -->
+  <rect class="accent" x="56" y="36" width="48" height="6" rx="3"/>
+  <text class="badge" x="56" y="68">CRIMEMATRIX  ·  ECOSYSTEM</text>
+  <text class="title" x="56" y="110">AI Crime Intelligence Ecosystem</text>
+  <text class="subtitle" x="56" y="138">People &amp; signals · AI intelligence core · actionable outcomes for Karnataka State Police</text>
+
+  <!-- ========== TOP: ACTORS + SIGNALS ========== -->
+  <rect class="band" x="56" y="168" width="1808" height="148" rx="14"/>
+  <rect class="accent" x="72" y="188" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="214" text-anchor="middle">01</text>
+  <text class="lvl-name" x="128" y="204">PEOPLE &amp; SIGNALS</text>
+  <text class="tiny" x="128" y="222">Who feeds the ecosystem · what comes in</text>
+
+  <rect class="card" x="320" y="188" width="200" height="108" rx="10"/>
+  <text class="h" x="420" y="228" text-anchor="middle">Investigators</text>
+  <text class="p" x="420" y="250" text-anchor="middle">Ask · triage · decide</text>
+  <text class="tiny" x="420" y="272" text-anchor="middle">Primary users</text>
+
+  <rect class="card" x="540" y="188" width="200" height="108" rx="10"/>
+  <text class="h" x="640" y="228" text-anchor="middle">Supervisors</text>
+  <text class="p" x="640" y="250" text-anchor="middle">Prioritize · oversee</text>
+  <text class="tiny" x="640" y="272" text-anchor="middle">Command view</text>
+
+  <rect class="card" x="760" y="188" width="200" height="108" rx="10"/>
+  <text class="h" x="860" y="228" text-anchor="middle">Crime Analysts</text>
+  <text class="p" x="860" y="250" text-anchor="middle">Trends · patterns</text>
+  <text class="tiny" x="860" y="272" text-anchor="middle">Intel production</text>
+
+  <rect class="card-soft" x="1000" y="188" width="200" height="108" rx="10"/>
+  <text class="h" x="1100" y="228" text-anchor="middle">FIR / Case Data</text>
+  <text class="p" x="1100" y="250" text-anchor="middle">Crimes · suspects</text>
+  <text class="tiny" x="1100" y="272" text-anchor="middle">Structured records</text>
+
+  <rect class="card-soft" x="1220" y="188" width="200" height="108" rx="10"/>
+  <text class="h" x="1320" y="228" text-anchor="middle">Evidence &amp; Links</text>
+  <text class="p" x="1320" y="250" text-anchor="middle">Files · entities</text>
+  <text class="tiny" x="1320" y="272" text-anchor="middle">Attachments · graph</text>
+
+  <rect class="card-soft" x="1440" y="188" width="200" height="108" rx="10"/>
+  <text class="h" x="1540" y="228" text-anchor="middle">Voice &amp; Language</text>
+  <text class="p" x="1540" y="250" text-anchor="middle">EN · KN · Kanglish</text>
+  <text class="tiny" x="1540" y="272" text-anchor="middle">Natural queries</text>
+
+  <rect class="card-soft" x="1660" y="188" width="180" height="108" rx="10"/>
+  <text class="h" x="1750" y="228" text-anchor="middle">Geo Context</text>
+  <text class="p" x="1750" y="250" text-anchor="middle">Districts · maps</text>
+  <text class="tiny" x="1750" y="272" text-anchor="middle">Place signals</text>
+
+  <!-- flow arrow label -->
+  <text class="flow" x="960" y="340" text-anchor="middle">·  INGEST · QUERY · CONTEXT</text>
+
+  <!-- ========== MIDDLE: AI CORE ECOSYSTEM ========== -->
+  <rect class="band" x="56" y="356" width="1808" height="420" rx="14"/>
+  <rect class="accent" x="72" y="376" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="402" text-anchor="middle">02</text>
+  <text class="lvl-name" x="128" y="392">AI INTELLIGENCE CORE</text>
+  <text class="tiny" x="128" y="410">CrimeMatrix capability ecosystem</text>
+
+  <!-- Hub -->
+  <circle class="hub-ring" cx="960" cy="560" r="118"/>
+  <circle class="hub-ring" cx="960" cy="560" r="98"/>
+  <rect class="card-navy" x="860" y="508" width="200" height="104" rx="14"/>
+  <text class="h-on" x="960" y="548" text-anchor="middle">CrimeMatrix</text>
+  <text class="p-on" x="960" y="570" text-anchor="middle">AI Investigation</text>
+  <text class="p-on" x="960" y="590" text-anchor="middle">Copilot Core</text>
+
+  <!-- Capability nodes around hub - 8 cards -->
+  <!-- Top -->
+  <rect class="card-gold" x="820" y="380" width="280" height="78" rx="10"/>
+  <text class="h" x="960" y="410" text-anchor="middle">Conversational Copilot</text>
+  <text class="p" x="960" y="432" text-anchor="middle">Ask in natural language · grounded answers</text>
+  <line class="spoke-gold" x1="960" y1="458" x2="960" y2="508"/>
+
+  <!-- Top-right -->
+  <rect class="card" x="1180" y="400" width="250" height="78" rx="10"/>
+  <text class="h" x="1305" y="430" text-anchor="middle">Explainable Reasoning</text>
+  <text class="p" x="1305" y="452" text-anchor="middle">Confidence · tool chain · citations</text>
+  <line class="spoke" x1="1180" y1="448" x2="1060" y2="520"/>
+
+  <!-- Right -->
+  <rect class="card" x="1450" y="500" width="250" height="78" rx="10"/>
+  <text class="h" x="1575" y="530" text-anchor="middle">Identity Resolution</text>
+  <text class="p" x="1575" y="552" text-anchor="middle">Entity match · cross-case links</text>
+  <line class="spoke" x1="1450" y1="539" x2="1060" y2="560"/>
+
+  <!-- Bottom-right -->
+  <rect class="card" x="1180" y="640" width="250" height="78" rx="10"/>
+  <text class="h" x="1305" y="670" text-anchor="middle">Predictive Intelligence</text>
+  <text class="p" x="1305" y="692" text-anchor="middle">Forecasts · risk · priorities</text>
+  <line class="spoke" x1="1180" y1="670" x2="1060" y2="600"/>
+
+  <!-- Bottom -->
+  <rect class="card-gold" x="820" y="680" width="280" height="78" rx="10"/>
+  <text class="h" x="960" y="710" text-anchor="middle">Whisper Early Alerts</text>
+  <text class="p" x="960" y="732" text-anchor="middle">Proactive warnings before escalation</text>
+  <line class="spoke-gold" x1="960" y1="680" x2="960" y2="612"/>
+
+  <!-- Bottom-left -->
+  <rect class="card" x="490" y="640" width="250" height="78" rx="10"/>
+  <text class="h" x="615" y="670" text-anchor="middle">Graph &amp; Relationships</text>
+  <text class="p" x="615" y="692" text-anchor="middle">People · cases · evidence network</text>
+  <line class="spoke" x1="740" y1="670" x2="860" y2="600"/>
+
+  <!-- Left -->
+  <rect class="card" x="220" y="500" width="250" height="78" rx="10"/>
+  <text class="h" x="345" y="530" text-anchor="middle">Geospatial Intel</text>
+  <text class="p" x="345" y="552" text-anchor="middle">Hotspots · maps · routes</text>
+  <line class="spoke" x1="470" y1="539" x2="860" y2="560"/>
+
+  <!-- Top-left -->
+  <rect class="card" x="490" y="400" width="250" height="78" rx="10"/>
+  <text class="h" x="615" y="430" text-anchor="middle">Pattern &amp; MO Intel</text>
+  <text class="p" x="615" y="452" text-anchor="middle">Clusters · repeat offenders · MO</text>
+  <line class="spoke" x1="740" y1="448" x2="860" y2="520"/>
+
+  <!-- flow -->
+  <text class="flow" x="960" y="798" text-anchor="middle">·  DECIDE · ACT · MONITOR</text>
+
+  <!-- ========== BOTTOM: OUTCOMES ========== -->
+  <rect class="band" x="56" y="816" width="1808" height="220" rx="14"/>
+  <rect class="accent" x="72" y="836" width="42" height="42" rx="8"/>
+  <text class="lvl" x="93" y="862" text-anchor="middle">03</text>
+  <text class="lvl-name" x="128" y="852">ACTIONABLE OUTCOMES</text>
+  <text class="tiny" x="128" y="870">What the ecosystem delivers</text>
+
+  <rect class="card-navy" x="320" y="840" width="280" height="160" rx="12"/>
+  <text class="h-on" x="460" y="890" text-anchor="middle">Faster Investigations</text>
+  <text class="p-on" x="460" y="918" text-anchor="middle">Seconds to similar cases,</text>
+  <text class="p-on" x="460" y="938" text-anchor="middle">links, and next steps</text>
+  <text class="tiny" x="460" y="970" text-anchor="middle" fill="#94a3b8">Time-to-insight ·</text>
+
+  <rect class="card" x="620" y="840" width="280" height="160" rx="12"/>
+  <text class="h-lg" x="760" y="890" text-anchor="middle">Connected Cases</text>
+  <text class="p" x="760" y="918" text-anchor="middle">Cross-district matches,</text>
+  <text class="p" x="760" y="938" text-anchor="middle">identity &amp; evidence links</text>
+  <text class="tiny" x="760" y="970" text-anchor="middle">Hidden relationships · visible</text>
+
+  <rect class="card" x="920" y="840" width="280" height="160" rx="12"/>
+  <text class="h-lg" x="1060" y="890" text-anchor="middle">Risk-Aware Priority</text>
+  <text class="p" x="1060" y="918" text-anchor="middle">Suspect risk · case</text>
+  <text class="p" x="1060" y="938" text-anchor="middle">workload ranking</text>
+  <text class="tiny" x="1060" y="970" text-anchor="middle">Focus scarce officer time</text>
+
+  <rect class="card-gold" x="1220" y="840" width="280" height="160" rx="12"/>
+  <text class="h-lg" x="1360" y="890" text-anchor="middle">Proactive Safety</text>
+  <text class="p" x="1360" y="918" text-anchor="middle">Early warnings before</text>
+  <text class="p" x="1360" y="938" text-anchor="middle">threats escalate</text>
+  <text class="tiny" x="1360" y="970" text-anchor="middle">Safer communities</text>
+
+  <rect class="card" x="1520" y="840" width="300" height="160" rx="12"/>
+  <text class="h-lg" x="1670" y="890" text-anchor="middle">Trusted AI Assist</text>
+  <text class="p" x="1670" y="918" text-anchor="middle">Explainable answers</text>
+  <text class="p" x="1670" y="938" text-anchor="middle">officers can defend</text>
+  <text class="tiny" x="1670" y="970" text-anchor="middle">Human-in-the-loop decisions</text>
+</svg>

@@ -20,9 +20,15 @@ class Settings(BaseSettings):
     # Redis
     redis_url: str = "redis://localhost:6379/0"
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # Cross-service URLs (also readable via os.getenv in service_urls)
+    ai_services_url: str = "http://localhost:8002"
+    backend_url: str = "http://localhost:8000"
+
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "extra": "ignore",
+    }
 
 
 @lru_cache()

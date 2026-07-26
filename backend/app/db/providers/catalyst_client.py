@@ -263,5 +263,16 @@ class CatalystClient:
         payload = resp.json()
         return payload.get("data") if isinstance(payload, dict) else payload
 
+    def download_file(self, folder_id: str | int, file_id: str | int) -> bytes:
+        headers = self._headers()
+        headers.pop("Content-Type", None)
+        resp = self._http.get(
+            self._url(f"/folder/{folder_id}/file/{file_id}/download"),
+            headers=headers,
+        )
+        if resp.status_code >= 400:
+            raise RuntimeError(f"download_file failed: {resp.status_code} {resp.text[:400]}")
+        return resp.content
+
     def close(self) -> None:
         self._http.close()

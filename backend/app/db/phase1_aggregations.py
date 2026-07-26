@@ -687,7 +687,7 @@ def crime_counts_by_district(crimes: list[dict[str, Any]]) -> dict[str, int]:
     return dict(counter)
 
 
-def derive_hotspots(ctx: dict[str, Any], min_crimes: int = 1) -> list[dict[str, Any]]:
+def derive_hotspots(ctx: dict[str, Any], min_crimes: int = 2) -> list[dict[str, Any]]:
     """District-level hotspots shaped like HotspotService._hotspot_to_dict."""
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for crime in ctx["crimes"]:

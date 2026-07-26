@@ -13,11 +13,17 @@ def get_service(db: AsyncSession):
 
 
 async def _phase1_summary(district: str = None, time_range: str = "30d", crime_type: str = None):
-    from app.db.phase1_aggregations import fetch_all_safe, geo_context
-    from app.db.phase1_aggregations import intelligence_summary as build_summary
+    from app.db.phase1_aggregations import (
+        dashboard_overview,
+        derive_hotspots,
+        fetch_all_safe,
+        geo_context,
+        intelligence_summary as build_summary,
+    )
 
+    dash = await dashboard_overview()
     ctx = await geo_context()
-    return build_summary(
+    summary = build_summary(
         ctx,
         criminals=await fetch_all_safe("criminals"),
         investigations=await fetch_all_safe("investigations"),
@@ -27,6 +33,24 @@ async def _phase1_summary(district: str = None, time_range: str = "30d", crime_t
         time_range=time_range,
         crime_type=crime_type,
     )
+    summary["overview"].update(
+        {
+            "total_crimes": dash["overview"]["total_crimes"],
+            "open_crimes": dash["overview"]["open_crimes"],
+            "closed_crimes": dash["overview"]["closed_crimes"],
+            "resolution_rate": dash["overview"]["resolution_rate"],
+            "active_investigations": dash["overview"]["active_investigations"],
+            "active_criminals": dash["overview"]["total_criminals"],
+        }
+    )
+    hotspot_rows = derive_hotspots(ctx)
+    summary["hotspots"]["total_hotspots"] = dash["intelligence"]["total_hotspots"]
+    summary["hotspots"]["detected"] = len(hotspot_rows)
+    if hotspot_rows and not summary["hotspots"].get("districts"):
+        summary["hotspots"]["districts"] = [
+            {"name": h["district"], "count": h["crime_count"]} for h in hotspot_rows[:5]
+        ]
+    return summary
 
 
 @router.get("/summary")

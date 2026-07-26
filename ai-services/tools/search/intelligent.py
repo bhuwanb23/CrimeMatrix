@@ -9,7 +9,9 @@ class SearchIntelligentTool(Tool):
     def _get_engine(self):
         if self._engine is None:
             from search.engine import SearchEngine
-            self._engine = SearchEngine(provider="ollama", model="llama3.2:1b")
+            from config import get_config
+            cfg = get_config()
+            self._engine = SearchEngine(provider=cfg.default_provider, model=cfg.default_model)
         return self._engine
 
     def get_name(self) -> str:

@@ -307,7 +307,7 @@ async def rag_citations(session_id: str):
 # Search Intelligence
 from search.engine import SearchEngine
 
-_search_engine = SearchEngine(provider="ollama", model="llama3.2:1b")
+_search_engine = SearchEngine(provider=_config.default_provider, model=_config.default_model)
 
 
 class IntelligentSearchRequest(BaseModel):
@@ -604,7 +604,7 @@ from reasoning.engine import ReasoningEngine
 from reasoning.evidence import EvidenceRanking
 from reasoning.confidence import ConfidenceCalculator
 
-_reasoning_engine = ReasoningEngine(provider="ollama", model="llama3.2:1b")
+_reasoning_engine = ReasoningEngine(provider=_config.default_provider, model=_config.default_model)
 _evidence_ranker = EvidenceRanking()
 _confidence_calc = ConfidenceCalculator()
 

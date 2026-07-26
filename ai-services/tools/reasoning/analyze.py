@@ -9,7 +9,9 @@ class ReasoningAnalyzeTool(Tool):
     def _get_engine(self):
         if self._engine is None:
             from reasoning.engine import ReasoningEngine
-            self._engine = ReasoningEngine(provider="ollama", model="llama3.2:1b")
+            from config import get_config
+            cfg = get_config()
+            self._engine = ReasoningEngine(provider=cfg.default_provider, model=cfg.default_model)
         return self._engine
 
     def get_name(self) -> str:

@@ -25,6 +25,29 @@ class IntelligenceTimelineService:
         self, limit: int = 50, offset: int = 0,
         source: str = None, entity_type: str = None,
     ) -> dict:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import derive_timeline_entries, fetch_all
+
+            crimes = await fetch_all("crimes")
+            investigations = await fetch_all("investigations")
+            try:
+                timeline_events = await fetch_all("timeline_events")
+            except Exception:
+                timeline_events = []
+            data = derive_timeline_entries(
+                crimes, investigations, timeline_events, limit=limit, offset=offset
+            )
+            if entity_type:
+                data["entries"] = [e for e in data["entries"] if e.get("entity_type") == entity_type]
+                data["total_count"] = len(data["entries"])
+            if source:
+                data["entries"] = [e for e in data["entries"] if e.get("source") == source]
+                data["total_count"] = len(data["entries"])
+            data["source"] = "phase1_store"
+            return data
+
         entries = []
 
         if not source or source == "event":

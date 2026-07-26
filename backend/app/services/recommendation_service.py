@@ -27,6 +27,26 @@ class RecommendationService:
         self.db = db
 
     async def get_all_recommendations(self, rec_type: str = None, status: str = "active", limit: int = 20) -> dict:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import dashboard_overview, derive_recommendations
+
+            data = await dashboard_overview()
+            recs = derive_recommendations(
+                data["crimes"],
+                data["cases"],
+                data["investigations"],
+                data["suspects"],
+                data["district_names"],
+                limit=limit,
+            )
+            if rec_type:
+                recs = [r for r in recs if r.get("type") == rec_type]
+            if status and status != "all":
+                recs = [r for r in recs if r.get("status") == status]
+            return {"recommendations": recs, "total_count": len(recs), "source": "phase1_store"}
+
         stmt = select(Recommendation).where(Recommendation.status == status)
         if rec_type:
             stmt = stmt.where(Recommendation.rec_type == rec_type)
@@ -157,6 +177,41 @@ class RecommendationService:
         }
 
     async def get_dashboard_recommendations(self) -> dict:
+        from app.db.phase1_store import using_phase1_store
+
+        if using_phase1_store():
+            from app.db.phase1_aggregations import dashboard_overview, derive_recommendations
+
+            data = await dashboard_overview()
+            recs = derive_recommendations(
+                data["crimes"],
+                data["cases"],
+                data["investigations"],
+                data["suspects"],
+                data["district_names"],
+                limit=10,
+            )
+            # Shape expected by UI: score field
+            for r in recs:
+                r.setdefault("score", r.get("confidence", 0))
+            active_investigations = [
+                {
+                    "id": i.get("id"),
+                    "title": i.get("title"),
+                    "status": i.get("status"),
+                    "priority": i.get("priority"),
+                    "progress": i.get("progress"),
+                }
+                for i in data["investigations"]
+                if str(i.get("status") or "").lower() in {"active", "saved", "open"}
+            ][:3]
+            return {
+                "recommendations": recs,
+                "active_investigations": active_investigations,
+                "total_count": len(recs),
+                "source": "phase1_store",
+            }
+
         similar_recs = await self._get_similar_case_recommendations(limit=3)
         suspect_recs = await self._get_suspect_recommendations(limit=2)
         cross_district = await self._get_cross_district_recommendations(limit=2)

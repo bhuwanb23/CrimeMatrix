@@ -74,6 +74,10 @@ python -m catalyst_datastore.smoke_test --provider catalyst
 ## Backend routes when `DB_PROVIDER=catalyst|catalyst_local`
 
 - `GET /api/v1/districts`, `/crimes`, `/cases`, `/investigations` (list + get)
+- `GET/POST` notes, timeline, case-status; `GET` criminals, officers, vehicles, persons, suspects
+- `POST /api/v1/search/` (title match over crimes/cases + optional entities)
+- `GET` stations, locations, crime-types; investigation create/update/delete
+- `GET /api/v1/analytics/stats/overview` (counts from Phase 1 tables)
 - `GET/POST /api/v1/datastore/...` ops surface for Phase 1 tables
 - Attachments upload uses File Store when `STORAGE_PROVIDER=catalyst` or `DB_PROVIDER=catalyst`
 

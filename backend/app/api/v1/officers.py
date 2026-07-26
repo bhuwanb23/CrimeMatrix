@@ -6,7 +6,7 @@ from app.services.officer_service import OfficerService
 from app.schemas.officer import OfficerCreate, OfficerResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
-from app.db.phase1_store import store_get, store_list, using_phase1_store
+from app.db.phase1_store import store_create, store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -51,6 +51,15 @@ async def get_officer(officer_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/")
 async def create_officer(data: OfficerCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        payload = data.model_dump()
+        payload.setdefault("status", "active")
+        payload.setdefault("first_name", payload.get("badge_number") or "Officer")
+        try:
+            officer = await store_create("officers", payload)
+            return success_response(data=officer, message="Officer created")
+        except Exception as e:
+            return success_response(message=str(e)[:200])
     svc = get_service(db)
     officer = await svc.create(data.model_dump())
     return success_response(data=OfficerResponse.model_validate(officer).model_dump(), message="Officer created")

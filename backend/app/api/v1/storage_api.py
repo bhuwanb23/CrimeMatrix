@@ -20,8 +20,8 @@ async def download_file(path: str):
         content = await storage_service.download(path)
         from fastapi.responses import Response
         return Response(content=content, media_type="application/octet-stream")
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="File not found")
+    except (FileNotFoundError, NotImplementedError, Exception) as e:
+        raise HTTPException(status_code=404, detail=f"File not found: {str(e)[:120]}")
 
 
 @router.delete("/{path:path}")

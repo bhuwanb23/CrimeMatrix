@@ -6,7 +6,7 @@ from app.services.station_service import StationService
 from app.schemas.station import StationCreate, StationResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
-from app.db.phase1_store import store_get, store_list, using_phase1_store
+from app.db.phase1_store import store_create, store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -51,6 +51,12 @@ async def get_station(station_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/")
 async def create_station(data: StationCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        try:
+            station = await store_create("stations", data.model_dump())
+            return success_response(data=station, message="Station created")
+        except Exception as e:
+            return success_response(message=str(e)[:200])
     svc = get_service(db)
     station = await svc.create(data.model_dump())
     return success_response(data=StationResponse.model_validate(station).model_dump(), message="Station created")

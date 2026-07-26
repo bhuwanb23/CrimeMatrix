@@ -66,7 +66,7 @@ class AIConfig:
     stream_chunk_size: int = 1024
 
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8001")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 
 def get_config() -> AIConfig:

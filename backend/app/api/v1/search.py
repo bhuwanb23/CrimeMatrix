@@ -104,6 +104,17 @@ async def search_suggestions(q: str = "", db: AsyncSession = Depends(get_db)):
     if len(q) < 2:
         return success_response(data={"suggestions": []})
 
+    if using_phase1_store():
+        from app.db.phase1_aggregations import build_suggestions, fetch_all_safe
+
+        suggestions = build_suggestions(
+            q,
+            await fetch_all_safe("crimes"),
+            await fetch_all_safe("districts"),
+            await fetch_all_safe("cases"),
+        )
+        return success_response(data={"suggestions": suggestions})
+
     svc = SearchService(db)
     results = await svc.search(query=q, entities=["cases", "suspects"], page_size=5)
     suggestions = [r.get("title", r.get("name", "")) for r in results.get("results", [])]

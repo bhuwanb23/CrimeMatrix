@@ -2,10 +2,9 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime
 import httpx
 import structlog
+from config import BACKEND_URL
 
 logger = structlog.get_logger()
-
-BACKEND_URL = "http://localhost:8001"
 
 
 class Document:

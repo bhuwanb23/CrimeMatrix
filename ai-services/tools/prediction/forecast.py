@@ -2,10 +2,9 @@ import json
 from tools.base import Tool
 import httpx
 import structlog
+from config import BACKEND_URL
 
 logger = structlog.get_logger()
-BACKEND_URL = "http://localhost:8001"
-
 
 class ForecastAnalysisTool(Tool):
     def __init__(self, backend_url: str = None):

@@ -2,10 +2,9 @@ import httpx
 from typing import Dict, Any, Optional
 from storage.cache_provider import MemoryCacheProvider
 import structlog
+from config import BACKEND_URL
 
 logger = structlog.get_logger()
-
-BACKEND_URL = "http://localhost:8001"
 
 
 class InvestigationContext:

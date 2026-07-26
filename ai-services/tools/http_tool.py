@@ -1,11 +1,9 @@
 import httpx
-import json
 from tools.base import Tool
+from config import BACKEND_URL
 import structlog
 
 logger = structlog.get_logger()
-
-BACKEND_URL = "http://localhost:8001"
 
 
 class BackendTool(Tool):

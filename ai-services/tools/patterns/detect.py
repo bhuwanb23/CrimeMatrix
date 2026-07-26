@@ -1,10 +1,9 @@
 from tools.base import Tool
 import httpx
 import structlog
+from config import BACKEND_URL
 
 logger = structlog.get_logger()
-
-BACKEND_URL = "http://localhost:8001"
 
 
 class PatternDetectTool(Tool):

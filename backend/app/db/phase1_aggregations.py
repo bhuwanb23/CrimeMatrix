@@ -23,6 +23,14 @@ async def fetch_all(table: str, page_size: int = 100, max_pages: int = 20) -> li
     return items
 
 
+async def fetch_all_safe(table: str, page_size: int = 100, max_pages: int = 20) -> list[dict[str, Any]]:
+    """fetch_all that yields [] for tables missing from the Phase-1 store."""
+    try:
+        return await fetch_all(table, page_size=page_size, max_pages=max_pages)
+    except Exception:
+        return []
+
+
 async def id_name_map(table: str, name_key: str = "name") -> dict[str, str]:
     rows = await fetch_all(table)
     out: dict[str, str] = {}
@@ -32,6 +40,25 @@ async def id_name_map(table: str, name_key: str = "name") -> dict[str, str]:
             continue
         out[str(rid)] = str(row.get(name_key) or row.get("title") or rid)
     return out
+
+
+def dual_key_map(rows: list[dict[str, Any]], name_key: str = "name") -> dict[str, str]:
+    """Index rows by both Catalyst ROWID (`id`) and `legacy_id`.
+
+    Seeded FK columns may reference either, so joins need both keys.
+    """
+    out: dict[str, str] = {}
+    for row in rows:
+        label = str(row.get(name_key) or row.get("title") or row.get("id") or "")
+        for key in ("id", "legacy_id"):
+            val = row.get(key)
+            if val is not None:
+                out.setdefault(str(val), label)
+    return out
+
+
+async def resolve_names(table: str, name_key: str = "name") -> dict[str, str]:
+    return dual_key_map(await fetch_all_safe(table), name_key)
 
 
 def count_by_key(items: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:

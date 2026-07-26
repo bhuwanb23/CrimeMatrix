@@ -36,15 +36,21 @@ class AIConfig:
         base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
         default_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
     ))
+    openrouter: ProviderConfig = field(default_factory=lambda: ProviderConfig(
+        name="openrouter",
+        api_key=os.getenv("OPENROUTER_API_KEY", ""),
+        base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
+        default_model=os.getenv("OPENROUTER_MODEL", "anthropic/claude-3.5-sonnet"),
+    ))
     gemini: ProviderConfig = field(default_factory=lambda: ProviderConfig(
         name="gemini",
         api_key=os.getenv("GEMINI_API_KEY", ""),
         default_model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
     ))
 
-    # Agent defaults
-    default_provider: str = "ollama"
-    default_model: str = "llama3.2:1b"
+    # Agent defaults — OpenRouter is default provider
+    default_provider: str = "openrouter"
+    default_model: str = "anthropic/claude-3.5-sonnet"
     max_agent_steps: int = 10
     max_context_messages: int = 50
 

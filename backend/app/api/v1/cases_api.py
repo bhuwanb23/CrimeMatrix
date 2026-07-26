@@ -23,6 +23,7 @@ from app.models.arrest_surrender_type import ArrestSurrenderType
 from app.models.state import State
 from app.models.chargesheet_detail import ChargesheetDetail
 from pydantic import BaseModel
+from app.db.phase1_store import store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -42,6 +43,16 @@ async def list_cases(
     police_station_id: Optional[int] = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        where = {}
+        if district:
+            where["district"] = district
+        if status:
+            where["status"] = status
+        if crime_type:
+            where["crime_type"] = crime_type
+        data = await store_list("cases", page=page, page_size=page_size, where=where or None)
+        return success_response(data=data)
     svc = get_service(db)
     if district:
         cases = await svc.get_by_district(district)
@@ -76,6 +87,11 @@ async def list_cases(
 
 @router.get("/{case_id}")
 async def get_case(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        case = await store_get("cases", case_id)
+        if not case:
+            return success_response(message="Case not found")
+        return success_response(data=case)
     svc = get_service(db)
     case = await svc.get_by_id(case_id)
     if not case:

@@ -22,8 +22,15 @@ async def lifespan(app: FastAPI):
 
     # Initialize database
     from app.db.session import init_db
+    from app.db.providers import get_db_provider_name, init_data_provider
+
+    provider_name = get_db_provider_name()
+    if provider_name in {"catalyst", "catalyst_local"}:
+        await init_data_provider()
+        logger.info("phase1_datastore_initialized", provider=provider_name)
+    # Keep SQLAlchemy schema for non-Phase-1 routes / local default
     await init_db()
-    logger.info("database_initialized")
+    logger.info("database_initialized", provider=provider_name)
 
     yield
 

@@ -33,7 +33,7 @@ from app.api.v1 import (
     evidence_linking_api
 )
 
-from app.api.v1 import intelligence_timeline_api, lookup_api, cases_api
+from app.api.v1 import intelligence_timeline_api, lookup_api, cases_api, datastore_api
 
 router = APIRouter(prefix="/api/v1")
 
@@ -46,6 +46,7 @@ router.include_router(version.router, tags=["Version"])
 router.include_router(statistics.router, tags=["Statistics"])
 router.include_router(uploads.router, tags=["Uploads"])
 router.include_router(ai.router, prefix="/ai", tags=["AI"])
+router.include_router(datastore_api.router, prefix="/datastore", tags=["DataStore"])
 
 # Search APIs
 router.include_router(search.router, prefix="/search", tags=["Search"])

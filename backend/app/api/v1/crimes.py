@@ -6,6 +6,7 @@ from app.services.crime_service import CrimeService
 from app.schemas.crime import CrimeCreate, CrimeResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
+from app.db.phase1_store import store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -16,6 +17,20 @@ def get_service(db: AsyncSession):
 
 @router.get("/")
 async def list_crimes(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        data = await store_list("crimes", page=page, page_size=page_size)
+        data["items"] = [
+            {
+                "id": c.get("id"),
+                "title": c.get("title"),
+                "crime_type_id": c.get("crime_type_id"),
+                "district_id": c.get("district_id"),
+                "status": c.get("status"),
+                "priority": c.get("priority"),
+            }
+            for c in data["items"]
+        ]
+        return {"success": True, "data": data, "message": "Success"}
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
     result = await svc.get_paginated(params)
@@ -34,6 +49,11 @@ async def list_crimes(page: int = 1, page_size: int = 20, db: AsyncSession = Dep
 
 @router.get("/{crime_id}")
 async def get_crime(crime_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        crime = await store_get("crimes", crime_id)
+        if not crime:
+            return success_response(message="Crime not found")
+        return success_response(data=crime)
     svc = get_service(db)
     crime = await svc.get_by_id(crime_id)
     if not crime:

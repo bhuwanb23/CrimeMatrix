@@ -4,6 +4,7 @@ from app.db.session import get_db
 from app.services.investigation_service import InvestigationService
 from app.schemas.investigation import InvestigationCreate, InvestigationUpdate, InvestigationResponse, InvestigationListItem
 from app.core.response import success_response
+from app.db.phase1_store import store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -21,6 +22,15 @@ async def list_investigations(
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        page = (offset // limit) + 1 if limit else 1
+        where = {"status": status} if status else None
+        data = await store_list("investigations", page=page, page_size=limit, where=where)
+        items = data["items"]
+        if search:
+            q = search.lower()
+            items = [i for i in items if q in str(i.get("title", "")).lower()]
+        return success_response(data={"items": items, "total": data.get("total", len(items))})
     svc = get_service(db)
     items = await svc.list_investigations(status=status, search=search, sort_by=sort_by, limit=limit, offset=offset)
     return success_response(data={"items": items, "total": len(items)})
@@ -47,6 +57,11 @@ async def investigation_stats(db: AsyncSession = Depends(get_db)):
 # Parameterized routes AFTER static routes
 @router.get("/{investigation_id}")
 async def get_investigation(investigation_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        inv = await store_get("investigations", investigation_id)
+        if not inv:
+            return success_response(message="Investigation not found")
+        return success_response(data=inv)
     svc = get_service(db)
     inv = await svc.get_investigation(investigation_id)
     if not inv:

@@ -527,6 +527,34 @@ class ArrestSurrenderUpdate(BaseModel):
 
 @router.get("/{case_id}/arrest-surrender")
 async def get_arrest_surrender(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import case_children, resolve_names
+
+        rows = await case_children("arrest_surrenders", case_id)
+        types = await resolve_names("arrest_surrender_types")
+        states = await resolve_names("states")
+        accused_names = await resolve_names("accused")
+        items = [
+            {
+                "id": row.get("id"),
+                "case_id": row.get("case_id"),
+                "type_id": row.get("type_id"),
+                "type_name": types.get(str(row.get("type_id"))),
+                "date": row.get("date"),
+                "state_id": row.get("state_id"),
+                "state_name": states.get(str(row.get("state_id"))),
+                "district_id": row.get("district_id"),
+                "police_station_id": row.get("police_station_id"),
+                "io_id": row.get("io_id"),
+                "court_id": row.get("court_id"),
+                "accused_id": row.get("accused_id"),
+                "accused_name": accused_names.get(str(row.get("accused_id"))),
+                "is_accused": bool(row.get("is_accused")),
+                "is_complainant_accused": bool(row.get("is_complainant_accused")),
+            }
+            for row in rows
+        ]
+        return success_response(data={"items": items, "total": len(items)})
     result = await db.execute(select(ArrestSurrender).where(ArrestSurrender.case_id == case_id))
     items = []
     for a in result.scalars().all():
@@ -614,6 +642,25 @@ class ChargesheetUpdate(BaseModel):
 
 @router.get("/{case_id}/chargesheet")
 async def get_chargesheet(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import case_children, resolve_names
+
+        rows = await case_children("chargesheet_details", case_id)
+        officers = await resolve_names("officers", "first_name")
+        items = [
+            {
+                "id": row.get("id"),
+                "case_id": row.get("case_id"),
+                "cs_date": row.get("cs_date"),
+                "cs_type": row.get("cs_type"),
+                "police_person_id": row.get("police_person_id"),
+                "officer_name": officers.get(str(row.get("police_person_id"))),
+            }
+            for row in rows
+        ]
+        return success_response(data={"items": items, "total": len(items)})
+    from app.models.officer import Officer
+
     result = await db.execute(select(ChargesheetDetail).where(ChargesheetDetail.case_id == case_id))
     items = []
     for cs in result.scalars().all():

@@ -7,10 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.models.crime import Crime
 from app.core.response import success_response
+from app.core.service_urls import AI_SERVICES_URL
 
 router = APIRouter()
-
-AI_SERVICES_URL = "http://localhost:8002"
 
 
 class CrossDistrictRequest(BaseModel):

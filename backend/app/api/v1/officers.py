@@ -6,6 +6,7 @@ from app.services.officer_service import OfficerService
 from app.schemas.officer import OfficerCreate, OfficerResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
+from app.db.phase1_store import store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -16,6 +17,19 @@ def get_service(db: AsyncSession):
 
 @router.get("/", )
 async def list_officers(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        data = await store_list("officers", page=page, page_size=page_size)
+        data["items"] = [
+            {
+                "id": i.get("id"),
+                "title": i.get("first_name") or i.get("badge_number") or "",
+                "name": i.get("first_name"),
+                "badge_number": i.get("badge_number"),
+                "status": i.get("status"),
+            }
+            for i in data["items"]
+        ]
+        return {"success": True, "data": data, "message": "Success"}
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
     result = await svc.get_paginated(params); return {"success": True, "data": {"items": [{"id": i.id, "title": getattr(i, "title", getattr(i, "name", "")), "status": getattr(i, "status", "")} for i in result.items], "total": result.total, "page": result.page, "page_size": result.page_size, "total_pages": result.total_pages}, "message": "Success"}
@@ -23,6 +37,11 @@ async def list_officers(page: int = 1, page_size: int = 20, db: AsyncSession = D
 
 @router.get("/{officer_id}")
 async def get_officer(officer_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        officer = await store_get("officers", officer_id)
+        if not officer:
+            return success_response(message="Officer not found")
+        return success_response(data=officer)
     svc = get_service(db)
     officer = await svc.get_by_id(officer_id)
     if not officer:

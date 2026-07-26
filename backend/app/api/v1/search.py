@@ -7,6 +7,7 @@ from app.search.base import SearchService
 from app.search.keyword import KeywordSearch
 from app.search.cross_table import CrossTableSearch
 from app.core.response import success_response
+from app.db.phase1_store import store_search_title, using_phase1_store
 
 router = APIRouter()
 
@@ -26,8 +27,29 @@ class KeywordSearchRequest(BaseModel):
     entities: Optional[List[str]] = None
 
 
+_PHASE1_ENTITY_TABLES = {
+    "crimes": "crimes",
+    "cases": "cases",
+    "suspects": "suspects",
+    "persons": "persons",
+    "criminals": "criminals",
+    "officers": "officers",
+    "vehicles": "vehicles",
+    "investigations": "investigations",
+}
+
+
 @router.post("/")
 async def universal_search(request: SearchRequest, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        entities = request.entities or ["crimes", "cases"]
+        tables = [_PHASE1_ENTITY_TABLES[e] for e in entities if e in _PHASE1_ENTITY_TABLES]
+        if not tables:
+            tables = ["crimes", "cases"]
+        result = await store_search_title(
+            tables, request.query, page=request.page, page_size=request.page_size
+        )
+        return success_response(data=result)
     svc = SearchService(db)
     result = await svc.search(
         query=request.query,
@@ -43,6 +65,11 @@ async def universal_search(request: SearchRequest, db: AsyncSession = Depends(ge
 
 @router.post("/keyword")
 async def keyword_search(request: KeywordSearchRequest, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        entities = request.entities or ["crimes", "cases"]
+        tables = [_PHASE1_ENTITY_TABLES[e] for e in entities if e in _PHASE1_ENTITY_TABLES] or ["crimes"]
+        result = await store_search_title(tables, request.query, page=1, page_size=50)
+        return success_response(data={"results": result["results"], "total": result["total"]})
     svc = KeywordSearch(db)
     results = await svc.search(request.query, request.entities)
     return success_response(data={"results": results, "total": len(results)})
@@ -50,17 +77,7 @@ async def keyword_search(request: KeywordSearchRequest, db: AsyncSession = Depen
 
 @router.post("/advanced")
 async def advanced_search(request: SearchRequest, db: AsyncSession = Depends(get_db)):
-    svc = SearchService(db)
-    result = await svc.search(
-        query=request.query,
-        entities=request.entities,
-        filters=request.filters,
-        sort=request.sort,
-        page=request.page,
-        page_size=request.page_size,
-        facets=request.facets,
-    )
-    return success_response(data=result)
+    return await universal_search(request, db)
 
 
 @router.get("/facets")

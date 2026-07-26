@@ -6,6 +6,7 @@ from app.services.person_service import PersonService
 from app.schemas.person import PersonCreate, PersonResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
+from app.db.phase1_store import store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -16,6 +17,18 @@ def get_service(db: AsyncSession):
 
 @router.get("/")
 async def list_persons(page: int = 1, page_size: int = 20, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        data = await store_list("persons", page=page, page_size=page_size)
+        data["items"] = [
+            {
+                "id": p.get("id"),
+                "first_name": p.get("first_name"),
+                "last_name": p.get("last_name"),
+                "district": p.get("district"),
+            }
+            for p in data["items"]
+        ]
+        return {"success": True, "data": data, "message": "Success"}
     svc = get_service(db)
     params = PaginationParams(page=page, page_size=page_size)
     result = await svc.get_paginated(params)
@@ -24,6 +37,11 @@ async def list_persons(page: int = 1, page_size: int = 20, db: AsyncSession = De
 
 @router.get("/{person_id}")
 async def get_person(person_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        person = await store_get("persons", person_id)
+        if not person:
+            return success_response(message="Person not found")
+        return success_response(data=person)
     svc = get_service(db)
     person = await svc.get_by_id(person_id)
     if not person:

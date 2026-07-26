@@ -27,8 +27,20 @@ async def list_events(investigation_id: int, db: AsyncSession = Depends(get_db))
 @router.post("/")
 async def create_event(data: TimelineEventCreate, db: AsyncSession = Depends(get_db)):
     if using_phase1_store():
-        event = await store_create("timeline_events", data.model_dump())
-        return success_response(data=event, message="Event created")
+        payload = data.model_dump()
+        if payload.get("event_date") is not None:
+            from datetime import datetime
+
+            ed = payload["event_date"]
+            if isinstance(ed, datetime):
+                payload["event_date"] = ed.strftime("%Y-%m-%d %H:%M:%S")
+            elif isinstance(ed, str) and "." in ed:
+                payload["event_date"] = ed.split(".")[0].replace("T", " ")
+        try:
+            event = await store_create("timeline_events", payload)
+            return success_response(data=event, message="Event created")
+        except Exception as e:
+            return success_response(message=str(e)[:200])
     repo = TimelineRepository(db)
     event = await repo.create(data.model_dump())
     return success_response(data=TimelineEventResponse.model_validate(event).model_dump(), message="Event created")

@@ -6,7 +6,7 @@ from app.services.vehicle_service import VehicleService
 from app.schemas.vehicle import VehicleCreate, VehicleResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
-from app.db.phase1_store import store_get, store_list, using_phase1_store
+from app.db.phase1_store import store_create, store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -50,6 +50,14 @@ async def get_vehicle(vehicle_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/")
 async def create_vehicle(data: VehicleCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        payload = data.model_dump()
+        payload.setdefault("status", "active")
+        try:
+            vehicle = await store_create("vehicles", payload)
+            return success_response(data=vehicle, message="Vehicle created")
+        except Exception as e:
+            return success_response(message=str(e)[:200])
     svc = get_service(db)
     vehicle = await svc.create(data.model_dump())
     return success_response(data=VehicleResponse.model_validate(vehicle).model_dump(), message="Vehicle created")

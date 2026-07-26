@@ -40,7 +40,7 @@ pairs = [
     ("CM_CLIENT_SECRET", cm_getenv("CM_CLIENT_SECRET", "") or ""),
     ("CM_REFRESH_TOKEN", cm_getenv("CM_REFRESH_TOKEN", "") or ""),
     ("CM_FILE_FOLDER_ID", cm_getenv("CM_FILE_FOLDER_ID", "") or ""),
-    ("AI_SERVICES_URL", AI_URL),
+    ("AI_SERVICES_URL", AI_URL),  # origin only — do NOT append /api/ai
     ("STORAGE_PROVIDER", "catalyst"),
 ]
 missing = []
@@ -56,11 +56,12 @@ for k, v in pairs:
 
 print()
 print("=== crimematrix-ai AppSail env (add/update) ===")
-print(f"BACKEND_URL={BACKEND_URL}")
+print(f"BACKEND_URL={BACKEND_URL}")  # origin only — do NOT append /api/v1
 
 print()
 print("Note: Do NOT create CATALYST_* keys in AppSail — they are reserved.")
 print("Local backend/.env may keep CATALYST_* ; the app falls back to them.")
+print("AI_SERVICES_URL / BACKEND_URL must be host origins (no /api/ai or /api/v1).")
 if missing:
     print("WARNING missing values:", ", ".join(missing))
     raise SystemExit(1)

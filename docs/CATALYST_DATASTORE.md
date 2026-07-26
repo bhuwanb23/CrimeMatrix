@@ -25,7 +25,13 @@ Schema source of truth:
 | `CATALYST_FILE_FOLDER_ID` | File Store folder id after creation |
 | `STORAGE_PROVIDER` | `catalyst` to force File Store uploads |
 
-Register a **Self Client** in Zoho API Console with Catalyst scopes (`ZohoCatalyst.tables.*`, `ZohoCatalyst.folders.ALL`, `ZohoCatalyst.files.*`), generate a refresh token, and put it in `backend/.env` (never commit).
+Register a **Self Client** in Zoho API Console ([api-console.zoho.in](https://api-console.zoho.in/)) and generate a code with these **exact** scopes (comma-separated, no spaces; there is no `tables.ALL` / `files.ALL`):
+
+```text
+ZohoCatalyst.projects.ALL,ZohoCatalyst.tables.READ,ZohoCatalyst.tables.columns.READ,ZohoCatalyst.tables.rows.READ,ZohoCatalyst.tables.rows.CREATE,ZohoCatalyst.tables.rows.UPDATE,ZohoCatalyst.tables.rows.DELETE,ZohoCatalyst.folders.ALL,ZohoCatalyst.files.CREATE,ZohoCatalyst.files.READ,ZohoCatalyst.files.DELETE,ZohoCatalyst.zcql.CREATE
+```
+
+Exchange the grant code for a refresh token, and put it in `backend/.env` (never commit).
 
 ## Create tables (Project-Rainfall)
 

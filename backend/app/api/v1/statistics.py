@@ -13,13 +13,56 @@ from app.models.crime_sub_head import CrimeSubHead
 from app.models.case_status_master import CaseStatusMaster
 from app.models.court import Court
 from app.core.response import success_response
+from app.db.phase1_store import store_list, using_phase1_store
 
 router = APIRouter()
 
 
 @router.get("/statistics")
 async def get_statistics(db: AsyncSession = Depends(get_db)):
-    from sqlalchemy import select
+    if using_phase1_store():
+        from app.db.phase1_aggregations import fetch_all
+
+        cases = await fetch_all("cases")
+        suspects = await fetch_all("suspects")
+        officers = await store_list("officers", page=1, page_size=1)
+        crime_types = await store_list("crime_types", page=1, page_size=1)
+        case_statuses = await store_list("case_status_master", page=1, page_size=1)
+        crime_heads = await store_list("crime_heads", page=1, page_size=1)
+        crime_sub_heads = await store_list("crime_sub_heads", page=1, page_size=1)
+        categories = await store_list("case_categories", page=1, page_size=1)
+
+        total_cases = len(cases)
+        active_cases = sum(1 for c in cases if str(c.get("status") or "").lower() in {"active", "open"})
+        closed_cases = sum(1 for c in cases if str(c.get("status") or "").lower() in {"closed", "resolved"})
+        pending = max(0, total_cases - active_cases - closed_cases)
+
+        return success_response(
+            data={
+                "totals": {
+                    "users": officers.get("total", 0),
+                    "cases": total_cases,
+                    "suspects": len(suspects),
+                    "alerts": sum(1 for s in suspects if float(s.get("risk_score") or 0) >= 50),
+                },
+                "cases_by_status": {
+                    "active": active_cases,
+                    "closed": closed_cases,
+                    "pending": pending,
+                },
+                "resolution_rate": round((closed_cases / total_cases * 100), 1) if total_cases else 0,
+                "lookups": {
+                    "categories": categories.get("total", 0),
+                    "gravity_offences": 0,
+                    "crime_heads": crime_heads.get("total", 0),
+                    "crime_sub_heads": crime_sub_heads.get("total", 0),
+                    "case_statuses": case_statuses.get("total", 0),
+                    "courts": 0,
+                    "crime_types": crime_types.get("total", 0),
+                },
+                "source": "phase1_store",
+            }
+        )
 
     # Total counts
     users_result = await db.execute(select(func.count(User.id)))

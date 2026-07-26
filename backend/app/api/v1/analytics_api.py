@@ -26,16 +26,14 @@ class AggregateRequest(BaseModel):
 @router.get("/stats/overview")
 async def stats_overview(db: AsyncSession = Depends(get_db)):
     if using_phase1_store():
-        crimes = await store_list("crimes", page=1, page_size=1)
-        districts = await store_list("districts", page=1, page_size=1)
-        cases = await store_list("cases", page=1, page_size=1)
-        investigations = await store_list("investigations", page=1, page_size=1)
+        from app.db.phase1_aggregations import fetch_all
+
         return success_response(
             data={
-                "crimes": crimes.get("total", 0),
-                "districts": districts.get("total", 0),
-                "cases": cases.get("total", 0),
-                "investigations": investigations.get("total", 0),
+                "crimes": len(await fetch_all("crimes")),
+                "districts": len(await fetch_all("districts")),
+                "cases": len(await fetch_all("cases")),
+                "investigations": len(await fetch_all("investigations")),
                 "source": "phase1_store",
             }
         )
@@ -84,6 +82,16 @@ async def crime_trends(
     end_date: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import bucket_crimes_by_day, fetch_all
+
+        crimes = await fetch_all("crimes")
+        data = bucket_crimes_by_day(crimes)
+        if start_date:
+            data = [d for d in data if d["date"] >= start_date]
+        if end_date:
+            data = [d for d in data if d["date"] <= end_date]
+        return success_response(data={"period": period, "data": data})
     engine = TrendEngine(db)
     data = await engine.crime_trends(period, start_date, end_date)
     return success_response(data=data)
@@ -95,6 +103,12 @@ async def case_trends(
     end_date: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import count_by_key, fetch_all
+
+        cases = await fetch_all("cases")
+        rows = count_by_key(cases, "status")
+        return success_response(data={"data": [{"status": r["key"], "count": r["value"]} for r in rows]})
     engine = TrendEngine(db)
     data = await engine.case_trends(start_date, end_date)
     return success_response(data=data)
@@ -102,6 +116,11 @@ async def case_trends(
 
 @router.get("/trends/resolution")
 async def resolution_trend(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import fetch_all, resolution_from_crimes
+
+        crimes = await fetch_all("crimes")
+        return success_response(data=resolution_from_crimes(crimes))
     engine = TrendEngine(db)
     data = await engine.resolution_trend()
     return success_response(data=data)
@@ -125,6 +144,12 @@ async def district_detail(district_id: int, db: AsyncSession = Depends(get_db)):
 # Crime Counts
 @router.get("/counts/by-type")
 async def count_by_type(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import fetch_all, id_name_map, resolve_and_count
+
+        crimes = await fetch_all("crimes")
+        names = await id_name_map("crime_types")
+        return success_response(data=resolve_and_count(crimes, "crime_type_id", names))
     engine = CrimeCountEngine(db)
     data = await engine.count_by_type()
     return success_response(data=data)
@@ -132,6 +157,11 @@ async def count_by_type(db: AsyncSession = Depends(get_db)):
 
 @router.get("/counts/by-status")
 async def count_by_status(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import count_by_key, fetch_all
+
+        crimes = await fetch_all("crimes")
+        return success_response(data=count_by_key(crimes, "status"))
     engine = CrimeCountEngine(db)
     data = await engine.count_by_status()
     return success_response(data=data)
@@ -139,6 +169,12 @@ async def count_by_status(db: AsyncSession = Depends(get_db)):
 
 @router.get("/counts/by-district")
 async def count_by_district(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import fetch_all, id_name_map, resolve_and_count
+
+        crimes = await fetch_all("crimes")
+        names = await id_name_map("districts")
+        return success_response(data=resolve_and_count(crimes, "district_id", names))
     engine = CrimeCountEngine(db)
     data = await engine.count_by_district()
     return success_response(data=data)
@@ -146,6 +182,11 @@ async def count_by_district(db: AsyncSession = Depends(get_db)):
 
 @router.get("/counts/by-priority")
 async def count_by_priority(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import count_by_key, fetch_all
+
+        crimes = await fetch_all("crimes")
+        return success_response(data=count_by_key(crimes, "priority"))
     engine = CrimeCountEngine(db)
     data = await engine.count_by_priority()
     return success_response(data=data)

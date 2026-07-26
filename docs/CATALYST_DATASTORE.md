@@ -85,6 +85,24 @@ python -m catalyst_datastore.smoke_test --provider catalyst
 - **`priority` is a reserved keyword** → column is `priority_level`; API still returns `priority`
 - API `id` maps from Catalyst `ROWID`; `legacy_id` keeps original SQLite ids for seed remaps
 
+## Live schema quirks (Project-Rainfall)
+
+Manual console creates diverged from `phase1_tables.py` in two places. Seed and API tolerate both:
+
+| Issue | Live behavior | Workaround |
+|-------|---------------|------------|
+| `states.code` | Created as **bigint** (expected varchar) | Seed stores numeric `legacy_id` in `code`; string codes (`KA`, …) stay in seed `id_map` only. Prefer recreating the column as varchar(20) in console when allowed. |
+| `investigations.district` | Column **missing** on some environments | Seed tries `district` then retries without it. Add `district` varchar(100) in console to match schema. |
+
+After adding/fixing columns in console, re-run:
+
+```bash
+python -m catalyst_datastore.seed_phase1 --provider catalyst
+python -m catalyst_datastore.smoke_test --provider catalyst
+```
+
+Phase 1 also seeds `witnesses`, `case_links`, `case_status_logs`, and `attachments` (optional File Store upload when `CATALYST_FILE_FOLDER_ID` is set).
+
 ## Auth
 
 Out of scope for Phase 1 (no Catalyst Authentication / API Gateway).

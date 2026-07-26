@@ -5,6 +5,10 @@ Every Catalyst table also has system columns: ROWID, CREATORID, CREATEDTIME, MOD
 
 API `id` is mapped from ROWID by the provider layer.
 `legacy_id` stores the original SQLite integer id for seed/FK remapping.
+
+Catalyst constraints enforced here:
+- `priority` is a reserved keyword → use `priority_level` (API still exposes `priority`)
+- varchar max_length cannot exceed 255 → longer values use `text`
 """
 
 from __future__ import annotations
@@ -13,6 +17,14 @@ from typing import Any
 
 # Catalyst data types used below:
 # varchar, text, int, double, boolean, datetime, date, bigint
+
+VARCHAR_MAX = 255
+
+# Store column → API field (reserved-word / naming bridges)
+STORE_TO_API_FIELDS: dict[str, str] = {
+    "priority_level": "priority",
+}
+API_TO_STORE_FIELDS: dict[str, str] = {v: k for k, v in STORE_TO_API_FIELDS.items()}
 
 Col = dict[str, Any]
 
@@ -26,6 +38,13 @@ def col(
     max_length: int | None = None,
     search_index: bool = False,
 ) -> Col:
+    # Catalyst: varchar max is 255; promote oversized varchar to text
+    if data_type == "varchar" and max_length is not None and max_length > VARCHAR_MAX:
+        data_type = "text"
+        max_length = None
+    if data_type == "varchar" and max_length is not None:
+        max_length = min(max_length, VARCHAR_MAX)
+
     c: Col = {
         "column_name": name,
         "data_type": data_type,
@@ -33,7 +52,7 @@ def col(
         "is_unique": unique,
         "search_index_enabled": search_index,
     }
-    if max_length is not None:
+    if max_length is not None and data_type == "varchar":
         c["max_length"] = max_length
     return c
 
@@ -196,7 +215,7 @@ PHASE1_TABLES: dict[str, list[Col]] = {
         col("crime_type", "varchar", mandatory=True, max_length=50, search_index=True),
         col("district", "varchar", mandatory=True, max_length=100, search_index=True),
         col("status", "varchar", max_length=20, search_index=True),
-        col("priority", "varchar", max_length=20),
+        col("priority_level", "varchar", max_length=20),
         col("officer_id", "bigint"),
         col("fir_id", "bigint", search_index=True),
         col("incident_from_date", "datetime"),
@@ -222,7 +241,7 @@ PHASE1_TABLES: dict[str, list[Col]] = {
         col("district_id", "bigint", search_index=True),
         col("location_id", "bigint"),
         col("status", "varchar", max_length=20, search_index=True),
-        col("priority", "varchar", max_length=20),
+        col("priority_level", "varchar", max_length=20),
         col("reported_by", "bigint"),
         col("occurred_at", "datetime", search_index=True),
     ],
@@ -299,7 +318,7 @@ PHASE1_TABLES: dict[str, list[Col]] = {
         col("evidence_type", "varchar", mandatory=True, max_length=50, search_index=True),
         col("description", "text"),
         col("status", "varchar", max_length=20),
-        col("file_path", "varchar", max_length=500),
+        col("file_path", "text"),
         col("file_id", "varchar", max_length=100, search_index=True),
         col("folder_id", "varchar", max_length=100),
         col("recorded_by", "bigint"),
@@ -325,7 +344,7 @@ PHASE1_TABLES: dict[str, list[Col]] = {
     "locations": [
         legacy(),
         col("name", "varchar", mandatory=True, max_length=200, search_index=True),
-        col("address", "varchar", max_length=300),
+        col("address", "text"),
         col("latitude", "double"),
         col("longitude", "double"),
         col("district_id", "bigint", search_index=True),
@@ -337,7 +356,7 @@ PHASE1_TABLES: dict[str, list[Col]] = {
         col("title", "varchar", mandatory=True, max_length=200, search_index=True),
         col("description", "text"),
         col("status", "varchar", max_length=20, search_index=True),
-        col("priority", "varchar", max_length=20),
+        col("priority_level", "varchar", max_length=20),
         col("officer_id", "bigint"),
         col("progress", "int"),
         col("district", "varchar", max_length=100, search_index=True),
@@ -377,7 +396,7 @@ PHASE1_TABLES: dict[str, list[Col]] = {
         legacy(),
         col("investigation_id", "bigint", mandatory=True, search_index=True),
         col("filename", "varchar", mandatory=True, max_length=200),
-        col("file_path", "varchar", mandatory=True, max_length=500),
+        col("file_path", "text", mandatory=True),
         col("file_id", "varchar", max_length=100, search_index=True),
         col("folder_id", "varchar", max_length=100),
         col("file_size", "int"),
@@ -442,7 +461,7 @@ _proj(
         "crime_type",
         "district",
         "status",
-        "priority",
+        "priority_level",
         "fir_id",
         "latitude",
         "longitude",
@@ -457,7 +476,7 @@ _proj(
         "district_id",
         "location_id",
         "status",
-        "priority",
+        "priority_level",
         "reported_by",
         "occurred_at",
     ],
@@ -465,7 +484,7 @@ _proj(
 _proj("persons", ["legacy_id", "first_name", "last_name", "phone", "district", "gender"])
 _proj("criminals", ["legacy_id", "person_id", "alias", "risk_score", "status"])
 _proj("suspects", ["legacy_id", "name", "age", "district", "status", "risk_score"])
-_proj("investigations", ["legacy_id", "case_id", "title", "status", "priority", "officer_id", "progress", "district"])
+_proj("investigations", ["legacy_id", "case_id", "title", "status", "priority_level", "officer_id", "progress", "district"])
 _proj("notes", ["legacy_id", "investigation_id", "author_id"])
 _proj("timeline_events", ["legacy_id", "investigation_id", "title", "event_type", "event_date"])
 _proj("evidence", ["legacy_id", "case_id", "evidence_type", "status", "file_id", "folder_id"])
@@ -506,5 +525,8 @@ def export_schema_json() -> dict[str, Any]:
             "API id maps from ROWID; legacy_id holds original SQLite PK for seed remaps.",
             "ZCQL SELECT is limited to 20 columns and 300 rows — use list_projections + paging.",
             "Text fields max 10,000 characters in Data Store.",
+            "Reserved keyword: do not name columns `priority` — use `priority_level` (API still returns priority).",
+            "varchar max_length cannot exceed 255; longer values must use text.",
         ],
+        "store_to_api_fields": STORE_TO_API_FIELDS,
     }

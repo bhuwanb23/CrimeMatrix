@@ -67,7 +67,7 @@ async def run(provider_name: str) -> int:
                 "legacy_id": 9999,
                 "title": "Smoke Crime",
                 "status": "open",
-                "priority": "low",
+                "priority_level": "low",
                 "district_id": items[0]["id"] if items else None,
             },
         )

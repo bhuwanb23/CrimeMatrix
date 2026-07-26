@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
+from catalyst_datastore.schema.phase1_tables import API_TO_STORE_FIELDS, STORE_TO_API_FIELDS
+
 
 def to_api_row(row: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:
     if not row:
@@ -22,11 +24,19 @@ def to_api_row(row: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:
     # Drop system columns from API payloads
     for key in ("CREATORID", "CREATEDTIME", "MODIFIEDTIME", "creatorid", "createdtime", "modifiedtime"):
         out.pop(key, None)
+    # Reserved-word bridges (priority_level -> priority)
+    for store_key, api_key in STORE_TO_API_FIELDS.items():
+        if store_key in out:
+            out[api_key] = out.pop(store_key)
     return out
 
 
 def from_api_row(row: dict[str, Any], *, include_rowid: bool = False) -> dict[str, Any]:
     out = {k: v for k, v in row.items() if v is not None and k not in ("id", "ROWID")}
+    # API priority -> store priority_level
+    for api_key, store_key in API_TO_STORE_FIELDS.items():
+        if api_key in out:
+            out[store_key] = out.pop(api_key)
     if include_rowid and "id" in row:
         out["ROWID"] = row["id"]
     return out

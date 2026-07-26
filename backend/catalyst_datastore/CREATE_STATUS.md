@@ -18,6 +18,8 @@
 
 Table creation via public REST is not officially supported. Console login is required (or OAuth self-client if your org allows POST `/table`).
 
+**Column rules:** do not use reserved name `priority` (use `priority_level`); varchar max length ≤ 255 (longer → `text`).
+
 1. Open https://console.catalyst.zoho.in/ → Project-Rainfall → Cloud Scale → Data Store  
 2. Create tables/columns from `CREATE_TABLES_CHECKLIST.json`  
 3. File Store → create folder `cm_uploads` → set `CATALYST_FILE_FOLDER_ID`  

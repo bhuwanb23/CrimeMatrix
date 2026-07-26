@@ -96,7 +96,7 @@
       "crime_type",
       "district",
       "status",
-      "priority",
+      "priority_level",
       "fir_id",
       "latitude",
       "longitude"
@@ -109,7 +109,7 @@
       "district_id",
       "location_id",
       "status",
-      "priority",
+      "priority_level",
       "reported_by",
       "occurred_at"
     ],
@@ -145,7 +145,7 @@
       "case_id",
       "title",
       "status",
-      "priority",
+      "priority_level",
       "officer_id",
       "progress",
       "district"
@@ -1336,7 +1336,7 @@
           "max_length": 20
         },
         {
-          "column_name": "priority",
+          "column_name": "priority_level",
           "data_type": "varchar",
           "is_mandatory": false,
           "is_unique": false,
@@ -1511,7 +1511,7 @@
           "max_length": 20
         },
         {
-          "column_name": "priority",
+          "column_name": "priority_level",
           "data_type": "varchar",
           "is_mandatory": false,
           "is_unique": false,
@@ -1994,11 +1994,10 @@
         },
         {
           "column_name": "file_path",
-          "data_type": "varchar",
+          "data_type": "text",
           "is_mandatory": false,
           "is_unique": false,
-          "search_index_enabled": false,
-          "max_length": 500
+          "search_index_enabled": false
         },
         {
           "column_name": "file_id",
@@ -2160,11 +2159,10 @@
         },
         {
           "column_name": "address",
-          "data_type": "varchar",
+          "data_type": "text",
           "is_mandatory": false,
           "is_unique": false,
-          "search_index_enabled": false,
-          "max_length": 300
+          "search_index_enabled": false
         },
         {
           "column_name": "latitude",
@@ -2237,7 +2235,7 @@
           "max_length": 20
         },
         {
-          "column_name": "priority",
+          "column_name": "priority_level",
           "data_type": "varchar",
           "is_mandatory": false,
           "is_unique": false,
@@ -2477,11 +2475,10 @@
         },
         {
           "column_name": "file_path",
-          "data_type": "varchar",
+          "data_type": "text",
           "is_mandatory": true,
           "is_unique": false,
-          "search_index_enabled": false,
-          "max_length": 500
+          "search_index_enabled": false
         },
         {
           "column_name": "file_id",
@@ -2528,6 +2525,11 @@
     "System columns ROWID/CREATORID/CREATEDTIME/MODIFIEDTIME are automatic.",
     "API id maps from ROWID; legacy_id holds original SQLite PK for seed remaps.",
     "ZCQL SELECT is limited to 20 columns and 300 rows \u2014 use list_projections + paging.",
-    "Text fields max 10,000 characters in Data Store."
-  ]
+    "Text fields max 10,000 characters in Data Store.",
+    "Reserved keyword: do not name columns `priority` \u2014 use `priority_level` (API still returns priority).",
+    "varchar max_length cannot exceed 255; longer values must use text."
+  ],
+  "store_to_api_fields": {
+    "priority_level": "priority"
+  }
 }

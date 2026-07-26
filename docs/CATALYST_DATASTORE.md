@@ -75,6 +75,8 @@ python -m catalyst_datastore.smoke_test --provider catalyst
 
 - ZCQL `SELECT`: max **20 columns**, **300 rows** → list endpoints use `LIST_PROJECTIONS` + paging
 - Text max **10,000** chars
+- **varchar max_length ≤ 255** (longer fields use `text`)
+- **`priority` is a reserved keyword** → column is `priority_level`; API still returns `priority`
 - API `id` maps from Catalyst `ROWID`; `legacy_id` keeps original SQLite ids for seed remaps
 
 ## Auth

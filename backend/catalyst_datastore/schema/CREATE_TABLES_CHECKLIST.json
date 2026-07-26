@@ -1044,7 +1044,7 @@
           "max_length": 20
         },
         {
-          "column_name": "priority",
+          "column_name": "priority_level",
           "data_type": "varchar",
           "is_mandatory": false,
           "is_unique": false,
@@ -1219,7 +1219,7 @@
           "max_length": 20
         },
         {
-          "column_name": "priority",
+          "column_name": "priority_level",
           "data_type": "varchar",
           "is_mandatory": false,
           "is_unique": false,
@@ -1702,11 +1702,10 @@
         },
         {
           "column_name": "file_path",
-          "data_type": "varchar",
+          "data_type": "text",
           "is_mandatory": false,
           "is_unique": false,
-          "search_index_enabled": false,
-          "max_length": 500
+          "search_index_enabled": false
         },
         {
           "column_name": "file_id",
@@ -1868,11 +1867,10 @@
         },
         {
           "column_name": "address",
-          "data_type": "varchar",
+          "data_type": "text",
           "is_mandatory": false,
           "is_unique": false,
-          "search_index_enabled": false,
-          "max_length": 300
+          "search_index_enabled": false
         },
         {
           "column_name": "latitude",
@@ -1945,7 +1943,7 @@
           "max_length": 20
         },
         {
-          "column_name": "priority",
+          "column_name": "priority_level",
           "data_type": "varchar",
           "is_mandatory": false,
           "is_unique": false,
@@ -2185,11 +2183,10 @@
         },
         {
           "column_name": "file_path",
-          "data_type": "varchar",
+          "data_type": "text",
           "is_mandatory": true,
           "is_unique": false,
-          "search_index_enabled": false,
-          "max_length": 500
+          "search_index_enabled": false
         },
         {
           "column_name": "file_id",

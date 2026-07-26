@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; overflow: hidden; background: #ffffff; }
+    .root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      background:
+        radial-gradient(ellipse 70% 55% at 72% 42%, rgba(245, 158, 11, 0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 18% 78%, rgba(15, 23, 42, 0.04) 0%, transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      color: #0f172a;
+      overflow: hidden;
+    }
+
+    /* ambient rings — from CTA frame language */
+    .rings {
+      position: absolute;
+      right: 8%;
+      top: 46%;
+      transform: translateY(-50%);
+      width: 760px;
+      height: 760px;
+      pointer-events: none;
+    }
+    .ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(245, 158, 11, 0.16);
+    }
+    .ring:nth-child(2) { inset: 70px; border-color: rgba(245, 158, 11, 0.12); }
+    .ring:nth-child(3) { inset: 140px; border-color: rgba(245, 158, 11, 0.08); }
+    .ring:nth-child(4) { inset: 210px; border-color: rgba(15, 23, 42, 0.05); }
+
+    /* faint evidence / FIR cards — atmosphere, not clutter */
+    .cards {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+    .card {
+      position: absolute;
+      width: 210px;
+      height: 118px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      padding: 16px 18px;
+    }
+    .card .id {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: #94a3b8;
+      letter-spacing: 0.04em;
+    }
+    .card .title {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #334155;
+      line-height: 1.25;
+    }
+    .card .bar {
+      margin-top: 14px;
+      height: 6px;
+      border-radius: 99px;
+      background: #f1f5f9;
+      overflow: hidden;
+    }
+    .card .bar > i {
+      display: block;
+      height: 100%;
+      width: 62%;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      border-radius: 99px;
+    }
+    .c1 { left: 58%; top: 12%; transform: rotate(-6deg); }
+    .c2 { left: 74%; top: 28%; transform: rotate(4deg); opacity: 0.85; }
+    .c3 { left: 64%; top: 62%; transform: rotate(-3deg); }
+    .c4 { left: 80%; top: 72%; transform: rotate(7deg); opacity: 0.7; }
+
+    /* soft node graph accents */
+    .graph {
+      position: absolute;
+      right: 14%;
+      top: 38%;
+      width: 420px;
+      height: 320px;
+      pointer-events: none;
+    }
+    .node {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #0f172a;
+      box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.06);
+    }
+    .node.gold {
+      background: #f59e0b;
+      box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.15);
+      width: 18px;
+      height: 18px;
+    }
+    .edge {
+      position: absolute;
+      height: 1.5px;
+      background: rgba(15, 23, 42, 0.12);
+      transform-origin: left center;
+    }
+
+    .content {
+      position: absolute;
+      left: 96px;
+      top: 0;
+      bottom: 0;
+      width: 980px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .eyebrow .pill {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #92400e;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      padding: 10px 18px;
+      border-radius: 999px;
+    }
+    .eyebrow .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+
+    .brand {
+      font-size: 118px;
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 0.92;
+      color: #0f172a;
+    }
+    .brand .matrix {
+      color: #f59e0b;
+    }
+
+    .underline {
+      margin-top: 22px;
+      width: 120px;
+      height: 6px;
+      border-radius: 99px;
+      background: #f59e0b;
+    }
+
+    .headline {
+      margin-top: 36px;
+      max-width: 860px;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: #0f172a;
+    }
+    .headline em {
+      font-style: normal;
+      color: #f59e0b;
+    }
+
+    .sub {
+      margin-top: 22px;
+      font-size: 24px;
+      font-weight: 500;
+      color: #475569;
+      letter-spacing: -0.01em;
+    }
+
+    .meta {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #334155;
+    }
+    .chip strong {
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .chip .mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      background: #f59e0b;
+    }
+    .chip.solid {
+      background: #0f172a;
+      border-color: #0f172a;
+      color: #f8fafc;
+    }
+    .chip.solid .mark {
+      background: #f59e0b;
+    }
+
+    /* play affordance — thumbnail cue, not UI chrome */
+    .play {
+      position: absolute;
+      right: 18%;
+      top: 46%;
+      transform: translate(50%, -50%);
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      box-shadow:
+        0 0 0 14px rgba(15, 23, 42, 0.06),
+        0 18px 40px rgba(15, 23, 42, 0.18);
+    }
+    .play::after {
+      content: "";
+      width: 0;
+      height: 0;
+      margin-left: 6px;
+      border-style: solid;
+      border-width: 18px 0 18px 30px;
+      border-color: transparent transparent transparent #f59e0b;
+    }
+
+    .footer {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      bottom: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 2;
+    }
+    .footer .line {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: #94a3b8;
+      letter-spacing: 0.06em;
+    }
+    .footer .tag {
+      font-size: 15px;
+      font-weight: 600;
+      color: #64748b;
+    }
+    .footer .tag b {
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+  <div class="root">
+    <div class="rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+
+    <div class="cards">
+      <div class="card c1">
+        <div class="id">FIR · KA-BLR-24091</div>
+        <div class="title">Armed robbery · MG Road</div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="card c2">
+        <div class="id">LINK · 0.91</div>
+        <div class="title">Similar MO · 4 districts</div>
+        <div class="bar"><i style="width:78%"></i></div>
+      </div>
+      <div class="card c3">
+        <div class="id">ALERT · HIGH</div>
+        <div class="title">Whisper · repeat pattern</div>
+        <div class="bar"><i style="width:88%"></i></div>
+      </div>
+      <div class="card c4">
+        <div class="id">GRAPH · N12</div>
+        <div class="title">Suspect cluster resolved</div>
+        <div class="bar"><i style="width:54%"></i></div>
+      </div>
+    </div>
+
+    <svg class="graph" viewBox="0 0 420 320" aria-hidden="true">
+      <line x1="80" y1="160" x2="200" y2="90" stroke="#cbd5e1" stroke-width="2"/>
+      <line x1="200" y1="90" x2="320" y2="140" stroke="#cbd5e1" stroke-width="2"/>
+      <line x1="200" y1="90" x2="240" y2="230" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.55"/>
+      <line x1="80" y1="160" x2="240" y2="230" stroke="#cbd5e1" stroke-width="2"/>
+      <line x1="320" y1="140" x2="360" y2="250" stroke="#cbd5e1" stroke-width="2"/>
+      <circle cx="80" cy="160" r="7" fill="#0f172a"/>
+      <circle cx="200" cy="90" r="10" fill="#f59e0b"/>
+      <circle cx="320" cy="140" r="7" fill="#0f172a"/>
+      <circle cx="240" cy="230" r="7" fill="#0f172a"/>
+      <circle cx="360" cy="250" r="7" fill="#64748b"/>
+    </svg>
+
+    <div class="play" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="eyebrow">
+        <span class="pill">AI Investigation Copilot</span>
+      </div>
+
+      <div class="brand">Crime<span class="matrix">Matrix</span></div>
+      <div class="underline"></div>
+
+      <div class="headline">
+        Crime data into<br />
+        <em>actionable intelligence</em>
+      </div>
+      <div class="sub">Built for Karnataka State Police · Datathon 2026</div>
+
+      <div class="meta">
+        <span class="chip solid"><span class="mark"></span> Conversational Copilot</span>
+        <span class="chip"><span class="mark"></span> Predictive Intel</span>
+        <span class="chip"><span class="mark"></span> Whisper Alerts</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="line">PROMO · 02:30</div>
+      <div class="tag">Faster investigations · <b>safer communities</b></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -2,9 +2,17 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 async function apiRequest(path, options = {}) {
     const url = `${API_BASE}${path}`;
+    const method = (options.method || 'GET').toUpperCase();
+    const headers = { ...(options.headers || {}) };
+    // Avoid Content-Type on body-less requests so GETs stay "simple" and skip CORS preflight
+    // (AppSail edge OPTIONS often omits ACAO until the Slate origin is whitelisted).
+    if (options.body != null && !headers['Content-Type'] && !headers['content-type']) {
+        headers['Content-Type'] = 'application/json';
+    }
     const config = {
-        headers: { 'Content-Type': 'application/json' },
         ...options,
+        method,
+        headers,
     };
 
     const response = await fetch(url, config);
@@ -27,7 +35,7 @@ export function put(path, data) {
 }
 
 export function del(path) {
-    return apiRequest(path, { method: 'DELETE' });
+    return apiRequest(path);
 }
 
 export function stream(path, data, onChunk, onDone) {

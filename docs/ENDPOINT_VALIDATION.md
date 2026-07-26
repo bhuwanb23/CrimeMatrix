@@ -140,4 +140,4 @@ _None_
 | `api/v1/victims` | 4 |
 | `api/v1/witnesses` | 3 |
 
-Full JSON: `ENDPOINT_VALIDATION_20260726T110833Z.json`
+Full JSON dumps are gitignored (re-run the validator locally if needed).

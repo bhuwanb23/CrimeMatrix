@@ -51,7 +51,7 @@ Local against live APIs:
 
 ```bash
 cd frontend
-cp .env.catalyst .env.local
+cp .env.catalyst.example .env.local   # fill in your AppSail URLs
 npm run dev
 ```
 

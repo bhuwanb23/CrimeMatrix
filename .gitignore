@@ -14,10 +14,24 @@ dist/
 build/
 *.egg
 
-# Environment
+# Environment / secrets (never commit real credentials)
 .env
+.env.*
+!.env.example
+!**/.env.example
+!.env.*.example
+!**/.env.*.example
+# Vite bake-time public AppSail URLs only (no secrets)
+!frontend/.env.production
 .env.local
 .env.*.local
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+*credentials*.json
+*service-account*.json
 
 # IDE
 .vscode/
@@ -59,11 +73,16 @@ build/
 # Docker
 docker-compose.override.yml
 
-# Catalyst AppSail image archives (large)
+# Catalyst AppSail image archives (large; may embed build context)
 *.tar
 ai-services/crimematrix-ai.tar
+backend/crimematrix-backend.tar
 
-# Local Catalyst working dir secrets (if any)
+# Live endpoint probe dumps (contain deployment IDs / response samples)
+**/ENDPOINT_VALIDATION_*.json
+backend/docs/ENDPOINT_VALIDATION_latest.json/
+
+# Local Catalyst working dir (CLI config / linked apps)
 catalyst/
 
 # Keep Phase 1 Data Store schema/scripts tracked

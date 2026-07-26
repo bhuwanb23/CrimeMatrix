@@ -84,5 +84,5 @@ Manual: open the Slate URL, confirm dashboard API calls return 200, refresh `/co
 
 | Mode | How |
 |------|-----|
-| Local Vite → live APIs | Copy `.env.catalyst` → `.env.local`, then `npm run dev` |
+| Local Vite → live APIs | Copy `.env.catalyst.example` → `.env.local`, fill URLs, then `npm run dev` |
 | Slate (hosted) | Deploy as above; uses `.env.production` |

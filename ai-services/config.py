@@ -50,7 +50,7 @@ class AIConfig:
 
     # Agent defaults — OpenRouter is default provider
     default_provider: str = "openrouter"
-    default_model: str = "anthropic/claude-3.5-sonnet"
+    default_model: str = "meta-llama/llama-3.1-8b-instruct"
     max_agent_steps: int = 10
     max_context_messages: int = 50
 

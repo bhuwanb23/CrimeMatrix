@@ -26,7 +26,7 @@ Date: 2026-07-26
 | Check | Result |
 |-------|--------|
 | `GET /api/v1/health` | **PASS** (`healthy`) |
-| `GET /api/v1/districts/?page=1&page_size=5` | **PASS** (200; empty until console sets `DB_PROVIDER=catalyst` + OAuth) |
+| `GET /api/v1/districts/?page=1&page_size=5` | **PASS** (200; empty until console sets `DB_PROVIDER=catalyst` + `CM_*` OAuth) |
 | `GET /api/v1/districts` (no slash) | 400 via AppSail proxy (use trailing `/` or query) |
 | Image start (local docker, sqlite) | **PASS** |
 
@@ -52,6 +52,8 @@ Paste env with:
 cd backend
 python scripts/print_appsail_env.py
 ```
+
+Use **`CM_*` keys only** in AppSail (not `CATALYST_*` — reserved).
 
 1. **crimematrix-backend** → Configuration → env from script output + Memory **512 MB**
 2. **crimematrix-ai** → add `BACKEND_URL=https://crimematrix-backend-50044181811.development.catalystappsail.in`

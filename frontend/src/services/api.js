@@ -7,7 +7,9 @@ async function apiRequest(path, options = {}) {
     // Avoid Content-Type on body-less requests so GETs stay "simple" and skip CORS preflight
     // (AppSail edge OPTIONS often omits ACAO until the Slate origin is whitelisted).
     if (options.body != null && !headers['Content-Type'] && !headers['content-type']) {
-        headers['Content-Type'] = 'application/json';
+        // text/plain is CORS-safelisted (no preflight). AppSail edge OPTIONS
+        // omits ACAO, so application/json POSTs fail in the browser.
+        headers['Content-Type'] = 'text/plain;charset=UTF-8';
     }
     const config = {
         ...options,
@@ -42,7 +44,7 @@ export function stream(path, data, onChunk, onDone) {
     const controller = new AbortController();
     fetch(`${API_BASE}${path}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
         body: JSON.stringify(data),
         signal: controller.signal,
     }).then(response => {

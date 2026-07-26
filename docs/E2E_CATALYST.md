@@ -1,6 +1,6 @@
-# CrimeMatrix E2E on Catalyst (Backend + DB + AI)
+# CrimeMatrix E2E on Catalyst (Backend + DB + AI + Frontend)
 
-Date: 2026-07-26 (verified after `CM_*` console env)
+Date: 2026-07-26 (verified after Slate frontend deploy)
 
 ## Live URLs
 
@@ -8,7 +8,7 @@ Date: 2026-07-26 (verified after `CM_*` console env)
 |---------|-----|
 | Backend AppSail | https://crimematrix-backend-50044181811.development.catalystappsail.in |
 | AI AppSail | https://crimematrix-ai-50044181811.development.catalystappsail.in |
-| Frontend (local) | `frontend/.env.local` from `.env.catalyst` → `VITE_API_URL` → backend `/api/v1` |
+| Frontend Slate | https://crimematrix-frontend-nvjwdioh.onslate.in |
 
 ## Phase 1 Data Store
 

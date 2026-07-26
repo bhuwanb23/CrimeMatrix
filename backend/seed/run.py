@@ -142,7 +142,19 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Skip table seeding; only run intelligence bootstrap",
     )
+    parser.add_argument(
+        "--provider",
+        choices=["sqlite", "catalyst", "catalyst_local"],
+        default=None,
+        help="If catalyst/catalyst_local, delegates to catalyst_datastore.seed_phase1",
+    )
     args = parser.parse_args(argv)
+
+    if args.provider in {"catalyst", "catalyst_local"}:
+        os.environ["DB_PROVIDER"] = args.provider
+        from catalyst_datastore.seed_phase1 import main as catalyst_seed_main
+
+        return catalyst_seed_main()
 
     if args.list:
         for key, module in SEED_STEPS:

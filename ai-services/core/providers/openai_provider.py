@@ -8,14 +8,20 @@ logger = structlog.get_logger()
 
 
 class OpenAIProvider(ModelProvider):
-    def __init__(self, api_key: str = "", base_url: str = "https://api.openai.com/v1",
-                 default_model: str = "gpt-4o-mini"):
+    def __init__(
+        self,
+        api_key: str = "",
+        base_url: str = "https://api.openai.com/v1",
+        default_model: str = "gpt-4o-mini",
+        name: str = "openai",
+    ):
         self.api_key = api_key
         self.base_url = base_url
         self.default_model = default_model
+        self._name = name
 
     def get_name(self) -> str:
-        return "openai"
+        return self._name
 
     async def chat(self, messages: list, model: str = None, **kwargs) -> str:
         model = model or self.default_model

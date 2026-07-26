@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
 from contextlib import asynccontextmanager
 from app.api.v1.router import router as v1_router
 from app.core.exceptions import (
@@ -15,27 +14,41 @@ from app.audit.stores import request_logs, api_logs, metrics
 from config import get_settings
 
 
-class TextPlainJsonMiddleware(BaseHTTPMiddleware):
+class TextPlainJsonMiddleware:
     """Accept CORS-safelisted text/plain bodies as JSON (AppSail OPTIONS lacks ACAO)."""
 
-    async def dispatch(self, request: Request, call_next):
-        ct = (request.headers.get("content-type") or "").split(";")[0].strip().lower()
-        if ct == "text/plain" and request.method in {"POST", "PUT", "PATCH"}:
-            body = await request.body()
+    def __init__(self, app):
+        self.app = app
 
-            async def receive():
-                return {"type": "http.request", "body": body, "more_body": False}
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
 
-            headers = [
-                (k, v)
-                for k, v in request.scope["headers"]
-                if k.lower() != b"content-type"
-            ]
-            headers.append((b"content-type", b"application/json"))
-            scope = dict(request.scope)
-            scope["headers"] = headers
-            request = Request(scope, receive)
-        return await call_next(request)
+        headers = {k: v for k, v in scope.get("headers") or []}
+        ct = headers.get(b"content-type", b"").decode("latin-1").split(";")[0].strip().lower()
+        method = scope.get("method", "")
+        if ct != "text/plain" or method not in {"POST", "PUT", "PATCH"}:
+            await self.app(scope, receive, send)
+            return
+
+        body = b""
+        more = True
+        while more:
+            message = await receive()
+            if message["type"] != "http.request":
+                continue
+            body += message.get("body", b"")
+            more = message.get("more_body", False)
+
+        async def new_receive():
+            return {"type": "http.request", "body": body, "more_body": False}
+
+        new_headers = [(k, v) for k, v in scope["headers"] if k.lower() != b"content-type"]
+        new_headers.append((b"content-type", b"application/json"))
+        scope = dict(scope)
+        scope["headers"] = new_headers
+        await self.app(scope, new_receive, send)
 
 
 @asynccontextmanager

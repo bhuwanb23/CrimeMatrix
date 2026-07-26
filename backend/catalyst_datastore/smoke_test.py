@@ -20,6 +20,13 @@ _BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _BACKEND_ROOT not in sys.path:
     sys.path.insert(0, _BACKEND_ROOT)
 
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(os.path.join(_BACKEND_ROOT, ".env"))
+except ImportError:
+    pass
+
 
 async def run(provider_name: str) -> int:
     os.environ["DB_PROVIDER"] = provider_name

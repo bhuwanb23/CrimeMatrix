@@ -8,9 +8,20 @@ from __future__ import annotations
 
 import os
 import time
+from pathlib import Path
 from typing import Any, Optional
 
 import httpx
+
+# Ensure backend/.env is loaded once for CLI scripts / providers
+try:
+    from dotenv import load_dotenv
+
+    _env = Path(__file__).resolve().parents[3] / ".env"
+    if _env.exists():
+        load_dotenv(_env)
+except ImportError:
+    pass
 
 
 class CatalystConfigError(RuntimeError):
@@ -30,19 +41,19 @@ class CatalystClient:
         accounts_domain: Optional[str] = None,
         api_domain: Optional[str] = None,
     ):
-        self.project_id = project_id or os.getenv("CATALYST_PROJECT_ID", "46575000000013023")
-        self.org_id = org_id or os.getenv("CATALYST_ORG_ID", "60079208195")
-        self.client_id = client_id or os.getenv("CATALYST_CLIENT_ID", "")
-        self.client_secret = client_secret or os.getenv("CATALYST_CLIENT_SECRET", "")
-        self.refresh_token = refresh_token or os.getenv("CATALYST_REFRESH_TOKEN", "")
-        self.environment = environment or os.getenv("CATALYST_ENVIRONMENT", "Development")
-        self.accounts_domain = accounts_domain or os.getenv(
-            "CATALYST_ACCOUNTS_DOMAIN", "https://accounts.zoho.in"
-        )
-        self.api_domain = api_domain or os.getenv(
-            "CATALYST_API_DOMAIN", "https://api.catalyst.zoho.in"
-        )
-        self._access_token: Optional[str] = os.getenv("CATALYST_ACCESS_TOKEN") or None
+        self.project_id = (project_id or os.getenv("CATALYST_PROJECT_ID", "46575000000013023")).strip()
+        self.org_id = (org_id or os.getenv("CATALYST_ORG_ID", "60079208195")).strip()
+        self.client_id = (client_id or os.getenv("CATALYST_CLIENT_ID", "")).strip()
+        self.client_secret = (client_secret or os.getenv("CATALYST_CLIENT_SECRET", "")).strip()
+        self.refresh_token = (refresh_token or os.getenv("CATALYST_REFRESH_TOKEN", "")).strip()
+        self.environment = (environment or os.getenv("CATALYST_ENVIRONMENT", "Development")).strip()
+        self.accounts_domain = (
+            accounts_domain or os.getenv("CATALYST_ACCOUNTS_DOMAIN", "https://accounts.zoho.in")
+        ).strip().rstrip("/")
+        self.api_domain = (
+            api_domain or os.getenv("CATALYST_API_DOMAIN", "https://api.catalyst.zoho.in")
+        ).strip().rstrip("/")
+        self._access_token: Optional[str] = (os.getenv("CATALYST_ACCESS_TOKEN") or "").strip() or None
         self._token_expires_at = 0.0
         self._http = httpx.Client(timeout=60.0)
 

@@ -24,6 +24,14 @@ _BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _BACKEND_ROOT not in sys.path:
     sys.path.insert(0, _BACKEND_ROOT)
 
+# Load backend/.env so CATALYST_* credentials are available
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(os.path.join(_BACKEND_ROOT, ".env"))
+except ImportError:
+    pass
+
 from app.db.providers import get_data_provider, get_db_provider_name, init_data_provider
 from catalyst_datastore.schema.phase1_tables import SEED_ORDER
 

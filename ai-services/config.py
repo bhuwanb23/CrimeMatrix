@@ -40,7 +40,7 @@ class AIConfig:
         name="openrouter",
         api_key=os.getenv("OPENROUTER_API_KEY", ""),
         base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
-        default_model=os.getenv("OPENROUTER_MODEL", "anthropic/claude-3.5-sonnet"),
+        default_model=os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.1-8b-instruct"),
     ))
     gemini: ProviderConfig = field(default_factory=lambda: ProviderConfig(
         name="gemini",

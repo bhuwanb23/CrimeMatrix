@@ -1,3 +1,4 @@
+import os
 import uvicorn
 from dotenv import load_dotenv
 load_dotenv()
@@ -16,6 +17,10 @@ import structlog
 logger = structlog.get_logger()
 
 config = get_config()
+
+LISTEN_PORT = int(
+    os.getenv("X_ZOHO_CATALYST_LISTEN_PORT", os.getenv("PORT", str(config.port)))
+)
 
 
 def create_app() -> FastAPI:
@@ -43,6 +48,7 @@ def create_app() -> FastAPI:
             api_key=config.openrouter.api_key,
             base_url=config.openrouter.base_url,
             default_model=config.openrouter.default_model,
+            name="openrouter",
         )
         provider_registry.register(openrouter, default=True)
         logger.info("provider_registered", name="openrouter", default=True)
@@ -65,6 +71,7 @@ def create_app() -> FastAPI:
         openai = OpenAIProvider(
             api_key=config.openai.api_key,
             default_model=config.openai.default_model,
+            name="openai",
         )
         provider_registry.register(openai)
         logger.info("provider_registered", name="openai", default=False)
@@ -142,7 +149,12 @@ def create_app() -> FastAPI:
     @app.on_event("startup")
     async def startup():
         default = provider_registry.default_name
-        logger.info("ai_services_startup", port=config.port, version=config.version, default_provider=default)
+        logger.info(
+            "ai_services_startup",
+            port=LISTEN_PORT,
+            version=config.version,
+            default_provider=default,
+        )
         try:
             provider = provider_registry.get()
             healthy = await provider.health_check()
@@ -156,4 +168,4 @@ def create_app() -> FastAPI:
 app = create_app()
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host=config.host, port=config.port, reload=True)
+    uvicorn.run("main:app", host=config.host, port=LISTEN_PORT, reload=False)

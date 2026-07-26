@@ -73,3 +73,10 @@ curl https://<backend-host>/api/v1/crimes
 ```
 
 Expect Catalyst-seeded districts/crimes when `DB_PROVIDER=catalyst` and OAuth env are set.
+
+Print paste-ready env (secrets from local `.env`):
+
+```bash
+cd backend
+python scripts/print_appsail_env.py
+```

@@ -42,6 +42,8 @@ def get_service(db: AsyncSession):
 
 @router.get("/stats")
 async def evaluation_stats(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        return success_response(data=(await _phase1_bundle())["stats"])
     svc = get_service(db)
     return success_response(data=await svc.get_stats())
 
@@ -52,6 +54,13 @@ async def list_metrics(
     metric_name: str = Query(default=None),
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        metrics = (await _phase1_bundle())["metrics"]
+        if model_name:
+            metrics = [m for m in metrics if m["model_name"] == model_name]
+        if metric_name:
+            metrics = [m for m in metrics if m["metric_name"] == metric_name]
+        return success_response(data={"items": metrics, "total": len(metrics)})
     svc = get_service(db)
     metrics = await svc.get_metrics(model_name, metric_name)
     return success_response(data={"items": metrics, "total": len(metrics)})
@@ -69,6 +78,11 @@ async def list_feedback(
     prediction_id: int = Query(default=None),
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        feedback = (await _phase1_bundle())["feedback"]
+        if prediction_id:
+            feedback = [f for f in feedback if f["prediction_id"] == prediction_id]
+        return success_response(data={"items": feedback, "total": len(feedback)})
     svc = get_service(db)
     feedback = await svc.get_feedback(prediction_id)
     return success_response(data={"items": feedback, "total": len(feedback)})
@@ -83,6 +97,9 @@ async def submit_feedback(data: FeedbackRequest, db: AsyncSession = Depends(get_
 
 @router.get("/results")
 async def list_results(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        results = (await _phase1_bundle())["results"]
+        return success_response(data={"items": results, "total": len(results)})
     svc = get_service(db)
     results = await svc.get_results()
     return success_response(data={"items": results, "total": len(results)})
@@ -90,6 +107,8 @@ async def list_results(db: AsyncSession = Depends(get_db)):
 
 @router.post("/run")
 async def run_evaluation(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        return success_response(data=(await _phase1_bundle())["run"], message="Evaluation complete")
     svc = get_service(db)
     result = await svc.run_evaluation()
     return success_response(data=result, message="Evaluation complete")
@@ -97,6 +116,8 @@ async def run_evaluation(db: AsyncSession = Depends(get_db)):
 
 @router.get("/accuracy-trend")
 async def accuracy_trend(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        return success_response(data=(await _phase1_bundle())["accuracy_trend"])
     svc = get_service(db)
     trend = await svc.get_accuracy_trend()
     return success_response(data=trend)
@@ -104,5 +125,7 @@ async def accuracy_trend(db: AsyncSession = Depends(get_db)):
 
 @router.get("/drift")
 async def drift(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        return success_response(data=(await _phase1_bundle())["drift"])
     svc = get_service(db)
     return success_response(data=await svc.get_drift())

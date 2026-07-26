@@ -58,3 +58,7 @@ build/
 
 # Docker
 docker-compose.override.yml
+
+# Catalyst AppSail image archives (large)
+*.tar
+ai-services/crimematrix-ai.tar

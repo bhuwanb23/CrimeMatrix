@@ -8,11 +8,38 @@ from app.graph.neighbors import NeighborFinder
 from app.graph.components import ComponentAnalyzer
 from app.graph.timeline import TimelineAnalyzer
 from app.core.response import success_response
+from app.db.phase1_store import using_phase1_store
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
 import networkx as nx
 
 router = APIRouter()
+
+
+async def phase1_graph_elements():
+    """Crime/district/crime-type graph derived straight from the Phase-1 store."""
+    from app.db.phase1_aggregations import derive_graph_elements, geo_context
+
+    return derive_graph_elements(await geo_context())
+
+
+def populate_graph(elements: dict) -> dict:
+    """Load derived nodes/edges into the shared in-memory NetworkX graph."""
+    nodes_created = 0
+    edges_created = 0
+    for node in elements["nodes"]:
+        node_id = node["id"]
+        attrs = {k: v for k, v in node.items() if k != "id"}
+        if node_id not in graph.graph:
+            nodes_created += 1
+        graph.graph.add_node(node_id, **attrs)
+    for edge in elements["edges"]:
+        source, target = edge["source"], edge["target"]
+        attrs = {k: v for k, v in edge.items() if k not in ("source", "target")}
+        if not graph.graph.has_edge(source, target):
+            edges_created += 1
+        graph.graph.add_edge(source, target, **attrs)
+    return {"nodes_created": nodes_created, "edges_created": edges_created}
 
 # Shared graph instance
 graph = GraphManager()
@@ -43,7 +70,10 @@ class EdgeCreate(BaseModel):
 @router.get("/nodes")
 async def list_nodes():
     try:
-        return success_response(data=node_mgr.get_all_nodes())
+        nodes = node_mgr.get_all_nodes()
+        if not nodes and using_phase1_store():
+            nodes = (await phase1_graph_elements())["nodes"]
+        return success_response(data=nodes)
     except Exception as e:
         return success_response(data=[], message=str(e)[:120])
 
@@ -52,6 +82,11 @@ async def list_nodes():
 async def get_node(node_id: str):
     try:
         node = node_mgr.get_node(node_id)
+        if not node and using_phase1_store():
+            node = next(
+                (n for n in (await phase1_graph_elements())["nodes"] if n["id"] == node_id),
+                None,
+            )
         if not node:
             return success_response(message="Node not found")
         return success_response(data=node)
@@ -92,6 +127,13 @@ async def delete_node(node_id: str):
 async def search_nodes(query: str):
     try:
         results = node_mgr.search_nodes(query)
+        if not results and using_phase1_store():
+            needle = query.lower()
+            results = [
+                n
+                for n in (await phase1_graph_elements())["nodes"]
+                if needle in str(n.get("label") or "").lower() or needle in n["id"].lower()
+            ]
         return success_response(data=results)
     except Exception as e:
         return success_response(data=[], message=str(e)[:120])
@@ -101,7 +143,10 @@ async def search_nodes(query: str):
 @router.get("/edges")
 async def list_edges():
     try:
-        return success_response(data=rel_mgr.get_edges())
+        edges = rel_mgr.get_edges()
+        if not edges and using_phase1_store():
+            edges = (await phase1_graph_elements())["edges"]
+        return success_response(data=edges)
     except Exception as e:
         return success_response(data=[], message=str(e)[:120])
 
@@ -128,6 +173,12 @@ async def delete_edge(source: str, target: str):
 async def get_node_edges(node_id: str):
     try:
         edges = rel_mgr.get_node_edges(node_id)
+        if not edges and using_phase1_store():
+            edges = [
+                e
+                for e in (await phase1_graph_elements())["edges"]
+                if node_id in (e["source"], e["target"])
+            ]
         return success_response(data=edges or [])
     except Exception:
         return success_response(data=[])
@@ -224,6 +275,10 @@ async def get_node_timeline(node_id: str):
 @router.get("/stats")
 async def get_graph_stats():
     try:
+        if graph.graph.number_of_nodes() == 0 and using_phase1_store():
+            from app.db.phase1_aggregations import graph_stats as build_graph_stats
+
+            return success_response(data=build_graph_stats(await phase1_graph_elements()))
         stats = component_analyzer.get_component_stats()
         stats["total_nodes"] = graph.graph.number_of_nodes()
         stats["total_edges"] = graph.graph.number_of_edges()
@@ -323,6 +378,18 @@ async def save_all_nodes_edges(data: dict):
 
 @router.post("/build-from-crimes")
 async def build_graph_from_crimes():
+    if using_phase1_store():
+        elements = await phase1_graph_elements()
+        created = populate_graph(elements)
+        return success_response(
+            data={
+                **created,
+                "total_nodes": graph.graph.number_of_nodes(),
+                "total_edges": graph.graph.number_of_edges(),
+            },
+            message="Graph built from Phase 1 crime data",
+        )
+
     from sqlalchemy import select
     from app.models.suspect import Suspect
     from app.models.criminal import Criminal

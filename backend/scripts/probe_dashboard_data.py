@@ -58,17 +58,33 @@ def main():
             if data in (None, [], {}):
                 is_empty = True
             elif isinstance(data, dict):
-                nums = [v for v in data.values() if isinstance(v, (int, float))]
-                lists = [v for v in data.values() if isinstance(v, list)]
-                if nums and all(v == 0 for v in nums) and all(len(v) == 0 for v in lists):
-                    is_empty = True
-                if not nums and lists and all(len(v) == 0 for v in lists):
-                    is_empty = True
-                # nested items
-                if "items" in data and isinstance(data["items"], list) and len(data["items"]) == 0:
-                    is_empty = True
-                if "total" in data and data.get("total") == 0:
-                    is_empty = True
+                # Nested overview (dashboard summary)
+                overview = data.get("overview") if isinstance(data.get("overview"), dict) else None
+                if overview and any(isinstance(v, (int, float)) and v > 0 for v in overview.values()):
+                    is_empty = False
+                else:
+                    nums = [v for v in data.values() if isinstance(v, (int, float))]
+                    lists = [v for v in data.values() if isinstance(v, list)]
+                    dicts = [v for v in data.values() if isinstance(v, dict)]
+                    nested_nums = []
+                    for d in dicts:
+                        nested_nums.extend(v for v in d.values() if isinstance(v, (int, float)))
+                    all_nums = nums + nested_nums
+                    if all_nums and all(v == 0 for v in all_nums) and all(len(v) == 0 for v in lists):
+                        is_empty = True
+                    if not all_nums and lists and all(len(v) == 0 for v in lists):
+                        is_empty = True
+                    if "items" in data and isinstance(data["items"], list) and len(data["items"]) == 0:
+                        if data.get("total", 0) == 0:
+                            is_empty = True
+                    if "recommendations" in data and isinstance(data["recommendations"], list):
+                        is_empty = len(data["recommendations"]) == 0 and data.get("total_count", 0) == 0
+                    if "entries" in data and isinstance(data["entries"], list):
+                        is_empty = len(data["entries"]) == 0 and data.get("total_count", 0) == 0
+                    # totals block with any positive counts
+                    totals = data.get("totals")
+                    if isinstance(totals, dict) and any(int(v or 0) > 0 for v in totals.values()):
+                        is_empty = False
             elif isinstance(data, list) and len(data) == 0:
                 is_empty = True
 

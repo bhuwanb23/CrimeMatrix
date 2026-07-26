@@ -5,8 +5,20 @@ from typing import Optional
 from app.db.session import get_db
 from app.services.early_warning_service import EarlyWarningService
 from app.core.response import success_response
+from app.db.phase1_store import using_phase1_store
 
 router = APIRouter()
+
+
+async def _phase1_alerts():
+    from app.db.phase1_aggregations import derive_early_alerts, fetch_all_safe, resolve_names
+
+    crimes = await fetch_all_safe("crimes")
+    return derive_early_alerts(
+        crimes,
+        await resolve_names("districts"),
+        await resolve_names("crime_types"),
+    )
 
 
 class AcknowledgeRequest(BaseModel):
@@ -27,6 +39,14 @@ def get_service(db: AsyncSession):
 
 @router.get("/stats")
 async def early_warning_stats(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        alerts = await _phase1_alerts()
+        return success_response(data={
+            "total": len(alerts),
+            "active": sum(1 for a in alerts if a.get("status") == "active"),
+            "critical": sum(1 for a in alerts if a.get("severity") == "critical"),
+            "high": sum(1 for a in alerts if a.get("severity") == "high"),
+        })
     svc = get_service(db)
     return success_response(data=await svc.get_stats())
 
@@ -38,13 +58,31 @@ async def list_alerts(
     alert_type: str = Query(default=None),
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        alerts = await _phase1_alerts()
+        if status:
+            alerts = [a for a in alerts if a.get("status") == status]
+        if severity:
+            alerts = [a for a in alerts if a.get("severity") == severity]
+        if alert_type:
+            alerts = [a for a in alerts if a.get("alert_type") == alert_type]
+        return success_response(data={"items": alerts, "total": len(alerts)})
     svc = get_service(db)
     alerts = await svc.get_alerts(status, severity, alert_type)
     return success_response(data={"items": alerts, "total": len(alerts)})
 
 
 @router.get("/alerts/{alert_id}")
-async def get_alert(alert_id: int, db: AsyncSession = Depends(get_db)):
+async def get_alert(alert_id: str, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        alerts = await _phase1_alerts()
+        match = next((a for a in alerts if str(a.get("id")) == str(alert_id)), None)
+        if not match:
+            return success_response(message="Alert not found")
+        return success_response(data=match)
+    if not alert_id.isdigit():
+        return success_response(message="Alert not found")
+    alert_id = int(alert_id)
     svc = get_service(db)
     alert = await svc.get_alert(alert_id)
     if not alert:
@@ -80,6 +118,9 @@ async def alert_timeline(
     days: int = Query(default=30),
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        alerts = await _phase1_alerts()
+        return success_response(data={"items": alerts, "total": len(alerts)})
     svc = get_service(db)
     timeline = await svc.get_timeline(days)
     return success_response(data={"items": timeline, "total": len(timeline)})
@@ -87,6 +128,12 @@ async def alert_timeline(
 
 @router.post("/detect")
 async def detect_alerts(db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        alerts = await _phase1_alerts()
+        return success_response(
+            data={"alerts_created": len(alerts), "alerts_found": len(alerts), "items": alerts},
+            message="Detection complete",
+        )
     svc = get_service(db)
     result = await svc.detect_alerts()
     return success_response(data=result, message="Detection complete")

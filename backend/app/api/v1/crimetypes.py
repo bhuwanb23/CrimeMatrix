@@ -6,7 +6,7 @@ from app.services.crimetype_service import CrimeTypeService
 from app.schemas.crimetype import CrimeTypeCreate, CrimeTypeResponse
 from app.schemas.common import PaginatedResponse, PaginationParams
 from app.core.response import success_response
-from app.db.phase1_store import store_get, store_list, using_phase1_store
+from app.db.phase1_store import store_create, store_get, store_list, using_phase1_store
 
 router = APIRouter()
 
@@ -51,6 +51,14 @@ async def get_crime_type(crimetype_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/")
 async def create_crime_type(data: CrimeTypeCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        payload = data.model_dump()
+        payload.setdefault("is_active", 1)
+        try:
+            ct = await store_create("crime_types", payload)
+            return success_response(data=ct, message="Crime type created")
+        except Exception as e:
+            return success_response(message=str(e)[:200])
     svc = get_service(db)
     ct = await svc.create(data.model_dump())
     return success_response(data=CrimeTypeResponse.model_validate(ct).model_dump(), message="Crime type created")

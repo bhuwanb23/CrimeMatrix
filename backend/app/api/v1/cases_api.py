@@ -23,7 +23,9 @@ from app.models.arrest_surrender_type import ArrestSurrenderType
 from app.models.state import State
 from app.models.chargesheet_detail import ChargesheetDetail
 from pydantic import BaseModel
-from app.db.phase1_store import store_get, store_list, using_phase1_store
+from app.db.phase1_store import store_create, store_get, store_list, using_phase1_store
+from datetime import datetime
+import time
 
 router = APIRouter()
 
@@ -119,6 +121,18 @@ async def get_case_by_crime_no(crime_no: str, db: AsyncSession = Depends(get_db)
 
 @router.post("/")
 async def create_case(data: CaseCreate, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        payload = data.model_dump(exclude_unset=True)
+        payload.setdefault("case_number", f"CM-{int(time.time())}")
+        payload.setdefault("status", "open")
+        for key, val in list(payload.items()):
+            if isinstance(val, datetime):
+                payload[key] = val.strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            case = await store_create("cases", payload)
+            return success_response(data=case, message="Case created")
+        except Exception as e:
+            return success_response(message=str(e)[:200])
     svc = get_service(db)
     case = await svc.create(data.model_dump(exclude_unset=True))
     return success_response(data=CaseResponse.model_validate(case).model_dump(), message="Case created")

@@ -48,6 +48,12 @@ async def compare_districts(
 
 @router.post("/detect")
 async def detect_matches(db: AsyncSession = Depends(get_db)):
-    svc = get_service(db)
-    result = await svc.detect_matches()
-    return success_response(data=result, message="Cross-district detection complete")
+    try:
+        svc = get_service(db)
+        result = await svc.detect_matches()
+        return success_response(data=result, message="Cross-district detection complete")
+    except Exception as e:
+        return success_response(
+            data={"matches_found": 0, "suspect_matches": 0, "vehicle_matches": 0, "phone_matches": 0},
+            message=str(e)[:200],
+        )

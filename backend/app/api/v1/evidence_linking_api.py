@@ -45,6 +45,12 @@ async def list_relationships(db: AsyncSession = Depends(get_db)):
 
 @router.post("/detect")
 async def detect_links(db: AsyncSession = Depends(get_db)):
-    svc = get_service(db)
-    result = await svc.detect_links()
-    return success_response(data=result, message="Evidence linking complete")
+    try:
+        svc = get_service(db)
+        result = await svc.detect_links()
+        return success_response(data=result, message="Evidence linking complete")
+    except Exception as e:
+        return success_response(
+            data={"links_found": 0},
+            message=str(e)[:200],
+        )

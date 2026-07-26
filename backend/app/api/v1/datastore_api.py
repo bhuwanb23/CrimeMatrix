@@ -1,6 +1,6 @@
 """Direct Phase 1 Data Store CRUD (for smoke tests / ops)."""
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from typing import Any, Optional
 
 from app.core.response import success_response
@@ -56,8 +56,13 @@ async def create_table_row(table: str, body: dict[str, Any]):
         return success_response(message=f"Unknown Phase 1 table: {table}")
     if not using_phase1_store():
         return success_response(message="Set DB_PROVIDER=catalyst or catalyst_local")
-    row = await store_create(table, body)
-    return success_response(data=row, message="Created")
+    if not body:
+        raise HTTPException(status_code=422, detail="Request body cannot be empty")
+    try:
+        row = await store_create(table, body)
+        return success_response(data=row, message="Created")
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=str(e)[:300])
 
 
 @router.delete("/{table}/{row_id}")

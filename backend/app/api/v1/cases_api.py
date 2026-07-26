@@ -325,6 +325,25 @@ class VictimUpdate(BaseModel):
 
 @router.get("/{case_id}/victims")
 async def get_victims(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import case_children, resolve_names
+
+        rows = await case_children("victims", case_id)
+        genders = await resolve_names("genders")
+        items = [
+            {
+                "id": row.get("id"),
+                "case_id": row.get("case_id"),
+                "name": row.get("name"),
+                "age_year": row.get("age_year"),
+                "gender_id": row.get("gender_id"),
+                "gender_name": genders.get(str(row.get("gender_id"))),
+                "is_police": bool(row.get("is_police")),
+                "created_at": row.get("created_at"),
+            }
+            for row in rows
+        ]
+        return success_response(data={"items": items, "total": len(items)})
     result = await db.execute(select(Victim).where(Victim.case_id == case_id))
     items = []
     for v in result.scalars().all():
@@ -402,6 +421,24 @@ class AccusedUpdate(BaseModel):
 
 @router.get("/{case_id}/accused")
 async def get_accused(case_id: int, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        from app.db.phase1_aggregations import case_children, resolve_names
+
+        rows = await case_children("accused", case_id)
+        genders = await resolve_names("genders")
+        items = [
+            {
+                "id": row.get("id"),
+                "case_id": row.get("case_id"),
+                "name": row.get("name"),
+                "age_year": row.get("age_year"),
+                "gender_id": row.get("gender_id"),
+                "gender_name": genders.get(str(row.get("gender_id"))),
+                "person_id": row.get("person_id"),
+            }
+            for row in rows
+        ]
+        return success_response(data={"items": items, "total": len(items)})
     result = await db.execute(select(Accused).where(Accused.case_id == case_id))
     items = []
     for a in result.scalars().all():

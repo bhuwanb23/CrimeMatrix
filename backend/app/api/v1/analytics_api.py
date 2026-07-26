@@ -158,6 +158,17 @@ async def crime_time_series(
     end_date: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        try:
+            data = await store_list("crimes", page=1, page_size=100)
+            buckets: dict[str, int] = {}
+            for item in data.get("items") or []:
+                raw = item.get("occurred_at") or item.get("CREATEDTIME") or item.get("created_at")
+                day = str(raw)[:10] if raw else "unknown"
+                buckets[day] = buckets.get(day, 0) + 1
+            return success_response(data=[{"date": d, "value": v} for d, v in sorted(buckets.items())])
+        except Exception:
+            return success_response(data=[])
     engine = TimeSeriesEngine(db)
     data = await engine.crime_series(start_date, end_date)
     return success_response(data=data)
@@ -169,6 +180,16 @@ async def case_time_series(
     end_date: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        try:
+            data = await store_list("cases", page=1, page_size=100)
+            buckets: dict[str, int] = {}
+            for item in data.get("items") or []:
+                status = str(item.get("status") or "unknown")
+                buckets[status] = buckets.get(status, 0) + 1
+            return success_response(data=[{"date": d, "value": v} for d, v in sorted(buckets.items())])
+        except Exception:
+            return success_response(data=[])
     engine = TimeSeriesEngine(db)
     data = await engine.case_series(start_date, end_date)
     return success_response(data=data)
@@ -180,6 +201,20 @@ async def activity_time_series(
     end_date: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
 ):
+    if using_phase1_store():
+        try:
+            data = await store_list("crimes", page=1, page_size=100)
+            series: dict[str, dict] = {}
+            for item in data.get("items") or []:
+                raw = item.get("occurred_at") or item.get("CREATEDTIME") or item.get("created_at")
+                day = str(raw)[:10] if raw else "unknown"
+                if day not in series:
+                    series[day] = {"date": day, "crimes": 0, "total": 0}
+                series[day]["crimes"] += 1
+                series[day]["total"] += 1
+            return success_response(data=sorted(series.values(), key=lambda x: x["date"]))
+        except Exception:
+            return success_response(data=[])
     engine = TimeSeriesEngine(db)
     data = await engine.activity_series(start_date, end_date)
     return success_response(data=data)

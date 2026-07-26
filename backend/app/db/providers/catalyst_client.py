@@ -149,7 +149,8 @@ class CatalystClient:
     # ---- Rows ----
 
     def insert_row(self, table: str, row: dict) -> dict:
-        result = self.request("POST", f"/table/{table}/row", json=row)
+        # Catalyst REST expects an array of row objects
+        result = self.request("POST", f"/table/{table}/row", json=[row])
         if isinstance(result, list) and result:
             return result[0]
         return result or {}
@@ -162,6 +163,7 @@ class CatalystClient:
         return self.request("GET", f"/table/{table}/row/{row_id}")
 
     def update_row(self, table: str, row: dict) -> dict:
+        # Update also expects an array
         result = self.request("PUT", f"/table/{table}/row", json=[row] if isinstance(row, dict) else row)
         if isinstance(result, list) and result:
             return result[0]

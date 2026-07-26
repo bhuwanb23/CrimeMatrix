@@ -69,13 +69,15 @@ async def seed_all() -> dict[str, int]:
     id_map: dict[str, dict[Any, Any]] = {}
 
     # states
+    # NOTE: live table has states.code as bigint (manual create mismatch). Store
+    # numeric legacy_id in `code` and keep string codes only in id_map keys.
     for i, (sname, code) in enumerate(STATE_ROWS, start=1):
         row = await _upsert(
             provider,
             "states",
-            "code",
-            code,
-            {"legacy_id": i, "name": sname, "active": True},
+            "legacy_id",
+            i,
+            {"legacy_id": i, "name": sname, "code": i, "active": True},
         )
         id_map.setdefault("states", {})[code] = row["id"]
         id_map.setdefault("states_legacy", {})[i] = row["id"]
@@ -408,7 +410,6 @@ async def seed_all() -> dict[str, int]:
                 "status": "active",
                 "priority_level": "medium",
                 "progress": 20 * i,
-                "district": "Bengaluru Urban",
             },
         )
         await _upsert(

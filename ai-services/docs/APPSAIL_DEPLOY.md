@@ -28,6 +28,7 @@ Custom AppSail **cannot** receive secrets from the CLI. Set them in the console:
 | `OPENROUTER_API_KEY` | *(copy from local `ai-services/.env` — never commit)* |
 | `OPENROUTER_MODEL` | `meta-llama/llama-3.1-8b-instruct` |
 | `EMBEDDING_BACKEND` | `tfidf` |
+| `BACKEND_URL` | `https://crimematrix-backend-50044181811.development.catalystappsail.in` |
 
 5. Save and wait ~30–60 seconds for a new instance.
 

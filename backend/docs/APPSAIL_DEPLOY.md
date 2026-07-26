@@ -2,9 +2,7 @@
 
 ## Live URL
 
-After first deploy, Catalyst assigns a host like:
-
-**https://crimematrix-backend-&lt;project&gt;.development.catalystappsail.in**
+**https://crimematrix-backend-50044181811.development.catalystappsail.in**
 
 | Item | Value |
 |------|--------|
@@ -38,6 +36,12 @@ Custom AppSail **cannot** receive secrets from the CLI. Set them in the console:
 | `STORAGE_PROVIDER` | `catalyst` |
 
 5. Save; wait ~30–60s for a new instance.
+
+Also set on **crimematrix-ai**:
+
+| Key | Value |
+|-----|--------|
+| `BACKEND_URL` | `https://crimematrix-backend-50044181811.development.catalystappsail.in` |
 
 ## Rebuild + redeploy
 

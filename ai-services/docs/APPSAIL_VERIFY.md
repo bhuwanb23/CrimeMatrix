@@ -11,7 +11,7 @@ knowledge/* (empty graph OK), monitor/*, memory/*, search/rewrite|expand.
 
 ## Tier C — expected fail until backend is deployed
 
-These call `BACKEND_URL` (default `http://localhost:8001`). On AppSail that host
+These call `BACKEND_URL` (default `http://localhost:8000`). On AppSail that host
 is unreachable until the CrimeMatrix backend is deployed and `BACKEND_URL` is set
 in the AppSail environment.
 

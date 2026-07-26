@@ -35,6 +35,17 @@ async def list_criminals(page: int = 1, page_size: int = 20, db: AsyncSession = 
     result = await svc.get_paginated(params); return {"success": True, "data": {"items": [{"id": i.id, "title": getattr(i, "title", getattr(i, "name", "")), "status": getattr(i, "status", "")} for i in result.items], "total": result.total, "page": result.page, "page_size": result.page_size, "total_pages": result.total_pages}, "message": "Success"}
 
 
+@router.get("/high-risk")
+async def high_risk_criminals(min_score: float = 70.0, db: AsyncSession = Depends(get_db)):
+    if using_phase1_store():
+        data = await store_list("criminals", page=1, page_size=100)
+        items = [i for i in data["items"] if float(i.get("risk_score") or 0) >= min_score]
+        return success_response(data=items)
+    svc = get_service(db)
+    results = await svc.get_high_risk(min_score)
+    return success_response(data=[CriminalResponse.model_validate(r).model_dump() for r in results])
+
+
 @router.get("/{criminal_id}")
 async def get_criminal(criminal_id: int, db: AsyncSession = Depends(get_db)):
     if using_phase1_store():
@@ -70,11 +81,4 @@ async def delete_criminal(criminal_id: int, db: AsyncSession = Depends(get_db)):
     svc = get_service(db)
     deleted = await svc.delete(criminal_id)
     return success_response(message="Criminal deleted" if deleted else "Criminal not found")
-
-
-@router.get("/high-risk")
-async def high_risk_criminals(min_score: float = 70.0, db: AsyncSession = Depends(get_db)):
-    svc = get_service(db)
-    results = await svc.get_high_risk(min_score)
-    return success_response(data=[CriminalResponse.model_validate(r).model_dump() for r in results])
 

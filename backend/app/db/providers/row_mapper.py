@@ -2,9 +2,29 @@
 
 from __future__ import annotations
 
+from datetime import date, datetime
 from typing import Any, Optional
 
 from catalyst_datastore.schema.phase1_tables import API_TO_STORE_FIELDS, STORE_TO_API_FIELDS
+
+
+def _to_catalyst_value(value: Any) -> Any:
+    """Coerce Python values into Catalyst-friendly JSON types."""
+    if isinstance(value, datetime):
+        # Catalyst expects: YYYY-MM-DD HH:MM:SS:mmm
+        return value.strftime("%Y-%m-%d %H:%M:%S:") + f"{int(value.microsecond / 1000):03d}"
+    if isinstance(value, date):
+        return value.strftime("%Y-%m-%d")
+    if isinstance(value, str):
+        s = value.strip()
+        if "T" in s and len(s) >= 19:
+            try:
+                dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
+                return dt.strftime("%Y-%m-%d %H:%M:%S:") + f"{int(dt.microsecond / 1000):03d}"
+            except ValueError:
+                return value
+        return value
+    return value
 
 
 def to_api_row(row: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:
@@ -32,7 +52,11 @@ def to_api_row(row: Optional[dict[str, Any]]) -> Optional[dict[str, Any]]:
 
 
 def from_api_row(row: dict[str, Any], *, include_rowid: bool = False) -> dict[str, Any]:
-    out = {k: v for k, v in row.items() if v is not None and k not in ("id", "ROWID")}
+    out = {}
+    for k, v in row.items():
+        if v is None or k in ("id", "ROWID"):
+            continue
+        out[k] = _to_catalyst_value(v)
     # API priority -> store priority_level
     for api_key, store_key in API_TO_STORE_FIELDS.items():
         if api_key in out:

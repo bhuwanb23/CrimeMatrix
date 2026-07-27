@@ -18,7 +18,7 @@ export default function ProactiveIntelligencePage() {
   useEffect(() => { loadAll(); autoProcess() }, [])
 
   async function autoProcess() {
-    try { await batchProcess() } catch (e) { /* silent */ }
+    try { await batchProcess() } catch { /* silent */ }
   }
 
   async function loadAll() {

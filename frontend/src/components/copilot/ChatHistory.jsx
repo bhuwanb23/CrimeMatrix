@@ -9,7 +9,7 @@ function CollapsibleSection({ title, defaultOpen = true, children }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
     <div className="mb-2">
-      <button className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setOpen(!open)}>
+      <button className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider hover:bg-[var(--bg-hover)] rounded-lg transition-colors" onClick={() => setOpen(!open)}>
         {open ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
         {title}
       </button>
@@ -22,9 +22,9 @@ function ChatItem({ item, active, onClick, t }) {
   const colorIdx = Math.abs((item.session_id || '').charCodeAt(0) || 0) % COLORS.length
   const initial = (item.title || 'N')[0].toUpperCase()
   return (
-    <button className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 mb-0.5 group ${active ? 'bg-blue-50 border border-blue-200' : 'hover:bg-gray-50'}`} onClick={onClick}>
+    <button className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all duration-150 mb-0.5 group ${active ? 'bg-blue-50 border border-blue-200' : 'hover:bg-[var(--bg-hover)]'}`} onClick={onClick}>
       <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 ${COLORS[colorIdx]}`}>{initial}</div>
-      <span className="text-sm text-gray-700 truncate flex-1">{item.title || t('New Conversation')}</span>
+      <span className="text-sm text-[var(--text-secondary)] truncate flex-1">{item.title || t('New Conversation')}</span>
       {item.is_pinned && <Pin size={12} className="text-amber-500 flex-shrink-0" />}
     </button>
   )
@@ -45,16 +45,16 @@ export default function ChatHistory({ sessions = [], activeChatId, onSelectChat,
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-        <h2 className="text-sm font-semibold text-gray-800">{t('Chat History')}</h2>
-        <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"><X size={16} /></button>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
+        <h2 className="text-sm font-semibold text-[var(--text-primary)]">{t('Chat History')}</h2>
+        <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-secondary)] transition-colors"><X size={16} /></button>
       </div>
 
       {/* Search */}
       <div className="px-3 pt-3">
-        <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
-          <Search size={14} className="text-gray-400" />
-          <input type="text" placeholder={t('Search conversations...')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1 bg-transparent text-xs text-gray-700 outline-none placeholder-gray-400" />
+        <div className="flex items-center gap-2 bg-[var(--bg-input)] rounded-lg px-3 py-2">
+          <Search size={14} className="text-[var(--text-muted)]" />
+          <input type="text" placeholder={t('Search conversations...')} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1 bg-transparent text-xs text-[var(--text-secondary)] outline-none placeholder-gray-400" />
         </div>
       </div>
 
@@ -78,11 +78,11 @@ export default function ChatHistory({ sessions = [], activeChatId, onSelectChat,
             {olderSessions.map((chat) => (<ChatItem key={chat.session_id} item={chat} active={activeChatId === chat.session_id} onClick={() => onSelectChat(chat.session_id)} t={t} />))}
           </CollapsibleSection>
         )}
-        {filteredSessions.length === 0 && <div className="text-center text-gray-400 text-xs py-8">{searchQuery ? t('No matching conversations') : t('No conversations yet. Start a new chat!')}</div>}
+        {filteredSessions.length === 0 && <div className="text-center text-[var(--text-muted)] text-xs py-8">{searchQuery ? t('No matching conversations') : t('No conversations yet. Start a new chat!')}</div>}
       </div>
 
       {sessions.length > 0 && (
-        <div className="px-3 py-3 border-t border-gray-200">
+        <div className="px-3 py-3 border-t border-[var(--border)]">
           <button onClick={onDeleteAll} className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors border border-red-200">
             <Trash2 size={14} /> {t('Delete All Conversations')}
           </button>

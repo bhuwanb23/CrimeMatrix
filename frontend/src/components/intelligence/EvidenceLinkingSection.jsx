@@ -4,8 +4,6 @@ import { detectEvidenceLinks, listEvidenceLinks, getEvidenceLinkingStats } from 
 import { explainEvidenceLink } from '../../services/proactive'
 import ExplainButton from './ExplainButton'
 import ExplanationPanel from './ExplanationPanel'
-import { useLanguage } from '../../context/LanguageContext'
-
 const linkTypeConfig = {
   same_type: { icon: FileText, label: 'Same Type', color: '#3b82f6' },
   description_match: { icon: Search, label: 'Description Match', color: '#f59e0b' },
@@ -13,7 +11,6 @@ const linkTypeConfig = {
 const PAGE_SIZE = 10
 
 export default function EvidenceLinkingSection() {
-  const { t } = useLanguage()
   const [links, setLinks] = useState([])
   const [stats, setStats] = useState(null)
   const [detecting, setDetecting] = useState(false)

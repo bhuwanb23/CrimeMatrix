@@ -1,13 +1,20 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { RefreshCw, Plus, Network } from 'lucide-react'
+import { RefreshCw, Plus, Network, PanelRightClose, PanelRightOpen } from 'lucide-react'
 import GraphCanvas from './graph/GraphCanvas'
 import NodeDetailsPanel from './graph/NodeDetailsPanel'
 import GraphControls from './graph/GraphControls'
 import { getGraphNodes, getGraphEdges, getGraphStats, buildGraphFromCrimes } from '../services/graph'
 import { useLanguage } from '../context/LanguageContext'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 export default function GraphPage() {
+  const isMobile = useMediaQuery('(max-width: 1023px)')
   const [selectedNode, setSelectedNode] = useState(null)
+  const [detailsPanelOpen, setDetailsPanelOpen] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia('(max-width: 1023px)').matches
+  })
+  const [detailsPanelDesktopPreference, setDetailsPanelDesktopPreference] = useState(true)
   const [activeView, setActiveView] = useState('all')
   const [nodes, setNodes] = useState([])
   const [edges, setEdges] = useState([])
@@ -64,13 +71,31 @@ export default function GraphPage() {
 
   useEffect(() => { loadGraph({ autoBuild: true }) }, [loadGraph])
 
+  useEffect(() => {
+    if (isMobile) {
+      setDetailsPanelOpen(false)
+      return
+    }
+    setDetailsPanelOpen(detailsPanelDesktopPreference)
+  }, [detailsPanelDesktopPreference, isMobile])
+
   async function handleBuildGraph() {
     setBuilding(true)
     try { await buildGraphFromCrimes(); await loadGraph() } catch (e) { console.error(e) } finally { setBuilding(false) }
   }
 
-  function handleNodeSelect(node) { setSelectedNode((prev) => (prev?.id === node.id ? null : node)) }
+  function handleNodeSelect(node) {
+    setSelectedNode((prev) => (prev?.id === node.id ? null : node))
+    if (isMobile) setDetailsPanelOpen(true)
+  }
   function handleCloseDetails() { setSelectedNode(null) }
+  function handleToggleDetailsPanel() {
+    setDetailsPanelOpen((prev) => {
+      const next = !prev
+      if (!isMobile) setDetailsPanelDesktopPreference(next)
+      return next
+    })
+  }
   function handleZoomIn() { canvasRef.current?.zoomIn?.() }
   function handleZoomOut() { canvasRef.current?.zoomOut?.() }
   function handleReset() { canvasRef.current?.resetView?.() }
@@ -149,6 +174,15 @@ export default function GraphPage() {
           typeFilter={typeFilter}
           onToggleType={toggleTypeFilter}
         />
+        <button
+          type="button"
+          onClick={handleToggleDetailsPanel}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-[var(--border)] bg-[var(--bg-card)] text-xs font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
+          aria-label={detailsPanelOpen ? t('Hide panel') : t('Show panel')}
+        >
+          {detailsPanelOpen ? <PanelRightClose size={14} /> : <PanelRightOpen size={14} />}
+          <span>{t('Panel')}</span>
+        </button>
       </div>
 
       {/* Canvas + Details Panel — same layout as MapPage */}
@@ -183,13 +217,35 @@ export default function GraphPage() {
           </div>
         </div>
 
-        <NodeDetailsPanel
-          node={selectedNode}
-          edges={edges}
-          nodes={nodes}
-          onClose={handleCloseDetails}
-        />
+        {!isMobile && detailsPanelOpen && (
+          <NodeDetailsPanel
+            node={selectedNode}
+            edges={edges}
+            nodes={nodes}
+            onClose={handleCloseDetails}
+          />
+        )}
       </div>
+
+      {isMobile && detailsPanelOpen && (
+        <>
+          <button
+            type="button"
+            className="page-right-drawer-backdrop"
+            aria-label={t('Close node panel')}
+            onClick={() => setDetailsPanelOpen(false)}
+          />
+          <div className="page-right-drawer page-right-drawer-open">
+            <NodeDetailsPanel
+              node={selectedNode}
+              edges={edges}
+              nodes={nodes}
+              onClose={() => setDetailsPanelOpen(false)}
+              className="w-full max-w-none max-lg:max-h-none max-md:max-h-none h-full rounded-none border-0"
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

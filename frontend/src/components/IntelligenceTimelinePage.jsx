@@ -91,7 +91,7 @@ export default function IntelligenceTimelinePage() {
   const grouped = groupByDate(entries)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Hero Header */}
         <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
@@ -122,13 +122,13 @@ export default function IntelligenceTimelinePage() {
               { label: 'Evidence Links', value: (stats.evidence_links || 0) + (stats.link_history || 0), icon: Link2, color: 'text-blue-500' },
               { label: 'Recommendations', value: stats.recommendation_history || 0, icon: Sparkles, color: 'text-amber-500' },
             ].map(({ label, value, icon: Icon, color }) => (
-              <div key={label} className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center`}>
+              <div key={label} className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-xl bg-[var(--bg-muted)] flex items-center justify-center`}>
                   <Icon size={18} className={color} />
                 </div>
                 <div>
-                  <p className="text-lg font-bold text-slate-900">{value}</p>
-                  <p className="text-[10px] text-slate-500">{t(label)}</p>
+                  <p className="text-lg font-bold text-[var(--text-primary)]">{value}</p>
+                  <p className="text-[10px] text-[var(--text-muted)]">{t(label)}</p>
                 </div>
               </div>
             ))}
@@ -147,13 +147,13 @@ export default function IntelligenceTimelinePage() {
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
                   activeTab === tab.key
                     ? 'bg-violet-500/10 text-violet-600 border border-violet-500/30 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-white border border-transparent'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] border border-transparent'
                 }`}
               >
                 <TabIcon size={12} />
                 {t(tab.label)}
                 {count > 0 && (
-                  <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-full">
+                  <span className="text-[10px] bg-[var(--bg-input)] text-[var(--text-muted)] px-1.5 py-0.5 rounded-full">
                     {count}
                   </span>
                 )}
@@ -166,13 +166,13 @@ export default function IntelligenceTimelinePage() {
         {loading ? (
           <div className="flex items-center justify-center py-16">
             <div className="w-6 h-6 border-2 border-violet-400/30 border-t-violet-400 rounded-full animate-spin" />
-            <span className="ml-3 text-slate-500 text-sm">{t('Loading timeline...')}</span>
+            <span className="ml-3 text-[var(--text-muted)] text-sm">{t('Loading timeline...')}</span>
           </div>
         ) : entries.length === 0 ? (
-          <div className="text-center py-16 bg-white border border-slate-200 rounded-2xl">
-            <Clock size={40} className="mx-auto text-slate-200 mb-3" />
-            <p className="text-slate-500 font-medium">{t('No timeline entries')}</p>
-            <p className="text-slate-400 text-xs mt-1">{t('Intelligence activity will appear here as events are processed')}</p>
+          <div className="text-center py-16 bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl">
+            <Clock size={40} className="mx-auto text-[var(--text-muted)] mb-3" />
+            <p className="text-[var(--text-muted)] font-medium">{t('No timeline entries')}</p>
+            <p className="text-[var(--text-muted)] text-xs mt-1">{t('Intelligence activity will appear here as events are processed')}</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -180,21 +180,21 @@ export default function IntelligenceTimelinePage() {
               <div key={date}>
                 {/* Date header */}
                 <div className="flex items-center gap-3 mb-3">
-                  <Calendar size={12} className="text-slate-400" />
-                  <span className="text-xs font-semibold text-slate-600">{date === 'Unknown Date' ? t('Unknown Date') : date}</span>
-                  <div className="flex-1 h-px bg-slate-200" />
-                  <span className="text-[10px] text-slate-400">{dateEntries.length} {t('entries')}</span>
+                  <Calendar size={12} className="text-[var(--text-muted)]" />
+                  <span className="text-xs font-semibold text-[var(--text-secondary)]">{date === 'Unknown Date' ? t('Unknown Date') : date}</span>
+                  <div className="flex-1 h-px bg-[var(--bg-input)]" />
+                  <span className="text-[10px] text-[var(--text-muted)]">{dateEntries.length} {t('entries')}</span>
                 </div>
 
                 {/* Entries */}
-                <div className="space-y-1.5 ml-4 border-l-2 border-slate-100 pl-4">
+                <div className="space-y-1.5 ml-4 border-l-2 border-[var(--border)] pl-4">
                   {dateEntries.map((entry, i) => {
                     const config = sourceConfig[entry.source] || sourceConfig.event
                     const Icon = config.icon
                     return (
                       <div
                         key={entry.id || i}
-                        className="relative flex items-start gap-3 p-3 bg-white border border-slate-100 rounded-xl hover:border-slate-200 hover:shadow-sm transition-all"
+                        className="relative flex items-start gap-3 p-3 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl hover:border-[var(--border)] hover:shadow-sm transition-all"
                       >
                         {/* Timeline dot */}
                         <div className={`absolute -left-[21px] top-4 w-2.5 h-2.5 rounded-full ${config.dot} ring-2 ring-white`} />
@@ -211,17 +211,17 @@ export default function IntelligenceTimelinePage() {
                               {t(config.label)}
                             </span>
                             {entry.score != null && (
-                              <span className="text-[10px] font-mono text-slate-400">{Math.round(entry.score)}%</span>
+                              <span className="text-[10px] font-mono text-[var(--text-muted)]">{Math.round(entry.score)}%</span>
                             )}
                           </div>
-                          <p className="text-xs font-medium text-slate-900 mt-0.5 leading-relaxed">{entry.title}</p>
+                          <p className="text-xs font-medium text-[var(--text-primary)] mt-0.5 leading-relaxed">{entry.title}</p>
                           {entry.details && (
-                            <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2">{entry.details}</p>
+                            <p className="text-[11px] text-[var(--text-muted)] mt-0.5 line-clamp-2">{entry.details}</p>
                           )}
                         </div>
 
                         {/* Timestamp */}
-                        <span className="text-[10px] text-slate-400 whitespace-nowrap flex-shrink-0">
+                        <span className="text-[10px] text-[var(--text-muted)] whitespace-nowrap flex-shrink-0">
                           {timeAgo(entry.created_at, t)}
                         </span>
                       </div>

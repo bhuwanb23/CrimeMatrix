@@ -25,7 +25,7 @@ export default function CrimeTypePredictions({ predictions }) {
   })
 
   const types = Object.values(grouped).sort((a, b) => b.total - a.total)
-  const maxTotal = Math.max(...types.map(t => t.total), 1)
+  const maxTotal = Math.max(...types.map((row) => row.total), 1)
 
   return (
     <div className="analytics-panel">
@@ -34,14 +34,14 @@ export default function CrimeTypePredictions({ predictions }) {
         <h3>{t('Crime Type Predictions')}</h3>
       </div>
       <div className="analytics-type-list">
-        {types.map((t, i) => (
-          <div key={i} className="analytics-type-item">
+        {types.map((row, i) => (
+          <div key={`${row.type_id}-${i}`} className="analytics-type-item">
             <div className="analytics-type-header">
-              <span className="analytics-type-name">{t('Type')} #{t.type_id}</span>
-              <span className="analytics-type-count">{Math.round(t.total)}</span>
+              <span className="analytics-type-name">{t('Type')} #{row.type_id}</span>
+              <span className="analytics-type-count">{Math.round(row.total)}</span>
             </div>
             <div className="analytics-type-bar">
-              <div className="analytics-type-fill" style={{ width: `${(t.total / maxTotal) * 100}%` }} />
+              <div className="analytics-type-fill" style={{ width: `${(row.total / maxTotal) * 100}%` }} />
             </div>
           </div>
         ))}

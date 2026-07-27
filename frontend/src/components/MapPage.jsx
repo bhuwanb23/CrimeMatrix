@@ -1,16 +1,23 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useLanguage } from '../context/LanguageContext'
-import { RefreshCw, MapPin } from 'lucide-react'
+import { RefreshCw, MapPin, PanelRightClose, PanelRightOpen } from 'lucide-react'
 import MapCanvas from './map/MapCanvas'
 import DistrictPanel from './map/DistrictPanel'
 import MapLayerControls from './map/MapLayerControls'
 import MapTimeSlider from './map/MapTimeSlider'
 import MapFilterPanel from './map/MapFilterPanel'
 import { getCrimeMarkers, getDistrictGeoJSON, getHeatmapData, getHotspotMarkers, getStationMarkers, getRouteData, getMapStats } from '../services/maps'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 export default function MapPage() {
   const { t } = useLanguage()
+  const isMobile = useMediaQuery('(max-width: 1023px)')
   const [selectedDistrict, setSelectedDistrict] = useState(null)
+  const [districtPanelOpen, setDistrictPanelOpen] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia('(max-width: 1023px)').matches
+  })
+  const [districtPanelDesktopPreference, setDistrictPanelDesktopPreference] = useState(true)
   const [activeLayers, setActiveLayers] = useState(['crimes', 'hotspots', 'stations'])
   const [days, setDays] = useState(30)
   const [filters, setFilters] = useState({ crime_type: '' })
@@ -50,6 +57,14 @@ export default function MapPage() {
     loadMapData()
   }, [loadMapData])
 
+  useEffect(() => {
+    if (isMobile) {
+      setDistrictPanelOpen(false)
+      return
+    }
+    setDistrictPanelOpen(districtPanelDesktopPreference)
+  }, [districtPanelDesktopPreference, isMobile])
+
   function toggleLayer(layerId) {
     setActiveLayers((prev) =>
       prev.includes(layerId) ? prev.filter((l) => l !== layerId) : [...prev, layerId]
@@ -60,6 +75,17 @@ export default function MapPage() {
     setSelectedDistrict((prev) =>
       prev?.name === district?.name ? null : district
     )
+    if (isMobile) {
+      setDistrictPanelOpen(true)
+    }
+  }
+
+  function handleToggleDistrictPanel() {
+    setDistrictPanelOpen((prev) => {
+      const next = !prev
+      if (!isMobile) setDistrictPanelDesktopPreference(next)
+      return next
+    })
   }
 
   const statItems = [
@@ -111,6 +137,15 @@ export default function MapPage() {
         <MapTimeSlider days={days} onChange={setDays} />
         <div className="w-px h-6 bg-[var(--bg-input)] shrink-0 max-lg:hidden" aria-hidden="true" />
         <MapFilterPanel filters={filters} onChange={setFilters} />
+        <button
+          type="button"
+          onClick={handleToggleDistrictPanel}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-[var(--border)] bg-[var(--bg-card)] text-xs font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]"
+          aria-label={districtPanelOpen ? t('Hide panel') : t('Show panel')}
+        >
+          {districtPanelOpen ? <PanelRightClose size={14} /> : <PanelRightOpen size={14} />}
+          <span>{t('Panel')}</span>
+        </button>
       </div>
 
       <div className="flex gap-3 flex-1 min-h-0 min-w-0 max-lg:flex-col">
@@ -124,13 +159,35 @@ export default function MapPage() {
           />
         </div>
 
-        <DistrictPanel
-          selectedDistrict={selectedDistrict}
-          onClose={() => setSelectedDistrict(null)}
-          mapData={mapData}
-          stats={stats}
-        />
+        {!isMobile && districtPanelOpen && (
+          <DistrictPanel
+            selectedDistrict={selectedDistrict}
+            onClose={() => setSelectedDistrict(null)}
+            mapData={mapData}
+            stats={stats}
+          />
+        )}
       </div>
+
+      {isMobile && districtPanelOpen && (
+        <>
+          <button
+            type="button"
+            className="page-right-drawer-backdrop"
+            aria-label={t('Close district panel')}
+            onClick={() => setDistrictPanelOpen(false)}
+          />
+          <div className="page-right-drawer page-right-drawer-open">
+            <DistrictPanel
+              selectedDistrict={selectedDistrict}
+              onClose={() => setDistrictPanelOpen(false)}
+              mapData={mapData}
+              stats={stats}
+              className="w-full max-w-none max-lg:max-h-none max-md:max-h-none h-full rounded-none border-0"
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

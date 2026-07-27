@@ -45,9 +45,9 @@ export default function CrimeTypeChart() {
       </div>
       <div className="chart-card-body">
         {loading ? (
-          <p className="text-sm text-slate-400 m-0">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('Loading...')}</p>
         ) : categories.length === 0 ? (
-          <p className="text-sm text-slate-400 m-0">{t('No crime type data')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('No crime type data')}</p>
         ) : (
           <>
             <div className="category-total">

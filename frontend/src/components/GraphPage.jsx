@@ -139,7 +139,7 @@ export default function GraphPage() {
 
       {/* Controls Bar — white toolbar like MapPage */}
       <div role="toolbar" aria-label="Graph controls"
-        className="flex items-center gap-3 flex-wrap px-3 py-2.5 bg-white border border-slate-200 rounded-[10px] shrink-0">
+        className="flex items-center gap-3 flex-wrap px-3 py-2.5 bg-[var(--bg-card)] border border-[var(--border)] rounded-[10px] shrink-0">
         <GraphControls
           activeView={activeView}
           onViewChange={setActiveView}
@@ -153,11 +153,11 @@ export default function GraphPage() {
 
       {/* Canvas + Details Panel — same layout as MapPage */}
       <div className="flex gap-3 flex-1 min-h-0 min-w-0 max-lg:flex-col">
-        <div className="flex flex-1 flex-col min-w-0 min-h-0 bg-white border border-slate-200 rounded-xl overflow-hidden max-lg:min-h-[min(52vh,480px)] max-lg:order-1 max-md:min-h-[360px]">
+        <div className="flex flex-1 flex-col min-w-0 min-h-0 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden max-lg:min-h-[min(52vh,480px)] max-lg:order-1 max-md:min-h-[360px]">
           {loading ? (
             <div className="flex items-center justify-center h-full">
-              <div className="w-6 h-6 border-2 border-slate-200 border-t-orange-500 rounded-full animate-spin" />
-              <span className="ml-3 text-sm text-slate-500">{t('Loading graph...')}</span>
+              <div className="w-6 h-6 border-2 border-[var(--border)] border-t-orange-500 rounded-full animate-spin" />
+              <span className="ml-3 text-sm text-[var(--text-muted)]">{t('Loading graph...')}</span>
             </div>
           ) : (
             <GraphCanvas
@@ -171,14 +171,14 @@ export default function GraphPage() {
           )}
 
           {/* Legend overlay */}
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
-            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">{t('Legend')}</span>
+          <div className="absolute bottom-3 left-3 bg-[var(--bg-card)]/90 backdrop-blur-sm border border-[var(--border)] rounded-lg px-3 py-2 shadow-sm">
+            <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider block mb-1">{t('Legend')}</span>
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500" /><span className="text-[10px] text-slate-600">{t('Suspect')}</span></div>
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500" /><span className="text-[10px] text-slate-600">{t('Evidence')}</span></div>
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-violet-500" /><span className="text-[10px] text-slate-600">{t('Vehicle')}</span></div>
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-[10px] text-slate-600">{t('Phone')}</span></div>
-              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500" /><span className="text-[10px] text-slate-600">{t('Criminal')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500" /><span className="text-[10px] text-[var(--text-secondary)]">{t('Suspect')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500" /><span className="text-[10px] text-[var(--text-secondary)]">{t('Evidence')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-violet-500" /><span className="text-[10px] text-[var(--text-secondary)]">{t('Vehicle')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-[10px] text-[var(--text-secondary)]">{t('Phone')}</span></div>
+              <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500" /><span className="text-[10px] text-[var(--text-secondary)]">{t('Criminal')}</span></div>
             </div>
           </div>
         </div>

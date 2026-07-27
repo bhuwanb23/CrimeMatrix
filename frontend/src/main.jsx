@@ -4,12 +4,15 @@ import './index.css'
 import App from './App.jsx'
 import { LanguageProvider } from './context/LanguageContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { OnboardingProvider } from './context/OnboardingContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
       <LanguageProvider>
-        <App />
+        <OnboardingProvider>
+          <App />
+        </OnboardingProvider>
       </LanguageProvider>
     </ThemeProvider>
   </StrictMode>,

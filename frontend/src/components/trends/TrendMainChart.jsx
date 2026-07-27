@@ -27,10 +27,10 @@ export default function TrendMainChart({ data, title = "Crime Trend", height = 2
           </div>
         </div>
         <div className="flex flex-col items-center justify-center py-12">
-          <TrendingUp size={32} className="text-slate-300 mb-2" />
-          <p className="text-sm text-slate-500 font-medium">Limited Data Available</p>
-          <p className="text-xs text-slate-400 mt-1">Only {data.length} period(s) recorded — need more data for trend analysis</p>
-          <div className="mt-4 flex items-center gap-4 text-xs text-slate-500">
+          <TrendingUp size={32} className="text-[var(--text-muted)] mb-2" />
+          <p className="text-sm text-[var(--text-muted)] font-medium">Limited Data Available</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">Only {data.length} period(s) recorded — need more data for trend analysis</p>
+          <div className="mt-4 flex items-center gap-4 text-xs text-[var(--text-muted)]">
             <span>Total: <strong>{total}</strong></span>
             <span>Avg: <strong>{data.length > 0 ? Math.round(total / data.length) : 0}</strong></span>
           </div>

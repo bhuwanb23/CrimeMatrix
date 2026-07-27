@@ -60,7 +60,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="sidebar">
+      <aside className="sidebar" data-tour="sidebar">
         <div className="sidebar-inner">
           <nav className="sidebar-nav">
             {navItems.map((item) => (

@@ -13,7 +13,7 @@ export default function MapLayerControls({ activeLayers, onToggleLayer }) {
   const { t } = useLanguage()
   return (
     <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
-      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[var(--text-muted)] whitespace-nowrap">
         <Layers size={13} aria-hidden="true" />
         Layers
       </span>
@@ -28,8 +28,8 @@ export default function MapLayerControls({ activeLayers, onToggleLayer }) {
               aria-pressed={isActive}
               className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 ${
                 isActive
-                  ? 'bg-white text-slate-900'
-                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-800'
+                  ? 'bg-[var(--bg-card)] text-[var(--text-primary)]'
+                  : 'bg-[var(--bg-muted)] border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
               }`}
               style={isActive ? { borderColor: layer.color } : undefined}
             >

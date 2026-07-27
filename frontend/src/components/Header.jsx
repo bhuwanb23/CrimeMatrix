@@ -26,7 +26,7 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
         </div>
       </div>
 
-      <nav className="header-nav">
+      <nav className="header-nav" data-tour="header-nav">
         {headerNav.map((item) => (
           <NavLink
             key={item.id}
@@ -54,6 +54,7 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
 
         <button
           type="button"
+          data-tour="header-panel-toggle"
           className={`header-icon-btn ${rightPanelOpen ? 'active' : ''}`}
           onClick={onToggleRightPanel}
           aria-label={rightPanelOpen ? 'Close panel' : 'Open panel'}

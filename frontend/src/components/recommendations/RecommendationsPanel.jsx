@@ -127,26 +127,26 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
 
   if (loading) {
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl p-5">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles size={16} className="text-amber-500" />
-          <h3 className="text-slate-900 font-semibold text-sm">{t('Recommendations')}</h3>
+          <h3 className="text-[var(--text-primary)] font-semibold text-sm">{t('Recommendations')}</h3>
         </div>
         <div className="flex items-center justify-center py-8">
-          <div className="w-5 h-5 border-2 border-slate-200 border-t-amber-500 rounded-full animate-spin" />
-          <span className="ml-3 text-slate-400 text-sm">{t('Loading...')}</span>
+          <div className="w-5 h-5 border-2 border-[var(--border)] border-t-amber-500 rounded-full animate-spin" />
+          <span className="ml-3 text-[var(--text-muted)] text-sm">{t('Loading...')}</span>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-5">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Sparkles size={16} className="text-amber-500" />
-          <h3 className="text-slate-900 font-semibold text-sm">{t('Recommendations')}</h3>
+          <h3 className="text-[var(--text-primary)] font-semibold text-sm">{t('Recommendations')}</h3>
           <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">
             {recommendations.length}
           </span>
@@ -159,7 +159,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
           >
             {generating ? t('Generating...') : t('AI Generate')}
           </button>
-          <button onClick={loadRecommendations} className="text-slate-400 hover:text-slate-600 transition-colors p-1">
+          <button onClick={loadRecommendations} className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors p-1">
             <RefreshCw size={12} />
           </button>
         </div>
@@ -178,7 +178,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
                 activeTab === tab.key
                   ? 'bg-amber-100 text-amber-700 border border-amber-300'
-                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50 border border-transparent'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-transparent'
               }`}
             >
               <TabIcon size={10} />
@@ -192,9 +192,9 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
       {/* Recommendation List */}
       {displayItems.length === 0 ? (
         <div className="text-center py-8">
-          <Sparkles size={28} className="mx-auto text-slate-200 mb-2" />
-          <p className="text-slate-400 text-sm">{t('No recommendations')}</p>
-          <p className="text-slate-300 text-xs mt-1">{t('Click "AI Generate" to create recommendations')}</p>
+          <Sparkles size={28} className="mx-auto text-[var(--text-muted)] mb-2" />
+          <p className="text-[var(--text-muted)] text-sm">{t('No recommendations')}</p>
+          <p className="text-[var(--text-muted)] text-xs mt-1">{t('Click "AI Generate" to create recommendations')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -211,7 +211,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                   fb === 'accepted'
                     ? 'border-green-300 bg-green-50'
                     : fb === 'dismissed'
-                    ? 'border-slate-200 bg-slate-50 opacity-50'
+                    ? 'border-[var(--border)] bg-[var(--bg-muted)] opacity-50'
                     : `${config.border} ${config.bg}`
                 }`}
               >
@@ -223,24 +223,24 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       {t(config.label)}
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400">{rec.score || rec.confidence || 0}%</span>
+                  <span className="text-[10px] font-mono text-[var(--text-muted)]">{rec.score || rec.confidence || 0}%</span>
                 </div>
 
                 {/* Title */}
-                <p className="text-slate-900 text-xs font-medium leading-relaxed">
+                <p className="text-[var(--text-primary)] text-xs font-medium leading-relaxed">
                   {rec.title || rec.name || rec.message || 'Recommendation'}
                 </p>
 
                 {/* Description */}
                 {rec.description && (
-                  <p className="text-slate-500 text-[11px] mt-1 line-clamp-2">{rec.description}</p>
+                  <p className="text-[var(--text-muted)] text-[11px] mt-1 line-clamp-2">{rec.description}</p>
                 )}
 
                 {/* Reasons */}
                 {rec.reasons && rec.reasons.length > 0 && (
                   <div className="mt-1.5 flex flex-wrap gap-1">
                     {rec.reasons.slice(0, 2).map((r, j) => (
-                      <span key={j} className="text-[10px] bg-white text-slate-500 border border-slate-200 px-1.5 py-0.5 rounded">
+                      <span key={j} className="text-[10px] bg-[var(--bg-card)] text-[var(--text-muted)] border border-[var(--border)] px-1.5 py-0.5 rounded">
                         {r}
                       </span>
                     ))}
@@ -249,13 +249,13 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
 
                 {/* Action Buttons */}
                 {rec.id && (
-                  <div className="flex items-center gap-1 mt-2 pt-2 border-t border-slate-100">
+                  <div className="flex items-center gap-1 mt-2 pt-2 border-t border-[var(--border)]">
                     <button
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'accepted') }}
                       className={`flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'accepted'
                           ? 'bg-green-100 text-green-700'
-                          : 'text-slate-400 hover:text-green-600 hover:bg-green-50'
+                          : 'text-[var(--text-muted)] hover:text-green-600 hover:bg-green-50'
                       }`}
                       title="Accept"
                     >
@@ -267,7 +267,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       className={`flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'dismissed'
                           ? 'bg-red-100 text-red-700'
-                          : 'text-slate-400 hover:text-red-600 hover:bg-red-50'
+                          : 'text-[var(--text-muted)] hover:text-red-600 hover:bg-red-50'
                       }`}
                       title={t('Dismiss')}
                     >
@@ -279,7 +279,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       className={`flex items-center text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'rated_up'
                           ? 'bg-amber-100 text-amber-700'
-                          : 'text-slate-400 hover:text-amber-600 hover:bg-amber-50'
+                          : 'text-[var(--text-muted)] hover:text-amber-600 hover:bg-amber-50'
                       }`}
                       title={t('Useful')}
                     >
@@ -289,15 +289,15 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'rated_down') }}
                       className={`flex items-center text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'rated_down'
-                          ? 'bg-slate-100 text-slate-600'
-                          : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+                          ? 'bg-[var(--bg-input)] text-[var(--text-secondary)]'
+                          : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                       }`}
                       title={t('Not useful')}
                     >
                       <ThumbsDown size={10} />
                     </button>
                     <ExplainButton onClick={() => handleExplain(rec.id)} loading={explainingId === rec.id} />
-                    <ChevronRight size={12} className="ml-auto text-slate-300 group-hover:text-slate-500 transition-colors" />
+                    <ChevronRight size={12} className="ml-auto text-[var(--text-muted)] group-hover:text-[var(--text-muted)] transition-colors" />
                   </div>
                 )}
               </div>

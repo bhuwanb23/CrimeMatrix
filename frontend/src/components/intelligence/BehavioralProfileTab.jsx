@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Brain, AlertTriangle, Shield, Crosshair, Target, DoorOpen, Clock, RefreshCw, Search } from 'lucide-react'
 import { getBehaviorProfiles, getRiskAssessment, analyzeCriminal, getBehaviorStats } from '../../services/behavior'
-import { useLanguage } from '../../context/LanguageContext'
-
 const profileIcons = { timing: Clock, weapon: Crosshair, target: Target, method: Shield, entry: DoorOpen }
 const riskColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
 export default function BehavioralProfileTab() {
-  const { t } = useLanguage()
   const [profiles, setProfiles] = useState([])
   const [riskAssessment, setRiskAssessment] = useState([])
   const [stats, setStats] = useState(null)

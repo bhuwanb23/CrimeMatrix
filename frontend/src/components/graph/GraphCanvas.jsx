@@ -165,8 +165,8 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _a
     return (
       <div ref={containerRef} className="w-full h-full min-h-[400px] flex items-center justify-center">
         <div className="text-center px-6">
-          <p className="m-0 text-sm font-medium text-slate-700">{t('No graph data')}</p>
-          <p className="mt-1 mb-0 text-xs text-slate-400">{t('Load an investigation or run a graph query to see nodes and links.')}</p>
+          <p className="m-0 text-sm font-medium text-[var(--text-secondary)]">{t('No graph data')}</p>
+          <p className="mt-1 mb-0 text-xs text-[var(--text-muted)]">{t('Load an investigation or run a graph query to see nodes and links.')}</p>
         </div>
       </div>
     )

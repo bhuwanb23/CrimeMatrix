@@ -34,9 +34,13 @@
   --bg-header: #ffffff;
   --bg-panel: #ffffff;
   --bg-card: #ffffff;
+  --bg-muted: #f1f5f9;
+  --bg-elevated: #ffffff;
   --bg-hover: rgba(15, 23, 42, 0.04);
   --bg-active: rgba(245, 158, 11, 0.08);
   --bg-input: #f1f5f9;
+  --bg-gradient-from: #f8fafc;
+  --bg-gradient-to: #f1f5f9;
 
   /* Text */
   --text-primary: #0f172a;
@@ -47,6 +51,18 @@
   /* Borders */
   --border: #e2e8f0;
   --border-strong: #cbd5e1;
+
+  /* Charts */
+  --chart-grid: #e2e8f0;
+  --chart-axis: #94a3b8;
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: #e2e8f0;
+
+  /* Buttons */
+  --btn-primary-bg: #0f172a;
+  --btn-primary-fg: #f8fafc;
+
+  color-scheme: light;
 
   /* Status */
   --color-success: #10b981;
@@ -92,21 +108,35 @@
   --bg-header: #111827;
   --bg-panel: #111827;
   --bg-card: #1e293b;
+  --bg-muted: #0f172a;
+  --bg-elevated: #243044;
   --bg-hover: rgba(255, 255, 255, 0.06);
   --bg-active: rgba(245, 158, 11, 0.12);
-  --bg-input: #1e293b;
+  --bg-input: #0f172a;
+  --bg-gradient-from: #0c1222;
+  --bg-gradient-to: #111827;
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
-  --border: #1e293b;
-  --border-strong: #334155;
+  --border: #334155;
+  --border-strong: #475569;
+
+  --chart-grid: #334155;
+  --chart-axis: #64748b;
+  --chart-tooltip-bg: #1e293b;
+  --chart-tooltip-border: #334155;
+
+  --btn-primary-bg: #f59e0b;
+  --btn-primary-fg: #0f172a;
 
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -116,21 +146,35 @@
     --bg-header: #111827;
     --bg-panel: #111827;
     --bg-card: #1e293b;
+    --bg-muted: #0f172a;
+    --bg-elevated: #243044;
     --bg-hover: rgba(255, 255, 255, 0.06);
     --bg-active: rgba(245, 158, 11, 0.12);
-    --bg-input: #1e293b;
+    --bg-input: #0f172a;
+    --bg-gradient-from: #0c1222;
+    --bg-gradient-to: #111827;
 
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
 
-    --border: #1e293b;
-    --border-strong: #334155;
+    --border: #334155;
+    --border-strong: #475569;
+
+    --chart-grid: #334155;
+    --chart-axis: #64748b;
+    --chart-tooltip-bg: #1e293b;
+    --chart-tooltip-border: #334155;
+
+    --btn-primary-bg: #f59e0b;
+    --btn-primary-fg: #0f172a;
 
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.35);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+
+    color-scheme: dark;
   }
 }
 

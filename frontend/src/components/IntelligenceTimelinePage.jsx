@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import {
   Clock, Activity, AlertTriangle, Link2, Sparkles, Shield, Globe,
-  RefreshCw, Calendar, ChevronRight,
+  RefreshCw, Calendar,
 } from 'lucide-react'
 import {
   getUnifiedTimeline, getTimelineStats,

@@ -10,7 +10,6 @@ import {
 } from '../../services/recommendations'
 import { explainRecommendation } from '../../services/proactive'
 import ExplainButton from '../intelligence/ExplainButton'
-import ExplanationPanel from '../intelligence/ExplanationPanel'
 import { useLanguage } from '../../context/LanguageContext'
 
 const typeConfig = {

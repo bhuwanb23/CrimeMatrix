@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { useTheme } from '../context/ThemeContext'
+import { useOnboarding } from '../context/OnboardingContext'
 import { get } from '../services/api'
 
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']
@@ -17,6 +18,7 @@ function loadPrefs() {
 export default function SettingsPage() {
   const { language, setLanguage, t } = useLanguage()
   const { theme, setTheme, resolvedTheme } = useTheme()
+  const { restart } = useOnboarding()
   const saved = loadPrefs()
 
   const [config, setConfig] = useState(null)
@@ -263,6 +265,20 @@ export default function SettingsPage() {
               <Select value={offline.sync} onChange={(v) => setOffline({ ...offline, sync: v })} options={['WiFi', 'Always', 'Manual']} />
             </div>
           </div>
+        </div>
+
+        <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5 md:col-span-2">
+          <h2 className="mb-2 text-sm font-semibold text-[var(--text-primary)]">{t('Product tour')}</h2>
+          <p className="mb-4 text-[12px] text-[var(--text-muted)] m-0">
+            {t('Replay the welcome intro and shell walkthrough for CrimeMatrix.')}
+          </p>
+          <button
+            type="button"
+            onClick={restart}
+            className="rounded-xl border border-[var(--border)] bg-[var(--bg-app)] px-4 py-2.5 text-[13px] font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-hover)] hover:border-[var(--color-accent)]"
+          >
+            {t('Restart product tour')}
+          </button>
         </div>
       </div>
     </div>

@@ -2,39 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useLanguage } from '../../context/LanguageContext'
 import { useOnboarding } from '../../context/OnboardingContext'
-
-export const TOUR_STEPS = [
-  {
-    id: 'sidebar',
-    target: 'sidebar',
-    title: 'Navigation sidebar',
-    body: 'Jump between Dashboard, Intelligence, Investigations, Search, Stations, and Reports from this rail.',
-  },
-  {
-    id: 'header-nav',
-    target: 'header-nav',
-    title: 'Quick header links',
-    body: 'Open AI Copilot, Analytics, Knowledge Graph, and Alerts without leaving the current page flow.',
-  },
-  {
-    id: 'header-panel-toggle',
-    target: 'header-panel-toggle',
-    title: 'Activity panel toggle',
-    body: 'Show or hide the right panel for live activity and a quick AI chat surface.',
-  },
-  {
-    id: 'right-panel',
-    target: 'right-panel',
-    title: 'Right panel',
-    body: 'Review today\'s overview, recent activity, and ask the AI Copilot short questions in place.',
-  },
-  {
-    id: 'main-content',
-    target: 'main-content',
-    title: 'Main workspace',
-    body: 'This is where each module renders — charts, maps, investigation tools, and reports live here.',
-  },
-]
+import { TOUR_STEPS } from './tourSteps'
 
 function measureTarget(selector) {
   const el = document.querySelector(`[data-tour="${selector}"]`)
@@ -57,18 +25,16 @@ export default function SpotlightTour({ onStepChange }) {
   const step = TOUR_STEPS[index]
   const isLast = index === TOUR_STEPS.length - 1
 
-  const refreshRect = () => {
-    setRect(measureTarget(step.target))
-  }
-
   useLayoutEffect(() => {
-    refreshRect()
+    setRect(measureTarget(step.target))
     onStepChange?.(step)
-  }, [index, step.target])
+    const timer = window.setTimeout(() => setRect(measureTarget(step.target)), 80)
+    return () => window.clearTimeout(timer)
+  }, [index, onStepChange, step])
 
   useEffect(() => {
     function onResize() {
-      refreshRect()
+      setRect(measureTarget(step.target))
     }
     window.addEventListener('resize', onResize)
     window.addEventListener('scroll', onResize, true)
@@ -123,7 +89,7 @@ export default function SpotlightTour({ onStepChange }) {
 
   return createPortal(
     <div className="onboarding-tour-root" role="dialog" aria-modal="true" aria-labelledby="onboarding-tour-title">
-      <div className="onboarding-tour-mask" onClick={skip} />
+      <button type="button" className="onboarding-tour-mask" aria-label={t('Skip tour')} onClick={skip} />
       {highlightStyle && (
         <div className="onboarding-spotlight" style={highlightStyle} aria-hidden="true" />
       )}

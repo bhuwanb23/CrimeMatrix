@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Header from './Header'
@@ -17,7 +17,6 @@ export default function Layout() {
   })
   const [desktopPanelPreference, setDesktopPanelPreference] = useState(true)
   const panelBeforeTour = useRef(null)
-  const tourForcesPanel = useRef(false)
 
   useEffect(() => {
     if (shouldShowTour) return
@@ -36,28 +35,23 @@ export default function Layout() {
     })
   }
 
-  function handleTourStepChange(step) {
+  const handleTourStepChange = useCallback((step) => {
     if (!step) return
     const needsPanel = step.target === 'right-panel' || step.target === 'header-panel-toggle'
-    if (needsPanel) {
+    if (!needsPanel) return
+    setRightPanelOpen((prev) => {
       if (panelBeforeTour.current === null) {
-        panelBeforeTour.current = rightPanelOpen
+        panelBeforeTour.current = prev
       }
-      tourForcesPanel.current = true
-      setRightPanelOpen(true)
-      return
-    }
-    if (tourForcesPanel.current && panelBeforeTour.current !== null && isMobile) {
-      // leave open until tour ends; desktop can keep preference
-    }
-  }
+      return true
+    })
+  }, [])
 
   useEffect(() => {
     if (shouldShowTour) return
     if (panelBeforeTour.current === null) return
     const restore = panelBeforeTour.current
     panelBeforeTour.current = null
-    tourForcesPanel.current = false
     if (isMobile) {
       setRightPanelOpen(false)
     } else {

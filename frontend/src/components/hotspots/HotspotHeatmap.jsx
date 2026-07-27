@@ -6,13 +6,13 @@ export default function HotspotHeatmap({ hotspots }) {
   
   if (!hotspots || hotspots.length === 0) {
     return (
-      <div className="bg-white border border-slate-200 rounded-xl p-4">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <MapPin size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">{t('Crime Heatmap')}</h3>
+          <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Crime Heatmap')}</h3>
         </div>
-        <div className="py-8 text-center text-xs text-slate-400">
-          <MapPin size={24} className="mx-auto mb-2 text-slate-200" />
+        <div className="py-8 text-center text-xs text-[var(--text-muted)]">
+          <MapPin size={24} className="mx-auto mb-2 text-[var(--text-muted)]" />
           <p>No heatmap data</p>
         </div>
       </div>
@@ -31,10 +31,10 @@ export default function HotspotHeatmap({ hotspots }) {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <MapPin size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t('Crime Heatmap')}</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Crime Heatmap')}</h3>
       </div>
 
       {/* Bubbles with labels */}
@@ -55,15 +55,15 @@ export default function HotspotHeatmap({ hotspots }) {
               >
                 {h.crime_count}
               </div>
-              <span className="text-[10px] text-slate-500 text-center max-w-[80px] truncate">{t(h.name)}</span>
-              <span className="text-[9px] text-slate-400">{h.risk_level || ''}</span>
+              <span className="text-[10px] text-[var(--text-muted)] text-center max-w-[80px] truncate">{t(h.name)}</span>
+              <span className="text-[9px] text-[var(--text-muted)]">{h.risk_level || ''}</span>
             </div>
           )
         })}
       </div>
 
       {/* District list below bubbles */}
-      <div className="border-t border-slate-100 pt-3 mt-2">
+      <div className="border-t border-[var(--border)] pt-3 mt-2">
         <div className="space-y-1.5">
           {hotspots.slice(0, 6).map((h, i) => {
             const color = getHeatColor(h.crime_count || 0)
@@ -71,23 +71,23 @@ export default function HotspotHeatmap({ hotspots }) {
             return (
               <div key={i} className="flex items-center gap-2 text-xs">
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: color }} />
-                <span className="text-slate-700 flex-1 min-w-0 truncate">{t(h.name)}</span>
-                <div className="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden flex-shrink-0">
+                <span className="text-[var(--text-secondary)] flex-1 min-w-0 truncate">{t(h.name)}</span>
+                <div className="w-20 h-1.5 bg-[var(--bg-input)] rounded-full overflow-hidden flex-shrink-0">
                   <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
                 </div>
-                <span className="text-slate-400 w-6 text-right text-[10px]">{h.crime_count}</span>
+                <span className="text-[var(--text-muted)] w-6 text-right text-[10px]">{h.crime_count}</span>
               </div>
             )
           })}
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-3 mt-3 pt-2 border-t border-slate-100">
-          <span className="text-[10px] text-slate-400 font-medium">Risk:</span>
-          <span className="flex items-center gap-1 text-[10px] text-slate-500"><span className="w-2 h-2 rounded-full bg-red-500" /> {t('Critical')}</span>
-          <span className="flex items-center gap-1 text-[10px] text-slate-500"><span className="w-2 h-2 rounded-full bg-amber-500" /> {t('High')}</span>
-          <span className="flex items-center gap-1 text-[10px] text-slate-500"><span className="w-2 h-2 rounded-full bg-blue-500" /> {t('Medium')}</span>
-          <span className="flex items-center gap-1 text-[10px] text-slate-500"><span className="w-2 h-2 rounded-full bg-emerald-500" /> {t('Low')}</span>
+        <div className="flex items-center gap-3 mt-3 pt-2 border-t border-[var(--border)]">
+          <span className="text-[10px] text-[var(--text-muted)] font-medium">Risk:</span>
+          <span className="flex items-center gap-1 text-[10px] text-[var(--text-muted)]"><span className="w-2 h-2 rounded-full bg-red-500" /> {t('Critical')}</span>
+          <span className="flex items-center gap-1 text-[10px] text-[var(--text-muted)]"><span className="w-2 h-2 rounded-full bg-amber-500" /> {t('High')}</span>
+          <span className="flex items-center gap-1 text-[10px] text-[var(--text-muted)]"><span className="w-2 h-2 rounded-full bg-blue-500" /> {t('Medium')}</span>
+          <span className="flex items-center gap-1 text-[10px] text-[var(--text-muted)]"><span className="w-2 h-2 rounded-full bg-emerald-500" /> {t('Low')}</span>
         </div>
       </div>
     </div>

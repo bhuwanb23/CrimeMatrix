@@ -14,26 +14,26 @@ export default function ConfidenceBreakdown({ forecast }) {
   ]
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Target size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t('Confidence Breakdown')}</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Confidence Breakdown')}</h3>
       </div>
 
       <div className="space-y-2">
         {factors.map((f, i) => (
           <div key={i} className="flex items-center gap-2">
-            <span className="text-[10px] text-slate-500 w-28">{f.label}</span>
-            <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+            <span className="text-[10px] text-[var(--text-muted)] w-28">{f.label}</span>
+            <div className="flex-1 h-1.5 bg-[var(--bg-input)] rounded-full overflow-hidden">
               <div className="h-full rounded-full" style={{ width: `${f.value}%`, background: f.color }} />
             </div>
-            <span className="text-[10px] font-semibold text-slate-700">{f.value}%</span>
+            <span className="text-[10px] font-semibold text-[var(--text-secondary)]">{f.value}%</span>
           </div>
         ))}
       </div>
 
-      <div className="mt-3 pt-2 border-t border-slate-100">
-        <p className="text-[10px] text-slate-400">
+      <div className="mt-3 pt-2 border-t border-[var(--border)]">
+        <p className="text-[10px] text-[var(--text-muted)]">
           {t('Overall confidence:')} {confidence}% — {confidence >= 75 ? t('High reliability') : confidence >= 50 ? t('Moderate reliability') : t('Low reliability')}
         </p>
       </div>

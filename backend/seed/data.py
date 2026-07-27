@@ -114,6 +114,57 @@ CRIMES = [
     {"title": "Extortion by fake police officer", "desc": "Person impersonating police demanding money from shopkeepers.", "type_idx": 13, "district_idx": 15, "status": "active", "priority": "high", "location_idx": 0},
 ]
 
+# Procedural expansions keep charts/maps dense while preserving handcrafted quality above.
+_STATUSES = ("open", "active", "closed", "open", "active")
+_PRIORITIES = ("high", "medium", "low", "medium", "high")
+_TITLE_TEMPLATES = [
+    "{ctype} reported near {district} market",
+    "Night-time {ctype} in {district} residential block",
+    "{ctype} complaint from {district} bus stand",
+    "Weekend {ctype} cluster - {district}",
+    "Suspected {ctype} ring operating in {district}",
+    "Late-night {ctype} near {district} highway",
+    "Repeat {ctype} pattern in {district}",
+    "{ctype} during festival crowd - {district}",
+]
+_DESC_TEMPLATES = [
+    "Complaint registered for {ctype} in {district}. Preliminary enquiry underway; local CCTV being collected.",
+    "Victim reported {ctype} incident in {district}. Witnesses identified; IO assigned for follow-up.",
+    "Patrol team flagged {ctype} activity in {district}. Scene inspected and evidence logged.",
+    "Multiple calls regarding {ctype} around {district}. Pattern analysis recommended for hotspot mapping.",
+]
+
+
+def _build_expanded_crimes(base: list[dict], target: int = 100) -> list[dict]:
+    out = list(base)
+    seen = {row["title"] for row in out}
+    i = 0
+    while len(out) < target:
+        type_idx = i % len(CRIME_TYPES)
+        district_idx = i % len(DISTRICTS)
+        ctype = CRIME_TYPES[type_idx][0]
+        district = DISTRICTS[district_idx][0]
+        title = _TITLE_TEMPLATES[i % len(_TITLE_TEMPLATES)].format(ctype=ctype, district=district)
+        # Ensure uniqueness when templates wrap
+        if title in seen:
+            title = f"{title} #{len(out) + 1}"
+        seen.add(title)
+        loc_idx = i % len(LOCATIONS)
+        out.append({
+            "title": title,
+            "desc": _DESC_TEMPLATES[i % len(_DESC_TEMPLATES)].format(ctype=ctype, district=district),
+            "type_idx": type_idx,
+            "district_idx": district_idx,
+            "status": _STATUSES[i % len(_STATUSES)],
+            "priority": _PRIORITIES[i % len(_PRIORITIES)],
+            "location_idx": loc_idx,
+        })
+        i += 1
+    return out
+
+
+CRIMES = _build_expanded_crimes(CRIMES, target=100)
+
 SUSPECTS = [
     {"name": "Ravi Kumar", "age": 32, "gender": "Male", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 78.5, "description": "Known for chain snatching on motorcycle. Linked to multiple open cases.", "aliases": '["Ravi", "RK"]'},
     {"name": "Mohammed Ali", "age": 28, "gender": "Male", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 65.0, "description": "Repeat offender for vehicle theft. Post-release surveillance active.", "aliases": '["Ali", "MA"]'},
@@ -125,6 +176,25 @@ SUSPECTS = [
     {"name": "Anil Shetty", "age": 45, "gender": "Male", "district": "Kalaburagi", "status": "at_large", "risk_score": 88.0, "description": "Prime suspect in village murder over land dispute.", "aliases": '["Anil"]'},
     {"name": "Karthik Rao", "age": 29, "gender": "Male", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 50.0, "description": "CCTV match for ATM robbery.", "aliases": '["Karthik"]'},
     {"name": "Faisal Ahmed", "age": 33, "gender": "Male", "district": "Vijayapura", "status": "at_large", "risk_score": 91.0, "description": "Suspected in kidnapping for ransom case.", "aliases": '["Faisal"]'},
+    {"name": "Vikram Singh", "age": 36, "gender": "Male", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 72.0, "description": "Linked to night burglaries in Koramangala.", "aliases": '["Vikram"]'},
+    {"name": "Ramesh Hegde", "age": 44, "gender": "Male", "district": "Shivamogga", "status": "at_large", "risk_score": 58.0, "description": "Suspected in temple arson and related threats.", "aliases": '["Hegde"]'},
+    {"name": "Salman Pasha", "age": 27, "gender": "Male", "district": "Ballari", "status": "custody", "risk_score": 64.0, "description": "Part of vehicle theft recovery operation.", "aliases": '["Salman"]'},
+    {"name": "Geetha Nair", "age": 31, "gender": "Female", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 47.0, "description": "Suspected mule in cyber fraud transfers.", "aliases": '["Geetha"]'},
+    {"name": "Manjunath K", "age": 39, "gender": "Male", "district": "Tumakuru", "status": "at_large", "risk_score": 53.0, "description": "Linked to temple donation theft.", "aliases": '["Manju"]'},
+    {"name": "Yogesh Pawar", "age": 34, "gender": "Male", "district": "Davangere", "status": "at_large", "risk_score": 61.0, "description": "Repeat offender for cheating/real-estate fraud.", "aliases": '["Yogesh"]'},
+    {"name": "Arjun Das", "age": 25, "gender": "Male", "district": "Bengaluru Rural", "status": "at_large", "risk_score": 49.0, "description": "CCTV match for highway hit-and-run.", "aliases": '["Arjun"]'},
+    {"name": "Sheela Bai", "age": 42, "gender": "Female", "district": "Hassan", "status": "at_large", "risk_score": 38.0, "description": "Witness-turned-suspect in domestic violence probe.", "aliases": '["Sheela"]'},
+    {"name": "Prakash Naik", "age": 48, "gender": "Male", "district": "Kolar", "status": "custody", "risk_score": 76.0, "description": "Forgery of educational certificates racket.", "aliases": '["Prakash"]'},
+    {"name": "Javed Hussain", "age": 29, "gender": "Male", "district": "Kalaburagi", "status": "at_large", "risk_score": 69.0, "description": "Suspected associate in village murder case.", "aliases": '["Javed"]'},
+    {"name": "Harish Bhat", "age": 37, "gender": "Male", "district": "Shivamogga", "status": "at_large", "risk_score": 44.0, "description": "Coastal belt snatching pattern suspect.", "aliases": '["Harish"]'},
+    {"name": "Sunil Kumar", "age": 40, "gender": "Male", "district": "Chikkaballapur", "status": "at_large", "risk_score": 57.0, "description": "Linked to fake certificate sales.", "aliases": '["Sunil"]'},
+    {"name": "Mehboob Shariff", "age": 35, "gender": "Male", "district": "Ramanagara", "status": "at_large", "risk_score": 66.0, "description": "Extortion calls to shopkeepers under probe.", "aliases": '["Mehboob"]'},
+    {"name": "Kiran Shetty", "age": 28, "gender": "Male", "district": "Mangaluru", "status": "custody", "risk_score": 71.0, "description": "Jewelry shop burglary MO match.", "aliases": '["Kiran"]'},
+    {"name": "Bhavana Rao", "age": 24, "gender": "Female", "district": "Mysuru", "status": "at_large", "risk_score": 41.0, "description": "Suspected in tourist-area theft fence network.", "aliases": '["Bhavana"]'},
+    {"name": "Gopal Krishna", "age": 52, "gender": "Male", "district": "Hubballi-Dharwad", "status": "at_large", "risk_score": 63.0, "description": "Bus depot cash theft insider angle.", "aliases": '["Gopal"]'},
+    {"name": "Roshan Ali", "age": 31, "gender": "Male", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 80.0, "description": "ATM robbery CCTV match; high mobility.", "aliases": '["Roshan"]'},
+    {"name": "Dinesh Yadav", "age": 33, "gender": "Male", "district": "Mandya", "status": "at_large", "risk_score": 59.0, "description": "NDPS unit logistics suspect.", "aliases": '["Dinesh"]'},
+    {"name": "Sangeetha M", "age": 27, "gender": "Female", "district": "Bengaluru Urban", "status": "at_large", "risk_score": 45.0, "description": "Fake job portal cheating accomplice.", "aliases": '["Sangeetha"]'},
 ]
 
 PERSONS = [
@@ -136,6 +206,14 @@ PERSONS = [
     {"first_name": "Anita", "last_name": "Rao", "gender": "Female", "district": "Mysuru", "phone": "9876500011"},
     {"first_name": "Imran", "last_name": "Khan", "gender": "Male", "district": "Mangaluru", "phone": "9876500005"},
     {"first_name": "Naveen", "last_name": "Patil", "gender": "Male", "district": "Hubballi-Dharwad", "phone": "9876500006"},
+    {"first_name": "Vikram", "last_name": "Singh", "gender": "Male", "district": "Bengaluru Urban", "phone": "9876500007"},
+    {"first_name": "Geetha", "last_name": "Nair", "gender": "Female", "district": "Bengaluru Urban", "phone": "9876500008"},
+    {"first_name": "Prakash", "last_name": "Naik", "gender": "Male", "district": "Kolar", "phone": "9876500009"},
+    {"first_name": "Bhavana", "last_name": "Rao", "gender": "Female", "district": "Mysuru", "phone": "9876500012"},
+    {"first_name": "Roshan", "last_name": "Ali", "gender": "Male", "district": "Bengaluru Urban", "phone": "9876500013"},
+    {"first_name": "Kiran", "last_name": "Shetty", "gender": "Male", "district": "Mangaluru", "phone": "9876500014"},
+    {"first_name": "Harish", "last_name": "Bhat", "gender": "Male", "district": "Shivamogga", "phone": "9876500015"},
+    {"first_name": "Sangeetha", "last_name": "M", "gender": "Female", "district": "Bengaluru Urban", "phone": "9876500016"},
 ]
 
 USERS = [

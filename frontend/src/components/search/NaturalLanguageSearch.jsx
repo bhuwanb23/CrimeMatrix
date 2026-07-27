@@ -43,7 +43,7 @@ export default function NaturalLanguageSearch() {
         </div>
         <input
           className="nl-search-input"
-          placeholder={t(\'Search naturally — e.g. "thefts in Bengaluru last month"\')}
+          placeholder={t('Search naturally — e.g. "thefts in Bengaluru last month"')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}

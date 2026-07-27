@@ -41,9 +41,9 @@ export default function CrimeBreakdown() {
 
       <div className="analytics-breakdown-list">
         {loading ? (
-          <p className="text-sm text-slate-400 m-0">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('Loading...')}</p>
         ) : types.length === 0 ? (
-          <p className="text-sm text-slate-400 m-0">{t('No breakdown data')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('No breakdown data')}</p>
         ) : types.map((type, i) => (
           <div key={i} className="breakdown-item">
             <div className="breakdown-item-header">

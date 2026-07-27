@@ -7,7 +7,7 @@ import { dedupeByKey } from '../../utils/dedupeByKey'
 export default function SearchResults({ results, page, totalPages, onPageChange, onViewCase }) {
   const { t } = useLanguage()
   const uniqueResults = useMemo(() => dedupeByKey(results, 'id'), [results])
-  if (results.length === 0) {
+  if (uniqueResults.length === 0) {
     return (
       <div className="search-empty">
         <Search size={48} strokeWidth={1} className="search-empty-icon" />
@@ -20,7 +20,7 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
   return (
     <div className="search-results">
       <div className="results-header">
-        <span className="results-count">{results.length} {t('results found')}</span>
+        <span className="results-count">{uniqueResults.length} {t('results found')}</span>
       </div>
 
       <div className="results-table-wrapper">

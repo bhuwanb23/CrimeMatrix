@@ -1,16 +1,23 @@
 import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect } from 'react'
-import { ClipboardList } from 'lucide-react'
+import { ClipboardList, PanelRightClose, PanelRightOpen } from 'lucide-react'
 import CaseListPanel from './investigation/CaseListPanel'
 import WorkspacePanel from './investigation/WorkspacePanel'
 import ToolsPanel from './investigation/ToolsPanel'
 import { listInvestigations, getInvestigation } from '../services/investigations'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 export default function InvestigationPage() {
   const { t } = useLanguage()
+  const isMobile = useMediaQuery('(max-width: 1023px)')
   const [investigations, setInvestigations] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [selectedInvestigation, setSelectedInvestigation] = useState(null)
+  const [toolsPanelOpen, setToolsPanelOpen] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !window.matchMedia('(max-width: 1023px)').matches
+  })
+  const [toolsPanelDesktopPreference, setToolsPanelDesktopPreference] = useState(true)
   const [loading, setLoading] = useState(true)
   const [detailLoading, setDetailLoading] = useState(false)
 
@@ -25,6 +32,14 @@ export default function InvestigationPage() {
       setSelectedInvestigation(null)
     }
   }, [selectedId])
+
+  useEffect(() => {
+    if (isMobile) {
+      setToolsPanelOpen(false)
+      return
+    }
+    setToolsPanelOpen(toolsPanelDesktopPreference)
+  }, [isMobile, toolsPanelDesktopPreference])
 
   async function loadInvestigations() {
     setLoading(true)
@@ -57,6 +72,14 @@ export default function InvestigationPage() {
     if (inv?.id) setSelectedId(inv.id)
   }
 
+  function handleToggleToolsPanel() {
+    setToolsPanelOpen((prev) => {
+      const next = !prev
+      if (!isMobile) setToolsPanelDesktopPreference(next)
+      return next
+    })
+  }
+
   return (
     <div className="flex flex-col gap-4 h-[calc(100vh-var(--header-height))]">
       {/* Hero Header */}
@@ -72,6 +95,16 @@ export default function InvestigationPage() {
           <div className="ml-auto flex items-center gap-2 text-white/80 text-xs">
             <span>{investigations.length} {t('investigations')}</span>
             {selectedId && <span className="text-white/60">• {t('Viewing')} #{selectedId}</span>}
+            <button
+              type="button"
+              onClick={handleToggleToolsPanel}
+              disabled={!selectedInvestigation}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/30 bg-white/15 text-white text-xs font-medium hover:bg-white/25 disabled:opacity-50"
+              aria-label={toolsPanelOpen ? t('Hide panel') : t('Show panel')}
+            >
+              {toolsPanelOpen ? <PanelRightClose size={14} /> : <PanelRightOpen size={14} />}
+              <span>{t('Tools')}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -85,8 +118,27 @@ export default function InvestigationPage() {
         onCreated={handleCreated}
       />
       <WorkspacePanel investigation={selectedInvestigation} loading={detailLoading} />
-      <ToolsPanel investigation={selectedInvestigation} onRefresh={loadInvestigationDetail} />
+      {!isMobile && toolsPanelOpen && (
+        <ToolsPanel investigation={selectedInvestigation} onRefresh={loadInvestigationDetail} />
+      )}
       </div>
+      {isMobile && toolsPanelOpen && selectedInvestigation && (
+        <>
+          <button
+            type="button"
+            className="page-right-drawer-backdrop"
+            aria-label={t('Close tools panel')}
+            onClick={() => setToolsPanelOpen(false)}
+          />
+          <div className="page-right-drawer page-right-drawer-open">
+            <ToolsPanel
+              investigation={selectedInvestigation}
+              onRefresh={loadInvestigationDetail}
+              className="w-full min-w-0 h-full rounded-none border-0 p-4 overflow-y-auto"
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

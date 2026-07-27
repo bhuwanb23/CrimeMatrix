@@ -9,6 +9,16 @@ ROWS = [
     ("serial", "Serial burglary pattern — Koramangala", "MO fingerprint matches 4 open burglaries.", "high", "BLR-U", "BRG", 4, 3, 75),
     ("escalation", "Drug trafficking escalation — Mangaluru", "Port-linked seizures rising for 3 weeks.", "medium", "MNG", "DRG", 6, 3, 68),
     ("spike", "Robbery uptick — Mysuru", "Weekend robberies exceeding threshold.", "high", "MYS", "ROB", 9, 5, 71),
+    ("spike", "Vehicle theft spike — Whitefield", "IT campus parking thefts up vs baseline.", "high", "BLR-U", "VT", 14, 7, 77),
+    ("hotspot", "Cyber fraud cluster — MG Road", "Senior-targeted banking fraud density rising.", "critical", "BLR-U", "CYB", 11, 4, 88),
+    ("serial", "ATM robbery series", "Shared MO across three ATM robberies.", "high", "BLR-U", "ROB", 3, 2, 80),
+    ("escalation", "Extortion calls — Ramanagara", "Shopkeeper complaints with shared caller pattern.", "high", "RMR", "EXT", 8, 3, 74),
+    ("spike", "Assault complaints — Hubballi", "Night assault reports above threshold.", "medium", "HUB", "ASL", 10, 6, 65),
+    ("hotspot", "Tourist theft — Mysuru Palace", "Tourist-targeted theft density elevated.", "medium", "MYS", "THR", 7, 3, 70),
+    ("serial", "Forgery certificate batch", "Same watermark across SSLC forgery reports.", "medium", "CKB", "FRG", 5, 2, 72),
+    ("escalation", "NDPS Mandya corridor", "Manufacturing/distribution signals rising.", "high", "MDY", "DRG", 6, 2, 79),
+    ("spike", "Hit-and-run — Kolar highway", "Night hit-and-run frequency above baseline.", "high", "KLR", "H&R", 5, 2, 76),
+    ("hotspot", "Cattle theft belt — Dharwad", "Farm cattle theft cluster expanding.", "medium", "HUB", "THR", 6, 3, 67),
 ]
 
 

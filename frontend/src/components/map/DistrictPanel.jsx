@@ -59,7 +59,7 @@ function buildHotspots(mapData) {
   }))
 }
 
-export default function DistrictPanel({ selectedDistrict, onClose, mapData = null, stats = null }) {
+export default function DistrictPanel({ selectedDistrict, onClose, mapData = null, stats = null, className = '' }) {
   const { t } = useLanguage()
   const risk = selectedDistrict?.risk || selectedDistrict?.risk_level || 'low'
   const density = buildDensity(mapData, stats)
@@ -67,7 +67,7 @@ export default function DistrictPanel({ selectedDistrict, onClose, mapData = nul
 
   return (
     <aside
-      className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-card)] max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px]"
+      className={`flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-card)] max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px] ${className}`}
       aria-label="District details"
     >
       <div className="flex items-center justify-between gap-2 border-b border-[var(--border)] px-3.5 py-3">

@@ -9,12 +9,12 @@ const typeIcons = {
   phone: Phone,
 }
 
-export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
+export default function NodeDetailsPanel({ node, edges, nodes, onClose, className = '' }) {
   const { t } = useLanguage()
 
   if (!node) {
     return (
-      <aside className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-card)] max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px]"
+      <aside className={`flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-card)] max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px] ${className}`}
         aria-label="Node details">
         <div className="flex flex-col items-center justify-center gap-2 px-4 py-12 text-center text-[var(--text-muted)]">
           <span className="text-2xl" aria-hidden="true">🔍</span>
@@ -31,7 +31,7 @@ export default function NodeDetailsPanel({ node, edges, nodes, onClose }) {
   )
 
   return (
-    <aside className="flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-card)] max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px]"
+    <aside className={`flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-card)] max-lg:order-2 max-lg:w-full max-lg:max-h-60 max-md:max-h-[280px] ${className}`}
       aria-label="Node details">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 border-b border-[var(--border)] px-3.5 py-3">

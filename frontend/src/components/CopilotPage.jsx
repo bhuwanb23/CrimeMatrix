@@ -6,8 +6,10 @@ import ContextPanel from './copilot/ContextPanel'
 import { chatStream, listSessions, getSession, deleteAllSessions, searchSessions } from '../services/copilot'
 import { stopSpeaking } from '../services/voice'
 import { useLanguage } from '../context/LanguageContext'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 export default function CopilotPage() {
+  const isMobile = useMediaQuery('(max-width: 1023px)')
   const [activeChatId, setActiveChatId] = useState(null)
   const [sessionId, setSessionId] = useState(null)
   const [messages, setMessages] = useState([])
@@ -15,6 +17,7 @@ export default function CopilotPage() {
   const { t } = useLanguage()
   const [historyOpen, setHistoryOpen] = useState(false)
   const [contextOpen, setContextOpen] = useState(false)
+  const [desktopContextPreference, setDesktopContextPreference] = useState(false)
   const [sessions, setSessions] = useState([])
   const [voiceEnabled, setVoiceEnabled] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -30,6 +33,14 @@ export default function CopilotPage() {
   }, [])
 
   useEffect(() => { loadSessions() }, [loadSessions])
+
+  useEffect(() => {
+    if (isMobile) {
+      setContextOpen(false)
+      return
+    }
+    setContextOpen(desktopContextPreference)
+  }, [desktopContextPreference, isMobile])
 
   const loadConversation = useCallback(async (sid) => {
     try {
@@ -112,6 +123,14 @@ export default function CopilotPage() {
     setVoiceEnabled(!voiceEnabled)
   }
 
+  const handleToggleContext = () => {
+    setContextOpen((prev) => {
+      const next = !prev
+      if (!isMobile) setDesktopContextPreference(next)
+      return next
+    })
+  }
+
   const handleSearch = async (query) => {
     if (!query) { loadSessions(); return }
     try {
@@ -135,7 +154,7 @@ export default function CopilotPage() {
         onSend={handleSend}
         isTyping={isTyping}
         onToggleHistory={() => { setHistoryOpen(!historyOpen); loadSessions() }}
-        onToggleContext={() => setContextOpen(!contextOpen)}
+        onToggleContext={handleToggleContext}
         historyOpen={historyOpen}
         contextOpen={contextOpen}
         voiceEnabled={voiceEnabled}
@@ -166,8 +185,8 @@ export default function CopilotPage() {
       {/* Context Overlay */}
       {contextOpen && (
         <>
-          <div className="fixed inset-0 z-50" onClick={() => setContextOpen(false)} />
-          <div className="fixed top-[var(--header-height)] bottom-0 right-0 w-80 z-50 bg-[var(--bg-card)] border-l border-[var(--border)] shadow-xl animate-slide-in-right">
+          <div className="page-right-drawer-backdrop" onClick={() => setContextOpen(false)} />
+          <div className={`page-right-drawer page-right-drawer-open ${isMobile ? 'w-full' : 'w-80'}`}>
             <ContextPanel onClose={() => setContextOpen(false)} messages={messages} sessionId={sessionId} />
           </div>
         </>

@@ -30,8 +30,8 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
             onClick={() => onViewChange(view.id)}
             className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 ${
               activeView === view.id
-                ? 'bg-white text-slate-900 border-slate-300'
-                : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-800'
+                ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--border-strong)]'
+                : 'bg-[var(--bg-muted)] border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
             }`}
           >
             {view.label}
@@ -40,12 +40,12 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
       </div>
 
       {/* Divider */}
-      <div className="w-px h-6 bg-slate-200 shrink-0 max-lg:hidden" aria-hidden="true" />
+      <div className="w-px h-6 bg-[var(--bg-input)] shrink-0 max-lg:hidden" aria-hidden="true" />
 
       {/* Type Filters */}
       {onToggleType && (
         <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[var(--text-muted)] whitespace-nowrap">
             <Filter size={13} aria-hidden="true" />
             {t('Filter')}
           </span>
@@ -60,8 +60,8 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
                   aria-pressed={isActive}
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2 ${
                     isActive
-                      ? 'bg-white text-slate-900'
-                      : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-800'
+                      ? 'bg-[var(--bg-card)] text-[var(--text-primary)]'
+                      : 'bg-[var(--bg-muted)] border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
                   }`}
                   style={isActive ? { borderColor: nt.color } : undefined}
                 >
@@ -75,20 +75,20 @@ export default function GraphControls({ activeView, onViewChange, onZoomIn, onZo
       )}
 
       {/* Divider */}
-      <div className="w-px h-6 bg-slate-200 shrink-0 max-lg:hidden" aria-hidden="true" />
+      <div className="w-px h-6 bg-[var(--bg-input)] shrink-0 max-lg:hidden" aria-hidden="true" />
 
       {/* Zoom Controls */}
       <div className="flex items-center gap-1.5 shrink-0">
         <button type="button" onClick={onZoomIn} aria-label={t("Zoom in")}
-          className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer transition-colors hover:border-slate-300 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
+          className="inline-flex size-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-muted)] cursor-pointer transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)] focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <ZoomIn size={16} />
         </button>
         <button type="button" onClick={onZoomOut} aria-label={t("Zoom out")}
-          className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer transition-colors hover:border-slate-300 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
+          className="inline-flex size-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-muted)] cursor-pointer transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)] focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <ZoomOut size={16} />
         </button>
         <button type="button" onClick={onReset} aria-label={t("Reset view")}
-          className="inline-flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer transition-colors hover:border-slate-300 hover:text-slate-800 focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
+          className="inline-flex size-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-muted)] cursor-pointer transition-colors hover:border-[var(--border-strong)] hover:text-[var(--text-primary)] focus-visible:outline-2 focus-visible:outline-amber-500 focus-visible:outline-offset-2">
           <Maximize2 size={16} />
         </button>
       </div>

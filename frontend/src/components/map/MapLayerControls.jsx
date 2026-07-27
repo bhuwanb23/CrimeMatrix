@@ -10,7 +10,7 @@ const layers = [
 ]
 
 export default function MapLayerControls({ activeLayers, onToggleLayer }) {
-  const { t } = useLanguage()
+  const { t: _t } = useLanguage()
   return (
     <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
       <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[var(--text-muted)] whitespace-nowrap">

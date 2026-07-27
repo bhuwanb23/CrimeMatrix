@@ -6,7 +6,7 @@ import { scoreInvestigation, getPriorityExplain, getPriorityRankings } from '../
 
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
-export default function ToolsPanel({ investigation, onRefresh }) {
+export default function ToolsPanel({ investigation, onRefresh, className = '' }) {
   const { t } = useLanguage()
   const [toggling, setToggling] = useState(false)
   const [priority, setPriority] = useState(null)
@@ -46,7 +46,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
   }
 
   return (
-    <div className="tools-panel">
+    <div className={`tools-panel ${className}`}>
       {/* Save/Resume */}
       <div className="tools-section">
         <h3 className="tools-section-title">{isSaved ? <Play size={14} /> : <Save size={14} />} {isSaved ? t('Resume') : t('Save')}</h3>

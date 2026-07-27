@@ -218,46 +218,58 @@ async def seed_all() -> dict[str, int]:
         )
         counts["sections"] += 1
 
-    # firs / cases
+    # firs / cases — one per CRIME (mirrors SQLite seed/cases.py + seed/firs.py)
+    from seed.data import STATIONS as STATION_ROWS
+
+    def _station_name(district_idx: int) -> str:
+        dcode = DISTRICTS[district_idx][1]
+        for name, _code, district_code in STATION_ROWS:
+            if district_code == dcode:
+                return name
+        return "Cubbon Park PS"
+
     fir_ids = []
-    for i in range(1, 6):
+    case_ids = []
+    for i, row in enumerate(CRIMES, start=1):
+        crime_type_name = CRIME_TYPES[row["type_idx"]][0]
+        district_name = DISTRICTS[row["district_idx"]][0]
+        fir_number = f"FIR/{i:04d}/2026"
         fir = await _upsert(
             provider,
             "firs",
             "fir_number",
-            f"FIR/BNG/2026/{i:04d}",
+            fir_number,
             {
                 "legacy_id": i,
-                "title": f"Sample FIR {i}",
-                "description": "Seeded FIR for Catalyst Phase 1",
-                "crime_type": "theft",
-                "district": "Bengaluru Urban",
-                "station": "Cubbon Park PS",
-                "status": "open",
+                "title": row["title"],
+                "description": row.get("desc") or "",
+                "crime_type": crime_type_name,
+                "district": district_name,
+                "station": _station_name(row["district_idx"]),
+                "status": "open" if row.get("status") != "closed" else "closed",
                 "complainant_name": f"Complainant {i}",
             },
         )
         fir_ids.append(fir["id"])
         counts["firs"] += 1
 
-    case_ids = []
-    for i, fir_id in enumerate(fir_ids, start=1):
+        case_status = "closed" if row.get("status") == "closed" else ("active" if row.get("status") == "active" else "open")
         case = await _upsert(
             provider,
             "cases",
             "case_number",
-            f"CASE/BNG/2026/{i:04d}",
+            f"CR/{i:04d}/2026",
             {
                 "legacy_id": i,
-                "title": f"Sample Case {i}",
-                "description": "Seeded case",
-                "crime_type": "theft",
-                "district": "Bengaluru Urban",
-                "status": "open",
-                "priority_level": "medium",
-                "fir_id": fir_id,
-                "latitude": 12.97,
-                "longitude": 77.59,
+                "title": row["title"],
+                "description": row.get("desc") or "",
+                "crime_type": crime_type_name,
+                "district": district_name,
+                "status": case_status,
+                "priority_level": row.get("priority", "medium"),
+                "fir_id": fir["id"],
+                "latitude": 12.97 + (i * 0.01) % 1,
+                "longitude": 77.59 + (i * 0.01) % 1,
             },
         )
         case_ids.append(case["id"])
@@ -265,14 +277,14 @@ async def seed_all() -> dict[str, int]:
 
     # crimes from seed data
     now = datetime.now(timezone.utc)
-    base = now - timedelta(days=6)
+    base = now - timedelta(days=27)
     for i, row in enumerate(CRIMES):
         type_id = id_map["crime_types_idx"].get(row["type_idx"])
         district_id = id_map["districts_idx"].get(row["district_idx"])
         loc_id = None
         if row.get("location_idx") is not None:
             loc_id = id_map["locations_idx"].get(row["location_idx"])
-        occurred = base + timedelta(days=i % 7, hours=10)
+        occurred = base + timedelta(days=i % 28, hours=10)
         created = await _upsert(
             provider,
             "crimes",
@@ -292,19 +304,22 @@ async def seed_all() -> dict[str, int]:
         id_map.setdefault("crimes", {})[i + 1] = created["id"]
         counts["crimes"] += 1
 
-    # persons / criminals / suspects
-    for i in range(1, 4):
+    # persons / criminals / suspects — denser set for risk / graph pages
+    from seed.data import PERSONS, SUSPECTS
+
+    for i, person_row in enumerate(PERSONS, start=1):
+        aadhar = f"99990000{i:04d}"
         person = await _upsert(
             provider,
             "persons",
             "aadhar_number",
-            f"99990000{i:04d}",
+            aadhar,
             {
                 "legacy_id": i,
-                "first_name": f"Person{i}",
-                "last_name": "Seed",
-                "district": "Bengaluru Urban",
-                "gender": "M",
+                "first_name": person_row["first_name"],
+                "last_name": person_row["last_name"],
+                "district": person_row.get("district", "Bengaluru Urban"),
+                "gender": "M" if person_row.get("gender") == "Male" else "F",
             },
         )
         id_map.setdefault("persons", {})[i] = person["id"]
@@ -315,62 +330,63 @@ async def seed_all() -> dict[str, int]:
             i,
             {
                 "person_id": person["id"],
-                "alias": f"Alias{i}",
-                "risk_score": 0.4 * i,
+                "alias": person_row["first_name"],
+                "risk_score": min(0.95, 0.25 + (i * 0.03)),
                 "status": "active",
                 "mo_description": "Seed MO",
             },
         )
+        counts["persons"] += 1
+        counts["criminals"] += 1
+
+    for i, suspect_row in enumerate(SUSPECTS, start=1):
         await _upsert(
             provider,
             "suspects",
             "legacy_id",
             i,
             {
-                "name": f"Suspect {i}",
-                "age": 25 + i,
-                "district": "Bengaluru Urban",
-                "status": "open",
-                "risk_score": 0.3 * i,
+                "name": suspect_row["name"],
+                "age": suspect_row.get("age", 30),
+                "district": suspect_row.get("district", "Bengaluru Urban"),
+                "status": suspect_row.get("status", "open"),
+                "risk_score": float(suspect_row.get("risk_score") or 50) / 100.0,
             },
         )
-        counts["persons"] += 1
-        counts["criminals"] += 1
         counts["suspects"] += 1
 
-    # parties on first case
-    if case_ids:
-        cid = case_ids[0]
+    # parties / evidence on first 25 cases
+    for i, cid in enumerate(case_ids[:25], start=1):
         await _upsert(
             provider,
             "complainants",
             "legacy_id",
-            1,
-            {"case_id": cid, "name": "Seed Complainant", "age_year": 40},
+            i,
+            {"case_id": cid, "name": f"Complainant {i}", "age_year": 25 + (i % 40)},
         )
         await _upsert(
             provider,
             "victims",
             "legacy_id",
-            1,
-            {"case_id": cid, "name": "Seed Victim", "age_year": 35},
+            i,
+            {"case_id": cid, "name": f"Victim {i}", "age_year": 20 + (i % 45)},
         )
         await _upsert(
             provider,
             "accused",
             "legacy_id",
-            1,
-            {"case_id": cid, "name": "Seed Accused", "age_year": 28},
+            i,
+            {"case_id": cid, "name": f"Accused {i}", "age_year": 22 + (i % 35)},
         )
         await _upsert(
             provider,
             "evidence",
             "legacy_id",
-            1,
+            i,
             {
                 "case_id": cid,
-                "evidence_type": "document",
-                "description": "Seed evidence",
+                "evidence_type": "document" if i % 2 else "photo",
+                "description": f"Seed evidence for case {i}",
                 "status": "logged",
                 "file_path": "",
             },
@@ -398,17 +414,18 @@ async def seed_all() -> dict[str, int]:
     counts["vehicles"] += 1
     counts["phones"] += 1
 
-    # investigations + notes/timeline
+    # investigations + notes/timeline — first 40 cases
     inv_ids = []
-    for i, case_id in enumerate(case_ids[:3], start=1):
+    for i, case_id in enumerate(case_ids[:40], start=1):
+        row = CRIMES[i - 1]
         inv_payload = {
             "case_id": case_id,
-            "title": f"Investigation {i}",
-            "description": "Seed investigation",
-            "status": "active",
-            "priority_level": "medium",
-            "progress": 20 * i,
-            "district": "Bengaluru Urban",  # may be ignored if column missing in live schema
+            "title": f"Investigation — {row['title'][:80]}",
+            "description": row.get("desc") or "Seed investigation",
+            "status": "saved" if row.get("status") == "closed" else "active",
+            "priority_level": row.get("priority", "medium"),
+            "progress": min(90, 10 + i * 2),
+            "district": DISTRICTS[row["district_idx"]][0],
         }
         try:
             inv = await _upsert(provider, "investigations", "legacy_id", i, inv_payload)
@@ -421,7 +438,7 @@ async def seed_all() -> dict[str, int]:
             "notes",
             "legacy_id",
             i,
-            {"investigation_id": inv["id"], "content": f"Seed note {i}"},
+            {"investigation_id": inv["id"], "content": f"Initial case note for investigation {i}"},
         )
         await _upsert(
             provider,
@@ -430,8 +447,8 @@ async def seed_all() -> dict[str, int]:
             i,
             {
                 "investigation_id": inv["id"],
-                "title": f"Event {i}",
-                "event_type": "update",
+                "title": f"FIR Registered — INV-{i}",
+                "event_type": "fir_filed",
                 "event_date": now.isoformat(),
                 "description": "Seeded timeline event",
             },
@@ -454,7 +471,6 @@ async def seed_all() -> dict[str, int]:
                 "reliability": "high",
             },
         )
-        # persons map uses aadhar unique; rebuild from loop if needed
         counts["witnesses"] += 1
 
         await _upsert(

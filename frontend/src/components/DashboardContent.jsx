@@ -49,10 +49,17 @@ export default function DashboardContent() {
   const totals = stats?.totals || {}
   const byStatus = stats?.cases_by_status || {}
   const resolution = stats?.resolution_rate ?? dashStats?.resolution_rate
+  const totalCases =
+    totals.cases ??
+    totals.crimes ??
+    dashStats?.total_crimes ??
+    dashStats?.total_cases ??
+    null
+  const activeOpen = byStatus.active ?? 0
 
   const cards = [
-    { icon: ClipboardList, label: 'Total Cases', value: formatNumber(totals.cases ?? dashStats?.total_cases), trend: loading ? '…' : `${byStatus.active ?? 0} active`, trendLabel: 'open', trendDir: 'up' },
-    { icon: TrendingUp, label: 'Investigation Rate', value: totals.cases ? `${Math.round(((byStatus.active || 0) / Math.max(totals.cases, 1)) * 1000) / 10}%` : '—', trend: loading ? '…' : `${byStatus.pending ?? 0} pending`, trendLabel: 'awaiting', trendDir: 'up' },
+    { icon: ClipboardList, label: 'Total Cases', value: formatNumber(totalCases), trend: loading ? '…' : `${activeOpen} active`, trendLabel: 'open', trendDir: 'up' },
+    { icon: TrendingUp, label: 'Investigation Rate', value: totalCases ? `${Math.round(((activeOpen || 0) / Math.max(totalCases, 1)) * 1000) / 10}%` : '—', trend: loading ? '…' : `${byStatus.pending ?? 0} pending`, trendLabel: 'awaiting', trendDir: 'up' },
     { icon: AlertTriangle, label: 'Active Alerts', value: formatNumber(totals.alerts ?? dashStats?.active_alerts), trend: loading ? '…' : `${byStatus.closed ?? 0} closed`, trendLabel: 'resolved', trendDir: 'down' },
     { icon: Users, label: 'Suspects', value: formatNumber(totals.suspects ?? dashStats?.suspects), trend: loading ? '…' : `${totals.users ?? 0} users`, trendLabel: 'in system', trendDir: 'up' },
     { icon: BarChart3, label: 'Resolution Rate', value: resolution != null ? `${resolution}%` : '—', trend: loading ? '…' : `${byStatus.closed ?? 0} closed`, trendLabel: 'of all', trendDir: 'up' },

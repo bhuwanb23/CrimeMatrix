@@ -39,9 +39,9 @@ export default function CrimeDonut() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-slate-400 p-4 m-0">{t('Loading...')}</p>
+        <p className="text-sm text-[var(--text-muted)] p-4 m-0">{t('Loading...')}</p>
       ) : data.length === 0 ? (
-        <p className="text-sm text-slate-400 p-4 m-0">{t('No case data')}</p>
+        <p className="text-sm text-[var(--text-muted)] p-4 m-0">{t('No case data')}</p>
       ) : (
         <>
           <div className="analytics-donut-chart">

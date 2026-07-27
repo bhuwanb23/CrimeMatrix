@@ -2,6 +2,7 @@ import { useLanguage } from '../../context/LanguageContext'
 import { useState, useEffect } from 'react'
 import { Search, Bookmark, ChevronDown, ChevronRight, RefreshCw, Plus, Clock } from 'lucide-react'
 import { getRecentInvestigations } from '../../services/investigations'
+import { dedupeByKey } from '../../utils/dedupeByKey'
 
 export default function CaseListPanel({ investigations, selectedId, onSelectCase, loading, onRefresh, onCreated }) {
   const { t } = useLanguage()
@@ -15,7 +16,7 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
       try {
         const res = await getRecentInvestigations(3)
         const data = res?.data || res
-        setRecentItems(data?.items || [])
+        setRecentItems(dedupeByKey(data?.items || [], 'id'))
       } catch {
         setRecentItems([])
       }
@@ -95,9 +96,9 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
             <span>{t('Recently Viewed')}</span>
           </div>
           <div className="case-list-recent">
-            {recentItems.map((inv) => (
+            {recentItems.map((inv, index) => (
               <button
-                key={`recent-${inv.id}`}
+                key={`recent-${inv.id ?? 'item'}-${index}`}
                 className={`case-list-item case-list-item-recent ${isSelected(inv.id) ? 'selected' : ''}`}
                 onClick={() => onSelectCase(inv.id)}
               >

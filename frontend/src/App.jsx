@@ -27,16 +27,7 @@ import UnifiedSearchPage from './components/UnifiedSearchPage'
 import IntelligenceTimelinePage from './components/IntelligenceTimelinePage'
 import PrioritizationIntelligencePage from './components/PrioritizationIntelligencePage'
 
-import { useEffect } from 'react'
-
 function App() {
-  useEffect(() => {
-    const theme = localStorage.getItem('app-theme') || 'system'
-    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark')
-    else if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light')
-    else document.documentElement.removeAttribute('data-theme')
-  }, [])
-
   return (
     <BrowserRouter>
       <Routes>

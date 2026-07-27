@@ -83,7 +83,7 @@ export default function CrimeIntelligencePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6">
       <div className="max-w-7xl mx-auto space-y-5">
         {/* Hero Header */}
         <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
@@ -113,7 +113,7 @@ export default function CrimeIntelligencePage() {
         </div>
 
         {/* Tab Bar */}
-        <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 overflow-x-auto">
+        <div className="flex items-center gap-1 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-1 overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon
             return (
@@ -123,7 +123,7 @@ export default function CrimeIntelligencePage() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                   activeTab === tab.id
                     ? 'bg-orange-500 text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
                 <Icon size={15} />
@@ -156,14 +156,14 @@ function WorkspaceTab({ data, trendData, seasonalData, hotspots, riskData, loadi
     return (
       <div className="flex items-center justify-center py-16">
         <div className="w-6 h-6 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
-        <span className="ml-3 text-slate-500 text-sm">{t('Loading intelligence data...')}</span>
+        <span className="ml-3 text-[var(--text-muted)] text-sm">{t('Loading intelligence data...')}</span>
       </div>
     )
   }
   if (!data) {
     return (
-      <div className="text-center py-16 bg-white border border-slate-200 rounded-2xl">
-        <p className="text-slate-500">{t('Failed to load intelligence data')}</p>
+      <div className="text-center py-16 bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl">
+        <p className="text-[var(--text-muted)]">{t('Failed to load intelligence data')}</p>
       </div>
     )
   }

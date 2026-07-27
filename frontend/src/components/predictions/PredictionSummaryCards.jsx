@@ -18,14 +18,14 @@ export default function PredictionSummaryCards({ stats }) {
         const value = stats[card.key] || 0
         const Icon = card.icon
         return (
-          <div key={card.key} className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-sm transition-shadow">
+          <div key={card.key} className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 hover:shadow-sm transition-shadow">
             <div className="flex items-center gap-3 mb-2">
               <div className={`w-9 h-9 rounded-xl ${card.bg} flex items-center justify-center`}>
                 <Icon size={16} className={card.color} />
               </div>
-              <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{card.label}</span>
+              <span className="text-[10px] text-[var(--text-muted)] font-medium uppercase tracking-wide">{card.label}</span>
             </div>
-            <div className="text-xl font-bold text-slate-900">{Math.round(value)}{card.suffix || ''}</div>
+            <div className="text-xl font-bold text-[var(--text-primary)]">{Math.round(value)}{card.suffix || ''}</div>
           </div>
         )
       })}

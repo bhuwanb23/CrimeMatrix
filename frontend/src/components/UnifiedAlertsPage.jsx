@@ -84,7 +84,7 @@ export default function UnifiedAlertsPage() {
   }, [allAlerts])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6">
       <div className="max-w-7xl mx-auto space-y-5">
         <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
           <div className="flex items-center justify-between">
@@ -105,7 +105,7 @@ export default function UnifiedAlertsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 w-fit">
+        <div className="flex items-center gap-1 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-1 w-fit">
           {tabs.map((tab) => {
             const Icon = tab.icon
             return (
@@ -115,7 +115,7 @@ export default function UnifiedAlertsPage() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
                     ? 'bg-orange-500 text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
                 <Icon size={16} />
@@ -158,7 +158,7 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
           ].map((card, i) => (
             <div key={i} className={`${card.bg} ${card.border} border rounded-xl p-4`}>
               <span className={`text-2xl font-bold ${card.color}`}>{card.value}</span>
-              <span className="block text-[10px] font-semibold text-slate-500 uppercase mt-1">{t(card.label)}</span>
+              <span className="block text-[10px] font-semibold text-[var(--text-muted)] uppercase mt-1">{t(card.label)}</span>
             </div>
           ))}
         </div>
@@ -168,7 +168,7 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
         {['active', 'acknowledged', 'all'].map(f => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              filter === f ? 'bg-orange-500 text-white' : 'bg-white text-slate-500 border border-slate-200 hover:border-orange-300'
+              filter === f ? 'bg-orange-500 text-white' : 'bg-[var(--bg-card)] text-[var(--text-muted)] border border-[var(--border)] hover:border-orange-300'
             }`}>
             {t(f.charAt(0).toUpperCase() + f.slice(1))}
           </button>
@@ -177,13 +177,13 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-6 h-6 border-2 border-slate-200 border-t-orange-500 rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-[var(--border)] border-t-orange-500 rounded-full animate-spin" />
         </div>
       ) : alerts.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
-          <Bell size={32} className="text-slate-300 mx-auto mb-2" />
-          <p className="text-sm text-slate-500">{t('No alerts found')}</p>
-          <p className="text-xs text-slate-400">{t('Click "Run Detection" to scan for early warning signals')}</p>
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-8 text-center">
+          <Bell size={32} className="text-[var(--text-muted)] mx-auto mb-2" />
+          <p className="text-sm text-[var(--text-muted)]">{t('No alerts found')}</p>
+          <p className="text-xs text-[var(--text-muted)]">{t('Click "Run Detection" to scan for early warning signals')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -191,20 +191,20 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
             const Icon = alertTypeIcons[alert.alert_type] || AlertTriangle
             const color = severityColors[alert.severity] || '#64748b'
             return (
-              <div key={alert.id} className={`bg-white border border-slate-200 rounded-xl p-4 flex items-start gap-3 transition-all hover:border-slate-300 ${alert.status === 'acknowledged' ? 'opacity-60' : ''}`}>
+              <div key={alert.id} className={`bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 flex items-start gap-3 transition-all hover:border-[var(--border-strong)] ${alert.status === 'acknowledged' ? 'opacity-60' : ''}`}>
                 <div className="w-2 h-full rounded-full flex-shrink-0" style={{ background: color }} />
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${color}15` }}>
                   <Icon size={16} style={{ color }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-slate-900">{alert.title}</span>
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">{alert.title}</span>
                     <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase"
                       style={{ color, background: `${color}15` }}>{t(alert.severity)}</span>
                   </div>
-                  <p className="text-xs text-slate-500 mb-2">{alert.description}</p>
+                  <p className="text-xs text-[var(--text-muted)] mb-2">{alert.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-400">{t('Confidence')}: {alert.confidence}%</span>
+                    <span className="text-[10px] text-[var(--text-muted)]">{t('Confidence')}: {alert.confidence}%</span>
                     {alert.status === 'active' && (
                       <button onClick={() => onAcknowledge(alert.id)}
                         className="flex items-center gap-1 text-[10px] font-medium text-orange-600 hover:text-orange-700">
@@ -212,7 +212,7 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
                       </button>
                     )}
                     {alert.status === 'acknowledged' && (
-                      <span className="text-[10px] text-slate-400 italic">{t('Acknowledged')}</span>
+                      <span className="text-[10px] text-[var(--text-muted)] italic">{t('Acknowledged')}</span>
                     )}
                   </div>
                 </div>
@@ -230,55 +230,55 @@ function AlertAnalyticsTab({ typeBreakdown, statusBreakdown, recentAlerts, t }) 
 
   return (
     <div className="grid grid-cols-3 gap-4">
-      <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Alerts by Type')}</h3>
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('Alerts by Type')}</h3>
         {typeBreakdown.length === 0 ? (
-          <p className="text-xs text-slate-400 m-0">{t('No alert data yet')}</p>
+          <p className="text-xs text-[var(--text-muted)] m-0">{t('No alert data yet')}</p>
         ) : (
           <div className="space-y-2">
             {typeBreakdown.map((item, i) => (
               <div key={i} className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 w-20">{t(item.name)}</span>
-                <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                <span className="text-xs text-[var(--text-muted)] w-20">{t(item.name)}</span>
+                <div className="flex-1 h-2 bg-[var(--bg-input)] rounded-full overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${(item.value / maxType) * 100}%`, background: item.color }} />
                 </div>
-                <span className="text-xs font-semibold text-slate-700 w-6 text-right">{item.value}</span>
+                <span className="text-xs font-semibold text-[var(--text-secondary)] w-6 text-right">{item.value}</span>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Alert Status')}</h3>
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('Alert Status')}</h3>
         <div className="space-y-2">
           {statusBreakdown.map((item, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
-              <span className="text-xs text-slate-500 flex-1">{t(item.label)}</span>
-              <span className="text-xs font-semibold text-slate-700">{item.count}</span>
+              <span className="text-xs text-[var(--text-muted)] flex-1">{t(item.label)}</span>
+              <span className="text-xs font-semibold text-[var(--text-secondary)]">{item.count}</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('Recent Alerts')}</h3>
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
+        <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('Recent Alerts')}</h3>
         {recentAlerts.length === 0 ? (
-          <p className="text-xs text-slate-400 m-0">{t('No recent alerts')}</p>
+          <p className="text-xs text-[var(--text-muted)] m-0">{t('No recent alerts')}</p>
         ) : (
           <div className="space-y-2">
             {recentAlerts.map((alert) => {
               const color = severityColors[alert.severity] || '#64748b'
               return (
-                <div key={alert.id} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg">
+                <div key={alert.id} className="flex items-start gap-2 p-2 bg-[var(--bg-muted)] rounded-lg">
                   <div className="w-6 h-6 rounded flex items-center justify-center text-xs"
                     style={{ background: `${color}20`, color }}>
                     <AlertTriangle size={12} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-slate-900 truncate">{alert.title}</p>
-                    <p className="text-[10px] text-slate-400">
+                    <p className="text-xs font-medium text-[var(--text-primary)] truncate">{alert.title}</p>
+                    <p className="text-[10px] text-[var(--text-muted)]">
                       {alert.alert_type || alert.type || 'alert'}
                       {alert.district ? ` • ${alert.district}` : ''}
                     </p>

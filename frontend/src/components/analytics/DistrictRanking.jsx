@@ -42,9 +42,9 @@ export default function DistrictRanking() {
 
       <div className="analytics-district-list">
         {loading ? (
-          <p className="text-sm text-slate-400 m-0">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('Loading...')}</p>
         ) : rows.length === 0 ? (
-          <p className="text-sm text-slate-400 m-0">{t('No district data')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('No district data')}</p>
         ) : rows.map((d, i) => (
           <div key={i} className="district-item">
             <div className="district-item-left">

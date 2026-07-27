@@ -44,9 +44,9 @@ export default function DistrictDonut() {
       </div>
       <div className="chart-card-body donut-body">
         {loading ? (
-          <p className="text-sm text-slate-400 m-0">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('Loading...')}</p>
         ) : districts.length === 0 ? (
-          <p className="text-sm text-slate-400 m-0">{t('No district data')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('No district data')}</p>
         ) : (
           <>
             <div className="donut-chart-wrapper">

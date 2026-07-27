@@ -2,6 +2,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { useState, useEffect, useCallback } from 'react'
 import { Zap, RefreshCw, AlertTriangle, Users, BarChart3, ArrowUpRight, TrendingUp } from 'lucide-react'
 import { getPriorityStats, getPriorityRankings, batchScorePriorities, getWorkload } from '../services/priorities'
+import { dedupeByKey } from '../utils/dedupeByKey'
 
 const priorityColors = { critical: '#ef4444', high: '#f59e0b', medium: '#3b82f6', low: '#10b981' }
 
@@ -20,7 +21,7 @@ export default function PrioritizationDashboard() {
         getPriorityStats(), getPriorityRankings(10), getWorkload()
       ])
       setStats(statsRes?.data || statsRes)
-      setRankings(rankRes?.data || [])
+      setRankings(dedupeByKey(rankRes?.data || [], 'investigation_id'))
       setWorkload(workloadRes?.data || [])
     } catch (e) { console.error(e) } finally { setLoading(false) }
   }, [])
@@ -99,7 +100,7 @@ export default function PrioritizationDashboard() {
               rankings.map((r, i) => {
                 const color = priorityColors[r.priority_level] || '#64748b'
                 return (
-                  <div key={r.investigation_id || i}
+                  <div key={`${r.investigation_id ?? 'rank'}-${i}`}
                     className="px-5 py-3.5 hover:bg-[var(--bg-hover)] transition-all cursor-pointer">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">

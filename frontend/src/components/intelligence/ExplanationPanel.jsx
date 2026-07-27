@@ -41,11 +41,11 @@ export default function ExplanationPanel({ explanation, onClose }) {
         <span className="text-[10px] text-white/50">{t('Confidence')}</span>
         <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
           <div
-            className={`h-full rounded-full transition-all ${confidenceBarColors[confidence.level] || 'bg-slate-400'}`}
+            className={`h-full rounded-full transition-all ${confidenceBarColors[confidence.level] || 'bg-[var(--text-muted)]'}`}
             style={{ width: `${confidence.score}%` }}
           />
         </div>
-        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${confidenceColors[confidence.level] || 'text-slate-400 bg-slate-500/10'}`}>
+        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${confidenceColors[confidence.level] || 'text-[var(--text-muted)] bg-[var(--bg-muted)]0/10'}`}>
           {confidence.score}% {t(confidence.level?.toUpperCase() || 'LOW')}
         </span>
       </div>

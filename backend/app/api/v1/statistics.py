@@ -24,6 +24,7 @@ async def get_statistics(db: AsyncSession = Depends(get_db)):
         from app.db.phase1_aggregations import fetch_all
 
         cases = await fetch_all("cases")
+        crimes = await fetch_all("crimes")
         suspects = await fetch_all("suspects")
         officers = await store_list("officers", page=1, page_size=1)
         crime_types = await store_list("crime_types", page=1, page_size=1)
@@ -33,24 +34,29 @@ async def get_statistics(db: AsyncSession = Depends(get_db)):
         categories = await store_list("case_categories", page=1, page_size=1)
 
         total_cases = len(cases)
-        active_cases = sum(1 for c in cases if str(c.get("status") or "").lower() in {"active", "open"})
-        closed_cases = sum(1 for c in cases if str(c.get("status") or "").lower() in {"closed", "resolved"})
-        pending = max(0, total_cases - active_cases - closed_cases)
+        total_crimes = len(crimes)
+        # Prefer cases once seeded 1:1; fall back to crimes if cases table is still sparse
+        display_total = total_cases if total_cases >= total_crimes else total_crimes
+        status_rows = cases if total_cases >= total_crimes else crimes
+        active_cases = sum(1 for c in status_rows if str(c.get("status") or "").lower() in {"active", "open"})
+        closed_cases = sum(1 for c in status_rows if str(c.get("status") or "").lower() in {"closed", "resolved"})
+        pending = max(0, display_total - active_cases - closed_cases)
 
         return success_response(
             data={
                 "totals": {
                     "users": officers.get("total", 0),
-                    "cases": total_cases,
+                    "cases": display_total,
+                    "crimes": total_crimes,
                     "suspects": len(suspects),
-                    "alerts": sum(1 for s in suspects if float(s.get("risk_score") or 0) >= 50),
+                    "alerts": sum(1 for s in suspects if float(s.get("risk_score") or 0) >= 0.5),
                 },
                 "cases_by_status": {
                     "active": active_cases,
                     "closed": closed_cases,
                     "pending": pending,
                 },
-                "resolution_rate": round((closed_cases / total_cases * 100), 1) if total_cases else 0,
+                "resolution_rate": round((closed_cases / display_total * 100), 1) if display_total else 0,
                 "lookups": {
                     "categories": categories.get("total", 0),
                     "gravity_offences": 0,

@@ -81,9 +81,9 @@ export default function CaseTrendChart() {
       </div>
       <div className="chart-card-body">
         {loading ? (
-          <p className="text-sm text-slate-400 m-0 p-4">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0 p-4">{t('Loading...')}</p>
         ) : data.length === 0 ? (
-          <p className="text-sm text-slate-400 m-0 p-4">{t('No trend data')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0 p-4">{t('No trend data')}</p>
         ) : (
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>

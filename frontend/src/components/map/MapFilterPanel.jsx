@@ -14,13 +14,13 @@ const crimeTypes = [
 ]
 
 const selectClass =
-  'bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 font-[inherit] min-w-[110px] max-w-[160px] focus:outline-none focus:border-amber-500'
+  'bg-[var(--bg-muted)] border border-[var(--border)] rounded-lg px-2.5 py-1.5 text-xs text-[var(--text-primary)] font-[inherit] min-w-[110px] max-w-[160px] focus:outline-none focus:border-amber-500'
 
 export default function MapFilterPanel({ filters, onChange }) {
   const { t } = useLanguage()
   return (
     <div className="flex items-center gap-2 min-w-0 max-lg:w-full max-lg:flex-wrap">
-      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 whitespace-nowrap">
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[var(--text-muted)] whitespace-nowrap">
         <Filter size={13} aria-hidden="true" />
         Filters
       </span>

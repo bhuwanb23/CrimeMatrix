@@ -178,8 +178,6 @@ export default function PredictionAnalyticsPage() {
 }
 
 function DistrictPredictionsTab({ districts }) {
-  const { t } = useLanguage()
-
   if (!districts || districts.length === 0) {
     return (
       <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden">
@@ -257,8 +255,6 @@ function DistrictPredictionsTab({ districts }) {
 }
 
 function CrimeForecastTab({ forecast, seasonal, predictions }) {
-  const { t } = useLanguage()
-
   return (
     <div className="space-y-5">
       <PredictionForecastChart forecast={forecast} />

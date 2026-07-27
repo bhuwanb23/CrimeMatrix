@@ -4,14 +4,11 @@ import { detectCrossDistrict, listCrossDistrictMatches, getCrossDistrictStats } 
 import { explainEvent } from '../../services/proactive'
 import ExplainButton from './ExplainButton'
 import ExplanationPanel from './ExplanationPanel'
-import { useLanguage } from '../../context/LanguageContext'
-
 const matchIcons = { suspect: Shield, vehicle: Car, phone: Phone, evidence: MapPin }
 const matchColors = { suspect: '#ef4444', vehicle: '#8b5cf6', phone: '#10b981', evidence: '#3b82f6' }
 const PAGE_SIZE = 10
 
 export default function CrossDistrictSection() {
-  const { t } = useLanguage()
   const [matches, setMatches] = useState([])
   const [stats, setStats] = useState(null)
   const [detecting, setDetecting] = useState(false)

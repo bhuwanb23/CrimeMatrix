@@ -14,7 +14,6 @@ import {
   Shield,
   Zap,
   Search,
-  Radar,
   Clock,
 } from 'lucide-react'
 

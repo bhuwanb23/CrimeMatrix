@@ -75,9 +75,9 @@ export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistr
   const showDensity = activeLayers.includes('density')
 
   return (
-    <div className="relative h-full w-full bg-slate-50">
+    <div className="relative h-full w-full bg-[var(--bg-muted)]">
       {loading && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-slate-50/70 text-xs text-slate-900">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-[var(--bg-muted)]/70 text-xs text-[var(--text-primary)]">
           <div className="similar-spinner" />
           <span>Loading map data...</span>
         </div>
@@ -247,7 +247,7 @@ export default function MapCanvas({ selectedDistrict: _selectedDistrict, onDistr
         )}
       </svg>
 
-      <div className="absolute bottom-4 left-4 z-10 flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] text-slate-400 max-md:inset-x-2 max-md:bottom-2 max-md:left-2">
+      <div className="absolute bottom-4 left-4 z-10 flex flex-wrap gap-3 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-3 py-2 text-[10px] text-[var(--text-muted)] max-md:inset-x-2 max-md:bottom-2 max-md:left-2">
         <div className="flex items-center gap-1 whitespace-nowrap">
           <span className="size-2 rounded-full bg-red-500" /> {t('Open')}
         </div>

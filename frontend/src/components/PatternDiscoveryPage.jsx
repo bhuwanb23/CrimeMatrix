@@ -62,21 +62,21 @@ export default function PatternDiscoveryPage() {
   const pageData = patterns.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl">
       {/* Header */}
-      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+      <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
             <GitBranch size={16} className="text-amber-500" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Crime Pattern Discovery</h3>
-            <p className="text-[10px] text-slate-400">Automatically identify recurring crime patterns</p>
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Crime Pattern Discovery</h3>
+            <p className="text-[10px] text-[var(--text-muted)]">Automatically identify recurring crime patterns</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {stats && (
-            <div className="flex items-center gap-3 text-[10px] text-slate-400 mr-2">
+            <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)] mr-2">
               <span className="flex items-center gap-1"><Layers size={10} /> {stats.total_patterns || 0} patterns</span>
               <span>{stats.total_occurrences || 0} occurrences</span>
             </div>
@@ -90,13 +90,13 @@ export default function PatternDiscoveryPage() {
       </div>
 
       {/* Filters */}
-      <div className="px-5 py-3 border-b border-slate-100 flex items-center gap-1.5">
+      <div className="px-5 py-3 border-b border-[var(--border)] flex items-center gap-1.5">
         {typeFilters.map((f) => (
           <button key={f.value}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-medium transition-all ${
               typeFilter === f.value
                 ? 'bg-amber-100 text-amber-700 border border-amber-300'
-                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50 border border-transparent'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-transparent'
             }`}
             onClick={() => setTypeFilter(f.value)}>
             {t(f.label)}
@@ -107,26 +107,26 @@ export default function PatternDiscoveryPage() {
       {/* Table */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-5 h-5 border-2 border-slate-200 border-t-amber-500 rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[var(--border)] border-t-amber-500 rounded-full animate-spin" />
         </div>
       ) : patterns.length === 0 ? (
-        <div className="text-center py-12 border border-dashed border-slate-200 m-5 rounded-xl">
-          <GitBranch size={32} className="mx-auto text-slate-200 mb-3" />
-          <p className="text-sm font-medium text-slate-500 mb-1">No patterns detected yet</p>
-          <p className="text-xs text-slate-400">Click "Detect Patterns" to analyze crime data.</p>
+        <div className="text-center py-12 border border-dashed border-[var(--border)] m-5 rounded-xl">
+          <GitBranch size={32} className="mx-auto text-[var(--text-muted)] mb-3" />
+          <p className="text-sm font-medium text-[var(--text-muted)] mb-1">No patterns detected yet</p>
+          <p className="text-xs text-[var(--text-muted)]">Click "Detect Patterns" to analyze crime data.</p>
         </div>
       ) : (
         <>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-slate-100">
-                  <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Type</th>
-                  <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Pattern Name</th>
-                  <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Description</th>
-                  <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider text-right">Crimes</th>
-                  <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider text-right">Confidence</th>
-                  <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Tags</th>
+                <tr className="border-b border-[var(--border)]">
+                  <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">Type</th>
+                  <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">Pattern Name</th>
+                  <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">Description</th>
+                  <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider text-right">Crimes</th>
+                  <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider text-right">Confidence</th>
+                  <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">Tags</th>
                   <th className="px-5 py-3 w-8"></th>
                 </tr>
               </thead>
@@ -136,7 +136,7 @@ export default function PatternDiscoveryPage() {
                   const Icon = config.icon
                   return (
                     <tr key={p.id}
-                      className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer"
+                      className="border-b border-[var(--border)] hover:bg-[var(--bg-hover)] transition-colors cursor-pointer"
                       onClick={() => setSelectedPattern(p)}>
                       <td className="px-5 py-3">
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${config.bg} ${config.color} border ${config.border}`}>
@@ -144,11 +144,11 @@ export default function PatternDiscoveryPage() {
                           {config.label}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-xs font-medium text-slate-900">{p.name}</td>
-                      <td className="px-5 py-3 text-xs text-slate-500 max-w-[200px] truncate">{p.description}</td>
-                      <td className="px-5 py-3 text-xs font-semibold text-slate-700 text-right">{p.frequency}</td>
+                      <td className="px-5 py-3 text-xs font-medium text-[var(--text-primary)]">{p.name}</td>
+                      <td className="px-5 py-3 text-xs text-[var(--text-muted)] max-w-[200px] truncate">{p.description}</td>
+                      <td className="px-5 py-3 text-xs font-semibold text-[var(--text-secondary)] text-right">{p.frequency}</td>
                       <td className="px-5 py-3 text-right">
-                        <span className={`text-xs font-bold ${p.confidence >= 70 ? 'text-emerald-600' : p.confidence >= 40 ? 'text-amber-600' : 'text-slate-500'}`}>
+                        <span className={`text-xs font-bold ${p.confidence >= 70 ? 'text-emerald-600' : p.confidence >= 40 ? 'text-amber-600' : 'text-[var(--text-muted)]'}`}>
                           {p.confidence}%
                         </span>
                       </td>
@@ -159,7 +159,7 @@ export default function PatternDiscoveryPage() {
                         </div>
                       </td>
                       <td className="px-5 py-3">
-                        <ChevronRight size={14} className="text-slate-300 group-hover:text-slate-500" />
+                        <ChevronRight size={14} className="text-[var(--text-muted)] group-hover:text-[var(--text-muted)]" />
                       </td>
                     </tr>
                   )
@@ -170,26 +170,26 @@ export default function PatternDiscoveryPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="px-5 py-3 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-[10px] text-slate-400">
+            <div className="px-5 py-3 border-t border-[var(--border)] flex items-center justify-between">
+              <span className="text-[10px] text-[var(--text-muted)]">
                 Showing {((page - 1) * PAGE_SIZE) + 1}-{Math.min(page * PAGE_SIZE, patterns.length)} of {patterns.length}
               </span>
               <div className="flex items-center gap-1">
                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 disabled:opacity-30 transition-colors">
-                  <ChevronLeft size={14} className="text-slate-500" />
+                  className="p-1.5 rounded-lg hover:bg-[var(--bg-hover)] disabled:opacity-30 transition-colors">
+                  <ChevronLeft size={14} className="text-[var(--text-muted)]" />
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
                   <button key={p} onClick={() => setPage(p)}
                     className={`w-7 h-7 rounded-lg text-xs font-medium transition-colors ${
-                      p === page ? 'bg-amber-500 text-white' : 'text-slate-500 hover:bg-slate-100'
+                      p === page ? 'bg-amber-500 text-white' : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)]'
                     }`}>
                     {p}
                   </button>
                 ))}
                 <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 disabled:opacity-30 transition-colors">
-                  <ChevronRight size={14} className="text-slate-500" />
+                  className="p-1.5 rounded-lg hover:bg-[var(--bg-hover)] disabled:opacity-30 transition-colors">
+                  <ChevronRight size={14} className="text-[var(--text-muted)]" />
                 </button>
               </div>
             </div>

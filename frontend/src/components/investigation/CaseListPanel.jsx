@@ -23,14 +23,19 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
     loadRecent()
   }, [investigations])
 
+  const recentIds = new Set(recentItems.map((inv) => String(inv.id)))
   const filtered = investigations.filter((inv) => {
     const matchesSearch = (inv.case_id?.toString() || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       (inv.title || '').toLowerCase().includes(searchQuery.toLowerCase())
     const matchesSection = activeSection === 'active'
       ? inv.status === 'active'
       : inv.status === 'saved'
-    return matchesSearch && matchesSection
+    // Avoid showing the same investigation selected in both Recent and Active lists
+    const notInRecent = searchQuery || !recentIds.has(String(inv.id))
+    return matchesSearch && matchesSection && notInRecent
   })
+
+  const isSelected = (id) => selectedId != null && String(selectedId) === String(id)
 
   const activeCount = investigations.filter((i) => i.status === 'active').length
   const savedCount = investigations.filter((i) => i.status === 'saved').length
@@ -92,8 +97,8 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
           <div className="case-list-recent">
             {recentItems.map((inv) => (
               <button
-                key={inv.id}
-                className={`case-list-item case-list-item-recent ${selectedId === inv.id ? 'selected' : ''}`}
+                key={`recent-${inv.id}`}
+                className={`case-list-item case-list-item-recent ${isSelected(inv.id) ? 'selected' : ''}`}
                 onClick={() => onSelectCase(inv.id)}
               >
                 <div className="case-list-item-top">
@@ -138,8 +143,8 @@ export default function CaseListPanel({ investigations, selectedId, onSelectCase
         ) : (
           filtered.map((inv) => (
             <button
-              key={inv.id}
-              className={`case-list-item ${selectedId === inv.id ? 'selected' : ''}`}
+              key={`list-${inv.id}`}
+              className={`case-list-item ${isSelected(inv.id) ? 'selected' : ''}`}
               onClick={() => onSelectCase(inv.id)}
             >
               <div className="case-list-item-top">

@@ -196,7 +196,7 @@ function WorkspaceTab({ data, trendData, seasonalData, hotspots, riskData, loadi
 
       <div className="grid grid-cols-2 gap-5">
         <IntelligenceAIPanel insights={data.ai_insights} />
-        <RecommendationsPanel />
+        <RecommendationsPanel compact maxItems={6} />
       </div>
     </div>
   )

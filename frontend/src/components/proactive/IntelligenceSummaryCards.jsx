@@ -1,24 +1,23 @@
 import { Activity, Clock, CheckCircle, Bell } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function IntelligenceSummaryCards({ stats }) {
   const { t } = useLanguage()
   if (!stats) return null
 
   const cards = [
-    { label: t('Total Events'), value: stats.total_events || 0, icon: Activity, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { label: t('Processed'), value: stats.processed || 0, icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-50' },
-    { label: t('Pending'), value: stats.pending || 0, icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
-    { label: t('In Queue'), value: stats.queued || 0, icon: Bell, color: 'text-purple-500', bg: 'bg-purple-50' },
+    { label: t('Total Events'), value: stats.total_events || 0, icon: Activity, color: 'text-blue-500' },
+    { label: t('Processed'), value: stats.processed || 0, icon: CheckCircle, color: 'text-green-500' },
+    { label: t('Pending'), value: stats.pending || 0, icon: Clock, color: 'text-amber-500' },
+    { label: t('In Queue'), value: stats.queued || 0, icon: Bell, color: 'text-purple-500' },
   ]
 
   return (
     <div className="grid grid-cols-4 gap-3">
       {cards.map((card, i) => (
-        <div key={i} className={`${card.bg} border border-[var(--border)] rounded-xl p-4`}>
+        <div key={i} className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${card.color}`}>
+            <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-[var(--bg-muted)] ${card.color}`}>
               <card.icon size={18} />
             </div>
             <div>

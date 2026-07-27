@@ -125,7 +125,7 @@ export default function DashboardContent() {
       </div>
 
       {/* Recommendations — Full Width */}
-      <RecommendationsPanel />
+      <RecommendationsPanel maxItems={6} />
     </div>
   )
 }

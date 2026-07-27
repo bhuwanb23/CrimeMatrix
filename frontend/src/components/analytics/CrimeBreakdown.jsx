@@ -16,7 +16,7 @@ export default function CrimeBreakdown() {
         const res = await getCountsByType()
         const list = Array.isArray(res?.data) ? res.data : []
         const sum = list.reduce((s, r) => s + (r.value || 0), 0)
-        const mapped = list.map((r, i) => ({
+        const mapped = list.slice(0, 8).map((r, i) => ({
           name: r.key || 'Other',
           count: r.value || 0,
           percentage: sum ? Math.round(((r.value || 0) / sum) * 1000) / 10 : 0,

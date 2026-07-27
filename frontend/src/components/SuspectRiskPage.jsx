@@ -39,18 +39,26 @@ export default function SuspectRiskPage() {
     try {
       const [statsRes, rankingsRes] = await Promise.all([getSuspectRiskStats(), getSuspectRiskRankings(10)])
       setStats(statsRes?.data || statsRes)
-      setRankings(rankingsRes?.data || [])
+      const raw = rankingsRes?.data || []
+      const list = Array.isArray(raw) ? raw : (raw.items || [])
+      const seen = new Set()
+      const unique = list.filter((r) => {
+        const id = String(r.suspect_id ?? r.id ?? '')
+        if (!id || seen.has(id)) return false
+        seen.add(id)
+        return true
+      })
+      setRankings(unique)
     } catch (e) { console.error(e) } finally { setLoading(false) }
   }, [])
 
   useEffect(() => { loadData() }, [loadData])
 
-  // Auto-select first suspect after rankings load
   useEffect(() => {
-    if (rankings.length > 0 && !selectedSuspect) {
+    if (rankings.length > 0 && selectedSuspect == null) {
       handleSelectSuspect(rankings[0].suspect_id)
     }
-  }, [rankings])
+  }, [rankings, selectedSuspect])
 
   async function handleBatchScore() {
     setScoring(true)
@@ -58,7 +66,8 @@ export default function SuspectRiskPage() {
   }
 
   async function handleSelectSuspect(suspectId) {
-    setSelectedSuspect(suspectId)
+    const id = suspectId == null ? null : String(suspectId)
+    setSelectedSuspect(id)
     try {
       const [scoreRes, factorsRes] = await Promise.all([getSuspectRiskScore(suspectId), getSuspectRiskFactors(suspectId)])
       setSelectedScore(scoreRes?.data || null)
@@ -124,7 +133,7 @@ export default function SuspectRiskPage() {
           <div className="col-span-4 bg-[var(--bg-card)] rounded-2xl shadow-sm border border-[var(--border)] overflow-hidden">
             <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[var(--bg-active)] flex items-center justify-center">
                   <Shield size={16} className="text-amber-500" />
                 </div>
                 <div>
@@ -133,7 +142,7 @@ export default function SuspectRiskPage() {
                 </div>
               </div>
             </div>
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-[var(--border)] max-h-[520px] overflow-y-auto">
               {rankings.length === 0 ? (
                 <div className="py-12 text-center">
                   <UserX size={32} className="text-[var(--text-muted)] mx-auto mb-2" />
@@ -145,10 +154,11 @@ export default function SuspectRiskPage() {
               ) : (
                 rankings.map((r, i) => {
                   const color = riskColors[r.risk_level] || '#64748b'
-                  const isSelected = selectedSuspect === r.suspect_id
+                  const rowId = String(r.suspect_id ?? '')
+                  const isSelected = selectedSuspect != null && selectedSuspect === rowId
                   return (
-                    <div key={r.suspect_id || i}
-                      className={`px-5 py-3.5 cursor-pointer transition-all duration-200 hover:bg-[var(--bg-hover)] ${isSelected ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-l-amber-500' : ''}`}
+                    <div key={`${rowId}-${i}`}
+                      className={`px-5 py-3.5 cursor-pointer transition-all duration-200 hover:bg-[var(--bg-hover)] ${isSelected ? 'bg-[var(--bg-active)] border-l-4 border-l-amber-500' : 'border-l-4 border-l-transparent'}`}
                       onClick={() => handleSelectSuspect(r.suspect_id)}>
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3">
@@ -179,13 +189,13 @@ export default function SuspectRiskPage() {
           <div className="col-span-8 bg-[var(--bg-card)] rounded-2xl shadow-sm border border-[var(--border)] overflow-hidden">
             <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[var(--bg-active)] flex items-center justify-center">
                   <Activity size={16} className="text-blue-500" />
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-[var(--text-primary)]">{t('Risk Analysis')}</h3>
                   <p className="text-[10px] text-[var(--text-muted)]">
-                    {selectedScore ? `${t('Analyzing')} ${rankings.find(r => r.suspect_id === selectedSuspect)?.name || t('suspect')}` : t('Select a suspect to analyze')}
+                    {selectedScore ? `${t('Analyzing')} ${rankings.find(r => String(r.suspect_id) === String(selectedSuspect))?.name || t('suspect')}` : t('Select a suspect to analyze')}
                   </p>
                 </div>
               </div>

@@ -1,7 +1,6 @@
 import { Bell, CheckCircle, AlertTriangle } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
 
-
 export default function NotificationCenter({ events }) {
   const { t } = useLanguage()
   if (!events || events.length === 0) {
@@ -30,14 +29,14 @@ export default function NotificationCenter({ events }) {
           <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Notifications')}</h3>
         </div>
         {pending.length > 0 && (
-          <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+          <span className="text-[10px] font-bold px-2 py-0.5 bg-[var(--bg-active)] text-red-500 rounded-full">
             {pending.length} new
           </span>
         )}
       </div>
-      <div className="divide-y divide-slate-50 max-h-64 overflow-y-auto">
+      <div className="divide-y divide-[var(--border)] max-h-64 overflow-y-auto">
         {pending.length > 0 && pending.map((event, i) => (
-          <div key={event.id || i} className="px-4 py-3 bg-amber-50/50">
+          <div key={event.id || i} className="px-4 py-3 bg-[var(--bg-active)]">
             <div className="flex items-center gap-2">
               <AlertTriangle size={12} className="text-amber-500" />
               <span className="text-xs font-semibold text-[var(--text-primary)] capitalize">{event.event_type?.replace('_', ' ')}</span>

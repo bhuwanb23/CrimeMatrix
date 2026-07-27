@@ -13,14 +13,14 @@ import ExplainButton from '../intelligence/ExplainButton'
 import { useLanguage } from '../../context/LanguageContext'
 
 const typeConfig = {
-  similar_case: { icon: FileText, label: 'Similar Case', color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200', route: '/cases' },
-  suspect_alert: { icon: User, label: 'Suspect Alert', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200', route: '/search/suspects' },
-  cross_district: { icon: MapPin, label: 'Cross-District', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200', route: '/cases' },
-  mo_pattern: { icon: AlertTriangle, label: 'MO Pattern', color: 'text-purple-600', bg: 'bg-purple-50', border: 'border-purple-200', route: '/cases' },
-  evidence_review: { icon: Search, label: 'Evidence Review', color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-200', route: '/cases' },
-  officer_assignment: { icon: UserCheck, label: 'Officer Assignment', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200', route: '/cases' },
-  priority_escalation: { icon: AlertTriangle, label: 'Priority Escalation', color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200', route: '/cases' },
-  related_investigation: { icon: Link, label: 'Related Investigation', color: 'text-violet-600', bg: 'bg-violet-50', border: 'border-violet-200', route: '/cases' },
+  similar_case: { icon: FileText, label: 'Similar Case', color: 'text-amber-600', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
+  suspect_alert: { icon: User, label: 'Suspect Alert', color: 'text-red-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/search/suspects' },
+  cross_district: { icon: MapPin, label: 'Cross-District', color: 'text-blue-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
+  mo_pattern: { icon: AlertTriangle, label: 'MO Pattern', color: 'text-purple-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
+  evidence_review: { icon: Search, label: 'Evidence Review', color: 'text-sky-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
+  officer_assignment: { icon: UserCheck, label: 'Officer Assignment', color: 'text-green-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
+  priority_escalation: { icon: AlertTriangle, label: 'Priority Escalation', color: 'text-orange-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
+  related_investigation: { icon: Link, label: 'Related Investigation', color: 'text-violet-500', bg: 'bg-[var(--bg-muted)]', border: 'border-[var(--border)]', route: '/cases' },
 }
 
 const tabs = [
@@ -112,7 +112,8 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
   const filtered = activeTab
     ? recommendations.filter(r => (r.rec_type || r.type) === activeTab)
     : recommendations
-  const displayItems = maxItems ? filtered.slice(0, maxItems) : (compact ? filtered.slice(0, 5) : filtered)
+  const limit = maxItems ?? (compact ? 5 : 8)
+  const displayItems = filtered.slice(0, limit)
 
   const tabCounts = {}
   recommendations.forEach(r => {
@@ -142,7 +143,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
         <div className="flex items-center gap-2">
           <Sparkles size={16} className="text-amber-500" />
           <h3 className="text-[var(--text-primary)] font-semibold text-sm">{t('Recommendations')}</h3>
-          <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">
+          <span className="text-[10px] bg-[var(--bg-active)] text-[var(--color-accent-dark)] px-1.5 py-0.5 rounded-full font-medium">
             {recommendations.length}
           </span>
         </div>
@@ -150,7 +151,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
           <button
             onClick={handleGenerate}
             disabled={generating}
-            className="text-[10px] bg-purple-100 text-purple-700 hover:bg-purple-200 px-2 py-1 rounded-lg transition-colors font-medium disabled:opacity-50"
+            className="text-[10px] bg-[var(--bg-active)] text-[var(--color-accent-dark)] hover:opacity-80 px-2 py-1 rounded-lg transition-colors font-medium disabled:opacity-50"
           >
             {generating ? t('Generating...') : t('AI Generate')}
           </button>
@@ -172,7 +173,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium whitespace-nowrap transition-all ${
                 activeTab === tab.key
-                  ? 'bg-amber-100 text-amber-700 border border-amber-300'
+                  ? 'bg-[var(--bg-active)] text-[var(--color-accent-dark)] border border-[var(--color-accent)]'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-transparent'
               }`}
             >
@@ -192,7 +193,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
           <p className="text-[var(--text-muted)] text-xs mt-1">{t('Click "AI Generate" to create recommendations')}</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
           {displayItems.map((rec, i) => {
             const recType = rec.rec_type || rec.type
             const config = typeConfig[recType] || typeConfig.similar_case
@@ -204,7 +205,7 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                 onClick={() => handleClick(rec)}
                 className={`group relative rounded-xl border p-3 cursor-pointer transition-all hover:shadow-sm ${
                   fb === 'accepted'
-                    ? 'border-green-300 bg-green-50'
+                    ? 'border-green-500/40 bg-[var(--bg-active)]'
                     : fb === 'dismissed'
                     ? 'border-[var(--border)] bg-[var(--bg-muted)] opacity-50'
                     : `${config.border} ${config.bg}`
@@ -249,8 +250,8 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'accepted') }}
                       className={`flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'accepted'
-                          ? 'bg-green-100 text-green-700'
-                          : 'text-[var(--text-muted)] hover:text-green-600 hover:bg-green-50'
+                          ? 'bg-[var(--bg-active)] text-green-600'
+                          : 'text-[var(--text-muted)] hover:text-green-600 hover:bg-[var(--bg-hover)]'
                       }`}
                       title="Accept"
                     >
@@ -261,8 +262,8 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'dismissed') }}
                       className={`flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'dismissed'
-                          ? 'bg-red-100 text-red-700'
-                          : 'text-[var(--text-muted)] hover:text-red-600 hover:bg-red-50'
+                          ? 'bg-[var(--bg-muted)] text-red-500'
+                          : 'text-[var(--text-muted)] hover:text-red-600 hover:bg-[var(--bg-hover)]'
                       }`}
                       title={t('Dismiss')}
                     >
@@ -273,8 +274,8 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
                       onClick={(e) => { e.stopPropagation(); handleFeedback(rec.id, 'rated_up') }}
                       className={`flex items-center text-[10px] px-1.5 py-0.5 rounded transition-colors ${
                         fb === 'rated_up'
-                          ? 'bg-amber-100 text-amber-700'
-                          : 'text-[var(--text-muted)] hover:text-amber-600 hover:bg-amber-50'
+                          ? 'bg-[var(--bg-active)] text-amber-600'
+                          : 'text-[var(--text-muted)] hover:text-amber-600 hover:bg-[var(--bg-hover)]'
                       }`}
                       title={t('Useful')}
                     >

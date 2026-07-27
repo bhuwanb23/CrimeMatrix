@@ -151,12 +151,12 @@ function EarlyWarningTab({ alerts, stats, loading, filter, setFilter, onAcknowle
       {stats && (
         <div className="grid grid-cols-4 gap-3">
           {[
-            { label: 'Active Alerts', value: stats.active || 0, color: 'text-red-500', bg: 'bg-red-50', border: 'border-red-200' },
-            { label: 'Critical', value: stats.critical || 0, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200' },
-            { label: 'High Priority', value: stats.high || 0, color: 'text-orange-500', bg: 'bg-orange-50', border: 'border-orange-200' },
-            { label: 'Total', value: stats.total || 0, color: 'text-blue-500', bg: 'bg-blue-50', border: 'border-blue-200' },
+            { label: 'Active Alerts', value: stats.active || 0, color: 'text-red-500' },
+            { label: 'Critical', value: stats.critical || 0, color: 'text-red-600' },
+            { label: 'High Priority', value: stats.high || 0, color: 'text-orange-500' },
+            { label: 'Total', value: stats.total || 0, color: 'text-blue-500' },
           ].map((card, i) => (
-            <div key={i} className={`${card.bg} ${card.border} border rounded-xl p-4`}>
+            <div key={i} className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
               <span className={`text-2xl font-bold ${card.color}`}>{card.value}</span>
               <span className="block text-[10px] font-semibold text-[var(--text-muted)] uppercase mt-1">{t(card.label)}</span>
             </div>
@@ -229,8 +229,8 @@ function AlertAnalyticsTab({ typeBreakdown, statusBreakdown, recentAlerts, t }) 
   const maxType = Math.max(...typeBreakdown.map(d => d.value), 1)
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
+    <div className="grid grid-cols-3 gap-4 items-start">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 max-h-[360px] overflow-y-auto">
         <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('Alerts by Type')}</h3>
         {typeBreakdown.length === 0 ? (
           <p className="text-xs text-[var(--text-muted)] m-0">{t('No alert data yet')}</p>
@@ -249,7 +249,7 @@ function AlertAnalyticsTab({ typeBreakdown, statusBreakdown, recentAlerts, t }) 
         )}
       </div>
 
-      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 max-h-[360px] overflow-y-auto">
         <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('Alert Status')}</h3>
         <div className="space-y-2">
           {statusBreakdown.map((item, i) => (
@@ -262,7 +262,7 @@ function AlertAnalyticsTab({ typeBreakdown, statusBreakdown, recentAlerts, t }) 
         </div>
       </div>
 
-      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4 max-h-[360px] overflow-y-auto">
         <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('Recent Alerts')}</h3>
         {recentAlerts.length === 0 ? (
           <p className="text-xs text-[var(--text-muted)] m-0">{t('No recent alerts')}</p>

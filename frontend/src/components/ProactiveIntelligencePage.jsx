@@ -84,8 +84,8 @@ export default function ProactiveIntelligencePage() {
               <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('AI Intelligence Summary')}</h3>
             </div>
             <div className="space-y-2">
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <p className="text-xs text-blue-700">
+              <div className="p-2 bg-[var(--bg-muted)] rounded-lg">
+                <p className="text-xs text-[var(--text-secondary)]">
                   {t('The AI Intelligence Engine continuously monitors incoming FIRs, evidence updates, and case changes to detect hidden relationships and recommend immediate actions.')}
                 </p>
               </div>

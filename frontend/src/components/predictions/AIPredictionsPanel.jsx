@@ -27,20 +27,20 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
   insights.push({ type: 'recommendation', icon: Lightbulb, color: '#8b5cf6', title: t('Cross-district coordination recommended'), description: 'Pattern analysis suggests similar criminal activity across multiple districts. Joint operations may improve resolution rates.', confidence: 68 })
 
   return (
-    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-[var(--border)] flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden flex flex-col max-h-[420px]">
+      <div className="px-5 py-4 border-b border-[var(--border)] flex items-center gap-2.5 shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-[var(--bg-active)] flex items-center justify-center">
           <Lightbulb size={16} className="text-purple-500" />
         </div>
         <h3 className="text-sm font-bold text-[var(--text-primary)]">AI Predictions & Recommendations</h3>
       </div>
-      <div className="divide-y divide-slate-50">
+      <div className="divide-y divide-[var(--border)] overflow-y-auto">
         {insights.map((insight, i) => {
           const Icon = insight.icon
           return (
             <div key={i} className="px-5 py-4 hover:bg-[var(--bg-hover)] transition-colors">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${insight.color}15` }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${insight.color}22` }}>
                   <Icon size={14} style={{ color: insight.color }} />
                 </div>
                 <div className="flex-1 min-w-0">

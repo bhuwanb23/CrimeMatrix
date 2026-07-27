@@ -17,8 +17,6 @@ export default function GraphNode({ node, isSelected, isHighlighted, onClick, on
   const isSuspect = node.type === 'suspect'
   const size = isSuspect ? 38 + (node.cases || 0) * 2 : 30
   const colors = getNodeColors(node.type)
-  const fontSize = isSuspect ? 11 : 0
-
   const translatedLabel = t(node.label || '')
   const displayLabel = translatedLabel.length > 18 ? translatedLabel.slice(0, 16) + '...' : translatedLabel
 

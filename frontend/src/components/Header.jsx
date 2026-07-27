@@ -1,5 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import { Bot, BarChart3, Network, Bell, PanelRightOpen, PanelRightClose } from 'lucide-react'
+import { Bot, BarChart3, Network, Bell, PanelRightOpen, PanelRightClose, Sun, Moon, Monitor } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { useTheme } from '../context/ThemeContext'
 
 const headerNav = [
   { icon: Bot, label: 'AI Copilot', to: '/copilot', id: 'copilot' },
@@ -8,10 +10,14 @@ const headerNav = [
   { icon: Bell, label: 'Alerts', to: '/alerts', id: 'alerts' },
 ]
 
-import { useLanguage } from '../context/LanguageContext'
-
 export default function Header({ rightPanelOpen, onToggleRightPanel }) {
   const { t } = useLanguage()
+  const { theme, cycleTheme } = useTheme()
+
+  const ThemeIcon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor
+  const themeLabel =
+    theme === 'dark' ? 'Dark theme' : theme === 'light' ? 'Light theme' : 'System theme'
+
   return (
     <header className="header">
       <div className="header-left">
@@ -36,6 +42,16 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
       </nav>
 
       <div className="header-right">
+        <button
+          type="button"
+          className="header-icon-btn"
+          onClick={cycleTheme}
+          aria-label={themeLabel}
+          title={`${themeLabel} (click to cycle)`}
+        >
+          <ThemeIcon size={18} strokeWidth={1.8} />
+        </button>
+
         <button
           className={`header-icon-btn ${rightPanelOpen ? 'active' : ''}`}
           onClick={onToggleRightPanel}

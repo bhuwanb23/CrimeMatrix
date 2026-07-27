@@ -1,17 +1,5 @@
 <p align="center">
-  <img src="frontend/public/favicon.svg" alt="CrimeMatrix" width="56" height="54" />
-</p>
-
-<h1 align="center">CrimeMatrix</h1>
-
-<p align="center">
-  <strong>AI Investigation Copilot for Karnataka State Police</strong><br/>
-  Query records. Resolve identities. Surface patterns. Deliver explainable, court-ready insight —
-  in English, Kannada, and Kanglish.
-</p>
-
-<p align="center">
-  <em>Transforming crime data into actionable intelligence.</em>
+  <img src="docs/assets/readme-hero.png" alt="CrimeMatrix — AI Investigation Copilot for Karnataka State Police" width="100%" />
 </p>
 
 <p align="center">
@@ -20,17 +8,18 @@
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama" />
 </p>
 
 <p align="center">
   <a href="#watch-the-demo">Demo</a> ·
-  <a href="#why-it-exists">Why</a> ·
-  <a href="#impact-at-a-glance">Impact</a> ·
-  <a href="#what-officers-can-do">Capabilities</a> ·
-  <a href="#a-day-with-crimematrix">Walkthrough</a> ·
-  <a href="#how-an-investigation-flows">Flow</a> ·
-  <a href="#built-for-three-roles">Roles</a> ·
-  <a href="#system-at-a-glance">Architecture</a> ·
+  <a href="#the-problem">Problem</a> ·
+  <a href="#impact">Impact</a> ·
+  <a href="#intelligence-ecosystem">Ecosystem</a> ·
+  <a href="#capabilities">Capabilities</a> ·
+  <a href="#investigation-flow">Flow</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="#use-cases">Use cases</a> ·
   <a href="#run-locally">Run</a> ·
   <a href="#documentation">Docs</a>
 </p>
@@ -40,26 +29,39 @@
 ## Watch the demo
 
 <p align="center">
-  <video src="videos/videos/video.mp4" width="100%" controls playsinline>
-    Your browser does not support the video tag.
-    <a href="videos/videos/video.mp4">Download the CrimeMatrix promo</a>
-  </video>
+  <a href="videos/videos/video.mp4">
+    <img src="videos/videos/thumbnail-1280x720.png" alt="CrimeMatrix promo video thumbnail — click to watch" width="100%" />
+  </a>
 </p>
 
 <p align="center">
-  <a href="videos/videos/video.mp4"><strong>▶ Open full promo video</strong></a>
+  <a href="videos/videos/video.mp4"><strong>▶ Play full promo (~2 min)</strong></a>
   &nbsp;·&nbsp;
-  ~2 minutes · product story for Datathon 2026
+  Datathon 2026 product story
 </p>
+
+<details>
+<summary><strong>Inline video player</strong> (supported on GitHub web)</summary>
+<br/>
+
+<video src="videos/videos/video.mp4" width="100%" controls playsinline>
+  Your browser does not support the video tag.
+  <a href="videos/videos/video.mp4">Download the CrimeMatrix promo</a>
+</video>
+</details>
 
 > Every day, thousands of crime records are generated across Karnataka. Investigators still spend hours searching fragmented databases and connecting evidence by hand.  
 > **What if AI became every investigator’s intelligent partner?**
 
 ---
 
-## Why it exists
+## The problem
 
 Karnataka State Police registers **200,000+ FIRs** a year across **31 districts**. The hard part is rarely finding *a* record — it is connecting the right people, places, and patterns before the next incident.
+
+<p align="center">
+  <img src="docs/assets/promo-poster.jpg" alt="Operational pain — fragmented, unlinked FIR records across Karnataka districts" width="92%" />
+</p>
 
 | Friction in the field | What that costs |
 |---|---|
@@ -73,14 +75,11 @@ CrimeMatrix is built against that reality — for [Datathon 2026](https://hack2s
 
 ---
 
-## Impact at a glance
+## Impact
 
-```text
-  ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
-  │   200,000+      │   │   31 districts  │   │   3 languages   │   │   Explainable   │
-  │   FIRs / year   │   │   one graph     │   │   EN · KN · KG  │   │   every answer  │
-  └─────────────────┘   └─────────────────┘   └─────────────────┘   └─────────────────┘
-```
+<p align="center">
+  <img src="docs/assets/readme-impact.png" alt="Impact at a glance — FIRs, districts, languages, explainability" width="100%" />
+</p>
 
 | Before CrimeMatrix | With CrimeMatrix |
 |---|---|
@@ -91,43 +90,40 @@ CrimeMatrix is built against that reality — for [Datathon 2026](https://hack2s
 
 ---
 
-## What officers can do
+## Intelligence ecosystem
+
+People and signals in. Grounded intelligence out. One AI core for investigators, analysts, and command.
+
+<p align="center">
+  <img src="docs/diagrams/04-ai-crime-intelligence-ecosystem.png" alt="AI Crime Intelligence Ecosystem — signals, AI core, outcomes" width="100%" />
+</p>
+
+---
+
+## Capabilities
 
 Not a chatbot bolted onto a database. An investigation loop: **ask → reason → evidence → explain**.
 
 | | Capability | In practice |
-|---|---|---|
-| **01** | **Investigation Copilot** | Multi-turn Q&A with tool use, context, and structured reasoning — not one-shot answers |
-| **02** | **Identity Resolution** | Phonetic matches, nicknames, and Kannada transliteration across district boundaries |
-| **03** | **Modus Operandi Matching** | Serial links from behavioural fingerprints, not only shared names or phones |
+|:---:|---|---|
+| **01** | **Investigation Copilot** | Multi-turn Q&A with tool use, context, and structured reasoning |
+| **02** | **Identity Resolution** | Phonetic matches, nicknames, and Kannada transliteration across districts |
+| **03** | **Modus Operandi Matching** | Serial links from behavioural fingerprints — not only shared names or phones |
 | **04** | **Knowledge Graph** | People, cases, vehicles, phones, and locations as a navigable network |
 | **05** | **Predictive Signals** | Forecasts, hotspot cues, and risk scores for proactive deployment |
 | **06** | **Whisper Alerts** | Cross-district matches pushed when they matter — without a manual hunt |
 | **07** | **Explainable Output** | Reasoning chain + confidence with every recommendation |
 | **08** | **Court-Ready Reports** | Investigation summaries with evidence references and an audit trail |
 
-Beyond search, investigators can uncover intelligence hidden across records: similar cases, criminal networks, relationship graphs, trends, hotspots, and full timelines.
-
 ---
 
-## A day with CrimeMatrix
+## Investigation flow
 
-```mermaid
-sequenceDiagram
-  participant O as Officer
-  participant C as Copilot
-  participant T as Investigation tools
-  participant G as Graph & identity
-  participant L as LLM
+From a natural-language question to a cited, defendable answer — through frontend, API, agent tools, LLM, and data store.
 
-  O->>C: “Similar robberies across Karnataka?”
-  C->>L: Plan steps · detect language
-  C->>T: Semantic search · MO match
-  T->>G: Link people · phones · districts
-  G-->>C: Candidates + evidence edges
-  C->>L: Draft answer with rationale
-  C-->>O: Matches · why · confidence
-```
+<p align="center">
+  <img src="docs/diagrams/01-user-flow-sequence.png" alt="Investigation Copilot sequence — officer to Slate to Backend to AI to LLM to data store" width="100%" />
+</p>
 
 **Sample exchange**
 
@@ -143,71 +139,38 @@ Ask in English, Kannada, or Kanglish — by text or voice. The copilot keeps inv
 
 ---
 
-## How an investigation flows
+## Architecture
 
-```mermaid
-flowchart LR
-  A["Officer asks<br/>EN · KN · Kanglish"] --> B["Language<br/>normalisation"]
-  B --> C["Agent plans<br/>& calls tools"]
-  C --> D["Search · Graph<br/>Identity · Predict"]
-  D --> E["Answer + rationale<br/>+ confidence"]
-```
+Four clear levels: experience → application → platform → intelligence & data.
 
-Proactive layer: new FIRs and evidence are monitored continuously. **Whisper Alerts** surface cross-district links and investigative leads — often before anyone knows to ask.
+<p align="center">
+  <img src="docs/diagrams/02-hybrid-architecture.png" alt="Hybrid multi-level architecture — L1 Experience through L4 Intelligence" width="100%" />
+</p>
+
+| Layer | Stack |
+|---|---|
+| **Interface** | React 19 · Vite · Tailwind CSS |
+| **API & data** | FastAPI · SQLAlchemy · SQLite / Catalyst datastore |
+| **Intelligence** | Agent loop · FAISS · NetworkX · sentence-transformers |
+| **LLM providers** | Ollama (local default) · Gemini · OpenAI / OpenRouter |
+
+Design rationale: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/DESIGN-DECISIONS.md`](docs/DESIGN-DECISIONS.md) · vector sources in [`docs/diagrams/`](docs/diagrams/).
 
 ---
 
-## Built for three roles
+## Use cases
 
-CrimeMatrix is more than a dashboard. It is an **AI Investigation Copilot**, a **Crime Intelligence Platform**, and a **proactive decision-support system**.
+Who uses CrimeMatrix — and what the system must deliver.
+
+<p align="center">
+  <img src="docs/diagrams/03-use-case-map.png" alt="Core use-case map — investigating officer, analyst, commander" width="100%" />
+</p>
 
 | Role | Who | What they get |
 |---|---|---|
 | **Investigator** | Station / IO teams | Copilot Q&A, identity links, MO matches, case timelines |
 | **Analyst** | District / state intel | Graphs, trends, hotspots, semantic discovery across records |
 | **Commander** | Leadership | Risk signals, Whisper Alerts, prioritised leads, audit-ready summaries |
-
-Faster investigations. Smarter insights. Safer communities.
-
----
-
-## System at a glance
-
-Three cooperating services. One investigation surface.
-
-```mermaid
-flowchart TB
-  subgraph Client["Interface"]
-    FE["React 19 · Vite · Tailwind"]
-  end
-
-  subgraph Core["Platform"]
-    API["Backend API · FastAPI"]
-    AI["AI Services · Agent · RAG · Tools"]
-  end
-
-  subgraph Intelligence["Models & stores"]
-    LLM["Ollama · Gemini · OpenAI"]
-    DB[("SQLite")]
-    VEC["FAISS · NetworkX"]
-  end
-
-  FE --> API
-  API --> AI
-  AI --> LLM
-  API --> DB
-  AI --> VEC
-  AI --> DB
-```
-
-| Layer | Choice |
-|---|---|
-| Interface | React 19, Vite, Tailwind CSS 4 |
-| API & data | FastAPI, SQLAlchemy, SQLite |
-| Intelligence | Agent loop, FAISS, NetworkX, sentence-transformers |
-| LLM providers | Ollama (local default) · Gemini · OpenAI |
-
-Design rationale and deeper diagrams: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/DESIGN-DECISIONS.md`](docs/DESIGN-DECISIONS.md).
 
 ---
 
@@ -225,7 +188,7 @@ Design rationale and deeper diagrams: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE
 
 ## Run locally
 
-**You need:** Docker and Docker Compose.
+**Recommended:** Docker and Docker Compose.
 
 ```bash
 git clone https://github.com/bhuwanb23/CrimeMatrix.git
@@ -246,35 +209,50 @@ Ollama pulls `llama3.2:1b` on first start. Optional cloud keys go in each servic
 
 <br/>
 
-Run order: **backend → seed → AI (+ Ollama) → frontend**.
+**Run order:** backend → seed → AI (+ Ollama) → frontend.
 
 ```bash
-# 1 · Backend
+# 1 · Backend  —  http://localhost:8000
 cd backend
 python -m venv venv
 source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn main:app --port 8000 --reload
 
-# 2 · Seed (API must be up)
+# 2 · Seed + intelligence bootstrap  (API must be up)
 python -m seed --fresh
 python -m seed --bootstrap-only
 
-# 3 · AI services
+# 3 · AI services  —  http://localhost:8002
 cd ../ai-services
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 uvicorn main:app --port 8002 --reload
 
-# 4 · Frontend
+# 4 · Frontend  —  http://localhost:5173
 cd ../frontend
 npm install && npm run dev
 ```
 
 For local LLMs: [install Ollama](https://ollama.com/), then `ollama pull llama3.2:1b`.  
-Full deployment notes: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+Deployment notes: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 </details>
+
+---
+
+## Repository map
+
+```text
+CrimeMatrix/
+├── frontend/          # React 19 investigation UI (Slate)
+├── backend/           # FastAPI · crimes, graph, analytics, seed
+├── ai-services/       # Agent · RAG · tools · copilot
+├── docs/
+│   ├── diagrams/      # Architecture & flow SVGs + PNGs
+│   └── assets/        # README hero, impact, promo art
+└── videos/            # Datathon promo
+```
 
 ---
 
@@ -286,9 +264,18 @@ Full deployment notes: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 | [`docs/DESIGN-DECISIONS.md`](docs/DESIGN-DECISIONS.md) | Why each major choice was made |
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Environments, configuration, ops checklist |
 | [`docs/API.md`](docs/API.md) | REST surfaces (Swagger-backed) |
+| [`docs/diagrams/`](docs/diagrams/) | PPT / README diagrams (SVG + PNG) |
 | [`videos/videos/video.mp4`](videos/videos/video.mp4) | Full product promo |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to contribute |
 | [`SECURITY.md`](SECURITY.md) | How to report vulnerabilities |
+
+**Regenerate diagram PNGs from SVG** (optional):
+
+```bash
+cd docs/scripts
+npm install
+node render-diagrams.mjs
+```
 
 ---
 
@@ -299,5 +286,5 @@ Released under the [MIT License](LICENSE).
 Built for **[Datathon 2026](https://hack2skill.com/event/datathon2026)** — conversational AI, analytics, and predictive policing for Karnataka State Police.
 
 <p align="center">
-  <strong>CrimeMatrix</strong> — Transforming Crime Data into Actionable Intelligence.
+  <strong>CrimeMatrix</strong> — Transforming crime data into actionable intelligence.
 </p>

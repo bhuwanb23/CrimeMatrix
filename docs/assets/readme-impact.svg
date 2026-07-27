@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="280" viewBox="0 0 1600 280" role="img" aria-labelledby="title">
+  <title id="title">CrimeMatrix impact metrics</title>
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .card { fill: #F8FAFC; stroke: #E2E8F0; stroke-width: 1.5; }
+      .accent { fill: #F59E0B; }
+      .num { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 42px; font-weight: 800; fill: #0F172A; }
+      .label { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 600; fill: #475569; }
+      .hint { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 12px; fill: #94A3B8; }
+      .badge { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 700; fill: #92400E; letter-spacing: 0.08em; }
+    </style>
+  </defs>
+  <rect class="bg" width="1600" height="280"/>
+  <rect class="accent" x="48" y="28" width="40" height="5" rx="2.5"/>
+  <text class="badge" x="48" y="56">IMPACT AT A GLANCE</text>
+
+  <g transform="translate(48,84)">
+    <rect class="card" width="360" height="150" rx="16"/>
+    <text class="num" x="28" y="68">200,000+</text>
+    <text class="label" x="28" y="102">FIRs each year</text>
+    <text class="hint" x="28" y="126">Scale CrimeMatrix is built for</text>
+  </g>
+  <g transform="translate(428,84)">
+    <rect class="card" width="360" height="150" rx="16"/>
+    <text class="num" x="28" y="68">31</text>
+    <text class="label" x="28" y="102">Districts · one graph</text>
+    <text class="hint" x="28" y="126">Cross-district identity &amp; MO links</text>
+  </g>
+  <g transform="translate(808,84)">
+    <rect class="card" width="360" height="150" rx="16"/>
+    <text class="num" x="28" y="68">3</text>
+    <text class="label" x="28" y="102">Languages</text>
+    <text class="hint" x="28" y="126">English · Kannada · Kanglish</text>
+  </g>
+  <g transform="translate(1188,84)">
+    <rect class="card" width="364" height="150" rx="16"/>
+    <text class="num" x="28" y="68">100%</text>
+    <text class="label" x="28" y="102">Explainable answers</text>
+    <text class="hint" x="28" y="126">Reasoning + confidence every time</text>
+  </g>
+</svg>

@@ -1,18 +1,30 @@
-# CrimeMatrix PPT diagrams (white theme)
+# CrimeMatrix diagrams
 
-16:9 (1920×1080). Navy + gold accent on white — paste PNGs into PowerPoint, or insert SVGs for sharp scaling.
+16:9 (1920×1080) navy + gold on white — for PowerPoint, Notion, and the GitHub README.
 
-| File | Use on slide |
-|------|----------------|
-| `01-user-flow-sequence.png` / `.svg` | **Sequence / user flow** — officer → Slate → Backend → AI → LLM → Data Store |
-| `02-hybrid-architecture.png` / `.svg` | **Hybrid multi-level architecture** — L1 Experience → L2 Application → L3 Catalyst → L4 Intelligence |
-| `03-use-case-map.png` / `.svg` | **Use-case map** (optional alternate to sequence) |
-| `04-ai-crime-intelligence-ecosystem.png` / `.svg` | **AI Crime Intelligence Ecosystem** — signals → AI core → outcomes |
+| Asset | Purpose |
+|-------|---------|
+| [`01-user-flow-sequence`](01-user-flow-sequence.png) | Investigation sequence — officer → Slate → Backend → AI → LLM → store |
+| [`02-hybrid-architecture`](02-hybrid-architecture.png) | Hybrid architecture — L1 Experience → L4 Intelligence |
+| [`03-use-case-map`](03-use-case-map.png) | Actors and core use cases |
+| [`04-ai-crime-intelligence-ecosystem`](04-ai-crime-intelligence-ecosystem.png) | Signals → AI core → outcomes |
 
-## Paste into PPT
+README-only banners live in [`../assets/`](../assets/):
 
-1. Insert → Pictures → This Device → pick the `.png`
-2. Or drag the `.svg` (Office 365 / recent PowerPoint) for vector quality
-3. Crop / Fit to slide if needed — already sized for widescreen
+| Asset | Purpose |
+|-------|---------|
+| [`readme-hero.png`](../assets/readme-hero.png) | Dark hero banner |
+| [`readme-impact.png`](../assets/readme-impact.png) | Impact metrics strip |
+| [`promo-poster.jpg`](../assets/promo-poster.jpg) | Operational-pain visual |
 
-Folder: `docs/diagrams/`
+Each diagram ships as **`.svg`** (edit / scale) and **`.png`** (paste into slides or Markdown).
+
+## Regenerate PNGs
+
+```bash
+cd docs/scripts
+npm install
+node render-diagrams.mjs
+```
+
+Uses [`@resvg/resvg-js`](https://github.com/yisibl/resvg-js) so renders stay sharp at 1920px width.

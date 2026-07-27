@@ -302,14 +302,14 @@ export default function CaseDetailPage() {
           {victims.length > 0 ? (
             <div className="space-y-2">
               {victims.map((v, i) => (
-                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div key={i} className="p-3 bg-[var(--bg-muted)] rounded-lg border border-[var(--border)]">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-slate-900">{v.name}</span>
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">{v.name}</span>
                     {v.is_police && (
                       <span className="text-[10px] font-semibold px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">Police</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                  <div className="flex items-center gap-3 text-[11px] text-[var(--text-muted)]">
                     {v.age_year && <span>Age: {v.age_year}</span>}
                     {v.gender_name && <span>Gender: {v.gender_name}</span>}
                   </div>
@@ -328,14 +328,14 @@ export default function CaseDetailPage() {
           {actSections.length > 0 ? (
             <div className="space-y-2">
               {actSections.map((a, i) => (
-                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div key={i} className="p-3 bg-[var(--bg-muted)] rounded-lg border border-[var(--border)]">
                   <div className="flex items-center gap-2 mb-1">
-                    <BookOpen size={12} className="text-slate-400" />
-                    <span className="text-sm font-semibold text-slate-900">{a.act_name || `Act #${a.act_id}`}</span>
+                    <BookOpen size={12} className="text-[var(--text-muted)]" />
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">{a.act_name || `Act #${a.act_id}`}</span>
                   </div>
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-[var(--text-muted)]">
                     <span className="font-medium">Section {a.section_code || `#${a.section_id}`}</span>
-                    {a.section_name && <span className="text-slate-400 ml-1">— {a.section_name}</span>}
+                    {a.section_name && <span className="text-[var(--text-muted)] ml-1">— {a.section_name}</span>}
                   </div>
                 </div>
               ))}
@@ -352,14 +352,14 @@ export default function CaseDetailPage() {
           {accused.length > 0 ? (
             <div className="space-y-2">
               {accused.map((a, i) => (
-                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div key={i} className="p-3 bg-[var(--bg-muted)] rounded-lg border border-[var(--border)]">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-slate-900">{a.name}</span>
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">{a.name}</span>
                     {a.person_id && (
-                      <span className="text-[10px] font-mono bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">{a.person_id}</span>
+                      <span className="text-[10px] font-mono bg-[var(--bg-input)] text-[var(--text-secondary)] px-1.5 py-0.5 rounded">{a.person_id}</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                  <div className="flex items-center gap-3 text-[11px] text-[var(--text-muted)]">
                     {a.age_year && <span>Age: {a.age_year}</span>}
                     {a.gender_name && <span>Gender: {a.gender_name}</span>}
                   </div>
@@ -378,9 +378,9 @@ export default function CaseDetailPage() {
           {arrests.length > 0 ? (
             <div className="space-y-2">
               {arrests.map((a, i) => (
-                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div key={i} className="p-3 bg-[var(--bg-muted)] rounded-lg border border-[var(--border)]">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-slate-900">{a.type_name || 'Unknown'}</span>
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">{a.type_name || 'Unknown'}</span>
                     <div className="flex items-center gap-2">
                       {a.is_accused && (
                         <span className="text-[10px] font-semibold px-2 py-0.5 bg-red-100 text-red-700 rounded-full">Primary</span>
@@ -390,7 +390,7 @@ export default function CaseDetailPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                  <div className="flex items-center gap-3 text-[11px] text-[var(--text-muted)]">
                     {a.date && <span>{new Date(a.date).toLocaleDateString()}</span>}
                     {a.accused_name && <span>Accused: {a.accused_name}</span>}
                     {a.state_name && <span>State: {a.state_name}</span>}
@@ -435,17 +435,17 @@ export default function CaseDetailPage() {
           {chargesheets.length > 0 ? (
             <div className="space-y-2">
               {chargesheets.map((cs, i) => (
-                <div key={i} className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div key={i} className="p-3 bg-[var(--bg-muted)] rounded-lg border border-[var(--border)]">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-slate-900">
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">
                       {cs.cs_type === 'A' ? 'Chargesheet' : cs.cs_type === 'B' ? 'False Case' : cs.cs_type === 'C' ? 'Undetected' : cs.cs_type || 'Type not set'}
                     </span>
                     {cs.cs_date && (
-                      <span className="text-[10px] text-slate-400">{new Date(cs.cs_date).toLocaleDateString()}</span>
+                      <span className="text-[10px] text-[var(--text-muted)]">{new Date(cs.cs_date).toLocaleDateString()}</span>
                     )}
                   </div>
                   {cs.officer_name && (
-                    <div className="text-[11px] text-slate-500">IO: {cs.officer_name}</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">IO: {cs.officer_name}</div>
                   )}
                 </div>
               ))}
@@ -460,8 +460,8 @@ export default function CaseDetailPage() {
           <p className="case-description">{caseData.description || 'No description available'}</p>
           {caseData.brief_facts && (
             <div className="mt-3">
-              <h4 className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('Brief Facts')}</h4>
-              <p className="case-description text-slate-600">{caseData.brief_facts}</p>
+              <h4 className="text-xs font-semibold text-[var(--text-muted)] uppercase mb-1">{t('Brief Facts')}</h4>
+              <p className="case-description text-[var(--text-secondary)]">{caseData.brief_facts}</p>
             </div>
           )}
         </div>

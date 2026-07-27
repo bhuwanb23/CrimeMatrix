@@ -149,7 +149,7 @@ export default function CopilotPage() {
       {historyOpen && (
         <>
           <div className="fixed inset-0 z-50" onClick={() => setHistoryOpen(false)} />
-          <div className="fixed top-[var(--header-height)] bottom-0 left-[68px] w-80 z-50 bg-white border-r border-gray-200 shadow-xl animate-slide-in-left">
+          <div className="fixed top-[var(--header-height)] bottom-0 left-[68px] w-80 z-50 bg-[var(--bg-card)] border-r border-[var(--border)] shadow-xl animate-slide-in-left">
             <ChatHistory
               sessions={sessions}
               activeChatId={activeChatId}
@@ -167,7 +167,7 @@ export default function CopilotPage() {
       {contextOpen && (
         <>
           <div className="fixed inset-0 z-50" onClick={() => setContextOpen(false)} />
-          <div className="fixed top-[var(--header-height)] bottom-0 right-0 w-80 z-50 bg-white border-l border-gray-200 shadow-xl animate-slide-in-right">
+          <div className="fixed top-[var(--header-height)] bottom-0 right-0 w-80 z-50 bg-[var(--bg-card)] border-l border-[var(--border)] shadow-xl animate-slide-in-right">
             <ContextPanel onClose={() => setContextOpen(false)} messages={messages} sessionId={sessionId} />
           </div>
         </>

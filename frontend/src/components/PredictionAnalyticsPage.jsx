@@ -81,14 +81,14 @@ export default function PredictionAnalyticsPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
-        <div className="w-8 h-8 border-2 border-slate-200 border-t-amber-500 rounded-full animate-spin" />
-        <span className="text-sm text-slate-500">{t('Loading prediction analytics...')}</span>
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-amber-500 rounded-full animate-spin" />
+        <span className="text-sm text-[var(--text-muted)]">{t('Loading prediction analytics...')}</span>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6">
       <div className="max-w-7xl mx-auto space-y-5">
         {/* Hero Header */}
         <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
@@ -105,13 +105,13 @@ export default function PredictionAnalyticsPage() {
             <div className="flex items-center gap-2">
               <select className="bg-white/20 backdrop-blur border border-white/30 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-white/60"
                 value={selectedDistrict} onChange={e => setSelectedDistrict(e.target.value)}>
-                <option value="" className="text-slate-900">{t('All Districts')}</option>
-                {districts.map(d => <option key={d.id} value={d.id} className="text-slate-900">{t(d.name)}</option>)}
+                <option value="" className="text-[var(--text-primary)]">{t('All Districts')}</option>
+                {districts.map(d => <option key={d.id} value={d.id} className="text-[var(--text-primary)]">{t(d.name)}</option>)}
               </select>
               <div className="flex bg-white/20 backdrop-blur rounded-lg p-0.5">
                 {[30, 60, 90].map(d => (
                   <button key={d} onClick={() => setTimeHorizon(d)}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-all ${timeHorizon === d ? 'bg-white text-orange-600' : 'text-white/80 hover:text-white'}`}>
+                    className={`px-3 py-1 rounded text-xs font-medium transition-all ${timeHorizon === d ? 'bg-[var(--bg-card)] text-orange-600' : 'text-white/80 hover:text-white'}`}>
                     {d}D
                   </button>
                 ))}
@@ -126,7 +126,7 @@ export default function PredictionAnalyticsPage() {
         </div>
 
         {/* Tab Bar */}
-        <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 w-fit">
+        <div className="flex items-center gap-1 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-1 w-fit">
           {tabs.map((tab) => {
             const Icon = tab.icon
             return (
@@ -136,7 +136,7 @@ export default function PredictionAnalyticsPage() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
                     ? 'bg-orange-500 text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
                 <Icon size={16} />
@@ -167,20 +167,20 @@ function DistrictPredictionsTab({ districts }) {
 
   if (!districts || districts.length === 0) {
     return (
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2.5">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-[var(--border)] flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
             <Map size={16} className="text-emerald-500" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">District Predictions</h3>
-            <p className="text-[10px] text-slate-400">Crime prediction breakdown by district</p>
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">District Predictions</h3>
+            <p className="text-[10px] text-[var(--text-muted)]">Crime prediction breakdown by district</p>
           </div>
         </div>
         <div className="text-center py-12">
-          <Map size={32} className="mx-auto text-slate-200 mb-3" />
-          <p className="text-sm font-medium text-slate-500 mb-1">No district data available</p>
-          <p className="text-xs text-slate-400">District predictions will appear once crime data is loaded with district information.</p>
+          <Map size={32} className="mx-auto text-[var(--text-muted)] mb-3" />
+          <p className="text-sm font-medium text-[var(--text-muted)] mb-1">No district data available</p>
+          <p className="text-xs text-[var(--text-muted)]">District predictions will appear once crime data is loaded with district information.</p>
         </div>
       </div>
     )
@@ -189,15 +189,15 @@ function DistrictPredictionsTab({ districts }) {
   const maxCount = Math.max(...districts.map(d => d.crime_count || d.total || 0), 1)
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
             <Map size={16} className="text-emerald-500" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">District Predictions</h3>
-            <p className="text-[10px] text-slate-400">Crime prediction breakdown by district</p>
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">District Predictions</h3>
+            <p className="text-[10px] text-[var(--text-muted)]">Crime prediction breakdown by district</p>
           </div>
         </div>
         <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">{districts.length} districts</span>
@@ -205,11 +205,11 @@ function DistrictPredictionsTab({ districts }) {
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-slate-100">
-              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">District</th>
-              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Crime Count</th>
-              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider w-[40%]">Distribution</th>
-              <th className="px-5 py-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider text-right">Risk</th>
+            <tr className="border-b border-[var(--border)]">
+              <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">District</th>
+              <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">Crime Count</th>
+              <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider w-[40%]">Distribution</th>
+              <th className="px-5 py-3 text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider text-right">Risk</th>
             </tr>
           </thead>
           <tbody>
@@ -218,11 +218,11 @@ function DistrictPredictionsTab({ districts }) {
               const risk = d.risk || (count > maxCount * 0.7 ? 'high' : count > maxCount * 0.3 ? 'medium' : 'low')
               const color = risk === 'high' ? '#ef4444' : risk === 'medium' ? '#f59e0b' : '#10b981'
               return (
-                <tr key={i} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3 text-xs font-medium text-slate-900">{d.name || d.district || `District ${i + 1}`}</td>
-                  <td className="px-5 py-3 text-xs font-bold text-slate-700">{count}</td>
+                <tr key={i} className="border-b border-[var(--border)] hover:bg-[var(--bg-hover)] transition-colors">
+                  <td className="px-5 py-3 text-xs font-medium text-[var(--text-primary)]">{d.name || d.district || `District ${i + 1}`}</td>
+                  <td className="px-5 py-3 text-xs font-bold text-[var(--text-secondary)]">{count}</td>
                   <td className="px-5 py-3">
-                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-2 bg-[var(--bg-input)] rounded-full overflow-hidden">
                       <div className="h-full rounded-full" style={{ width: `${(count / maxCount) * 100}%`, background: color }} />
                     </div>
                   </td>

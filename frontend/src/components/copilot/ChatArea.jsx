@@ -7,12 +7,12 @@ import { useLanguage } from '../../context/LanguageContext'
 function TypingIndicator({ t }) {
   return (
     <div className="flex items-start gap-3 mb-4">
-      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-        <Bot size={14} className="text-blue-600" />
+      <div className="w-8 h-8 rounded-full bg-[var(--bg-active)] flex items-center justify-center flex-shrink-0">
+        <Bot size={14} className="text-[var(--color-accent-dark)]" />
       </div>
-      <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
-        <Loader2 size={16} className="text-gray-400 animate-spin" />
-        <span className="text-sm text-gray-500">{t('Analyzing...')}</span>
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
+        <Loader2 size={16} className="text-[var(--text-muted)] animate-spin" />
+        <span className="text-sm text-[var(--text-muted)]">{t('Analyzing...')}</span>
       </div>
     </div>
   )
@@ -23,27 +23,27 @@ function MessageBubble({ msg }) {
 
   return (
     <div className={`flex items-start gap-3 mb-4 ${isUser ? 'flex-row-reverse' : ''}`}>
-      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${isUser ? 'bg-slate-700' : 'bg-blue-100'}`}>
+      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${isUser ? 'bg-[var(--btn-primary-bg)]' : 'bg-[var(--bg-active)]'}`}>
         {isUser
-          ? <User size={14} className="text-white" />
-          : <Bot size={14} className="text-blue-600" />
+          ? <User size={14} className="text-[var(--btn-primary-fg)]" />
+          : <Bot size={14} className="text-[var(--color-accent-dark)]" />
         }
       </div>
       <div className={`max-w-[80%] ${isUser ? 'text-right' : ''}`}>
         <div className={`px-4 py-3 text-sm leading-relaxed ${
           isUser
-            ? 'bg-slate-800 text-white rounded-2xl rounded-br-sm'
-            : 'bg-white border border-gray-200 text-gray-800 rounded-2xl rounded-bl-sm'
+            ? 'bg-[var(--btn-primary-bg)] text-[var(--btn-primary-fg)] rounded-2xl rounded-br-sm'
+            : 'bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-primary)] rounded-2xl rounded-bl-sm'
         }`}>
           {isUser ? (
             <p className="m-0">{msg.content}</p>
           ) : (
-            <div className="prose prose-sm max-w-none prose-headings:mt-3 prose-headings:mb-1 prose-p:my-1 prose-li:my-0.5 prose-pre:bg-gray-100 prose-pre:p-2 prose-code:text-xs prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded">
+            <div className="prose prose-sm max-w-none prose-headings:mt-3 prose-headings:mb-1 prose-p:my-1 prose-li:my-0.5 prose-pre:bg-[var(--bg-input)] prose-pre:p-2 prose-code:text-xs prose-code:bg-[var(--bg-input)] prose-code:px-1 prose-code:rounded">
               <Markdown>{msg.content}</Markdown>
             </div>
           )}
         </div>
-        <span className="text-[10px] text-gray-400 mt-1 block px-1">{msg.time}</span>
+        <span className="text-[10px] text-[var(--text-muted)] mt-1 block px-1">{msg.time}</span>
       </div>
     </div>
   )
@@ -60,32 +60,32 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
   const hasMessages = messages.length > 0
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-[var(--bg-muted)]">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-white flex-shrink-0">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--border)] bg-[var(--bg-card)] flex-shrink-0">
         <button
           onClick={onToggleHistory}
           title={t('Chat History')}
-          className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${historyOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+          className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${historyOpen ? 'bg-blue-50 text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-secondary)]'}`}
         >
           <MessageSquareText size={16} />
         </button>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-gray-800">{t('AI Copilot')}</span>
+          <span className="text-sm font-semibold text-[var(--text-primary)]">{t('AI Copilot')}</span>
           {isSpeaking && <Volume2 size={14} className="text-blue-500 animate-pulse" />}
         </div>
         <div className="flex items-center gap-1">
           <button
             onClick={onVoiceToggle}
             title={voiceEnabled ? t('Disable voice') : t('Enable voice')}
-            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${voiceEnabled ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${voiceEnabled ? 'bg-blue-50 text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-secondary)]'}`}
           >
             {voiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
           </button>
           <button
             onClick={onToggleContext}
             title={t('Context')}
-            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${contextOpen ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${contextOpen ? 'bg-blue-50 text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-secondary)]'}`}
           >
             <Info size={16} />
           </button>
@@ -99,8 +99,8 @@ export default function ChatArea({ messages, onSend, isTyping, onToggleHistory, 
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
               <Bot size={32} className="text-blue-500" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">{t('Hi, there 👋')}</h1>
-            <p className="text-gray-500 text-sm max-w-md">
+            <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">{t('Hi, there 👋')}</h1>
+            <p className="text-[var(--text-muted)] text-sm max-w-md">
               {t('Ask me anything about cases, suspects, or investigations.')}
             </p>
           </div>

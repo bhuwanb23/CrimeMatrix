@@ -104,17 +104,17 @@ export default function MapPage() {
       <div
         role="toolbar"
         aria-label="Map controls"
-        className="flex items-center gap-3 flex-wrap px-3 py-2.5 bg-white border border-slate-200 rounded-[10px] shrink-0"
+        className="flex items-center gap-3 flex-wrap px-3 py-2.5 bg-[var(--bg-card)] border border-[var(--border)] rounded-[10px] shrink-0"
       >
         <MapLayerControls activeLayers={activeLayers} onToggleLayer={toggleLayer} />
-        <div className="w-px h-6 bg-slate-200 shrink-0 max-lg:hidden" aria-hidden="true" />
+        <div className="w-px h-6 bg-[var(--bg-input)] shrink-0 max-lg:hidden" aria-hidden="true" />
         <MapTimeSlider days={days} onChange={setDays} />
-        <div className="w-px h-6 bg-slate-200 shrink-0 max-lg:hidden" aria-hidden="true" />
+        <div className="w-px h-6 bg-[var(--bg-input)] shrink-0 max-lg:hidden" aria-hidden="true" />
         <MapFilterPanel filters={filters} onChange={setFilters} />
       </div>
 
       <div className="flex gap-3 flex-1 min-h-0 min-w-0 max-lg:flex-col">
-        <div className="flex flex-1 flex-col min-w-0 min-h-0 bg-white border border-slate-200 rounded-xl overflow-hidden max-lg:min-h-[min(52vh,480px)] max-lg:order-1 max-md:min-h-[360px]">
+        <div className="flex flex-1 flex-col min-w-0 min-h-0 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden max-lg:min-h-[min(52vh,480px)] max-lg:order-1 max-md:min-h-[360px]">
           <MapCanvas
             selectedDistrict={selectedDistrict}
             onDistrictSelect={handleDistrictSelect}

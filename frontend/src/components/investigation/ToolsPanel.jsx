@@ -65,7 +65,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
           </button>
         </div>
         {priority ? (
-          <div className="p-2 bg-slate-50 rounded-lg">
+          <div className="p-2 bg-[var(--bg-muted)] rounded-lg">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-lg font-bold" style={{ color: priorityColors[priority.priority_level] }}>{priority.overall_score}%</span>
               <span className="text-[10px] font-semibold uppercase" style={{ color: priorityColors[priority.priority_level] }}>{priority.priority_level}</span>
@@ -73,7 +73,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
             {explanations.length > 0 && (
               <div className="mt-1.5 space-y-1">
                 {explanations.slice(0, 3).map((exp, i) => (
-                  <div key={i} className="flex items-start gap-1 text-[10px] text-slate-600">
+                  <div key={i} className="flex items-start gap-1 text-[10px] text-[var(--text-secondary)]">
                     <AlertTriangle size={9} className="text-amber-500 mt-0.5 flex-shrink-0" />
                     <span>{exp.factor}: {exp.score}%</span>
                   </div>
@@ -82,7 +82,7 @@ export default function ToolsPanel({ investigation, onRefresh }) {
             )}
           </div>
         ) : (
-          <p className="text-[10px] text-slate-400">{t('Click Score to analyze priority')}</p>
+          <p className="text-[10px] text-[var(--text-muted)]">{t('Click Score to analyze priority')}</p>
         )}
       </div>
 

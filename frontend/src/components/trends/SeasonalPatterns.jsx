@@ -10,15 +10,15 @@ export default function SeasonalPatterns({ patterns }) {
 
   if (!hasData) {
     return (
-      <div className="bg-white border border-slate-200 rounded-xl p-4">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
         <div className="flex items-center gap-2 mb-3">
           <Calendar size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">{t('Seasonal Patterns')}</h3>
+          <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Seasonal Patterns')}</h3>
         </div>
         <div className="py-8 text-center">
-          <Calendar size={28} className="mx-auto text-slate-200 mb-2" />
-          <p className="text-xs text-slate-400">No seasonal data available yet</p>
-          <p className="text-[10px] text-slate-300 mt-1">Data will appear as more crime records accumulate</p>
+          <Calendar size={28} className="mx-auto text-[var(--text-muted)] mb-2" />
+          <p className="text-xs text-[var(--text-muted)]">No seasonal data available yet</p>
+          <p className="text-[10px] text-[var(--text-muted)] mt-1">Data will appear as more crime records accumulate</p>
         </div>
       </div>
     )
@@ -31,7 +31,7 @@ export default function SeasonalPatterns({ patterns }) {
 
     return (
       <div className="seasonal-chart flex-1">
-        <h4 className="text-[11px] font-semibold text-slate-600 mb-2">{t(label)}</h4>
+        <h4 className="text-[11px] font-semibold text-[var(--text-secondary)] mb-2">{t(label)}</h4>
         <div className="seasonal-bars flex items-end gap-[2px]" style={{ height: 120 }}>
           {data.map((d, i) => {
             const val = d[valueKey] || 0
@@ -47,7 +47,7 @@ export default function SeasonalPatterns({ patterns }) {
                   />
                 </div>
                 {showLabels && (
-                  <span className="text-[8px] text-slate-400 mt-0.5 truncate w-full text-center">
+                  <span className="text-[8px] text-[var(--text-muted)] mt-0.5 truncate w-full text-center">
                     {d[labelKey]}
                   </span>
                 )}
@@ -60,10 +60,10 @@ export default function SeasonalPatterns({ patterns }) {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Calendar size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t('Seasonal Patterns')}</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Seasonal Patterns')}</h3>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
@@ -79,7 +79,7 @@ export default function SeasonalPatterns({ patterns }) {
       </div>
 
       {/* Summary */}
-      <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+      <div className="mt-3 pt-2 border-t border-[var(--border)] flex items-center justify-between text-[10px] text-[var(--text-muted)]">
         <span>{by_hour.length} hours • {by_day_of_week.length} days • {by_month.length} months tracked</span>
         <span>{t('Updated periodically')}</span>
       </div>

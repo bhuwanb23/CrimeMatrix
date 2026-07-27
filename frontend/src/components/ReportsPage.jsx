@@ -8,6 +8,7 @@ import {
   queueReport,
   generateSummaryReport,
 } from '../services/reports'
+import { dedupeByKey } from '../utils/dedupeByKey'
 
 const TYPE_COLORS = {
   summary: '#3b82f6',
@@ -50,7 +51,7 @@ export default function ReportsPage() {
       setTemplates(Array.isArray(tplData) ? tplData : tplData?.items || [])
       const queueData = queueRes?.data
       setJobs(Array.isArray(queueData) ? queueData : queueData?.items || queueData?.jobs || [])
-      setCrimes(crimesRes?.data?.items || [])
+      setCrimes(dedupeByKey(crimesRes?.data?.items || [], 'id'))
     } catch (e) {
       setError(e?.message || 'Failed to load reports')
     } finally {
@@ -161,8 +162,8 @@ export default function ReportsPage() {
                 onChange={(e) => setCrimeId(e.target.value)}
               >
                 <option value="">Select crime…</option>
-                {crimes.map((c) => (
-                  <option key={c.id} value={c.id}>#{c.id} — {c.title}</option>
+                {crimes.map((c, index) => (
+                  <option key={`${c.id ?? 'crime'}-${index}`} value={c.id}>#{c.id} — {c.title}</option>
                 ))}
               </select>
             </label>

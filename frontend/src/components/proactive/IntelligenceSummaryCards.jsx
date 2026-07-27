@@ -16,14 +16,14 @@ export default function IntelligenceSummaryCards({ stats }) {
   return (
     <div className="grid grid-cols-4 gap-3">
       {cards.map((card, i) => (
-        <div key={i} className={`${card.bg} border border-slate-200 rounded-xl p-4`}>
+        <div key={i} className={`${card.bg} border border-[var(--border)] rounded-xl p-4`}>
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${card.color}`}>
               <card.icon size={18} />
             </div>
             <div>
-              <span className="block text-2xl font-bold text-slate-900">{card.value}</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">{card.label}</span>
+              <span className="block text-2xl font-bold text-[var(--text-primary)]">{card.value}</span>
+              <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase">{card.label}</span>
             </div>
           </div>
         </div>

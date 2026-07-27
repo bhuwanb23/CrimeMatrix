@@ -89,9 +89,9 @@ export default function CrimeTrendLine() {
 
       <div className="analytics-trend-chart">
         {loading ? (
-          <p className="text-sm text-slate-400 p-4 m-0">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] p-4 m-0">{t('Loading...')}</p>
         ) : data.length === 0 ? (
-          <p className="text-sm text-slate-400 p-4 m-0">{t('No trend data')}</p>
+          <p className="text-sm text-[var(--text-muted)] p-4 m-0">{t('No trend data')}</p>
         ) : (
           <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>

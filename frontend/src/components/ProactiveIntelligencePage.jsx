@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
-import { Radar, RefreshCw, Search, Zap, AlertTriangle, Brain, CheckCircle, Activity } from 'lucide-react'
+import { RefreshCw, Search, Zap, AlertTriangle, Brain, CheckCircle } from 'lucide-react'
 import { getProactiveStats, scanData, processEvents, getActivity } from '../services/proactive'
 import { batchProcess } from '../services/proactive'
 import IntelligenceSummaryCards from './proactive/IntelligenceSummaryCards'

@@ -107,7 +107,7 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6">
       <div className="max-w-7xl mx-auto space-y-5">
         <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
           <div className="flex items-center justify-between gap-3">
@@ -143,20 +143,20 @@ export default function ReportsPage() {
             { label: 'Completed', value: stats.completed },
             { label: 'Failed', value: stats.failed },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl border border-slate-200 bg-white p-4">
-              <div className="text-xs text-slate-400 font-medium">{s.label}</div>
-              <div className="text-2xl font-bold text-slate-900 mt-1">{s.value}</div>
+            <div key={s.label} className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4">
+              <div className="text-xs text-[var(--text-muted)] font-medium">{s.label}</div>
+              <div className="text-2xl font-bold text-[var(--text-primary)] mt-1">{s.value}</div>
             </div>
           ))}
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
-          <h2 className="text-sm font-semibold text-slate-900">Generate / queue report</h2>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-4 space-y-3">
+          <h2 className="text-sm font-semibold text-[var(--text-primary)]">Generate / queue report</h2>
           <div className="flex flex-wrap gap-3 items-end">
-            <label className="flex flex-col gap-1 text-xs text-slate-500">
+            <label className="flex flex-col gap-1 text-xs text-[var(--text-muted)]">
               Crime
               <select
-                className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 min-w-[220px]"
+                className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[var(--text-primary)] min-w-[220px]"
                 value={crimeId}
                 onChange={(e) => setCrimeId(e.target.value)}
               >
@@ -166,10 +166,10 @@ export default function ReportsPage() {
                 ))}
               </select>
             </label>
-            <label className="flex flex-col gap-1 text-xs text-slate-500">
+            <label className="flex flex-col gap-1 text-xs text-[var(--text-muted)]">
               Type
               <select
-                className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900"
+                className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[var(--text-primary)]"
                 value={reportType}
                 onChange={(e) => setReportType(e.target.value)}
               >
@@ -183,7 +183,7 @@ export default function ReportsPage() {
               type="button"
               disabled={!crimeId || busy}
               onClick={handleQueue}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 text-white px-4 py-2 text-sm font-medium disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] text-white px-4 py-2 text-sm font-medium disabled:opacity-50"
             >
               <Plus size={14} /> Queue
             </button>
@@ -191,35 +191,35 @@ export default function ReportsPage() {
               type="button"
               disabled={!crimeId || busy}
               onClick={handleGenerate}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] disabled:opacity-50"
             >
               Generate summary PDF
             </button>
           </div>
           {templates.length > 0 && (
-            <p className="text-xs text-slate-400">{templates.length} template(s) available from API</p>
+            <p className="text-xs text-[var(--text-muted)]">{templates.length} template(s) available from API</p>
           )}
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
-          <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100">
-            <h2 className="text-sm font-semibold text-slate-900">Report queue</h2>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] overflow-hidden">
+          <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border)]">
+            <h2 className="text-sm font-semibold text-[var(--text-primary)]">Report queue</h2>
             <input
-              className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+              className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm"
               placeholder="Filter jobs…"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
             />
           </div>
           {loading ? (
-            <p className="p-6 text-sm text-slate-400">Loading…</p>
+            <p className="p-6 text-sm text-[var(--text-muted)]">Loading…</p>
           ) : filteredJobs.length === 0 ? (
-            <p className="p-6 text-sm text-slate-400">No report jobs yet. Queue a report above.</p>
+            <p className="p-6 text-sm text-[var(--text-muted)]">No report jobs yet. Queue a report above.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-xs text-slate-400 border-b border-slate-100">
+                  <tr className="text-left text-xs text-[var(--text-muted)] border-b border-[var(--border)]">
                     <th className="px-4 py-2 font-medium">Job ID</th>
                     <th className="px-4 py-2 font-medium">Type</th>
                     <th className="px-4 py-2 font-medium">Crime</th>
@@ -231,7 +231,7 @@ export default function ReportsPage() {
                     const type = job.report_type || job.type || 'summary'
                     const status = job.status || 'queued'
                     return (
-                      <tr key={job.id} className="border-b border-slate-50">
+                      <tr key={job.id} className="border-b border-[var(--border)]">
                         <td className="px-4 py-2 font-mono text-xs">{job.id}</td>
                         <td className="px-4 py-2">
                           <span

@@ -127,7 +127,11 @@ export default function RightPanel({ isOpen }) {
   }
 
   return (
-    <aside className={`right-panel ${isOpen ? 'open' : 'closed'}`} aria-hidden={!isOpen}>
+    <aside
+      className={`right-panel ${isOpen ? 'open' : 'closed'}`}
+      aria-hidden={!isOpen}
+      data-tour="right-panel"
+    >
       <div className="right-panel-tabs">
         <button
           type="button"

@@ -52,7 +52,15 @@ export default function PredictionAnalyticsPage() {
         setStats(statsRes?.data || statsRes)
         setModels(modelsRes?.data || [])
         setPredictions(predsRes?.data?.items || [])
-        setDistricts(districtsRes?.data?.items || districtsRes?.data || [])
+        const rawDistricts = districtsRes?.data?.items || districtsRes?.data || []
+        const seen = new Set()
+        const uniqueDistricts = (Array.isArray(rawDistricts) ? rawDistricts : []).filter((d) => {
+          const id = d?.id ?? d?.district_id ?? d?.name
+          if (id == null || seen.has(String(id))) return false
+          seen.add(String(id))
+          return true
+        })
+        setDistricts(uniqueDistricts)
         setSeasonal(seasonalRes?.data || seasonalRes)
 
         try {
@@ -106,7 +114,15 @@ export default function PredictionAnalyticsPage() {
               <select className="bg-white/20 backdrop-blur border border-white/30 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-white/60"
                 value={selectedDistrict} onChange={e => setSelectedDistrict(e.target.value)}>
                 <option value="" className="text-[var(--text-primary)]">{t('All Districts')}</option>
-                {districts.map(d => <option key={d.id} value={d.id} className="text-[var(--text-primary)]">{t(d.name)}</option>)}
+                {districts.map((d, i) => (
+                  <option
+                    key={`${d.id ?? d.district_id ?? d.name}-${i}`}
+                    value={d.id ?? d.district_id ?? ''}
+                    className="text-[var(--text-primary)]"
+                  >
+                    {d.name}
+                  </option>
+                ))}
               </select>
               <div className="flex bg-white/20 backdrop-blur rounded-lg p-0.5">
                 {[30, 60, 90].map(d => (

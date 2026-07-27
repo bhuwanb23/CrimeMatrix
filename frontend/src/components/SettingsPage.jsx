@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
+import { useTheme } from '../context/ThemeContext'
 import { get } from '../services/api'
 
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']
@@ -15,6 +16,7 @@ function loadPrefs() {
 
 export default function SettingsPage() {
   const { language, setLanguage, t } = useLanguage()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const saved = loadPrefs()
 
   const [config, setConfig] = useState(null)
@@ -22,7 +24,6 @@ export default function SettingsPage() {
   const [savedMsg, setSavedMsg] = useState('')
 
   const [secondaryLang, setSecondaryLang] = useState(saved.secondaryLang || 'English')
-  const [theme, setTheme] = useState(saved.theme || 'light')
   const [notifications, setNotifications] = useState(saved.notifications || {
     push: true, email: true, sound: false, whisper: true,
   })
@@ -66,7 +67,7 @@ export default function SettingsPage() {
       }`}
     >
       <span
-        className={`absolute top-[2px] left-[2px] h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200 ${
+        className={`absolute top-[2px] left-[2px] h-[18px] w-[18px] rounded-full bg-[var(--bg-card)] shadow-sm transition-transform duration-200 ${
           checked ? 'translate-x-[18px]' : ''
         }`}
       />
@@ -85,6 +86,12 @@ export default function SettingsPage() {
     </select>
   )
 
+  const themeOptions = [
+    { id: 'light', label: 'light', hint: 'Always light' },
+    { id: 'dark', label: 'dark', hint: 'Always dark' },
+    { id: 'system', label: 'system', hint: `Match device (${resolvedTheme})` },
+  ]
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
       <div className="mb-6 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
@@ -101,7 +108,7 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={handleSave}
-            className="rounded-xl bg-[var(--color-primary)] px-5 py-2.5 text-[13px] font-semibold text-white transition-all duration-150 hover:-translate-y-px hover:bg-[#1e293b]"
+            className="rounded-xl bg-[var(--btn-primary-bg)] px-5 py-2.5 text-[13px] font-semibold text-[var(--btn-primary-fg)] transition-all duration-150 hover:-translate-y-px hover:opacity-90"
           >
             {t('Save Changes')}
           </button>
@@ -111,7 +118,7 @@ export default function SettingsPage() {
       <div className="mb-3 rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
         <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('Profile')}</h2>
         <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[#334155] text-xl font-bold text-white">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--border-strong)] text-xl font-bold text-[var(--text-on-dark)]">
             {initials}
           </div>
           <div className="min-w-0 flex-1">
@@ -134,7 +141,7 @@ export default function SettingsPage() {
             {Object.entries(features).map(([key, enabled]) => (
               <div key={key} className="rounded-lg bg-[var(--bg-app)] px-3 py-2 text-xs">
                 <span className="font-medium text-[var(--text-primary)]">{key}</span>
-                <span className={`ml-2 ${enabled ? 'text-emerald-600' : 'text-slate-400'}`}>
+                <span className={`ml-2 ${enabled ? 'text-emerald-600' : 'text-[var(--text-muted)]'}`}>
                   {enabled ? t('on') : t('off')}
                 </span>
               </div>
@@ -164,18 +171,34 @@ export default function SettingsPage() {
 
         <div className="rounded-[14px] border border-[var(--border)] bg-[var(--bg-card)] p-5">
           <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">{t('Theme')}</h2>
-          <div className="flex flex-col gap-2.5">
-            {['light', 'dark', 'system'].map((th) => (
-              <label key={th} className="flex cursor-pointer items-center gap-2.5 py-1" onClick={() => setTheme(th)}>
+          <p className="mb-3 text-[12px] text-[var(--text-muted)]">
+            Applies immediately. Current:{' '}
+            <span className="capitalize text-[var(--text-secondary)]">{resolvedTheme}</span>
+          </p>
+          <div className="flex flex-col gap-2">
+            {themeOptions.map((th) => (
+              <button
+                key={th.id}
+                type="button"
+                onClick={() => setTheme(th.id)}
+                className={`flex cursor-pointer items-center gap-3 rounded-[10px] border px-3 py-2.5 text-left transition-colors duration-150 ${
+                  theme === th.id
+                    ? 'border-[var(--color-accent)] bg-[var(--bg-active)]'
+                    : 'border-[var(--border)] bg-[var(--bg-app)] hover:bg-[var(--bg-hover)]'
+                }`}
+              >
                 <div
-                  className={`flex h-5 w-5 items-center justify-center rounded-full border-2 transition-colors duration-150 ${
-                    theme === th ? 'border-[var(--color-accent)]' : 'border-[var(--border-strong)]'
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-150 ${
+                    theme === th.id ? 'border-[var(--color-accent)]' : 'border-[var(--border-strong)]'
                   }`}
                 >
-                  {theme === th && <div className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />}
+                  {theme === th.id && <div className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />}
                 </div>
-                <span className="text-[13px] capitalize text-[var(--text-secondary)]">{t(th)}</span>
-              </label>
+                <div className="min-w-0">
+                  <div className="text-[13px] capitalize font-medium text-[var(--text-primary)]">{t(th.label)}</div>
+                  <div className="text-[11px] text-[var(--text-muted)]">{th.hint}</div>
+                </div>
+              </button>
             ))}
           </div>
         </div>

@@ -57,9 +57,9 @@ export default function ResolutionCohorts() {
 
       <div className="analytics-cohort-chart">
         {loading ? (
-          <p className="text-sm text-slate-400 m-0">{t('Loading...')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('Loading...')}</p>
         ) : cohorts.length === 0 ? (
-          <p className="text-sm text-slate-400 m-0">{t('No resolution data')}</p>
+          <p className="text-sm text-[var(--text-muted)] m-0">{t('No resolution data')}</p>
         ) : cohorts.map((cohort, i) => (
           <div key={i} className="cohort-item">
             <span className="cohort-label">{t(cohort.period)}</span>

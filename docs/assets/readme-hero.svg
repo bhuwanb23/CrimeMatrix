@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" role="img" aria-labelledby="title">
+  <title id="title">CrimeMatrix  AI Investigation Copilot</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="55%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0.2" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+    </linearGradient>
+    <style>
+      .eyebrow { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #F59E0B; letter-spacing: 0.18em; }
+      .brand { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 64px; font-weight: 800; fill: #FFFFFF; }
+      .tag { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 22px; font-weight: 600; fill: #E2E8F0; }
+      .sub { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 17px; fill: #94A3B8; }
+      .chip { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #CBD5E1; }
+      .chip-bg { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.12); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="520" fill="url(#bg)"/>
+  <circle cx="1320" cy="80" r="220" fill="url(#glow)"/>
+  <circle cx="1480" cy="420" r="160" fill="url(#glow)"/>
+
+  <!-- subtle grid -->
+  <g opacity="0.08" stroke="#94A3B8" stroke-width="1">
+    <path d="M80 160 H1520 M80 220 H1520 M80 280 H1520 M80 340 H1520"/>
+    <path d="M320 120 V420 M520 120 V420 M720 120 V420 M920 120 V420 M1120 120 V420"/>
+  </g>
+
+  <rect x="72" y="72" width="48" height="6" rx="3" fill="#F59E0B"/>
+  <text class="eyebrow" x="72" y="108">DATATHON 2026  ·  KARNATAKA STATE POLICE</text>
+  <text class="brand" x="72" y="188">CrimeMatrix</text>
+  <text class="tag" x="72" y="236">AI Investigation Copilot</text>
+  <text class="sub" x="72" y="278">Query records. Resolve identities. Surface patterns.</text>
+  <text class="sub" x="72" y="304">Deliver explainable, court-ready insight  in English, Kannada, and Kanglish.</text>
+
+  <g transform="translate(72,360)">
+    <rect class="chip-bg" width="168" height="40" rx="20"/>
+    <text class="chip" x="84" y="26" text-anchor="middle">Copilot + Tools</text>
+  </g>
+  <g transform="translate(252,360)">
+    <rect class="chip-bg" width="168" height="40" rx="20"/>
+    <text class="chip" x="84" y="26" text-anchor="middle">Knowledge Graph</text>
+  </g>
+  <g transform="translate(432,360)">
+    <rect class="chip-bg" width="168" height="40" rx="20"/>
+    <text class="chip" x="84" y="26" text-anchor="middle">Whisper Alerts</text>
+  </g>
+  <g transform="translate(612,360)">
+    <rect class="chip-bg" width="188" height="40" rx="20"/>
+    <text class="chip" x="94" y="26" text-anchor="middle">Explainable AI</text>
+  </g>
+
+  <!-- right accent panel -->
+  <rect x="1080" y="140" width="440" height="260" rx="18" fill="rgba(255,255,255,0.04)" stroke="rgba(245,158,11,0.35)" stroke-width="1.5"/>
+  <text class="eyebrow" x="1110" y="186">MISSION</text>
+  <text x="1110" y="230" style="font-family:Segoe UI,Arial,sans-serif;font-size:20px;font-weight:700;fill:#FFFFFF">Transform crime data</text>
+  <text x="1110" y="260" style="font-family:Segoe UI,Arial,sans-serif;font-size:20px;font-weight:700;fill:#FFFFFF">into actionable</text>
+  <text x="1110" y="290" style="font-family:Segoe UI,Arial,sans-serif;font-size:20px;font-weight:700;fill:#F59E0B">intelligence.</text>
+  <text x="1110" y="340" style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;fill:#94A3B8">Built for investigators, analysts,</text>
+  <text x="1110" y="362" style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;fill:#94A3B8">and command leadership.</text>
+</svg>

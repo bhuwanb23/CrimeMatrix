@@ -31,7 +31,7 @@ export default function AnalyticsPage() {
         const stats = statsRes?.data || {}
         const overview = overviewRes?.data || {}
         const resolution = resolutionRes?.data || {}
-        const totalCases = overview.total_crimes ?? stats.totals?.cases ?? 0
+        const totalCases = overview.total_crimes ?? overview.crimes ?? stats.totals?.cases ?? stats.totals?.crimes ?? 0
         const totalResolved = overview.closed_crimes ?? stats.cases_by_status?.closed ?? resolution.resolved ?? 0
         const resolutionRate = overview.resolution_rate ?? stats.resolution_rate ?? resolution.resolution_rate ?? 0
         setSummary({

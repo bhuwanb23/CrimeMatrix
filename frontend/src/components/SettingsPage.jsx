@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { useTheme } from '../context/ThemeContext'
-import { useOnboarding } from '../context/OnboardingContext'
+import { useOnboarding } from '../context/useOnboarding'
 import { get } from '../services/api'
 
 const languages = ['Kannada', 'English', 'Hindi', 'Tamil', 'Telugu']

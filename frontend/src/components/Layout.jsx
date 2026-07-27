@@ -6,7 +6,7 @@ import RightPanel from './RightPanel'
 import WelcomeIntro from './onboarding/WelcomeIntro'
 import SpotlightTour from './onboarding/SpotlightTour'
 import useMediaQuery from '../hooks/useMediaQuery'
-import { useOnboarding } from '../context/OnboardingContext'
+import { useOnboarding } from '../context/useOnboarding'
 
 export default function Layout() {
   const isMobile = useMediaQuery('(max-width: 1023px)')

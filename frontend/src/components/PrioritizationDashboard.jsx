@@ -42,7 +42,7 @@ export default function PrioritizationDashboard() {
           {scoring ? t('Scoring...') : t('Score All Investigations')}
         </button>
         <button onClick={loadData} disabled={loading}
-          className="p-2.5 bg-white border border-slate-200 hover:border-orange-400 rounded-xl transition-all">
+          className="p-2.5 bg-[var(--bg-card)] border border-[var(--border)] hover:border-orange-400 rounded-xl transition-all">
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
@@ -56,15 +56,15 @@ export default function PrioritizationDashboard() {
             { label: 'High Priority', value: stats.high || 0, icon: AlertTriangle, gradient: 'from-amber-500 to-orange-500' },
             { label: 'Average Score', value: `${stats.avg_score || 0}%`, icon: TrendingUp, gradient: 'from-emerald-500 to-teal-500' },
           ].map((card, i) => (
-            <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div key={i} className="bg-[var(--bg-card)] rounded-2xl p-5 shadow-sm border border-[var(--border)] hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white shadow-lg`}>
                   <card.icon size={18} />
                 </div>
-                <ArrowUpRight size={14} className="text-slate-300" />
+                <ArrowUpRight size={14} className="text-[var(--text-muted)]" />
               </div>
-              <span className="block text-2xl font-bold text-slate-900">{card.value}</span>
-              <span className="text-xs text-slate-400 font-medium">{t(card.label)}</span>
+              <span className="block text-2xl font-bold text-[var(--text-primary)]">{card.value}</span>
+              <span className="text-xs text-[var(--text-muted)] font-medium">{t(card.label)}</span>
             </div>
           ))}
         </div>
@@ -73,24 +73,24 @@ export default function PrioritizationDashboard() {
       {/* Main Content */}
       <div className="grid grid-cols-12 gap-5">
         {/* Priority Queue (7 cols) */}
-        <div className="col-span-7 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="col-span-7 bg-[var(--bg-card)] rounded-2xl shadow-sm border border-[var(--border)] overflow-hidden">
+          <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
                 <Zap size={16} className="text-violet-500" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">{t('Priority Queue')}</h3>
-                <p className="text-[10px] text-slate-400">{t('Investigations ranked by urgency')}</p>
+                <h3 className="text-sm font-bold text-[var(--text-primary)]">{t('Priority Queue')}</h3>
+                <p className="text-[10px] text-[var(--text-muted)]">{t('Investigations ranked by urgency')}</p>
               </div>
             </div>
-            <span className="text-[10px] text-slate-400">{rankings.length} {t('items')}</span>
+            <span className="text-[10px] text-[var(--text-muted)]">{rankings.length} {t('items')}</span>
           </div>
           <div className="divide-y divide-slate-50">
             {rankings.length === 0 ? (
               <div className="py-12 text-center">
-                <Zap size={32} className="text-slate-200 mx-auto mb-2" />
-                <p className="text-xs text-slate-400">{t('No priorities scored yet')}</p>
+                <Zap size={32} className="text-[var(--text-muted)] mx-auto mb-2" />
+                <p className="text-xs text-[var(--text-muted)]">{t('No priorities scored yet')}</p>
                 <button onClick={handleBatchScore} className="mt-2 text-xs text-violet-500 font-medium hover:underline">
                   {t('Click "Score All" to begin')}
                 </button>
@@ -100,15 +100,15 @@ export default function PrioritizationDashboard() {
                 const color = priorityColors[r.priority_level] || '#64748b'
                 return (
                   <div key={r.investigation_id || i}
-                    className="px-5 py-3.5 hover:bg-slate-50 transition-all cursor-pointer">
+                    className="px-5 py-3.5 hover:bg-[var(--bg-hover)] transition-all cursor-pointer">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
-                        <span className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
+                        <span className="w-7 h-7 rounded-lg bg-[var(--bg-input)] flex items-center justify-center text-xs font-bold text-[var(--text-muted)]">
                           {i + 1}
                         </span>
                         <div>
-                          <span className="text-sm font-semibold text-slate-900 block">{r.title}</span>
-                          <span className="text-[10px] text-slate-400">{t(r.district)} • {r.progress || 0}% {t('progress')}</span>
+                          <span className="text-sm font-semibold text-[var(--text-primary)] block">{r.title}</span>
+                          <span className="text-[10px] text-[var(--text-muted)]">{t(r.district)} • {r.progress || 0}% {t('progress')}</span>
                         </div>
                       </div>
                       <div className="text-right">
@@ -116,7 +116,7 @@ export default function PrioritizationDashboard() {
                         <span className="block text-[10px] font-semibold uppercase" style={{ color }}>{t(r.priority_level)}</span>
                       </div>
                     </div>
-                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[var(--bg-input)] rounded-full overflow-hidden">
                       <div className="h-full rounded-full transition-all duration-700" style={{ width: `${r.overall_score}%`, background: `linear-gradient(90deg, ${color}, ${color}aa)` }} />
                     </div>
                   </div>
@@ -127,38 +127,38 @@ export default function PrioritizationDashboard() {
         </div>
 
         {/* Officer Workload (5 cols) */}
-        <div className="col-span-5 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="col-span-5 bg-[var(--bg-card)] rounded-2xl shadow-sm border border-[var(--border)] overflow-hidden">
+          <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
                 <Users size={16} className="text-blue-500" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">{t('Officer Workload')}</h3>
-                <p className="text-[10px] text-slate-400">{t('Case distribution across officers')}</p>
+                <h3 className="text-sm font-bold text-[var(--text-primary)]">{t('Officer Workload')}</h3>
+                <p className="text-[10px] text-[var(--text-muted)]">{t('Case distribution across officers')}</p>
               </div>
             </div>
           </div>
           <div className="divide-y divide-slate-50">
             {workload.length === 0 ? (
               <div className="py-12 text-center">
-                <Users size={32} className="text-slate-200 mx-auto mb-2" />
-                <p className="text-xs text-slate-400">{t('No workload data available')}</p>
+                <Users size={32} className="text-[var(--text-muted)] mx-auto mb-2" />
+                <p className="text-xs text-[var(--text-muted)]">{t('No workload data available')}</p>
               </div>
             ) : (
               workload.map((w, i) => (
-                <div key={i} className="px-5 py-3.5 hover:bg-slate-50 transition-all">
+                <div key={i} className="px-5 py-3.5 hover:bg-[var(--bg-hover)] transition-all">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
                         <Users size={14} className="text-blue-500" />
                       </div>
-                      <span className="text-sm font-semibold text-slate-900">{t('Officer')} #{w.officer_id}</span>
+                      <span className="text-sm font-semibold text-[var(--text-primary)]">{t('Officer')} #{w.officer_id}</span>
                     </div>
-                    <span className="text-xs text-slate-400">{w.count} {t('cases')}</span>
+                    <span className="text-xs text-[var(--text-muted)]">{w.count} {t('cases')}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-[var(--bg-input)] rounded-full overflow-hidden">
                       <div className="h-full rounded-full bg-blue-500" style={{ width: `${Math.min(100, w.count * 10)}%` }} />
                     </div>
                     {w.high_priority > 0 && (

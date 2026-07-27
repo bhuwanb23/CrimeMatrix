@@ -28,17 +28,17 @@ export default function ModelEvaluationPanel() {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Activity size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">{t('Model Evaluation')}</h3>
+          <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Model Evaluation')}</h3>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={handleRun} disabled={running} className="text-[10px] text-amber-500 hover:underline disabled:opacity-50">
             {running ? t('Running...') : t('Run Evaluation')}
           </button>
-          <button onClick={loadData} disabled={loading} className="p-1 hover:bg-slate-100 rounded">
+          <button onClick={loadData} disabled={loading} className="p-1 hover:bg-[var(--bg-hover)] rounded">
             <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
           </button>
         </div>
@@ -52,9 +52,9 @@ export default function ModelEvaluationPanel() {
             { label: t('Evaluations'), value: stats.total_evaluations || 0 },
             { label: t('Avg Rating'), value: `${stats.avg_rating || 0}/5` },
           ].map((s, i) => (
-            <div key={i} className="text-center p-2 bg-slate-50 rounded-lg">
-              <span className="block text-lg font-bold text-slate-900">{s.value}</span>
-              <span className="text-[9px] text-slate-400 uppercase">{s.label}</span>
+            <div key={i} className="text-center p-2 bg-[var(--bg-muted)] rounded-lg">
+              <span className="block text-lg font-bold text-[var(--text-primary)]">{s.value}</span>
+              <span className="text-[9px] text-[var(--text-muted)] uppercase">{s.label}</span>
             </div>
           ))}
         </div>
@@ -63,11 +63,11 @@ export default function ModelEvaluationPanel() {
       {results.length > 0 && (
         <div className="space-y-1.5">
           {results.slice(0, 5).map((r, i) => (
-            <div key={i} className="flex items-center justify-between p-1.5 bg-slate-50 rounded text-[10px]">
-              <span className="text-slate-600">{r.model_name} — {t(r.evaluation_type)}</span>
+            <div key={i} className="flex items-center justify-between p-1.5 bg-[var(--bg-muted)] rounded text-[10px]">
+              <span className="text-[var(--text-secondary)]">{r.model_name} — {t(r.evaluation_type)}</span>
               <div className="flex items-center gap-2">
-                <span className="text-slate-500">{t('Acc:')} {r.accuracy}%</span>
-                <span className="text-slate-500">{t('F1:')} {r.f1_score}%</span>
+                <span className="text-[var(--text-muted)]">{t('Acc:')} {r.accuracy}%</span>
+                <span className="text-[var(--text-muted)]">{t('F1:')} {r.f1_score}%</span>
               </div>
             </div>
           ))}

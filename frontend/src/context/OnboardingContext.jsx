@@ -1,11 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   clearOnboardingComplete,
   isOnboardingComplete,
   markOnboardingComplete,
 } from '../utils/onboardingPrefs'
-
-const OnboardingContext = createContext(null)
+import { OnboardingContext } from './onboardingContextStore'
 
 export function OnboardingProvider({ children }) {
   const [phase, setPhase] = useState(() => (isOnboardingComplete() ? 'idle' : 'welcome'))
@@ -47,12 +46,4 @@ export function OnboardingProvider({ children }) {
       {children}
     </OnboardingContext.Provider>
   )
-}
-
-export function useOnboarding() {
-  const ctx = useContext(OnboardingContext)
-  if (!ctx) {
-    throw new Error('useOnboarding must be used within OnboardingProvider')
-  }
-  return ctx
 }

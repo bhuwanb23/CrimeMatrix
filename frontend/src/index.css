@@ -12775,3 +12775,241 @@
 }
 
 /* Phase 4 styles removed — using Tailwind */
+
+/* ============================================
+   ONBOARDING — Welcome intro + spotlight tour
+   ============================================ */
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+.onboarding-welcome-card {
+  width: min(480px, 100%);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px 26px 22px;
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+}
+
+.onboarding-welcome-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+.onboarding-welcome-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+}
+
+.onboarding-welcome-title {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.onboarding-welcome-body {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.onboarding-welcome-list {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.onboarding-welcome-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.onboarding-welcome-list li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--color-accent-dark);
+}
+
+.onboarding-welcome-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.onboarding-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+.onboarding-dot.active {
+  width: 18px;
+  background: var(--color-accent);
+}
+
+.onboarding-welcome-actions,
+.onboarding-tooltip-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.onboarding-welcome-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.onboarding-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.onboarding-btn.ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: transparent;
+}
+
+.onboarding-btn.ghost:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.onboarding-btn.primary {
+  background: var(--btn-primary-bg, #0f172a);
+  color: var(--btn-primary-fg, #fff);
+}
+
+.onboarding-btn.primary:hover {
+  opacity: 0.92;
+}
+
+.onboarding-tour-root {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  pointer-events: none;
+}
+
+.onboarding-tour-mask {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.onboarding-spotlight {
+  position: absolute;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 9999px rgba(15, 23, 42, 0.52),
+    0 0 0 2px var(--color-accent),
+    0 10px 30px rgba(15, 23, 42, 0.25);
+  background: transparent;
+  pointer-events: none;
+  z-index: 1;
+  transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
+}
+
+.onboarding-tooltip {
+  position: absolute;
+  z-index: 2;
+  pointer-events: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 16px 14px;
+  box-shadow: var(--shadow-lg);
+  max-width: 360px;
+}
+
+.onboarding-tooltip-progress {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.onboarding-tooltip-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.onboarding-tooltip-body {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 639px) {
+  .onboarding-welcome-card {
+    padding: 22px 18px 18px;
+  }
+
+  .onboarding-welcome-title {
+    font-size: 19px;
+  }
+
+  .onboarding-tooltip {
+    left: 16px !important;
+    right: 16px;
+    width: auto !important;
+    max-width: none;
+  }
+}

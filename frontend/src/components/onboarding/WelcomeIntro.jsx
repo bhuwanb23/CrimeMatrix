@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Shield, Search, MapPin, Bot, ArrowRight } from 'lucide-react'
 import { useLanguage } from '../../context/LanguageContext'
-import { useOnboarding } from '../../context/OnboardingContext'
+import { useOnboarding } from '../../context/useOnboarding'
 
 const SCREENS = [
   {

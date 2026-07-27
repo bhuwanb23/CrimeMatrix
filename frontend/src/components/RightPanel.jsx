@@ -161,7 +161,7 @@ export default function RightPanel({ isOpen }) {
                   <div className="quick-stat-label">{t(stat.label)}</div>
                 </div>
               ))}
-              {activityLoading && <p className="text-xs text-slate-400 m-0">{t('Loading...')}</p>}
+              {activityLoading && <p className="text-xs text-[var(--text-muted)] m-0">{t('Loading...')}</p>}
             </div>
           </section>
 
@@ -169,7 +169,7 @@ export default function RightPanel({ isOpen }) {
             <h3 className="right-panel-section-title">{t('Recent Activity')}</h3>
             <div className="right-panel-items">
               {!activityLoading && activities.length === 0 && (
-                <p className="text-xs text-slate-400 m-0">{t('No recent activity')}</p>
+                <p className="text-xs text-[var(--text-muted)] m-0">{t('No recent activity')}</p>
               )}
               {activities.map((item, i) => (
                 <div key={i} className="activity-card">

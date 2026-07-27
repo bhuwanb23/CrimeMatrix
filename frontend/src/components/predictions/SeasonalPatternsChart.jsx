@@ -10,8 +10,8 @@ export default function SeasonalPatternsChart({ patterns }) {
   function MiniBar({ data, label, valueKey = 'count', labelKey }) {
     const max = Math.max(...data.map(d => d[valueKey] || 0), 1)
     return (
-      <div className="bg-slate-50 rounded-lg p-3">
-        <h4 className="text-[11px] font-semibold text-slate-600 mb-2">{t(label)}</h4>
+      <div className="bg-[var(--bg-muted)] rounded-lg p-3">
+        <h4 className="text-[11px] font-semibold text-[var(--text-secondary)] mb-2">{t(label)}</h4>
         <div className="flex items-end gap-0.5 h-14">
           {data.map((d, i) => (
             <div key={i} className="flex-1 flex flex-col items-center">
@@ -21,7 +21,7 @@ export default function SeasonalPatternsChart({ patterns }) {
                   style={{ height: `${((d[valueKey] || 0) / max) * 100}%`, minHeight: 1 }}
                 />
               </div>
-              <span className="text-[7px] text-slate-400 mt-0.5">{d[labelKey]}</span>
+              <span className="text-[7px] text-[var(--text-muted)] mt-0.5">{d[labelKey]}</span>
             </div>
           ))}
         </div>
@@ -30,10 +30,10 @@ export default function SeasonalPatternsChart({ patterns }) {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Calendar size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t('Seasonal Patterns')}</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Seasonal Patterns')}</h3>
       </div>
 
       <div className="grid grid-cols-3 gap-2">

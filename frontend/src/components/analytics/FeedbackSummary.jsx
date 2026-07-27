@@ -23,10 +23,10 @@ export default function FeedbackSummary() {
   const avgRating = feedback.length > 0 ? (feedback.reduce((s, f) => s + (f.rating || 0), 0) / feedback.length).toFixed(1) : 0
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <MessageSquare size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t(t('Feedback Summary'))}</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t(t('Feedback Summary'))}</h3>
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-3">
@@ -47,10 +47,10 @@ export default function FeedbackSummary() {
       {feedback.length > 0 && (
         <div className="space-y-1">
           {feedback.slice(0, 3).map((f, i) => (
-            <div key={i} className="p-1.5 bg-slate-50 rounded text-[10px]">
-              <span className="font-semibold text-slate-700">{f.feedback_type}</span>
-              <span className="text-slate-400 ml-2">Rating: {f.rating}/5</span>
-              {f.comment && <span className="text-slate-500 ml-2">— {f.comment}</span>}
+            <div key={i} className="p-1.5 bg-[var(--bg-muted)] rounded text-[10px]">
+              <span className="font-semibold text-[var(--text-secondary)]">{f.feedback_type}</span>
+              <span className="text-[var(--text-muted)] ml-2">Rating: {f.rating}/5</span>
+              {f.comment && <span className="text-[var(--text-muted)] ml-2">— {f.comment}</span>}
             </div>
           ))}
         </div>

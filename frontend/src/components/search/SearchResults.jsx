@@ -1,9 +1,12 @@
 import { Eye, ExternalLink, ChevronLeft, ChevronRight, Search } from 'lucide-react'
+import { useMemo } from 'react'
 import { useLanguage } from '../../context/LanguageContext'
+import { dedupeByKey } from '../../utils/dedupeByKey'
 
 
 export default function SearchResults({ results, page, totalPages, onPageChange, onViewCase }) {
   const { t } = useLanguage()
+  const uniqueResults = useMemo(() => dedupeByKey(results, 'id'), [results])
   if (results.length === 0) {
     return (
       <div className="search-empty">
@@ -34,9 +37,9 @@ export default function SearchResults({ results, page, totalPages, onPageChange,
             </tr>
           </thead>
           <tbody>
-            {results.map((row) => (
+            {uniqueResults.map((row, index) => (
               <tr
-                key={row.id}
+                key={`${row.id ?? 'row'}-${index}`}
                 className="results-row"
                 onClick={() => onViewCase(row.id)}
               >

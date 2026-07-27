@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { BarChart3, RefreshCw } from 'lucide-react'
 import { getDashboardSummary, getDashboardAlerts, getDashboardForecasts, getDashboardHighRisk, getDashboardPriority } from '../services/analyticsDashboard'
 import PredictionSummaryCards from './analytics/PredictionSummaryCards'
@@ -22,11 +22,7 @@ export default function AIAnalyticsPage() {
   const [priority, setPriority] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    loadAll()
-  }, [])
-
-  async function loadAll() {
+  const loadAll = useCallback(async () => {
     setLoading(true)
     try {
       const [summaryRes, alertsRes, forecastRes, highRiskRes, priorityRes] = await Promise.all([
@@ -46,7 +42,11 @@ export default function AIAnalyticsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
+
+  useEffect(() => {
+    loadAll()
+  }, [loadAll])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6">

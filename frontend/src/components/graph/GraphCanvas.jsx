@@ -83,8 +83,8 @@ export default function GraphCanvas({ selectedNode, onNodeSelect, activeView: _a
   const [hoveredNode, setHoveredNode] = useState(null)
   const [containerSize, setContainerSize] = useState({ width: 800, height: 500 })
 
-  const rawNodes = realNodes || []
-  const rawEdges = realEdges || []
+  const rawNodes = useMemo(() => realNodes || [], [realNodes])
+  const rawEdges = useMemo(() => realEdges || [], [realEdges])
   const isEmpty = rawNodes.length === 0
 
   // Memoize force layout — only recalculates when nodes/edges change

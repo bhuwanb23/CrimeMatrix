@@ -24,4 +24,5 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
+// oxlint-disable-next-line react/only-export-components -- hook colocated with provider
 export const useLanguage = () => useContext(LanguageContext);

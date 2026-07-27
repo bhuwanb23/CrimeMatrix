@@ -45,7 +45,7 @@ export default function DistrictForecastPanel({ district, forecast }) {
               <span className="block font-semibold text-[var(--text-primary)]">{f.predicted}</span>
               <span className="text-[var(--text-muted)]">{f.date?.slice(-5)}</span>
             </div>
-          )}
+          ))}
         </div>
       )}
 

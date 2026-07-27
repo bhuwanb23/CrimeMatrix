@@ -90,6 +90,7 @@ export function ThemeProvider({ children }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
+// oxlint-disable-next-line react/only-export-components -- hook colocated with provider
 export function useTheme() {
   const ctx = useContext(ThemeContext)
   if (!ctx) {

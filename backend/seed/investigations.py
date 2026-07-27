@@ -6,8 +6,8 @@ from app.models.case import Case
 from app.models.investigation import Investigation
 from app.models.user import User
 
-# Seed investigations for the first N cases
-INVESTIGATION_COUNT = 15
+# Seed investigations for the first N cases (dense enough for prioritization / workspace)
+INVESTIGATION_COUNT = 40
 
 
 async def seed(db) -> int:

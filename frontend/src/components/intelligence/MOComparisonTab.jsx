@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Fingerprint, RefreshCw, ArrowRight, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getMOProfiles, compareMOs, batchFingerprint, getMOStats } from '../../services/mo'
-import { useLanguage } from '../../context/LanguageContext'
-
 const PAGE_SIZE = 10
 
 export default function MOComparisonTab() {
-  const { t } = useLanguage()
   const [profiles, setProfiles] = useState([])
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)

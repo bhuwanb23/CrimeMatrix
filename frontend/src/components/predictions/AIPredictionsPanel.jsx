@@ -27,30 +27,30 @@ export default function AIPredictionsPanel({ forecast, predictions, districts })
   insights.push({ type: 'recommendation', icon: Lightbulb, color: '#8b5cf6', title: t('Cross-district coordination recommended'), description: 'Pattern analysis suggests similar criminal activity across multiple districts. Joint operations may improve resolution rates.', confidence: 68 })
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2.5">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-[var(--border)] flex items-center gap-2.5">
         <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
           <Lightbulb size={16} className="text-purple-500" />
         </div>
-        <h3 className="text-sm font-bold text-slate-900">AI Predictions & Recommendations</h3>
+        <h3 className="text-sm font-bold text-[var(--text-primary)]">AI Predictions & Recommendations</h3>
       </div>
       <div className="divide-y divide-slate-50">
         {insights.map((insight, i) => {
           const Icon = insight.icon
           return (
-            <div key={i} className="px-5 py-4 hover:bg-slate-50 transition-colors">
+            <div key={i} className="px-5 py-4 hover:bg-[var(--bg-hover)] transition-colors">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${insight.color}15` }}>
                   <Icon size={14} style={{ color: insight.color }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-slate-900 mb-0.5">{insight.title}</p>
-                  <p className="text-[11px] text-slate-500 mb-2">{insight.description}</p>
+                  <p className="text-xs font-semibold text-[var(--text-primary)] mb-0.5">{insight.title}</p>
+                  <p className="text-[11px] text-[var(--text-muted)] mb-2">{insight.description}</p>
                   <div className="flex items-center gap-2">
-                    <div className="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="w-20 h-1.5 bg-[var(--bg-input)] rounded-full overflow-hidden">
                       <div className="h-full rounded-full" style={{ width: `${insight.confidence}%`, background: insight.color }} />
                     </div>
-                    <span className="text-[10px] text-slate-400">{insight.confidence}% confidence</span>
+                    <span className="text-[10px] text-[var(--text-muted)]">{insight.confidence}% confidence</span>
                   </div>
                 </div>
               </div>

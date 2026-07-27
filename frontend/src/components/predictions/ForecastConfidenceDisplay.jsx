@@ -11,19 +11,19 @@ export default function ForecastConfidenceDisplay({ forecast }) {
   const colors = { high: 'text-green-500 bg-green-50', medium: 'text-amber-500 bg-amber-50', low: 'text-red-500 bg-red-50' }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
         <Info size={14} className="text-amber-500" />
-        <h3 className="text-sm font-semibold text-slate-900">{t('Forecast Confidence')}</h3>
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Forecast Confidence')}</h3>
       </div>
 
       <div className="flex items-center gap-3 mb-3">
         <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: `${confidence}%` < 50 ? 'rgba(239,68,68,0.1)' : `${confidence}%` < 75 ? 'rgba(245,158,11,0.1)' : 'rgba(16,185,129,0.1)' }}>
-          <span className="text-lg font-bold text-slate-900">{confidence}</span>
+          <span className="text-lg font-bold text-[var(--text-primary)]">{confidence}</span>
         </div>
         <div>
           <span className={`text-xs font-semibold px-2 py-0.5 rounded ${colors[level]}`}>{level} confidence</span>
-          <p className="text-[10px] text-slate-400 mt-1">
+          <p className="text-[10px] text-[var(--text-muted)] mt-1">
             {level === 'high' ? 'Forecast is reliable based on sufficient data' :
              level === 'medium' ? 'Forecast has moderate reliability' :
              'Insufficient data for reliable forecast'}
@@ -33,16 +33,16 @@ export default function ForecastConfidenceDisplay({ forecast }) {
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-slate-500">{t('Data points')}</span>
-          <span className="font-semibold text-slate-700">{forecast.data_points || 0}</span>
+          <span className="text-[var(--text-muted)]">{t('Data points')}</span>
+          <span className="font-semibold text-[var(--text-secondary)]">{forecast.data_points || 0}</span>
         </div>
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-slate-500">{t('Trend')}</span>
-          <span className="font-semibold text-slate-700">{forecast.trend || 'stable'}</span>
+          <span className="text-[var(--text-muted)]">{t('Trend')}</span>
+          <span className="font-semibold text-[var(--text-secondary)]">{forecast.trend || 'stable'}</span>
         </div>
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-slate-500">{t('Predictions')}</span>
-          <span className="font-semibold text-slate-700">{forecast.forecast?.length || 0}</span>
+          <span className="text-[var(--text-muted)]">{t('Predictions')}</span>
+          <span className="font-semibold text-[var(--text-secondary)]">{forecast.forecast?.length || 0}</span>
         </div>
       </div>
     </div>

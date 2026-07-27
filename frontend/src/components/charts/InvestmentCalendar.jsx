@@ -131,7 +131,7 @@ export default function InvestmentCalendar() {
 
         <div className="calendar-events">
           {loading ? (
-            <p className="text-xs text-slate-400 m-0">{t('Loading...')}</p>
+            <p className="text-xs text-[var(--text-muted)] m-0">{t('Loading...')}</p>
           ) : events.map((event, i) => (
             <div key={i} className="calendar-event">
               <div className="calendar-event-indicator" />

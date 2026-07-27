@@ -58,7 +58,7 @@ export default function ProactiveIntelligencePage() {
           {processing ? t('Processing...') : t('Process Queue')}
         </button>
         <button onClick={loadAll} disabled={loading}
-          className="p-2.5 bg-white border border-slate-200 hover:border-orange-400 rounded-xl transition-all">
+          className="p-2.5 bg-[var(--bg-card)] border border-[var(--border)] hover:border-orange-400 rounded-xl transition-all">
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
@@ -78,10 +78,10 @@ export default function ProactiveIntelligencePage() {
           <NotificationCenter events={activity} />
 
           {/* AI Intelligence Summary */}
-          <div className="bg-white border border-slate-200 rounded-xl p-4">
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <Brain size={14} className="text-amber-500" />
-              <h3 className="text-sm font-semibold text-slate-900">{t('AI Intelligence Summary')}</h3>
+              <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('AI Intelligence Summary')}</h3>
             </div>
             <div className="space-y-2">
               <div className="p-2 bg-blue-50 rounded-lg">
@@ -89,11 +89,11 @@ export default function ProactiveIntelligencePage() {
                   {t('The AI Intelligence Engine continuously monitors incoming FIRs, evidence updates, and case changes to detect hidden relationships and recommend immediate actions.')}
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-[10px] text-slate-500">
+              <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
                 <AlertTriangle size={10} className="text-amber-500" />
                 <span>{stats?.pending || 0} {t('events waiting for processing')}</span>
               </div>
-              <div className="flex items-center gap-2 text-[10px] text-slate-500">
+              <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
                 <CheckCircle size={10} className="text-green-500" />
                 <span>{stats?.processed || 0} {t('events processed automatically')}</span>
               </div>
@@ -101,9 +101,9 @@ export default function ProactiveIntelligencePage() {
 
             {/* How it works */}
             {(stats?.total_events || 0) === 0 && (
-              <div className="mt-3 pt-3 border-t border-slate-100">
-                <p className="text-[10px] font-semibold text-slate-500 mb-1">How proactive intelligence works:</p>
-                <ul className="text-[10px] text-slate-400 space-y-0.5 pl-3">
+              <div className="mt-3 pt-3 border-t border-[var(--border)]">
+                <p className="text-[10px] font-semibold text-[var(--text-muted)] mb-1">How proactive intelligence works:</p>
+                <ul className="text-[10px] text-[var(--text-muted)] space-y-0.5 pl-3">
                   <li>New FIRs, evidence, and case updates create events</li>
                   <li>AI analyzes events for hidden relationships</li>
                   <li>Matching patterns trigger alerts and recommendations</li>

@@ -53,9 +53,10 @@ export default function Header({ rightPanelOpen, onToggleRightPanel }) {
         </button>
 
         <button
+          type="button"
           className={`header-icon-btn ${rightPanelOpen ? 'active' : ''}`}
           onClick={onToggleRightPanel}
-          aria-label="Toggle panel"
+          aria-label={rightPanelOpen ? 'Close panel' : 'Open panel'}
         >
           {rightPanelOpen ? (
             <PanelRightClose size={18} strokeWidth={1.8} />

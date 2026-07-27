@@ -61,7 +61,7 @@ export default function DashboardContent() {
   const lastUpdated = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 space-y-5">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-gradient-from)] to-[var(--bg-gradient-to)] p-6 space-y-5">
       {/* Hero Header */}
       <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 rounded-2xl p-4 px-6 text-white shadow-lg shadow-orange-500/20 shrink-0">
         <div className="flex items-center justify-between">
@@ -84,18 +84,18 @@ export default function DashboardContent() {
       {/* Stats Cards — 5 columns */}
       <div className="grid grid-cols-5 gap-4">
         {cards.map((stat, i) => (
-          <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+          <div key={i} className="bg-[var(--bg-card)] rounded-2xl p-4 shadow-sm border border-[var(--border)] hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center">
-                <stat.icon size={16} className="text-slate-500" strokeWidth={1.8} />
+              <div className="w-9 h-9 rounded-xl bg-[var(--bg-muted)] flex items-center justify-center">
+                <stat.icon size={16} className="text-[var(--text-muted)]" strokeWidth={1.8} />
               </div>
-              <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{stat.label}</span>
+              <span className="text-[10px] text-[var(--text-muted)] font-medium uppercase tracking-wide">{stat.label}</span>
             </div>
-            <div className="text-xl font-bold text-slate-900">{stat.value}</div>
+            <div className="text-xl font-bold text-[var(--text-primary)]">{stat.value}</div>
             <div className={`flex items-center gap-1 mt-1 text-[10px] font-medium ${stat.trendDir === 'up' ? 'text-emerald-600' : 'text-red-500'}`}>
               {stat.trendDir === 'up' ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
               <span>{stat.trend}</span>
-              <span className="text-slate-400 ml-0.5">{stat.trendLabel}</span>
+              <span className="text-[var(--text-muted)] ml-0.5">{stat.trendLabel}</span>
             </div>
           </div>
         ))}
@@ -113,13 +113,13 @@ export default function DashboardContent() {
 
       {/* Charts Row 2 — Status + District + Calendar (3-col equal height) */}
       <div className="grid grid-cols-3 gap-5" style={{ gridAutoRows: '1fr' }}>
-        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[380px]">
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl overflow-hidden min-h-[380px]">
           <StatusBars />
         </div>
-        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[380px]">
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl overflow-hidden min-h-[380px]">
           <DistrictDonut />
         </div>
-        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[380px]">
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl overflow-hidden min-h-[380px]">
           <InvestmentCalendar />
         </div>
       </div>

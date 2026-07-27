@@ -5,14 +5,14 @@ export default function ForecastChart({ forecasts }) {
   const { t } = useLanguage()
   if (!forecasts) {
     return (
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden min-h-[300px]">
-        <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden min-h-[300px]">
+        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center gap-2">
           <TrendingUp size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">{t('Crime Forecast')}</h3>
+          <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Crime Forecast')}</h3>
         </div>
         <div className="flex flex-col items-center justify-center py-10">
-          <TrendingUp size={28} className="text-slate-200 mb-2" />
-          <p className="text-xs text-slate-400">No forecast data available</p>
+          <TrendingUp size={28} className="text-[var(--text-muted)] mb-2" />
+          <p className="text-xs text-[var(--text-muted)]">No forecast data available</p>
         </div>
       </div>
     )
@@ -26,22 +26,22 @@ export default function ForecastChart({ forecasts }) {
   // Sparse data: show message when very few points
   if (historical.length <= 3) {
     return (
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden min-h-[300px]">
-        <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+      <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden min-h-[300px]">
+        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <TrendingUp size={14} className="text-amber-500" />
-            <h3 className="text-sm font-semibold text-slate-900">{t('Crime Forecast')}</h3>
+            <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Crime Forecast')}</h3>
           </div>
           <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">{dataPoints} data points</span>
         </div>
         <div className="flex flex-col items-center justify-center py-10">
-          <TrendingUp size={28} className="text-slate-200 mb-2" />
-          <p className="text-xs font-medium text-slate-500 mb-1">Limited forecast data</p>
-          <p className="text-[10px] text-slate-400 text-center max-w-[220px]">
+          <TrendingUp size={28} className="text-[var(--text-muted)] mb-2" />
+          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">Limited forecast data</p>
+          <p className="text-[10px] text-[var(--text-muted)] text-center max-w-[220px]">
             Only {dataPoints} day(s) recorded. Need at least 7 days of data for accurate forecasting.
           </p>
           {historical.length > 0 && (
-            <div className="mt-3 text-xs text-slate-500">
+            <div className="mt-3 text-xs text-[var(--text-muted)]">
               <span>Current avg: <strong>{Math.round(historical.reduce((s, d) => s + (d.count || 0), 0) / historical.length)}</strong> crimes/day</span>
             </div>
           )}
@@ -51,11 +51,11 @@ export default function ForecastChart({ forecasts }) {
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden min-h-[300px]">
-      <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+    <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl overflow-hidden min-h-[300px]">
+      <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
         <div className="flex items-center gap-2">
           <TrendingUp size={14} className="text-amber-500" />
-          <h3 className="text-sm font-semibold text-slate-900">{t('Crime Forecast')}</h3>
+          <h3 className="text-sm font-semibold text-[var(--text-primary)]">{t('Crime Forecast')}</h3>
         </div>
         <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">{dataPoints} data points</span>
       </div>
@@ -71,7 +71,7 @@ export default function ForecastChart({ forecasts }) {
                   title={`${d.date}: ${d.count} crimes`}
                 />
               </div>
-              <span className="text-[8px] text-slate-400 mt-1">{(d.date || '').slice(-5)}</span>
+              <span className="text-[8px] text-[var(--text-muted)] mt-1">{(d.date || '').slice(-5)}</span>
             </div>
           ))}
           {forecast.map((f, i) => (
@@ -90,9 +90,9 @@ export default function ForecastChart({ forecasts }) {
       </div>
 
       {forecast.length > 0 && (
-        <div className="px-4 py-2 border-t border-slate-100 flex items-center gap-4 text-[10px] text-slate-500">
-          <span>Predicted: <strong className="text-slate-700">{forecast[0].count}</strong> crimes</span>
-          <span>Confidence: <strong className="text-slate-700">{forecast[0].confidence}%</strong></span>
+        <div className="px-4 py-2 border-t border-[var(--border)] flex items-center gap-4 text-[10px] text-[var(--text-muted)]">
+          <span>Predicted: <strong className="text-[var(--text-secondary)]">{forecast[0].count}</strong> crimes</span>
+          <span>Confidence: <strong className="text-[var(--text-secondary)]">{forecast[0].confidence}%</strong></span>
         </div>
       )}
     </div>

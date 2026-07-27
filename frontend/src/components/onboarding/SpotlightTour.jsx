@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useLanguage } from '../../context/LanguageContext'
-import { useOnboarding } from '../../context/OnboardingContext'
+import { useOnboarding } from '../../context/useOnboarding'
 import { TOUR_STEPS } from './tourSteps'
 
 function measureTarget(selector) {

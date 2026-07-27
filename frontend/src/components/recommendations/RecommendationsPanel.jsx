@@ -41,7 +41,6 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
   const [generating, setGenerating] = useState(false)
   const [feedbackMap, setFeedbackMap] = useState({})
   const [explainingId, setExplainingId] = useState(null)
-  const [explanation, setExplanation] = useState(null)
   const navigate = useNavigate()
 
   const loadRecommendations = useCallback(async () => {
@@ -96,14 +95,11 @@ export default function RecommendationsPanel({ caseId = null, investigationId = 
   async function handleExplain(recId) {
     if (explainingId === recId) {
       setExplainingId(null)
-      setExplanation(null)
       return
     }
     setExplainingId(recId)
-    setExplanation(null)
     try {
-      const res = await explainRecommendation(recId)
-      setExplanation(res?.data || res)
+      await explainRecommendation(recId)
     } catch (e) { console.error('Explain failed', e) } finally { setExplainingId(null) }
   }
 
